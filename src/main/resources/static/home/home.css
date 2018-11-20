@@ -1,0 +1,126 @@
+body {
+    background-color: #f9f9f9;
+}
+
+.main-div {
+    width: 500px;
+    height: 700px;
+    border: solid 1px #e5e5e5;
+    background: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #d0d0d0;
+    opacity: 1; /* Firefox */
+}
+
+button {
+    width: 102px;
+    height: 40px;
+    font-size: 18px;
+    background: none;
+    border-radius: 10px;
+}
+
+.table {
+    margin: 40px auto;
+    width: 80%;
+}
+
+table, th, td {
+    border-collapse: collapse;
+}
+
+th {
+    height: 42px;
+    background-color: #f4f4f4;
+    border-top: 1px solid black;
+    text-align: center;
+}
+
+td {
+    height: 50px;
+    text-align: center;
+}
+
+.userIdForm {
+    display: inline-grid;
+    width: 100%;
+    text-align: center;
+}
+
+.userFormMargin40 {
+    margin-top: 40px;
+}
+
+.userFormMargin30 {
+    margin-top: 30px;
+}
+
+.userIdForm label {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.userIdForm input {
+    width: 60%;
+    height: 40px;
+    font-size: 14px;
+    margin: auto;
+}
+
+.userIdForm select {
+    width: 60%;
+    height: 42px;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    margin: auto;
+    font-size: 15px;
+}
+
+.buttonForm {
+    margin-top: 50px;
+    text-align: right;
+}
+
+.buttonMargin5 {
+    margin-right: 5px;
+}
+
+.buttonMargin20 {
+    margin-right: 20px;
+}
+
+.closeModalButton {
+    padding: 0!important;
+}
+
+.modalForm {
+    width: 100%;
+    text-align: center;
+    margin: 12px auto;
+}
+
+.modalForm label {
+    width: 100px;
+}
+
+.modalForm input {
+    width: 60%;
+    height: 40px;
+    font-size: 14px;
+    margin: auto;
+}
+
+.modalForm select {
+    width: 60%;
+    height: 42px;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    margin: auto;
+    font-size: 15px;
+}
