@@ -1,45 +1,192 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en-US">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="../bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Please</title>
     <link rel="stylesheet" href="../home/home.css">
 </head>
 <body>
-    <div class="main-div">
-        <div class="userIdForm userFormMargin40">
-            <label>사용자 ID</label>
-            <input type="text" id="userId" name="userId" placeholder="ex) tatastart" />
+<!-- Main Container -->
+<div class="container">
+    <!-- Navigation -->
+    <header> <a href="">
+        <h4 class="logo"></h4>
+    </a>
+        <nav>
+            <ul>
+                <li><a href="#hero">현황</a></li>
+                <li><a href="#about">관제</a></li>
+                <li> <a href="#contact">통계</a></li>
+                <li> <a href="#contact">설정</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div id="setting">
+            <form action= "home.html" method= "GET">
+                <!-- 총판명, 지사명, 기간, 결제방법-->
+                <div class = "area" id = "condition1">
+                    <ul>
+                        <!-- 총판명   -->
+                        <li>
+                            <label id = "distributor"> 총판명
+                                <select name = "총판명" >
+                                    <option value = "" > </option>
+                                    <!-- ...   -->
+                                </select>
+                            </label>
+                            <!-- 지사명   -->
+
+                            <label id = "branch" > 지사명
+                                <select name = "지사명" >
+                                    <option value = "" > </option>
+                                    <!-- ...   -->
+                                </select>
+                            </label>
+                        </li>
+                        <!-- 기간   -->
+                        <li> 기간
+                            <select name = "start 기간" id = "startterm">
+                                <option value = "" > </option>
+                                <!-- ...   -->
+                            </select>
+                            ~
+                            <select name = "end 기간" id = "endterm">
+                                <option value = "" > </option>
+                                <!-- ...   -->
+                            </select>
+                        </li>
+                        <!-- 결제방법-->
+                        <li id = "payment"> 결제방법
+                            <label>
+                                <input type="checkbox" name="카드" value="true" id = "card">
+                                카드 </label>
+                            <label>
+                                <input type="checkbox" name="현금" value="true" id = "cash">
+                                현금 </label>
+                            <label>
+                                <input type="checkbox" name="선결제" value="true" id = "prepayment">
+                                선결제</label>
+                        </li>
+                        <li id = "service" >
+                            <!-- 서비스 종류-->
+                            서비스 종류
+                            <label>
+                                <input type="checkbox" value="true" id ="delivery-agent" >
+                                배달대행 </label>
+                            <label>
+                                <input type="checkbox" name="공유콜" value="true" id = "share">
+                                공유콜 </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 추가기능-->
+                <div class = "area" id = "extention">
+                    <ul>
+                        <li> 기본출발
+                            <select name = "기본출발" id = "default-start" >
+                                <option value = "" > </option>
+                                <!-- ...   -->
+                            </select>
+                            <input type="button" value = "적용" id = "default-start-apply">
+                        </li>
+                        <li>
+                            <label for = "name" > 추가지연</label>
+                            <select name = "추가지연" id = "extra-delay" >
+                                <option value = "10분" > </option>
+                                <!-- ...   -->
+                            </select>
+                            <input type="button" value = "적용" id = "extra-delay-apply">
+                        </li>
+                        <li>
+                            <div>
+                                <p>
+                                    <label for = "name" > 할증 </label>
+                                    <input type="text" id= "won" >
+                                    원 </p>
+                                <p>
+                                    <input type="text" id= "percent" >
+                                    % </p>
+                            </div>
+                            <input type="button" id="extra-fee-apply" value = "적용">
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 순번 ... -->
+                <div class = "area" id =  "keywords">
+                    <ul>
+                        <li>
+                            <select name = "??" id = "list">
+                                <option value = "순번" > </option>
+                            </select>
+                            <input type="search" id = "search-keywrds" >
+                            <input type="submit" id="search-button" value="검색" >
+                        </li>
+                    </ul>
+                </div>
+            </form>
         </div>
-
-        <div class="userIdForm userFormMargin30">
-            <label>소속 DB</label>
-            <select id="userLocation">
-                <option value="">선택해주세요</option>
-                <option value="1">DB1 (211.57.203.17)</option>
-                <option value="2">DB3 (211.57.203.42)</option>
-            </select>
-        </div>
-
-        <div class="buttonForm">
-            <button class="buttonMargin5" onclick="getUserData()">검색</button>
-            <button class="buttonMargin20" onclick="insertData()">추가</button>
-        </div>
-
-        <table class="table" id="userListTable">
-            <thead>
-                <tr>
-                    <th>아이디</th>
-                    <th>소속 DB</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
+        <!-- checkboxs -->
+        <div id ="checkboxs">
+            <label>
+                <input type="checkbox" name="전체" value="true">
+                전체 </label>
+            -1
+            <label>
+                <input type="checkbox" name="접수" value="true">
+                접수 </label>
+            -1
+            <label>
+                <input type="checkbox" name="배차" value="true">
+                배차 </label>
+            -1
+            <label>
+                <input type="checkbox" name="픽업" value="true">
+                픽업 </label>
+            -1
+            <label>
+                <input type="checkbox" name="완료" value="true">
+                완료 </label>
+            -1
+            <label>
+                <input type="checkbox" name="대기" value="true">
+                대기 </label>
+            -1
+            <label>
+                <input type="checkbox" name="취소" value="true">
+                취소 </label>
+            -1
+            <label>
+                <input type="checkbox" name="공유" value="true">
+                공유 </label>
+            -1 </div>
+    </section>
+    <section class = "result" >
+        <table border = "1px">
+            <tr>
+                <th> 순번 </th>
+                <th> 접수일 </th>
+                <th> 가맹점명 </th>
+                <th> 상태 </th>
+                <th> 접수시간 </th>
+                <th> 배차시간 </th>
+                <th> 픽업시간 </th>
+                <th> 완료시간 </th>
+                <th> 취소시간 </th>
+                <th> 배달대행료 </th>
+                <th> 추가대행료 </th>
+                <th> 기사이름 </th>
+                <th> 결제방법 </th>
+                <th> 요청사항 </th>
+            </tr>
         </table>
-    </div>
+    </section>
+</div>
+<!-- Main Container Ends -->
 </body>
-<script src="../jquery-3.2.1.min.js"></script>
-<script src="../home/home.js"></script>
 </html>

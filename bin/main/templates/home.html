@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../bootstrap.min.css">
+    <link rel="stylesheet" href="../home/home.css">
+</head>
+<body>
+    <div class="main-div">
+        <div class="userIdForm userFormMargin40">
+            <label>사용자 ID</label>
+            <input type="text" id="userId" name="userId" placeholder="ex) tatastart" />
+        </div>
+
+        <div class="userIdForm userFormMargin30">
+            <label>소속 DB</label>
+            <select id="userLocation">
+                <option value="">선택해주세요</option>
+                <option value="1">DB1 (211.57.203.17)</option>
+                <option value="2">DB3 (211.57.203.42)</option>
+            </select>
+        </div>
+
+        <div class="buttonForm">
+            <button class="buttonMargin5" onclick="getUserData()">검색</button>
+            <button class="buttonMargin20" onclick="insertData()">추가</button>
+        </div>
+
+        <table class="table" id="userListTable">
+            <thead>
+                <tr>
+                    <th>아이디</th>
+                    <th>소속 DB</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="../jquery-3.2.1.min.js"></script>
+<script src="../home/home.js"></script>
+</html>
