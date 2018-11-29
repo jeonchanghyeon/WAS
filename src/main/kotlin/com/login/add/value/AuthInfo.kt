@@ -1,6 +1,6 @@
 package com.login.add.value
 
-data class Account(
+data class AuthInfo(
         val id: String,
-        val password : String
+        val group : Int
 )

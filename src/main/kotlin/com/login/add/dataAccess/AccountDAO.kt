@@ -1,9 +1,10 @@
 package com.login.add.dataAccess
 
-import com.login.add.value.Account
+import com.login.add.value.AccountInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
+import java.sql.Date
 
 @Repository
 class AccountDAO {
@@ -11,25 +12,20 @@ class AccountDAO {
     @Autowired
     private lateinit var template: JdbcTemplate
 
-    fun IsValidAccount(id: String, pw: String): Boolean? {
-        var encryptedPasswords = pw
+    fun getAccountInfo(id: String): AccountInfo? {
         try {
-            template.queryForRowSet("SELECT userId FROM users WHERE userId = ? and passwrd = ?", id, encryptedPasswords).run {
-                return first()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
-    }
-
-    fun getAccountInfo(id: String): Account? {
-        try {
-            template.queryForRowSet("SELECT userId, topUserId FROM users WHERE userId = ?", id).run {
+            template.queryForRowSet("SELECT * FROM users WHERE userId = ?", id).run {
                 first()
-                return Account(
+                return AccountInfo(
                         getString("userId") ?: "",
-                        getString("topUserId") ?: ""
+                        getString("password") ?: "",
+                        getString("authKey") ?: "",
+                        getInt("group"),
+                        getString("topUserId") ?: "",
+                        getString("permissions") ?: "",
+                        getDate("createDate") ?: Date(0),
+                        getDate("updateDate") ?: Date(0),
+                        getDate("deleteDate") ?: Date(0)
                 )
             }
         } catch (e: Exception) {

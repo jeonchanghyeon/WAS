@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8"/>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>
+    </title>
+    <link rel="stylesheet" href="../home/home.css"/>
 </head>
 <body>
 
+<section>
+    <div id="logo_area">
+        로고
+    </div>
+    <div id="login-area ">
+        <form action="login" method="POST">
+            <div id="">
+                <p><input type="text" name="id" value="아이디"/></p>
+                <p><input type="password" name="pw" value="비밀번호"/></p>
+            </div>
+
+            <div>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="submit" value="로그인"/>
+            </div>
+        </form>
+    </div>
+</section>
 </body>
 </html>
