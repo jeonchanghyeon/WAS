@@ -1,6 +1,7 @@
 package com.login.add.value
 
 import java.sql.Date
+import java.sql.Timestamp
 
 data class AccountInfo (
         val userId : String,
@@ -9,7 +10,7 @@ data class AccountInfo (
         val group : Int,
         val topUserId : String,
         val permission : String,
-        val createDate : Date,
-        val updateDate : Date,
-        val deleteDate : Date
+        val createDate : Timestamp,
+        val updateDate : Timestamp,
+        val deleteDate : Timestamp
 )

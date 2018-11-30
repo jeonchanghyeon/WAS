@@ -30,10 +30,10 @@ class StatusDAO {
         return null
     }
 
-    fun getBranchName(userId: String): List<String>? {
+    fun getBranchName(distributeNum: String): List<String>? {
         try {
             val returnVal = mutableListOf<String>()
-            val rs = template.queryForRowSet("SELECT userId FROM users WHERE `group` = 5")
+            val rs = template.queryForRowSet("SELECT userId FROM users WHERE `group` = 5 and `topUserId` = $distributeNum")
 
             while (rs.next()) {
                 returnVal.add(rs.getString("userId") ?: "")

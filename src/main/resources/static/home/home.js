@@ -1,59 +1,59 @@
-function getUserData() {
-    $.ajax({
-        url: "../home/get/" + $("#userId").val(),
-        method: "GET",
-        dataType: "json",
-        success: function (data) {
-            if (data.resultCode === 0) {
-                if (data.user.length < 1) { // 받아온 데이터가 없는 경우
-                    alert("데이터가 존재하지 않습니다.");
-                    return;
-                }
-                var tbody = $("#userListTable").find("tbody");
-                tbody.empty();
+function resultJsSelector(msg) {
+    var container = document.getElementById("select_branch");
+    container.innerHTML = '';
+    var selector = document.createElement('select');
+    selector.classList.add("select_branch");
+    container.appendChild(selector);
 
-                var html = "<tr>";
-                html += "<td>" + data.user.id + "</td>";
-                html += "<td>" + data.user.serverName + "</td>";
-                html += "</tr>";
-                tbody.append(html);
-            } else {
-                alert(data.description);
-            }
-        },
-        error: function (xhr, status, err) {
-            alert(status + "\n" + err);
-        }
-    });
+    var option = document.createElement('option');
+    option.defaultSelected;
+    option.label = "--";
+    selector.appendChild(option);
+
+    console.log(msg);
+    try {
+        msg = JSON.parse(msg);
+    } catch(error) {}
+
+    var i;
+    for(i = 0; i < msg.length; i++) {
+        option = document.createElement('option');
+        option.label = msg[i];
+        selector.appendChild(option);
+    }
 }
 
-function insertData() {
-    if ($("#userId").val() === '') {
-        alert("사용자ID를 작성해주세요");
-        return;
-    }
+function changeDistributeSelect(){
+    var distributorSelect = document.getElementById("select_distributor");
 
-    if ($("#userLocation").find("option:selected").val() === '') {
-        alert("소속DB를 선택해주세요");
-        return;
-    }
+    var selectText = distributorSelect.options[distributorSelect.selectedIndex].text;
 
-    $.ajax({
-        url: "../home/add",
-        method: "POST",
-        data: {
-            "id": $("#userId").val(),
-            "serverId": $("#userLocation").find("option:selected").val()
-        },
-        dataType: "json",
-        success: function (data) {
-            if (data.resultCode === 0) {
-                alert("작성 완료되었습니다.");
-                window.location.href = "../home";
-            }
-        },
-        error: function (xhr, status, err) {
-            alert(status + "\n" + err);
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "status/distributors?distributorNum=" + selectText, true);
+    xhr.onreadystatechange = function() {
+        if(xhr.status === 200) {
+            resultJsSelector(xhr.responseText);
         }
-    });
+    };
+    xhr.send()
 }
+
+function resultJsSearchList(msg) {
+    var container = document.getElementById('result_list')
+    container.innerHTML = '';
+
+}
+
+function showSearchList() {
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "status/orders?data=" + 2, true);
+    xhr.onreadystatechange = function() {
+        if(xhr.status === 200) {
+            resultJsSearchList(xhr.responseText);
+        }
+    };
+    xhr.send()
+}
+
+document.getElementById("select_distributor").onchange = function() {changeDistributeSelect()};
