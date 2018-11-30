@@ -6,35 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Please</title>
     <link rel="stylesheet" href="../home/home.css"/>
+    <script src="../home/home.js"></script>
 
 </head>
 <body>
 <!-- Main Container -->
 <div class="container">
     <!-- Navigation -->
-    <header><a href="">
-        <div class="logo"></div>
-    </a>
+    <!--	<div class ="header">-->
+    <header>
+        <a href="">
+            <div class="logo"></div>
+        </a>
+        <table class="nav">
+            <tr>
+                <th>현황</th>
+                <th>관제</th>
+                <th>통계</th>
+                <th>설정</th>
+            </tr>
+        </table>
+        <!--		<div class ="nav" >-->
+        <!--        <nav>-->
+        <!--            <ul>-->
+        <!--                <li><a href="#hero">현황</a></li>-->
+        <!--                <li><a href="#about">관제</a></li>-->
+        <!--                <li><a href="#contact">통계</a></li>-->
+        <!--                <li><a href="#contact">설정</a></li>-->
+        <!--            </ul>-->
+        <!--        </nav>-->
+        <!--			</div>-->
 
-        <nav>
-            <ul>
-                <li><a href="#hero">현황</a></li>
-                <li><a href="#about">관제</a></li>
-                <li><a href="#contact">통계</a></li>
-                <li><a href="#contact">설정</a></li>
-            </ul>
-
-
-        </nav>
         <div class="point_area">
-			<span class="point">
-		  100,000,000
+			<span id="point" th:text="${point}">
+		  -1
 				</span>
         </div>
 
         <button class="submit">접수하기</button>
 
     </header>
+    <!--		</div>-->
     <!-- Hero Section -->
     <div class="hero" id="hero">
         <!--  <section class="hero" id="hero">-->
@@ -44,17 +56,17 @@
                 <div class="condition_area">
                     <table class="table">
                         <tr>
-                            <th>총판명</th>
-                            <th><select class="select_distributor" id="select_distributor" >
-                                <option value ="" > -- </option>
+                            <th class="item_title">총판명</th>
+                            <th class="item_content"><select class="select_distributor" id="select_distributor">
+                                <option value=""> --</option>
                                 <option th:each="distributor : ${distributors}"
                                         th:value="${distributor}"
                                         th:utext="${distributor}"/>
-                                </select>
+                            </select>
                             </th>
-                            <th>지사명</th>
-                            <th><select class="select_branch" id="select_branch">
-                                <option value ="" > -- </option>
+                            <th class="item_title">지사명</th>
+                            <th class="item_content"><select class="select_branch" id="select_branch">
+                                <option value=""> --</option>
                                 <option th:each="branch : ${branchs}"
                                         th:value="${branch}"
                                         th:utext="${branch}"/>
@@ -63,7 +75,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th>기간</th>
+                            <th class="item_title">기간</th>
                             <td colspan="3"><select class="select_start_date" id="select_start_date">
                                 <option value=""></option>
                                 <!-- ...   -->
@@ -79,8 +91,8 @@
               -->
                         </tr>
 
-                        <th>결제방법</th>
-                        <th><label>
+                        <th class="item_title">결제방법</th>
+                        <th class="item_content"><label>
                             <input type="checkbox" id="card"/>
                             카드 </label>
                             <label>
@@ -90,8 +102,8 @@
                                 <input type="checkbox" id="prepayment"/>
                                 선결제</label>
                         </th>
-                        <th> 서비스 종류</th>
-                        <th><label>
+                        <th class="content_title"> 서비스 종류</th>
+                        <th class="item_content"><label>
                             <input type="checkbox" id="delivery_agent"/>
                             배달대행 </label>
                             <label>
@@ -105,8 +117,8 @@
                 <div class="extention_area">
                     <table class="table">
                         <tr>
-                            <th>기본출발</th>
-                            <th><select id="select_default_start">
+                            <th class="item_title">기본출발</th>
+                            <th class="item_content"><select id="select_default_start">
                                 <option value=""></option>
                                 <!-- ...   -->
                             </select>
@@ -116,20 +128,19 @@
                             </th>
                         </tr>
                         <tr>
-                            <th>추가지연</th>
-                            <th>
-                                <!--<select>-->
-                                    <!--<option id="select_delay_time"  th:each="i : ${#numbers.sequence(0, 60, 10)}" th:value="${i}" th:text="${i}분"-->
-                                            <!--th:selected="${i==10}"></option>-->
-                                <!--</select>-->
+                            <th class="item_title">추가지연</th>
+                            <th class="item_content">
+                                <select>
+                                    <option id="select_delay_time"></option>
+                                </select>
                                 분
                             </th>
                             <th><input type="button" value="적용" class="btn_delay_time"/>
                             </th>
                         </tr>
                         <tr>
-                            <th>할증</th>
-                            <th><p>
+                            <th class="item_title">할증</th>
+                            <th class="item_content"><p>
                                 <input type="text" id="cost_won"/>
                                 원 </p>
                                 <p>
@@ -145,9 +156,8 @@
                 <!-- 순번 ... -->
                 <div class="feature_area">
                     <table>
-
                         <th><select id="select_featrue">
-                            <option value="순번"></option>
+                            <option value="id">순번</option>
                         </select>
                         </th>
                         <th><input type="search" id="search_feature"/>
@@ -161,7 +171,6 @@
         <!-- checkboxs -->
         <section class="order_status_area">
             <table>
-
                 <th><label>
                     <input type="checkbox" id="order_status_all" value="true"/>
                     전체 </label>

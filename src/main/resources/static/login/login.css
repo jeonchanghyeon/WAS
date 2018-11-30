@@ -1,0 +1,68 @@
+
+
+.login_area {
+	position: fixed;
+	left : calc(50% - 160px);
+	bottom: 40%;
+}
+
+.logo {
+	width :215px;
+	height : 50px;
+	margin-left : 52px;
+	margin-right : 52px;
+	margin-bottom: 29px;
+	margin-top:29px;
+}
+
+.input_id {
+	width : 320px;
+	height: 46px;
+	padding-left : 11px;
+}
+
+.input_pw {
+	width: 320px;
+	height : 46px;
+	padding-left : 11px;
+}
+
+.btn_submit {
+	margin-top : 28px;
+	width: 320px;
+	height : 50px;
+	color : #FFFFFF;
+	background-color: #ff9037;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+section {
+	background-color: #f0f0f0;
+}
+
+.id_area {
+	position: relative;
+	float : top;
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+.pw_area {
+	position: relative;
+	float : top;
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+body {
+	background-color: #f0f0f0;
+}
+.lbl {
+	font-size : 14px;
+	position: absolute;
+	top : 12px;
+	left :11px;
+	color : #9b9b9b;
+
+}
