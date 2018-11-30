@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Please</title>
     <link rel="stylesheet" href="../home/home.css"/>
-    <script src="../home/home.js"></script>
-
 </head>
 <body>
 <!-- Main Container -->
@@ -64,14 +62,11 @@
                                         th:utext="${distributor}"/>
                             </select>
                             </th>
-                            <th class="item_title">지사명</th>
-                            <th class="item_content"><select class="select_branch" id="select_branch">
-                                <option value=""> --</option>
-                                <option th:each="branch : ${branchs}"
-                                        th:value="${branch}"
-                                        th:utext="${branch}"/>
-
-                            </select>
+                            <th>지사명</th>
+                            <th id="select_branch">
+                                <select class="select_branch">
+                                    <option value =""> -- </option>
+                                </select>
                             </th>
                         </tr>
                         <tr>
@@ -226,9 +221,11 @@
                 <th> 결제방법</th>
                 <th> 요청사항</th>
             </tr>
+            <tr id="result_list"></tr>
         </table>
     </section>
 </div>
+<script src="../home/home.js"/>
 <!-- Main Container Ends -->
 </body>
 </html>

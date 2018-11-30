@@ -13,7 +13,6 @@ class StatusService {
     @Autowired
     private lateinit var statusDAO: StatusDAO
 
-
     fun getDistributor(userId: String, group: Int): List<String>? {
         when (group) {
             in 7..8 -> return statusDAO.getDistributor(userId)
@@ -21,11 +20,8 @@ class StatusService {
         return null
     }
 
-    fun getBranchName(userId: String, group: Int): List<String>? {
-        when (group) {
-            in 6..7 -> return statusDAO.getBranchName(userId)
-        }
-        return null
+    fun getBranchName(distributeName: String): List<String>? {
+         return statusDAO.getBranchName(distributeName)
     }
 
     fun searchOrders(data: MutableMap<String, String>): Map<String, Any>? {
