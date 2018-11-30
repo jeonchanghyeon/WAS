@@ -6,17 +6,13 @@ import com.login.add.value.AuthInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
-
+@CrossOrigin(origins = arrayOf("*"), allowCredentials = "false")
 @Controller
 @RequestMapping("/status")
 class StatusController {
-
     @Autowired
     private lateinit var statusService: StatusService
 
@@ -31,19 +27,16 @@ class StatusController {
         authInfo ?: return "login"
 
         var distributors = statusService.getDistributor(authInfo.id, authInfo.group) ?: listOf("")
-        var branchs = statusService.getBranchName(authInfo.id, authInfo.group) ?: listOf("")
-        var point = pointService.getPoint(authInfo.id)
+        var branchs = listOf("")
 
         model.addAttribute("distributors", distributors)
-        model.addAttribute("branchs", branchs)
-        model.addAttribute("point", point)
 
         return "home"
     }
 
     @GetMapping(value = ["orders"])
     @ResponseBody
-    fun gerCondition(@RequestParam data: MutableMap<String, String>): Map<String, Any?> {
+    fun getCondition(@RequestParam(value = "data") data: MutableMap<String, String>): Map<String, Any?> {
         return try {
             var value = statusService.searchOrders(data)
             mapOf("resultCode" to 0, "resultObject" to value)
@@ -52,4 +45,14 @@ class StatusController {
             mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
         }
     }
+
+    @GetMapping(value = ["distributors"])
+    @ResponseBody
+    fun getBranchList(@RequestParam(value = "distributorNum") distributorNum: String): List<String>? {
+        if(distributorNum.equals("--")) return null
+        var branchs = statusService.getBranchName(distributorNum) ?: listOf("")
+        return branchs
+    }
 }
+
+
