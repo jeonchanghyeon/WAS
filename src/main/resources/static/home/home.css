@@ -1,8 +1,8 @@
 @charset "UTF-8";
 /* Body */
 body {
-    font-family: "Noto Sans Mono CJK KR Regular";
-    background-color: #f2f2f2;
+    font-family: 'Noto Sans Mono CJK KR Regular';
+    background-color: #f0f0f0;
     margin-top: 0px;
     margin-right: 0px;
     margin-bottom: 0px;
@@ -10,7 +10,6 @@ body {
     font-style: normal;
     font-weight: 200;
 }
-
 /* Container */
 .container {
     width: 100%;
@@ -19,52 +18,37 @@ body {
     height: 1000px;
     background-color: #FFFFFF;
 }
-
 /* Navigation */
 header {
-    /*	padding-top : 5px;*/
-    /*	padding-bottom: 5px;*/
+    position: relative;
     width: 100%;
-    height: 35px;
-    background-color: #282828; /*	border-bottom: 1px solid #2C9AB7;*/
+    height: 40px;
+    background-color: #282828;/*	border-bottom: 1px solid #2C9AB7;*/
 }
 
 .logo {
     width: 20px;
-    height: 22px;
+    height : 22px;
     float: left;
-    margin-top: 15px;
-    margin-left: 25px;
+    margin-top: 8px;
+    margin-left: 13px;
+    margin-right: 13px;
     letter-spacing: 4px;
     background-color: #FFFFFF;
 }
 
-nav {
-    float: left;
-    text-align: left;
-    height: 29px;
-}
-
-header nav ul {
-    list-style: none;
-    float: left;
-}
-
-nav ul li {
+.nav tr th {
+    width : 79px;
+    height : 40px;
     float: left;
     color: #FFFFFF;
     font-size: 16px;
-    margin-right: 22px;
-    letter-spacing: 2px;
+    margin-top: 7px;
 }
 
-ul li a {
+.nav tr th a {
     color: #FFFFFF;
     text-decoration: none;
-}
-
-ul li:hover a {
-    color: #2C9AB7;
 }
 
 .area {
@@ -80,15 +64,13 @@ ul li:hover a {
     margin-left: 0px;
     letter-spacing: 4px;
 }
-
 /* Hero Section */
 .hero {
     width: 100%;
-    height: 230px;
+    height : 230px;
     background-color: #555555;
-    font-size: 12px;
+    font-size : 12px;
 }
-
 .setting_area div {
     background-color: #444444;
     color: #c1c1c1;
@@ -96,87 +78,86 @@ ul li:hover a {
 
 .setting_area input {
     background-color: #373737;
-    color: #ff7100;
+    color : #ff7100;
 }
-
 .setting_area input[type="text"], input[type="search"] {
     border: hidden;
-    height: 28px;
+    height : 28px;
 }
-
 .setting_area input[type="button"], input[type="submit"] {
     font-size: 14px;
-    outline: hidden;
+    outline : hidden;
     border-color: #ff7100;
 }
 
 select {
     font-size: 14px;
-    height: 28px;
+    height : 28px;
     border: hidden;
     background-color: #373737;
+    color : #FFFFFF;
 }
 
 .condition_area {
-    margin-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    float: left;
+    margin-left : 10px;
+    padding-top : 5px;
+    padding-bottom : 5px;
+    padding-left : 10px;
+    padding-right : 10px;
+    float : left;
 }
-
 .codition_area select {
-    width: 170px;
+    width : 170px;
 }
 
 .extention_area {
-    margin-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    float: left;
+    margin-left : 10px;
+    padding-left : 10px;
+    padding-right : 10px;
+    float : left;
 }
 
 .condition_area select {
-    width: 170px;
+    width : 170px;
 }
 
-.feature_area select, .extention_area select {
-    width: 100px;
+.feature_area select, .extention_area select{
+    padding-left : 10px;
+    width : 100px;
+}
+
+.feature_area input {
+    width : 340px;
 }
 
 .extention_area input[type="text"] {
-    width: 100px;
+    width : 100px;
 }
 
 .feature_area {
-    top: -70px;
-    margin-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 465px;
-    clear: both;
+    position: relative;
+    top : -45px;
+    margin-left : 10px;
+    padding-top : 5px;
+    padding-bottom : 5px;
+    padding-left : 10px;
+    padding-right : 10px;
+    width :535px;
+    clear : both;
 }
-
 .order_status_area {
     padding-left: 10px;
     padding-top: 10px;
-    width: 100%;
-    height: 30px;
+    width : 100%;
+    height : 30px;
     background-color: #444444;
-    top: 230px;
-    color: #ff7100;
-    float: left;
+    top : 230px;
+    color : #ff7100;
+    float : left;
 }
-
 .order_status_area label {
-    color: #FFFFFF;
+    color : #FFFFFF;
 }
-
 .tagline {
     text-align: center;
     color: #FFFFFF;
@@ -196,8 +177,7 @@ select {
         margin-bottom: 0px;
         margin-left: 0px;
     }
-
-    .container header nav {
+    .container header .nav {
         margin-top: 0px;
         margin-right: 0px;
         margin-bottom: 0px;
@@ -207,10 +187,7 @@ select {
         display: none;
     }
 
-    header nav ul {
-    }
-
-    nav ul li {
+    .nav ul li {
         margin-top: 0px;
         margin-right: 0px;
         margin-bottom: 0px;
@@ -218,7 +195,6 @@ select {
         width: 100%;
         text-align: center;
     }
-
     .text_column {
         width: 100%;
         text-align: justify;
@@ -227,16 +203,13 @@ select {
         padding-bottom: 0px;
         padding-left: 0px;
     }
-
     .thumbnail {
         width: 100%;
     }
-
     .footer_column {
         width: 100%;
         margin-top: 0px;
     }
-
     .parallax {
         text-align: center;
         margin-top: 0px;
@@ -250,7 +223,6 @@ select {
         width: 100%;
         font-size: 18px;
     }
-
     .parallax_description {
         padding-top: 0px;
         padding-right: 0px;
@@ -264,17 +236,14 @@ select {
         float: none;
         text-align: center;
     }
-
     .banner {
         background-color: #2D9AB7;
         background-image: none;
     }
-
     .tagline {
         margin-top: 20px;
         line-height: 22px;
     }
-
     .hero_header {
         padding-left: 10px;
         padding-right: 10px;
@@ -294,7 +263,6 @@ select {
         margin-left: 0px;
         color: #043745;
     }
-
     .container header nav {
         margin-top: 0px;
         margin-right: 0px;
@@ -306,12 +274,10 @@ select {
         display: inline-block;
         background: #52bad5;
     }
-
     header nav ul {
         padding: 0px;
         float: none;
     }
-
     nav ul li {
         margin-top: 0px;
         margin-right: 0px;
@@ -322,7 +288,6 @@ select {
         padding-top: 8px;
         padding-bottom: 8px;
     }
-
     .text_column {
         width: 100%;
         text-align: left;
@@ -331,16 +296,13 @@ select {
         padding-bottom: 0px;
         padding-left: 0px;
     }
-
     .thumbnail {
         width: 100%;
     }
-
     .footer_column {
         width: 100%;
         margin-top: 0px;
     }
-
     .parallax {
         text-align: center;
         margin-top: 0px;
@@ -354,7 +316,6 @@ select {
         width: 100%;
         font-size: 18px;
     }
-
     .parallax_description {
         padding-top: 0px;
         padding-right: 0px;
@@ -368,11 +329,9 @@ select {
         width: 100%;
         text-align: center;
     }
-
     .thumbnail {
         width: 50%;
     }
-
     .parallax {
         margin-top: 0px;
         margin-right: 0px;
@@ -383,7 +342,6 @@ select {
         padding-left: 0px;
         padding-top: 20%;
     }
-
     .parallax_description {
         margin-top: 0px;
         margin-right: 0px;
@@ -392,12 +350,10 @@ select {
         width: 100%;
         padding-top: 30px;
     }
-
     .banner {
         padding-left: 20px;
         padding-right: 20px;
     }
-
     .footer_column {
         width: 100%;
     }
@@ -408,11 +364,9 @@ select {
     .text_column {
         width: 100%;
     }
-
     .thumbnail {
         width: 50%;
     }
-
     .text_column {
         width: 100%;
         margin-top: 0px;
@@ -424,68 +378,77 @@ select {
         padding-bottom: 0px;
         padding-left: 0px;
     }
-
     .banner {
         margin-top: 0px;
         padding-top: 0px;
     }
 }
-
 .setting_area {
-    padding-top: 10px;
+    padding-top :10px;
+    height : 190px;
 }
-
 .item {
-    width: 100%;
-    margin-top: 3px;
-    margin-bottom: 3px;
-    float: left;
+    width : 100%;
+    margin-top : 3px;
+    margin-bottom : 3px;
+    float : left;
 }
 
 .line {
-    margin-top: 3px;
-    margin-bottom: 3px;
-    margin-left: 12px;
-    clear: both;
+    margin-top : 3px;
+    margin-bottom : 3px;
+    margin-left : 12px;
+    clear : both;
 }
 
 .half .item {
-    width: 50%;
+    width : 50%;
 }
 
-.item_title {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    float: left;
+
+.condition_area .item_title {
+    width : 67px;
 }
 
-.item_content {
-    float: left;
+.condition_area .item_content {
+    width : 191px;
 }
 
-#btn_feature {
-    width: 84px;
-    height: 28px;
+.extention_area .item_title {
+    width : 63px;
 }
 
-.checkboxs {
-    padding-top: 4px;
+.extention_area .item_content {
+    width : 131px;
 }
 
-.checkboxs label {
-    color: #FFFFFF;
+.item_content label {
+    color : #FFFFFF;
     font-size: 14px;
 }
 
+#btn_feature {
+    width : 84px;
+    height : 28px;
+}
+
+.checkboxs {
+    padding-top : 4px;
+}
+.checkboxs label {
+    color : #FFFFFF;
+    font-size : 14px;
+}
+
+
 .btn_delay_time {
-    width: 80px;
-    height: 28px;
+    width : 80px;
+    height : 28px;
 }
 
 .btn_default_start {
-    width: 80px;
-    height: 28px;
+    width : 80px;
+    height :28px;
 }
 
 .additional_cost_apply {
@@ -500,14 +463,14 @@ select {
 */
 
 .multi-content {
-    float: left;
+    float : left;
 }
 
 .content_btn {
 }
 
 .result_area {
-    clear: both;
+    float :top;
     background-color: #f0f0f0;
 }
 
@@ -515,28 +478,43 @@ select {
     text-align: left;
 }
 
-.point_area {
-    position: relative;
-    float: left;
-    width: 177px;
-    height: 30px;
-    background-color: #141414;
-    border-radius: 5px;
-    color: #FFFFFF;
-    padding-top: 6px;
+.condition_area .table tr th {
+    padding-top : 3px;
+    padding-bottom: 3px;
 }
 
-.point {
+.extention_area .table tr th {
+    padding-top : 6px;
+    padding-bottom: 6px;
+}
+
+.point_area {
     position: absolute;
-    right: 11px;;
+    top : 5px;
+    width : 177px;
+    height : 30px;
+    background-color: #141414;
+    border-radius: 5px;
+    color : #FFFFFF;
+    right : 106px;
+}
+
+.point_area span {
+    position: absolute;
+    top : 6px;
+    right : 11px;
 }
 
 .submit {
-    /*	position: absolute;*/
-    top: 10px;
-    right: 10px;
-
-    width: 80px;
-    height: 28px;
+    position: absolute;
+    top : 6px;
+    right : 10px;
+    width : 80px;
+    height : 28px;
     background-color: #ff7100;
+}
+
+p {
+    margin-top : 0px;
+    margin-bottom: 4px;
 }

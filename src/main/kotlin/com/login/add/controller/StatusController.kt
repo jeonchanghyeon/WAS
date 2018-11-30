@@ -1,5 +1,6 @@
 package com.login.add.controller
 
+import com.login.add.service.PointService
 import com.login.add.service.StatusService
 import com.login.add.value.AuthInfo
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +16,9 @@ class StatusController {
     @Autowired
     private lateinit var statusService: StatusService
 
+    @Autowired
+    private lateinit var pointService: PointService
+
     @GetMapping
     fun status(request: HttpServletRequest, model: Model): String {
         val session = request.session
@@ -23,8 +27,9 @@ class StatusController {
         authInfo ?: return "login"
 
         var distributors = statusService.getDistributor(authInfo.id, authInfo.group) ?: listOf("")
-        var branchs = listOf("")
+        var point = pointService.getPoint(authInfo.id)
 
+        model.addAttribute("point", point)
         model.addAttribute("distributors", distributors)
 
         return "home"
