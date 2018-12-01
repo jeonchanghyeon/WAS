@@ -38,9 +38,13 @@ class StatusController {
 
     @GetMapping(value = ["orders"])
     @ResponseBody
-    fun getCondition(@RequestParam data: MutableMap<String, String>): Map<String, Any?> {
+    fun getCondition(
+            @RequestParam data: MutableMap<String, Any>,
+            @RequestParam(value = "payment_type", required = false) paymentType: Array<String>?,
+            @RequestParam(value = "service_type", required = false) serviceType: Array<String>?)
+            : Map<String, Any?> {
         return try {
-            var value = statusService.searchOrders(data)
+            var value = statusService.searchOrders(data, paymentType, serviceType)
             mapOf("resultCode" to 0, "resultObject" to value)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -56,5 +60,3 @@ class StatusController {
         return branchs
     }
 }
-
-

@@ -4,7 +4,6 @@ import com.login.add.dataAccess.StatusDAO
 import com.login.add.value.Condition
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.lang.Long
 import java.sql.Timestamp
 
 @Service
@@ -21,27 +20,40 @@ class StatusService {
     }
 
     fun getBranchName(distributeName: String): List<String>? {
-         return statusDAO.getBranchName(distributeName)
+        return statusDAO.getBranchName(distributeName)
     }
 
-    fun searchOrders(data: MutableMap<String, String>): Map<String, Any>? {
-        try {
-            var condition = Condition(
-                    data["branch"] ?: "",
-                    Timestamp(java.lang.Long.parseLong(data["start_date"] ?: "0", 10)),
-                    Timestamp(java.lang.Long.parseLong(data["end_date"] ?: "253402300799999", 10)),
-                    data["payment_type"] ?: "",
-                    data["service_type"] ?: "",
-                    data["default_start"] ?: "",
-                    data["delay_time"] ?: "",
-                    data["additional_cost_percent"] ?: "",
-                    data["additional_cost_won"] ?: ""
-            )
-            println(condition)
-            return statusDAO.searchOrders(condition)
-        } catch (e: Exception) {
-            e.printStackTrace()
+
+    fun searchOrders(data: MutableMap<String, Any>, paymentType: Array<String>?, serviceType: Array<String>?): Map<String, Any>? {
+        var setOfPaymentType = setOf<String>()
+        var setOfServiceType = setOf<String>()
+
+        if (paymentType != null) {
+            for (i in paymentType) {
+                setOfPaymentType to i
+            }
         }
-        return null
+
+        if (serviceType != null) {
+            for (i in serviceType) {
+                setOfServiceType to i
+            }
+        }
+
+        val condition = Condition(
+                data["branch"] as String? ?: "",
+//                data["start_date"] as Timestamp? ?: Timestamp(0),
+//                data["end_date"] as Timestamp? ?: Timestamp(23123123123123), // TODO INT 최대
+                Timestamp(0),
+                Timestamp(253402300799999),
+                setOfPaymentType,
+                setOfServiceType,
+                data["default_start"] as Int? ?: 0, // TODO INT 최대
+                data["delay_time"] as Int? ?: 1232342342, // TODO INT 최대
+                data["additional_cost_percent"] as Int? ?: 100,
+                data["additional_cost_won"] as Int? ?: 0
+        )
+
+        return statusDAO.searchOrders(condition)
     }
 }
