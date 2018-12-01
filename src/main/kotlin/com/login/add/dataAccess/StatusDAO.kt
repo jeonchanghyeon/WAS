@@ -57,7 +57,7 @@ class StatusDAO {
 
             val rs = template.queryForRowSet("SELECT * FROM orders WHERE branchId = ? and createDate > ? and createDate < ?", branch, sdate, edate)
 
-            while (rs.next()) {
+            while (rs.isAfterLast()) {
                 var id = rs.getString("id")
                 orders[id] = Order(
                         rs.getInt("id"),

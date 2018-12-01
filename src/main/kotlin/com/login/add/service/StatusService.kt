@@ -28,7 +28,7 @@ class StatusService {
         try {
             var condition = Condition(
                     data["branch"] ?: "",
-                    Timestamp(java.lang.Long.parseLong(data["start_data"] ?: "0", 10)),
+                    Timestamp(java.lang.Long.parseLong(data["start_date"] ?: "0", 10)),
                     Timestamp(java.lang.Long.parseLong(data["end_date"] ?: "253402300799999", 10)),
                     data["payment_type"] ?: "",
                     data["service_type"] ?: "",

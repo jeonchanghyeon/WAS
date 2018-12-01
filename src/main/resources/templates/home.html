@@ -49,7 +49,11 @@
                                 </select>
                             </th>
                             <th>지사명</th>
-                            <th id="select_branch"></th>
+                            <th id="select_branch">
+                                <select class="select_branch">
+                                    <option value =""> -- </option>
+                                </select>
+                            </th>
                         </tr>
                         <tr>
                             <th>기간</th>
@@ -67,7 +71,6 @@
                             <th></th>
               -->
                         </tr>
-
                         <th>결제방법</th>
                         <th><label>
                             <input type="checkbox" id="card"/>
@@ -150,7 +153,6 @@
         <!-- checkboxs -->
         <section class="order_status_area">
             <table>
-
                 <th><label>
                     <input type="checkbox" id="order_status_all" value="true"/>
                     전체 </label>
@@ -206,7 +208,10 @@
                 <th> 결제방법</th>
                 <th> 요청사항</th>
             </tr>
-            <tr id="result_list"></tr>
+            <tr id="result_list" ></tr>
+            <tr th:each="id : ${resultList}" th:
+                <td></td>
+            </tr>
         </table>
     </section>
 </div>
