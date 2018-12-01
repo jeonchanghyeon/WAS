@@ -1,5 +1,6 @@
 package com.login.add.controller
 
+import com.login.add.service.PointService
 import com.login.add.service.StatusService
 import com.login.add.value.AuthInfo
 import com.login.add.value.Order
@@ -16,6 +17,9 @@ class StatusController {
     @Autowired
     private lateinit var statusService: StatusService
 
+    @Autowired
+    private lateinit var pointService: PointService
+
     @GetMapping
     fun status(request: HttpServletRequest, model: Model): String {
         val session = request.session
@@ -23,33 +27,12 @@ class StatusController {
 
         authInfo ?: return "login"
 
-        val distributors = statusService.getDistributor(authInfo.id, authInfo.group) ?: listOf("")
-        val resultMap = statusService.searchOrders(mutableMapOf<String, String>())
+        var distributors = statusService.getDistributor(authInfo.id, authInfo.group) ?: listOf("")
+        var point = pointService.getPoint(authInfo.id)
 
-        var resultList = mutableListOf("")
-        if(resultMap is Map<*,*>) {
-            var map = resultMap.get("orders") as MutableMap<String, Order>
-
-            resultList.add(map.get("id"))
-            resultList.add(resultMap.get("shopId"))
-            resultList.add(resultMap.get("orderStatusId"))
-            resultList.add(resultMap.get("createDate"))
-            resultList.add(resultMap.get("allocateDate"))
-            resultList.add(resultMap.get("pickupDate"))
-            resultList.add(resultMap.get("completeDate"))
-            resultList.add(resultMap.get("cancelDate"))
-            resultList.add(resultMap.get("deliveryCost"))
-            resultList.add(resultMap.get("additionalCost"))
-            resultList.add(resultMap.get("riderId"))
-            resultList.add(resultMap.get("paymentType"))
-            resultList.add(resultMap.get("memo"))
-
-        } else resultList = resultMap as List<String>
-
-        var branchs = listOf("")
-
+        model.addAttribute("point", point)
         model.addAttribute("distributors", distributors)
-        model.addAttribute("resultList", resultList)
+
         return "home"
     }
 
