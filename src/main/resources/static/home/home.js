@@ -41,31 +41,12 @@ function resultJsSelector(obj) {
 }
 
 function showSearchList() {
-<<<<<<< HEAD
-    var xhr = new XMLHttpRequest();
-
-    var branchSelect = document.getElementById("select_branch");
-    var startDateSelect = document.getElementById("select_start_date");
-    var endDateSelect = document.getElementById("select_end_date");
-
-    var branchSelectText = branchSelect.options[branchSelect.selectedIndex].text;
-    var startDateSelectText = startDateSelect.options[startDateSelect.selectedIndex].text;
-    var endDateSelectText = endDateSelect.options[endDateSelect.selectedIndex].text;
-
-    xhr.open("GET", "status/orders?branch=" + branchSelectText + "&start_date=" + startDateSelectText + "&end_date=" + endDateSelectText, true);
-    xhr.onreadystatechange = function() {
-        if(xhr.status === 200) {
-            resultJsSearchList(xhr.responseText);
-        }
-    };
-    xhr.send()
-=======
     let content = null;
     ajax("status/orders", "get", resultJsSearchList);
 }
 
 function resultJsSearchList(obj) {
->>>>>>> 1527d4475cf432c4fa915fe24f4ab3bd9a794e97
+
 }
 
 document.getElementById("select_distributor").onchange = changeDistributeSelect;
