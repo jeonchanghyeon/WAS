@@ -48,18 +48,20 @@ class StatusDAO {
     fun searchOrders(condition: Condition): Map<String, Any>? {
         try {
             val returnValue = mutableMapOf<String, Any>()
-            val orders = mutableMapOf<String, Order>()
+            var orders = mutableListOf<Order>()
             var counts = Array(9) { 0 }
 
-            var branch = condition.branch
-            var sdate = condition.start_data
-            var edate = condition.end_date
-
-            val rs = template.queryForRowSet("SELECT * FROM orders WHERE branchId = ? and createDate > ? and createDate < ?", branch, sdate, edate)
+            val sql = "SELECT * FROM orders WHERE branchId = ? and createDate > ? and createDate < ? and delayTime < ?"
+            val rs = template.queryForRowSet(sql,
+                    condition.branch,
+                    condition.start_date,
+                    condition.end_date,
+                    condition.delay_time
+            )
 
             while (rs.next()) {
-                var id = rs.getString("id")
-                orders[id] = Order(
+
+                val order = Order(
                         rs.getInt("id"),
                         rs.getString("shopId") ?: "",
                         rs.getString("orderStatusId") ?: "",
@@ -74,12 +76,14 @@ class StatusDAO {
                         rs.getString("paymentType") ?: "",
                         rs.getString("memo") ?: ""
                 )
+                orders.add(order)
                 counts[Integer.parseInt(rs.getString("orderStatusId")) - 1]++
             }
+
             returnValue["orders"] = orders
             returnValue["counts"] = counts
-            return returnValue
 
+            return returnValue
         } catch (e: Exception) {
             e.printStackTrace()
         }
