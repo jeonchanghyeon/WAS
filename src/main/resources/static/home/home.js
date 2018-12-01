@@ -1,51 +1,47 @@
+function ajax(url, method, func, content = null) {
+    let xhr = new XMLHttpRequest();
+    xhr.open(method, url, true);
 
-function resultJsSelector(msg) {
-    var container = document.getElementById("select_branch");
-    container.innerHTML = '';
-    var selector = document.createElement('select');
-    selector.classList.add("select_branch");
-    container.appendChild(selector);
+    xhr.onreadystatechange = function () {
+        if (this.status === 200) {
+            try {
+                const obj = JSON.parse(this.responseText);
+                func(obj);
+            } catch (error) {
+            }
+        }
+    };
 
-    var option = document.createElement('option');
+    xhr.send(content)
+}
+
+function changeDistributeSelect() {
+    const distributorSelect = document.getElementById("select_distributor");
+    const selectText = distributorSelect.options[distributorSelect.selectedIndex].text;
+
+    ajax("status/distributors?distributorNum=" + selectText, "get", resultJsSelector)
+}
+
+function resultJsSelector(obj) {
+    const selector = document.getElementById('select_branch');
+    let option = document.createElement('option');
+
+    selector.innerHTML = "";
     option.defaultSelected;
-    option.label = "--";
+    option.value = "";
+    option.text = "--";
     selector.appendChild(option);
 
-    console.log(msg);
-    try {
-        msg = JSON.parse(msg);
-    } catch(error) {}
-
-    var i;
-    for(i = 0; i < msg.length; i++) {
+    for (let i = 0; i < obj.length; i++) {
         option = document.createElement('option');
-        option.label = msg[i];
+        option.value = obj[i];
+        option.text = obj[i];
         selector.appendChild(option);
     }
 }
 
-function changeDistributeSelect(){
-    var distributorSelect = document.getElementById("select_distributor");
-
-    var selectText = distributorSelect.options[distributorSelect.selectedIndex].text;
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "status/distributors?distributorNum=" + selectText, true);
-    xhr.onreadystatechange = function() {
-        if(xhr.status === 200) {
-            resultJsSelector(xhr.responseText);
-        }
-    };
-    xhr.send()
-}
-
-function resultJsSearchList(msg) {
-    var container = document.getElementById('result_list')
-    container.innerHTML = '';
-
-}
-
 function showSearchList() {
+<<<<<<< HEAD
     var xhr = new XMLHttpRequest();
 
     var branchSelect = document.getElementById("select_branch");
@@ -63,6 +59,13 @@ function showSearchList() {
         }
     };
     xhr.send()
+=======
+    let content = null;
+    ajax("status/orders", "get", resultJsSearchList);
 }
 
-document.getElementById("select_distributor").onchange = function() {changeDistributeSelect()};
+function resultJsSearchList(obj) {
+>>>>>>> 1527d4475cf432c4fa915fe24f4ab3bd9a794e97
+}
+
+document.getElementById("select_distributor").onchange = changeDistributeSelect;

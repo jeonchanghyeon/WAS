@@ -51,8 +51,8 @@ class StatusController {
     @GetMapping(value = ["distributors"])
     @ResponseBody
     fun getBranchList(@RequestParam(value = "distributorNum") distributorNum: String): List<String>? {
-        if(distributorNum.equals("--")) return null
-        val branchs = statusService.getBranchName(distributorNum) ?: listOf("")
+        if (distributorNum.equals("--")) return null
+        var branchs = statusService.getBranchName(distributorNum) ?: listOf("")
         return branchs
     }
 }

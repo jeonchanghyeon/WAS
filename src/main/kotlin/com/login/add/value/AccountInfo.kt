@@ -12,5 +12,4 @@ data class AccountInfo(
         val createDate: Timestamp,
         val updateDate: Timestamp,
         val deleteDate: Timestamp
-
 )

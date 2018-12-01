@@ -10,6 +10,7 @@ body {
     font-style: normal;
     font-weight: 200;
 }
+
 /* Container */
 .container {
     width: 100%;
@@ -18,17 +19,75 @@ body {
     height: 1000px;
     background-color: #FFFFFF;
 }
+
 /* Navigation */
 header {
     position: relative;
     width: 100%;
     height: 40px;
-    background-color: #282828;/*	border-bottom: 1px solid #2C9AB7;*/
+    background-color: #282828; /*	border-bottom: 1px solid #2C9AB7;*/
+}
+
+table {
+    text-align: left;
+}
+
+table  tr th {
+    font-weight: normal;
+    vertical-align: center;
+}
+
+p {
+    margin-top: 0px;
+    margin-bottom: 4px;
+}
+
+button, input {
+    border : 1px;
+    border-color: #ff7100;
+    border-style: solid
+}
+
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    border-radius: 1px;
+
+}
+
+input[type="checkbox"]:checked {
+    color: #ff7100;
+}
+
+select {
+    font-size: 14px;
+    height: 28px;
+    border: hidden;
+    color: #FFFFFF;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #373737;
+    background: url(select_btn.png) no-repeat 95% 50%;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.btn_small {
+    width: 80px;
+    height: 28px;
+}
+
+.btn_big {
+    width: 80px;
+    height: 60px;
 }
 
 .logo {
     width: 20px;
-    height : 22px;
+    height: 22px;
     float: left;
     margin-top: 8px;
     margin-left: 13px;
@@ -38,8 +97,8 @@ header {
 }
 
 .nav tr th {
-    width : 79px;
-    height : 40px;
+    width: 79px;
+    height: 40px;
     float: left;
     color: #FFFFFF;
     font-size: 16px;
@@ -55,22 +114,19 @@ header {
     background-color: #111111;
 }
 
-.hero_header {
-    color: #FFFFFF;
-    text-align: center;
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-    letter-spacing: 4px;
-}
 /* Hero Section */
 .hero {
     width: 100%;
-    height : 230px;
+    height: 230px;
     background-color: #555555;
-    font-size : 12px;
+    font-size: 12px;
 }
+
+.setting_area {
+    padding-top: 10px;
+    height: 180px;
+}
+
 .setting_area div {
     background-color: #444444;
     color: #c1c1c1;
@@ -78,93 +134,157 @@ header {
 
 .setting_area input {
     background-color: #373737;
-    color : #ff7100;
-}
-.setting_area input[type="text"], input[type="search"] {
-    border: hidden;
-    height : 28px;
-}
-.setting_area input[type="button"], input[type="submit"] {
-    font-size: 14px;
-    outline : hidden;
-    border-color: #ff7100;
+    color: #ff7100;
 }
 
-select {
-    font-size: 14px;
-    height : 28px;
+.setting_area input[type="text"], input[type="search"] {
     border: hidden;
-    background-color: #373737;
+    height: 28px;
+}
+
+.setting_area input[type="button"], input[type="submit"] {
+    font-size: 14px;
+    outline: hidden;
+}
+
+.point_area {
+    position: absolute;
+    top: 5px;
+    width: 177px;
+    height: 30px;
+    background-color: #141414;
+    border-radius: 5px;
+    color: #FFFFFF;
+    right: 106px;
+}
+
+.point_area span {
+    position: absolute;
+    top: 6px;
+    right: 11px;
+}
+
+.submit {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    width: 80px;
+    height: 28px;
+    background-color: #ff7100;
     color : #FFFFFF;
 }
 
 .condition_area {
-    margin-left : 10px;
-    padding-top : 5px;
-    padding-bottom : 5px;
-    padding-left : 10px;
-    padding-right : 10px;
-    float : left;
-}
-.codition_area select {
-    width : 170px;
+    margin-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    float: left;
 }
 
-.extention_area {
-    margin-left : 10px;
-    padding-left : 10px;
-    padding-right : 10px;
-    float : left;
+.condition_area table tr td {
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 .condition_area select {
-    width : 170px;
+    width: 170px;
 }
 
-.feature_area select, .extention_area select{
-    padding-left : 10px;
-    width : 100px;
+.condition_area th {
+    width: 67px;
 }
 
-.feature_area input {
-    width : 340px;
+.condition_area td {
+    width: 191px;
 }
 
-.extention_area input[type="text"] {
-    width : 100px;
+.extension_area {
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    float: left;
+}
+
+.extension_area input[type="text"] {
+    width: 100px;
+}
+
+.extension_area table tr td {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.extension_area th {
+    width: 63px;
+}
+
+.extension_area td {
+    width: 131px;
+}
+
+td label {
+    color: #FFFFFF;
+    font-size: 14px;
 }
 
 .feature_area {
     position: relative;
-    top : -45px;
-    margin-left : 10px;
-    padding-top : 5px;
-    padding-bottom : 5px;
-    padding-left : 10px;
-    padding-right : 10px;
-    width :535px;
-    clear : both;
+    top: -45px;
+    margin-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 535px;
+    clear: both;
 }
-.order_status_area {
+
+.feature_area select, .extension_area select {
+    padding-left: 10px;
+    width: 100px;
+}
+
+.feature_area input[type = "search"] {
+    width: 340px;
+    height : 28px;
+}
+
+.feature_area input[type = "submit"] {
+    width: 84px;
+    height : 28px;
+}
+
+.status_area {
     padding-left: 10px;
     padding-top: 10px;
-    width : 100%;
-    height : 30px;
+    width: 100%;
+    height: 30px;
     background-color: #444444;
-    top : 230px;
-    color : #ff7100;
-    float : left;
+    top: 230px;
+    color: #ff7100;
+    float: left;
 }
-.order_status_area label {
-    color : #FFFFFF;
-}
-.tagline {
-    text-align: center;
+
+.status_area label {
     color: #FFFFFF;
-    margin-top: 4px;
-    font-weight: lighter;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.result_area {
+    float: top;
+    background-color: #f0f0f0;
+}
+
+.result_area td {
+    font-size: 12px;
+    padding-left : 5px;
+    padding-right : 5px;
+}
+.result_area thead td {
+    color: #4a4a4a;
+    background-color: #f0f0f0;
 }
 
 /* Mobile */
@@ -177,6 +297,7 @@ select {
         margin-bottom: 0px;
         margin-left: 0px;
     }
+
     .container header .nav {
         margin-top: 0px;
         margin-right: 0px;
@@ -195,6 +316,7 @@ select {
         width: 100%;
         text-align: center;
     }
+
     .text_column {
         width: 100%;
         text-align: justify;
@@ -203,13 +325,16 @@ select {
         padding-bottom: 0px;
         padding-left: 0px;
     }
+
     .thumbnail {
         width: 100%;
     }
+
     .footer_column {
         width: 100%;
         margin-top: 0px;
     }
+
     .parallax {
         text-align: center;
         margin-top: 0px;
@@ -223,6 +348,7 @@ select {
         width: 100%;
         font-size: 18px;
     }
+
     .parallax_description {
         padding-top: 0px;
         padding-right: 0px;
@@ -236,14 +362,17 @@ select {
         float: none;
         text-align: center;
     }
+
     .banner {
         background-color: #2D9AB7;
         background-image: none;
     }
+
     .tagline {
         margin-top: 20px;
         line-height: 22px;
     }
+
     .hero_header {
         padding-left: 10px;
         padding-right: 10px;
@@ -263,6 +392,7 @@ select {
         margin-left: 0px;
         color: #043745;
     }
+
     .container header nav {
         margin-top: 0px;
         margin-right: 0px;
@@ -274,10 +404,12 @@ select {
         display: inline-block;
         background: #52bad5;
     }
+
     header nav ul {
         padding: 0px;
         float: none;
     }
+
     nav ul li {
         margin-top: 0px;
         margin-right: 0px;
@@ -288,6 +420,7 @@ select {
         padding-top: 8px;
         padding-bottom: 8px;
     }
+
     .text_column {
         width: 100%;
         text-align: left;
@@ -296,13 +429,16 @@ select {
         padding-bottom: 0px;
         padding-left: 0px;
     }
+
     .thumbnail {
         width: 100%;
     }
+
     .footer_column {
         width: 100%;
         margin-top: 0px;
     }
+
     .parallax {
         text-align: center;
         margin-top: 0px;
@@ -316,6 +452,7 @@ select {
         width: 100%;
         font-size: 18px;
     }
+
     .parallax_description {
         padding-top: 0px;
         padding-right: 0px;
@@ -329,9 +466,11 @@ select {
         width: 100%;
         text-align: center;
     }
+
     .thumbnail {
         width: 50%;
     }
+
     .parallax {
         margin-top: 0px;
         margin-right: 0px;
@@ -342,6 +481,7 @@ select {
         padding-left: 0px;
         padding-top: 20%;
     }
+
     .parallax_description {
         margin-top: 0px;
         margin-right: 0px;
@@ -350,10 +490,12 @@ select {
         width: 100%;
         padding-top: 30px;
     }
+
     .banner {
         padding-left: 20px;
         padding-right: 20px;
     }
+
     .footer_column {
         width: 100%;
     }
@@ -364,9 +506,11 @@ select {
     .text_column {
         width: 100%;
     }
+
     .thumbnail {
         width: 50%;
     }
+
     .text_column {
         width: 100%;
         margin-top: 0px;
@@ -378,143 +522,9 @@ select {
         padding-bottom: 0px;
         padding-left: 0px;
     }
+
     .banner {
         margin-top: 0px;
         padding-top: 0px;
     }
-}
-.setting_area {
-    padding-top :10px;
-    height : 190px;
-}
-.item {
-    width : 100%;
-    margin-top : 3px;
-    margin-bottom : 3px;
-    float : left;
-}
-
-.line {
-    margin-top : 3px;
-    margin-bottom : 3px;
-    margin-left : 12px;
-    clear : both;
-}
-
-.half .item {
-    width : 50%;
-}
-
-
-.condition_area .item_title {
-    width : 67px;
-}
-
-.condition_area .item_content {
-    width : 191px;
-}
-
-.extention_area .item_title {
-    width : 63px;
-}
-
-.extention_area .item_content {
-    width : 131px;
-}
-
-.item_content label {
-    color : #FFFFFF;
-    font-size: 14px;
-}
-
-#btn_feature {
-    width : 84px;
-    height : 28px;
-}
-
-.checkboxs {
-    padding-top : 4px;
-}
-.checkboxs label {
-    color : #FFFFFF;
-    font-size : 14px;
-}
-
-
-.btn_delay_time {
-    width : 80px;
-    height : 28px;
-}
-
-.btn_default_start {
-    width : 80px;
-    height :28px;
-}
-
-.additional_cost_apply {
-    width: 80px;
-    height: 60px;
-}
-
-/*
-.multi-content div {
-	float : left;
-}
-*/
-
-.multi-content {
-    float : left;
-}
-
-.content_btn {
-}
-
-.result_area {
-    float :top;
-    background-color: #f0f0f0;
-}
-
-.table {
-    text-align: left;
-}
-
-.condition_area .table tr th {
-    padding-top : 3px;
-    padding-bottom: 3px;
-}
-
-.extention_area .table tr th {
-    padding-top : 6px;
-    padding-bottom: 6px;
-}
-
-.point_area {
-    position: absolute;
-    top : 5px;
-    width : 177px;
-    height : 30px;
-    background-color: #141414;
-    border-radius: 5px;
-    color : #FFFFFF;
-    right : 106px;
-}
-
-.point_area span {
-    position: absolute;
-    top : 6px;
-    right : 11px;
-}
-
-.submit {
-    position: absolute;
-    top : 6px;
-    right : 10px;
-    width : 80px;
-    height : 28px;
-    background-color: #ff7100;
-}
-
-p {
-    margin-top : 0px;
-    margin-bottom: 4px;
 }
