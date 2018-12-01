@@ -26,17 +26,6 @@
                 <th>설정</th>
             </tr>
         </table>
-        <!--		<div class ="nav" >-->
-        <!--        <nav>-->
-        <!--            <ul>-->
-        <!--                <li><a href="#hero">현황</a></li>-->
-        <!--                <li><a href="#about">관제</a></li>-->
-        <!--                <li><a href="#contact">통계</a></li>-->
-        <!--                <li><a href="#contact">설정</a></li>-->
-        <!--            </ul>-->
-        <!--        </nav>-->
-        <!--			</div>-->
-
         <div class="point_area">
 			<span id="point" th:text="${point}">
 		  -1
@@ -54,25 +43,25 @@
             <div class="setting_area">
                 <!-- 총판명, 지사명, 기간, 결제방법, 서비스 종류-->
                 <div class="condition_area">
-                    <table class="table">
+                    <table>
                         <tr>
-                            <th class="item_title">총판명</th>
-                            <th class="item_content"><select class="select_distributor" id="select_distributor">
+                            <th>총판명</th>
+                            <td><select class="select_distributor" id="select_distributor">
                                 <option value=""> --</option>
                                 <option th:each="distributor : ${distributors}"
                                         th:value="${distributor}"
                                         th:utext="${distributor}"/>
                             </select>
-                            </th>
-                            <th class="item_title">지사명</th>
-                            <th class="item_content" id="select_branch">
-                                <select class="select_branch">
-                                    <option value =""> -- </option>
+                            </td>
+                            <th>지사명</th>
+                            <td>
+                                <select class="select_branch" id="select_branch">
+                                    <option value=""> --</option>
                                 </select>
-                            </th>
+                            </td>
                         </tr>
                         <tr>
-                            <th class="item_title">기간</th>
+                            <th>기간</th>
                             <td colspan="3"><select class="select_start_date" id="select_start_date">
                                 <option value=""></option>
                                 <!-- ...   -->
@@ -88,8 +77,8 @@
               -->
                         </tr>
 
-                        <th class="item_title">결제방법</th>
-                        <th class="item_content"><label>
+                        <th>결제방법</th>
+                        <td><label>
                             <input type="checkbox" id="card"/>
                             카드 </label>
                             <label>
@@ -98,53 +87,53 @@
                             <label>
                                 <input type="checkbox" id="prepayment"/>
                                 선결제</label>
-                        </th>
-                        <th class="content_title"> 서비스 종류</th>
-                        <th class="item_content"><label>
+                        </td>
+                        <th> 서비스 종류</th>
+                        <td><label>
                             <input type="checkbox" id="delivery_agent"/>
                             배달대행 </label>
                             <label>
                                 <input type="checkbox" id="share"/>
                                 공유콜 </label>
-                        </th>
+                        </td>
                     </table>
                 </div>
 
                 <!-- 추가기능-->
-                <div class="extention_area">
-                    <table class="table">
+                <div class="extension_area">
+                    <table>
                         <tr>
-                            <th class="item_title">기본출발</th>
-                            <th class="item_content"><select id="select_default_start">
+                            <th>기본출발</th>
+                            <td><select id="select_default_start">
                                 <option value=""></option>
                                 <!-- ...   -->
                             </select>
                                 분
-                            </th>
-                            <th><input type="button" value="적용" class="btn_default_start"/>
+                            </td>
+                            <th><input type="button" value="적용" class="btn_small"/>
                             </th>
                         </tr>
                         <tr>
-                            <th class="item_title">추가지연</th>
-                            <th class="item_content">
+                            <th>추가지연</th>
+                            <td>
                                 <select>
                                     <option id="select_delay_time"></option>
                                 </select>
                                 분
-                            </th>
-                            <th><input type="button" value="적용" class="btn_delay_time"/>
+                            </td>
+                            <th><input type="button" value="적용" class="btn_small"/>
                             </th>
                         </tr>
                         <tr>
-                            <th class="item_title">할증</th>
-                            <th class="item_content"><p>
+                            <th>할증</th>
+                            <td><p>
                                 <input type="text" id="cost_won"/>
                                 원 </p>
                                 <p>
                                     <input type="text" id="cost_percent"/>
                                     % </p>
-                            </th>
-                            <th><input type="button" class="additional_cost_apply content_btn" value="적용"/>
+                            </td>
+                            <th><input type="button" class="btn_big" value="적용"/>
                             </th>
                         </tr>
                     </table>
@@ -153,53 +142,53 @@
                 <!-- 순번 ... -->
                 <div class="feature_area">
                     <table>
-                        <th><select id="select_featrue">
+                        <td><select id="select_feature">
                             <option value="id">순번</option>
                         </select>
-                        </th>
-                        <th><input type="search" id="search_feature"/>
-                        </th>
-                        <th><input type="submit" id="btn_feature" value="검색"/>
-                        </th>
+                        </td>
+                        <td><input type="search" id="search_feature"/>
+                        </td>
+                        <td><input type="submit" id="btn_feature" value="검색"/>
+                        </td>
                     </table>
                 </div>
             </div>
         </form>
-        <!-- checkboxs -->
-        <section class="order_status_area">
+        <!-- 상태 -->
+        <section class="status_area">
             <table>
                 <th><label>
-                    <input type="checkbox" id="order_status_all" value="true"/>
+                    <input type="checkbox" value="all"/>
                     전체 </label>
                     <span>-1</span></th>
-                <th><label>
-                    <input type="checkbox" id="order_status_1" value="true"/>
+                <td><label>
+                    <input type="checkbox" value="status_1"/>
                     접수 </label>
-                    <span>-1</span></th>
-                <th><label>
-                    <input type="checkbox" id="order_status_2" value="true"/>
+                    <span>-1</span></td>
+                <td><label>
+                    <input type="checkbox" value="status_2"/>
                     배차 </label>
-                    <span>-1</span></th>
-                <th><label>
-                    <input type="checkbox" id="order_status_3" value="true"/>
+                    <span>-1</span></td>
+                <td><label>
+                    <input type="checkbox" value="status_3"/>
                     픽업 </label>
-                    <span>-1</span></th>
-                <th><label>
-                    <input type="checkbox" id="order_status_4" value="true"/>
+                    <span>-1</span></td>
+                <td><label>
+                    <input type="checkbox" value="status_4"/>
                     완료 </label>
-                    <span>-1</span></th>
-                <th><label>
-                    <input type="checkbox" id="order_status_5" value="true"/>
+                    <span>-1</span></td>
+                <td><label>
+                    <input type="checkbox" value="status_5"/>
                     대기 </label>
-                    <span>-1</span></th>
-                <th><label>
-                    <input type="checkbox" id="order_status_6" value="true"/>
+                    <span>-1</span></td>
+                <td><label>
+                    <input type="checkbox" value="status_6"/>
                     취소 </label>
-                    <span>-1</span></th>
-                <th><label>
-                    <input type="checkbox" id="order_status_7" value="true"/>
+                    <span>-1</span></td>
+                <td><label>
+                    <input type="checkbox" value="status_7"/>
                     공유 </label>
-                    <span>-1</span></th>
+                    <span>-1</span></td>
             </table>
         </section>
 
@@ -207,23 +196,27 @@
     </div>
     <section class="result_area">
         <table>
+            <thead>
             <tr>
-                <th> 순번</th>
-                <th> 접수일</th>
-                <th> 가맹점명</th>
-                <th> 상태</th>
-                <th> 접수시간</th>
-                <th> 배차시간</th>
-                <th> 픽업시간</th>
-                <th> 완료시간</th>
-                <th> 취소시간</th>
-                <th> 배달대행료</th>
-                <th> 추가대행료</th>
-                <th> 기사이름</th>
-                <th> 결제방법</th>
-                <th> 요청사항</th>
+                <td> 순번</td>
+                <td> 접수일</td>
+                <td> 가맹점명</td>
+                <td> 상태</td>
+                <td> 접수시간</td>
+                <td> 배차시간</td>
+                <td> 픽업시간</td>
+                <td> 완료시간</td>
+                <td> 취소시간</td>
+                <td> 배달대행료</td>
+                <td> 추가대행료</td>
+                <td> 기사이름</td>
+                <td> 결제방법</td>
+                <td> 요청사항</td>
             </tr>
+            </thead>
+            <tbody>
             <tr id="result_list"></tr>
+            </tbody>
         </table>
     </section>
 </div>

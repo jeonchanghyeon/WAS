@@ -37,7 +37,7 @@ class StatusController {
 
     @GetMapping(value = ["orders"])
     @ResponseBody
-    fun getCondition(@RequestParam(value = "data") data: MutableMap<String, String>): Map<String, Any?> {
+    fun getCondition(@RequestParam data: MutableMap<String, String>): Map<String, Any?> {
         return try {
             var value = statusService.searchOrders(data)
             mapOf("resultCode" to 0, "resultObject" to value)
@@ -50,7 +50,7 @@ class StatusController {
     @GetMapping(value = ["distributors"])
     @ResponseBody
     fun getBranchList(@RequestParam(value = "distributorNum") distributorNum: String): List<String>? {
-        if(distributorNum.equals("--")) return null
+        if (distributorNum.equals("--")) return null
         var branchs = statusService.getBranchName(distributorNum) ?: listOf("")
         return branchs
     }

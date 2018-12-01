@@ -33,6 +33,7 @@ table {
 }
 
 table  tr th {
+    font-weight: normal;
     vertical-align: center;
 }
 
@@ -57,7 +58,6 @@ input[type="checkbox"] {
 input[type="checkbox"]:checked {
     color: #ff7100;
 }
-
 
 select {
     font-size: 14px;
@@ -124,7 +124,7 @@ select::-ms-expand {
 
 .setting_area {
     padding-top: 10px;
-    height: 190px;
+    height: 180px;
 }
 
 .setting_area div {
@@ -183,7 +183,7 @@ select::-ms-expand {
     float: left;
 }
 
-.condition_area table tr th {
+.condition_area table tr td {
     padding-top: 3px;
     padding-bottom: 3px;
 }
@@ -192,11 +192,11 @@ select::-ms-expand {
     width: 170px;
 }
 
-.condition_area .item_title {
+.condition_area th {
     width: 67px;
 }
 
-.condition_area .item_content {
+.condition_area td {
     width: 191px;
 }
 
@@ -211,20 +211,20 @@ select::-ms-expand {
     width: 100px;
 }
 
-.extension_area table tr th {
+.extension_area table tr td {
     padding-top: 6px;
     padding-bottom: 6px;
 }
 
-.extension_area .item_title {
+.extension_area th {
     width: 63px;
 }
 
-.extension_area .item_content {
+.extension_area td {
     width: 131px;
 }
 
-.item_content label {
+td label {
     color: #FFFFFF;
     font-size: 14px;
 }
@@ -274,6 +274,16 @@ select::-ms-expand {
 
 .result_area {
     float: top;
+    background-color: #f0f0f0;
+}
+
+.result_area td {
+    font-size: 12px;
+    padding-left : 5px;
+    padding-right : 5px;
+}
+.result_area thead td {
+    color: #4a4a4a;
     background-color: #f0f0f0;
 }
 
