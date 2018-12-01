@@ -67,7 +67,6 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: #373737;
     background: url(select_btn.png) no-repeat 95% 50%;
 }
 
