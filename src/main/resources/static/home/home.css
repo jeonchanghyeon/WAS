@@ -74,6 +74,11 @@ select::-ms-expand {
     display: none;
 }
 
+select option{
+    color: #FFFFFF;
+    background-color: #4a4a4a;
+}
+
 .btn_small {
     width: 80px;
     height: 28px;
