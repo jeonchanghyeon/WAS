@@ -128,11 +128,6 @@ function changeStatusCheckBox(idx) {
     const selectedCheckBox = document.getElementById("statusAll");
     if(document.status.elements[0].checked == true)
         for(let i = 1; i <= 7; i++) document.status.elements[i].checked = true
-
-
-
-
-
 }
 
 document.getElementById("statusAll").onclick = function(){changeStatusCheckBox(0)};

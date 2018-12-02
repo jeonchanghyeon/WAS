@@ -3,6 +3,7 @@ package com.login.add.controller
 import com.login.add.service.PointService
 import com.login.add.service.StatusService
 import com.login.add.value.AuthInfo
+import com.login.add.value.Order
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -54,7 +55,6 @@ class StatusController {
     @GetMapping(value = ["distributors"])
     @ResponseBody
     fun getBranchList(@RequestParam(value = "distributorNum") distributorNum: String): List<String>? {
-        if (distributorNum.equals("--")) return null
         var branchs = statusService.getBranchName(distributorNum) ?: listOf("")
         return branchs
     }

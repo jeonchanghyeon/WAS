@@ -23,6 +23,7 @@ class StatusService {
         return statusDAO.getBranchName(distributeName)
     }
 
+
     fun searchOrders(data: MutableMap<String, Any>, paymentType: Array<String>?, serviceType: Array<String>?): Map<String, Any>? {
         var setOfPaymentType = setOf<String>()
         var setOfServiceType = setOf<String>()
