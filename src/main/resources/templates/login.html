@@ -11,10 +11,10 @@
     <div class="logo"> <img alt="logo" src="../logo.png"/> </div>
     <form action="login" method="POST">
       <div class="id_area">
-        <input type="text" name="id" class = "input_id"  placeholder="아이디" id = "id" />
+        <input type="text" name="id" class="input_id"  placeholder="아이디" id = "id" />
       </div>
       <div class ="pw_area">
-        <input type="password" name="pw" class ="input_pw" placeholder="비밀번호" id = "pw" />
+        <input type="password" name="pw" class="input_pw" placeholder="비밀번호" id = "pw" />
       </div>
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
       <input type="submit" class ="btn_submit" value="로그인"/>

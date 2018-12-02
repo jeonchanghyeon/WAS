@@ -7,7 +7,6 @@
     <title>Please</title>
     <link rel="stylesheet" href="../home/home.css"/>
     <script src="../home/home.js"></script>
-
 </head>
 <body>
 <!-- Main Container -->
@@ -148,7 +147,7 @@
                         </td>
                         <td><input type="search" id="search_feature"/>
                         </td>
-                        <td><input type="submit" id="btn_feature" value="검색"/>
+                        <td><input type="button" id="btn_feature" value="검색"/>
                         </td>
                     </table>
                 </div>
@@ -158,37 +157,37 @@
         <section class="status_area">
             <table>
                 <th><label>
-                    <input type="checkbox" value="all"/>
+                    <input type="checkbox" checked="checked" id="statusAll" name="status"/>
                     전체 </label>
-                    <span>-1</span></th>
+                    <span id="statusTextAll">0</span></th>
                 <td><label>
-                    <input type="checkbox" value="status_1"/>
+                    <input type="checkbox" checked="checked" id="status1" name="status"/>
                     접수 </label>
-                    <span>-1</span></td>
+                    <span id="statusText1">0</span></td>
                 <td><label>
-                    <input type="checkbox" value="status_2"/>
+                    <input type="checkbox" checked="checked" id="status2" name="status"/>
                     배차 </label>
-                    <span>-1</span></td>
+                    <span id="statusText2">0</span></td>
                 <td><label>
-                    <input type="checkbox" value="status_3"/>
+                    <input type="checkbox" checked="checked" id="status3" name="status"/>
                     픽업 </label>
-                    <span>-1</span></td>
+                    <span id="statusText3">0</span></td>
                 <td><label>
-                    <input type="checkbox" value="status_4"/>
+                    <input type="checkbox" checked="checked" id="status4" name="status"/>
                     완료 </label>
-                    <span>-1</span></td>
+                    <span id="statusText4">0</span></td>
                 <td><label>
-                    <input type="checkbox" value="status_5"/>
+                    <input type="checkbox" checked="checked" id="status6" name="status"/>
                     대기 </label>
-                    <span>-1</span></td>
+                    <span id="statusText6">0</span></td>
                 <td><label>
-                    <input type="checkbox" value="status_6"/>
+                    <input type="checkbox" checked="checked" id="status5" name="status"/>
                     취소 </label>
-                    <span>-1</span></td>
+                    <span id="statusText5">0</span></td>
                 <td><label>
-                    <input type="checkbox" value="status_7"/>
+                    <input type="checkbox" checked="checked" id="status7" name="status"/>
                     공유 </label>
-                    <span>-1</span></td>
+                    <span id="statusText7">0</span></td>
             </table>
         </section>
 
@@ -214,9 +213,7 @@
                 <td> 요청사항</td>
             </tr>
             </thead>
-            <tbody>
-            <tr id="result_list"></tr>
-            </tbody>
+            <tbody id="result_list"></tbody>
         </table>
     </section>
 </div>

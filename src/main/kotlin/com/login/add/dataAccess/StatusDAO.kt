@@ -51,12 +51,12 @@ class StatusDAO {
             var orders = mutableListOf<Order>()
             var counts = Array(9) { 0 }
 
-            val sql = "SELECT * FROM orders WHERE branchId = ? and createDate > ? and createDate < ? and delayTime < ?"
+            val sql = "SELECT * FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? and branchId in (SELECT id FROM users WHERE userId = ?)"
             val rs = template.queryForRowSet(sql,
-                    condition.branch,
                     condition.start_date,
                     condition.end_date,
-                    condition.delay_time
+                    condition.delay_time,
+                    condition.branch
             )
 
             while (rs.next()) {
