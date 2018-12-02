@@ -3,7 +3,10 @@ package com.login.add.controller
 import com.login.add.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import javax.servlet.http.HttpSession
 
 @Controller
@@ -19,20 +22,7 @@ class LoginController {
     }
 
     @PostMapping
-    @ResponseBody
-    fun login(@RequestParam data: Map<String, String>, session: HttpSession): Map<String, Any?> {
-//        return try {
-//            var id = data["id"] ?: ""
-//            var pw = data["pw"] ?: ""
-//
-//            var authInfo = authService.authenticate(id, pw)
-
-//            return "redirect:/"
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//        return "login/loginForm"
-
+    fun login(@RequestParam data: Map<String, String>, session: HttpSession): String {
         return try {
             var id = data["id"] ?: ""
             var pw = data["pw"] ?: ""
@@ -42,10 +32,10 @@ class LoginController {
             var authInfo = authService.authenticate(id, pw)
             session.setAttribute("authInfo", authInfo)
 
-            mapOf("resultCode" to 0, "user" to id)
+            "redirect:/status"
         } catch (e: Exception) {
             e.printStackTrace()
-            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
+            "login"
         }
     }
 }

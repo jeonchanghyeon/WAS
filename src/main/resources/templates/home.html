@@ -47,15 +47,16 @@
                             <th>총판명</th>
                             <td><select class="select_distributor" id="select_distributor">
                                 <option value=""> --</option>
+                                <!--/*@thymesVar id="distributors" type="com.login.add.controller.StatusController"*/-->
                                 <option th:each="distributor : ${distributors}"
                                         th:value="${distributor}"
-                                        th:utext="${distributor}"/>
+                                        th:utext="${distributor}"></option>
                             </select>
                             </td>
                             <th>지사명</th>
                             <td>
                                 <select class="select_branch" id="select_branch">
-                                    <option value=""> --</option>
+                                    <option value="">--</option>
                                 </select>
                             </td>
                         </tr>
@@ -70,31 +71,28 @@
                                     <option value=""></option>
                                     <!-- ...   -->
                                 </select></td>
-                            <!--
-                            <th></th>
-                            <th></th>
-              -->
                         </tr>
-
-                        <th>결제방법</th>
-                        <td><label>
-                            <input type="checkbox" name="payment_type" value="card"/>
-                            카드 </label>
-                            <label>
-                                <input type="checkbox" name="payment_type" valu="cash"/>
-                                현금 </label>
-                            <label>
-                                <input type="checkbox" name="payment_type" value="prepayment"/>
-                                선결제</label>
-                        </td>
-                        <th> 서비스 종류</th>
-                        <td><label>
-                            <input type="checkbox" name="service_type" value="delivery_agent"/>
-                            배달대행 </label>
-                            <label>
-                                <input type="checkbox" name="service_type" value="share"/>
-                                공유콜 </label>
-                        </td>
+                        <tr>
+                            <th>결제방법</th>
+                            <td><label>
+                                <input type="checkbox" name="payment_type" value="card"/>
+                                카드 </label>
+                                <label>
+                                    <input type="checkbox" name="payment_type" value="cash"/>
+                                    현금 </label>
+                                <label>
+                                    <input type="checkbox" name="payment_type" value="prepayment"/>
+                                    선결제</label>
+                            </td>
+                            <th> 서비스 종류</th>
+                            <td><label>
+                                <input type="checkbox" name="service_type" value="delivery_agent"/>
+                                배달대행 </label>
+                                <label>
+                                    <input type="checkbox" name="service_type" value="share"/>
+                                    공유콜 </label>
+                            </td>
+                        </tr>
                     </table>
                 </div>
 
@@ -104,10 +102,9 @@
                         <tr>
                             <th>기본출발</th>
                             <td><select id="select_default_start">
-                                <option value=""></option>
-                                <!-- ...   -->
-                            </select>
-                                분
+                                <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
+                                        th:text="${n} + 분"></option>
+                            </select><label for="select_default_start">분</label>
                             </td>
                             <th><input type="button" value="적용" class="btn_small"/>
                             </th>
@@ -115,10 +112,10 @@
                         <tr>
                             <th>추가지연</th>
                             <td>
-                                <select>
-                                    <option id="select_delay_time"></option>
-                                </select>
-                                분
+                                <select id="select_delay_time">
+                                    <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
+                                            th:text="${n} + 분"></option>
+                                </select><label for="select_delay_time">분</label>
                             </td>
                             <th><input type="button" value="적용" class="btn_small"/>
                             </th>
@@ -126,11 +123,11 @@
                         <tr>
                             <th>할증</th>
                             <td><p>
-                                <input type="text" id="cost_won"/>
-                                원 </p>
+                                <input type="text" id="cost_won"/><label for="cost_won">원 </label>
+                            </p>
                                 <p>
-                                    <input type="text" id="cost_percent"/>
-                                    % </p>
+                                    <input type="text" id="cost_percent"/><label for="cost_percent">% </label>
+                                </p>
                             </td>
                             <th><input type="button" class="btn_big" value="적용"/>
                             </th>
@@ -141,14 +138,16 @@
                 <!-- 순번 ... -->
                 <div class="feature_area">
                     <table>
-                        <td><select id="select_feature">
-                            <option value="id">순번</option>
-                        </select>
-                        </td>
-                        <td><input type="search" id="search_feature"/>
-                        </td>
-                        <td><input type="button" id="btn_feature" value="검색"/>
-                        </td>
+                        <tr>
+                            <td><select id="select_feature">
+                                <option value="id">순번</option>
+                            </select>
+                            </td>
+                            <td><input type="search" id="search_feature"/>
+                            </td>
+                            <td><input type="submit" id="btn_feature" value="검색"/>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>

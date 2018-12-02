@@ -32,7 +32,7 @@ table {
     text-align: left;
 }
 
-table  tr th {
+table tr th {
     font-weight: normal;
     vertical-align: center;
 }
@@ -43,7 +43,7 @@ p {
 }
 
 button, input {
-    border : 1px;
+    border: 1px;
     border-color: #ff7100;
     border-style: solid
 }
@@ -67,7 +67,6 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: #373737;
     background: url(select_btn.png) no-repeat 95% 50%;
 }
 
@@ -171,7 +170,7 @@ select::-ms-expand {
     width: 80px;
     height: 28px;
     background-color: #ff7100;
-    color : #FFFFFF;
+    color: #FFFFFF;
 }
 
 .condition_area {
@@ -183,12 +182,18 @@ select::-ms-expand {
     float: left;
 }
 
+.condition_area label {
+    color: #FFFFFF;
+    font-size: 14px;
+}
+
 .condition_area table tr td {
     padding-top: 3px;
     padding-bottom: 3px;
 }
 
 .condition_area select {
+    padding-left: 7px;
     width: 170px;
 }
 
@@ -216,6 +221,10 @@ select::-ms-expand {
     padding-bottom: 6px;
 }
 
+.extension_area label {
+    padding-left: 7px;
+}
+
 .extension_area th {
     width: 63px;
 }
@@ -224,9 +233,9 @@ select::-ms-expand {
     width: 131px;
 }
 
-td label {
-    color: #FFFFFF;
-    font-size: 14px;
+.extension_area select {
+    padding-left: 22px;
+    width: 100px;
 }
 
 .feature_area {
@@ -241,35 +250,50 @@ td label {
     clear: both;
 }
 
-.feature_area select, .extension_area select {
+.feature_area select {
     padding-left: 10px;
     width: 100px;
 }
 
 .feature_area input[type = "search"] {
     width: 340px;
-    height : 28px;
+    height: 28px;
 }
 
 .feature_area input[type = "submit"] {
     width: 84px;
-    height : 28px;
+    height: 28px;
 }
 
 .status_area {
     padding-left: 10px;
-    padding-top: 10px;
+    padding-top: 5px;
     width: 100%;
     height: 30px;
     background-color: #444444;
-    top: 230px;
     color: #ff7100;
     float: left;
 }
 
 .status_area label {
+    position: relative;
+    top: -4px;
     color: #FFFFFF;
     font-size: 12px;
+}
+
+.status_area span {
+    position: relative;
+    top: -4px;
+}
+
+.status_area th {
+    padding-right: 12px;
+}
+
+.status_area td {
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
 .result_area {
@@ -279,9 +303,10 @@ td label {
 
 .result_area td {
     font-size: 12px;
-    padding-left : 5px;
-    padding-right : 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
+
 .result_area thead td {
     color: #4a4a4a;
     background-color: #f0f0f0;
