@@ -5,6 +5,7 @@ import com.login.add.value.Condition
 import com.login.add.value.Order
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import java.sql.Timestamp
@@ -13,6 +14,7 @@ import java.sql.Timestamp
 class StatusDAO {
 
     @Autowired
+    @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
     fun getDistributor(userId: String): List<String>? {

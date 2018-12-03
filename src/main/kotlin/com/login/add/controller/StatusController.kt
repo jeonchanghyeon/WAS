@@ -3,7 +3,6 @@ package com.login.add.controller
 import com.login.add.service.PointService
 import com.login.add.service.StatusService
 import com.login.add.value.AuthInfo
-import com.login.add.value.Order
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -28,7 +27,7 @@ class StatusController {
         authInfo ?: return "login"
 
         var distributors = statusService.getDistributor(authInfo.id, authInfo.group) ?: listOf("")
-        var point = pointService.getPoint(authInfo.id)
+        var point = pointService.getPoint(authInfo.authKey)
 
         model.addAttribute("point", point)
         model.addAttribute("distributors", distributors)

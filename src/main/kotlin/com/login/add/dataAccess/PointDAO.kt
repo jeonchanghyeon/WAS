@@ -1,6 +1,7 @@
 package com.login.add.dataAccess
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 
@@ -8,12 +9,13 @@ import org.springframework.stereotype.Repository
 class PointDAO {
 
     @Autowired
+    @Qualifier("jdbcPoint")
     private lateinit var template: JdbcTemplate
 
-    fun getPoint(id: String): Int? {
-        return null
+    fun getPoint(authKey: String): Int? {
         try {
-            return template.queryForObject("SELECT * FROM point WHERE id = ? ", Int::class.java, id)
+            print(authKey)
+            return template.queryForObject("SELECT point FROM point WHERE authKey = ? ", Int::class.java, authKey)
         } catch (e: Exception) {
             e.printStackTrace()
         }

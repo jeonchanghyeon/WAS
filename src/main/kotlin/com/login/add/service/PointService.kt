@@ -9,7 +9,7 @@ class PointService {
     @Autowired
     private lateinit var pointDAO: PointDAO
 
-    fun getPoint(userId: String) : Int? {
-        return pointDAO.getPoint(userId)
+    fun getPoint(authKey: String): Int? {
+        return pointDAO.getPoint(authKey)
     }
 }

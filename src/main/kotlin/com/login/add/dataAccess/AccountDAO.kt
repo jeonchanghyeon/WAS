@@ -2,6 +2,7 @@ package com.login.add.dataAccess
 
 import com.login.add.value.AccountInfo
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import java.sql.Timestamp
@@ -10,6 +11,7 @@ import java.sql.Timestamp
 class AccountDAO {
 
     @Autowired
+    @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
     fun getAccountInfo(id: String): AccountInfo? {
