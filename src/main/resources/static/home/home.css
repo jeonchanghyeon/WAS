@@ -306,15 +306,54 @@ select option{
     background-color: #f0f0f0;
 }
 
+.result_area table {
+    text-align: center;
+}
+
 .result_area td {
     font-size: 12px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
 .result_area thead td {
     color: #4a4a4a;
     background-color: #f0f0f0;
+}
+
+.status1 {
+    background-color: #ffe0b7;
+    color: #4a4a4a;
+}
+
+.status2 {
+    background-color: #ffdee3;
+    color: #4a4a4a;
+}
+
+.status3 {
+    background-color: #f4e0ff;
+    color: #4a4a4a;
+}
+
+.status4 {
+    background-color: #4a90e2;
+    color: #ffffff;
+}
+
+.status5 {
+    background-color: #ffffff;
+    color: #4a4a4a;
+}
+
+.status6 {
+    background-color: #e3e3e3;
+    color: #4a4a4a;
+}
+
+.status7 {
+    background-color: #fff6b6;
+    color: #4a4a4a;
 }
 
 /* Mobile */
