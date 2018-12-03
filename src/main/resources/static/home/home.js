@@ -1,23 +1,27 @@
-Date.prototype.mmdd = function() {
-    var mm = (this.getMonth() + 1).toString();
-    var dd = this.getDate().toString();
-    return (mm[1] ? mm : '0'+mm[0]) + "-" + (dd[1] ? dd : '0'+dd[0]);
+Date.prototype.mmdd = function () {
+    let mm = (this.getMonth() + 1).toString();
+    let dd = this.getDate().toString();
+    return (mm[1] ? mm : '0' + mm[0]) + "-" + (dd[1] ? dd : '0' + dd[0]);
 };
-Date.prototype.HHMM = function() {
-    var HH = this.getHours().toString();
-    var MM = this.getMinutes().toString();
-    return (HH[1] ? HH : '0'+HH[0]) + ":" + (MM[1] ? MM : '0'+MM[0]);
+
+Date.prototype.HHMM = function () {
+    let HH = this.getHours().toString();
+    let MM = this.getMinutes().toString();
+    return (HH[1] ? HH : '0' + HH[0]) + ":" + (MM[1] ? MM : '0' + MM[0]);
 };
-String.prototype.fillZero = function() {
-    var zeroNum = 5 - this.length;
-    if(zeroNum < 0) return this;
+
+String.prototype.fillZero = function () {
+    let zeroNum = 5 - this.length;
+    if (zeroNum < 0) {
+        return this;
+    }
     return '00000'.substr(this.length, zeroNum) + this;
 };
-String.prototype.numberWithCommas = function() {
+
+String.prototype.numberWithCommas = function () {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-var statusMap = [0, 1, 2, 3, 4, 6, 5, 7];
 function ajax(url, method, func, content = null) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
@@ -37,72 +41,80 @@ function ajax(url, method, func, content = null) {
 }
 
 function changeDistributeSelect() {
-    const distributorSelect = document.getElementById("select_distributor");
-    var selectText = distributorSelect.options[distributorSelect.selectedIndex].text;
+    let selectText = distributorSelect.options[distributorSelect.selectedIndex].text;
 
-    if(selectText === "--") selectText = "-1";
-    ajax("status/distributors?distributorName=" + selectText, "get", resultJsSelector)
+    if (distributorSelect.selectedIndex !== 0) {
+        const url = "status/distributors?distributorName=" + selectText;
+        ajax(url, "get", resultJsSelector)
+    }
 }
 
 function resultJsSelector(obj) {
-    const selector = document.getElementById('select_branch');
     let option = document.createElement('option');
 
-    selector.innerHTML = "";
+    branchSelect.innerHTML = "";
     option.defaultSelected;
     option.value = "";
     option.text = "--";
-    selector.appendChild(option);
+    branchSelect.appendChild(option);
 
     for (let i = 0; i < obj.length; i++) {
         option = document.createElement('option');
         option.value = obj[i];
         option.text = obj[i];
-        selector.appendChild(option);
+        branchSelect.appendChild(option);
     }
 }
 
 function showSearchList() {
-    const branchSelect = document.getElementById("select_branch");
-    const startDateSelect = document.getElementById("select_start_date");
-    const endDateSelect = document.getElementById("select_end_date");
-    const paymentType = document.getElementsByName("payment_type");
-    const serviceType = document.getElementsByName("service_type");
-
-    var branchText = branchSelect.options[branchSelect.selectedIndex].text;
+    let branchText = branchSelect.options[branchSelect.selectedIndex].text;
     const startDateText = startDateSelect.options[startDateSelect.selectedIndex].text;
     const endDateText = endDateSelect.options[endDateSelect.selectedIndex].text;
 
-    if(branchText === "--") branchText = "-1";
+    if (branchSelect.selectedIndex === 0) {
+        branchText = "-1";
+    }
 
     const paymentCheckedArray = [];
     const serviceCheckedArray = [];
-    for(let i = 0; i < paymentType.length; i++) paymentCheckedArray.push(paymentType[i].checked)
-    for(let i = 0; i < serviceType.length; i++) serviceCheckedArray.push(serviceType[i].checked)
 
-    const url = "status/orders?branch=" + branchText + "&start_date=" + startDateText + "&end_date=" + endDateText +
-                    "&payment_type=" + paymentCheckedArray + "&service_type=" + serviceCheckedArray;
+    for (let i = 0; i < paymentType.length; i++) {
+        paymentCheckedArray.push(paymentType[i].checked)
+    }
+    for (let i = 0; i < serviceType.length; i++) {
+        serviceCheckedArray.push(serviceType[i].checked)
+    }
+
+    const url =
+        "status/orders?" +
+        "branch=" + branchText +
+        "&start_date=" + startDateText +
+        "&end_date=" + endDateText +
+        "&payment_type=" + paymentCheckedArray +
+        "&service_type=" + serviceCheckedArray;
 
     ajax(url, "get", resultJsSearchList);
 }
 
 function resultJsSearchList(obj) {
-    const container = document.getElementById("result_list");
     const orders = obj["resultObject"]["orders"];
     const counts = obj["resultObject"]["counts"];
 
     container.innerHTML = '';
     const size = orders.length;
 
-    document.getElementById("statusTextAll").innerHTML = size;
-    for(let i = 1; i < 7; i++) document.getElementById("statusText" + i).innerHTML = counts[i-1];
-    document.getElementById("statusText7").innerHTML = counts[9];
-
-    if(size === 0) {
-        const branchSelect = document.getElementById("select_branch");
-        const branchText = branchSelect.options[branchSelect.selectedIndex].text;
-        if(branchText === "--") container.innerHTML = '';
+    statusText[0].innerHTML = size;
+    for (let i = 1; i < numText; i++) {
+        if (i === shareCallIndex) {
+            statusText[shareCallIndex].innerHTML = counts[numText + 1];
+        }
         else {
+            statusText[i].innerHTML = counts[i - 1];
+        }
+    }
+
+    if (size === 0) {
+        if (branchSelect.selectedIndex !== 0) {
             const td = document.createElement("td");
             td.colSpan = 14;
             td.innerHTML = "데이터가 존재하지 않습니다.";
@@ -111,71 +123,98 @@ function resultJsSearchList(obj) {
         return;
     }
 
-    const checkBox = [];
-    checkBox[0] = document.getElementById("statusAll");
-    for(let i = 1; i <= 7; i++) checkBox[i] = document.getElementById("status" + i);
 
-    for(let i = 0; i < size; i++) {
+    for (let i = 0; i < size; i++) {
+        const order = orders[i];
         const row = document.createElement("tr");
 
-        if(orders[i].shared === "true") {
-            orders[i].statusId = 7;
-            orders[i].status = "공유콜";
+        if (order.shared === "true") {
+            order.statusId = shareCallIndex;
+            order.status = "공유콜";
         }
 
-        if(!checkBox[orders[i].statusId].checked) continue;
+        if (!checkBox[order.statusId].checked) {
+            continue;
+        }
 
-        const text = [ orders[i].id.toString().fillZero(),
-                        (new Date(orders[i].createDate)).mmdd() + "-" + (new Date(orders[i].createDate)).HHMM(),
-                        orders[i].shop,
-                        orders[i].status,
-                        (new Date(orders[i].createDate)).HHMM(),
-                        (new Date(orders[i].allocateDate)).HHMM(),
-                        (new Date(orders[i].pickupDate)).HHMM(),
-                        (new Date(orders[i].completeDate)).HHMM(),
-                        (new Date(orders[i].cancelDate)).HHMM(),
-                        orders[i].deliveryCost.toString().numberWithCommas(),
-                        "0",    //추가 대행료(계산필요)
-                        orders[i].riderName,
-                        orders[i].paymentType,
-                        orders[i].requests ];
-        for(let j = 0; j < text.length; j++) {
+        const text = [
+            order.id.toString().fillZero(),
+            (new Date(order.createDate)).mmdd() + "-" + (new Date(order.createDate)).HHMM(),
+            order.shop,
+            order.status,
+            (new Date(order.createDate)).HHMM(),
+            (new Date(order.allocateDate)).HHMM(),
+            (new Date(order.pickupDate)).HHMM(),
+            (new Date(order.completeDate)).HHMM(),
+            (new Date(order.cancelDate)).HHMM(),
+            order.deliveryCost.toString().numberWithCommas(),
+            "0",    //추가 대행료(계산필요)
+            order.riderName,
+            order.paymentType,
+            order.requests];
+
+        for (let j = 0; j < text.length; j++) {
             const col = document.createElement("td");
             col.innerHTML = text[j];
-            col.className = "status" + statusMap[orders[i].statusId];
+            col.className = statusMap[order.statusId - 1];
             row.appendChild(col);
         }
         container.appendChild(row)
     }
 }
 
-function changeStatusCheckBox(idx) {
-    const checkBox = [];
-    checkBox[0] = document.getElementById("statusAll");
-    for(let i = 1; i <= 7; i++) checkBox[i] = document.getElementById("status" + i);
-
-    if(idx === 0) {
-        if(checkBox[0].checked === true) for(let i = 1; i <= 7; i++) checkBox[i].checked = true
-        else for(let i = 1; i <= 7; i++) checkBox[i].checked = false
-    } else {
-        var isAllChecked = checkBox[1].checked;
-        let i;
-        for(i = 2; i <= 7; i++) {
-            if(isAllChecked !== checkBox[i].checked) {
-                checkBox[0].checked = false;
-                break;
+function changeStatusCheckBox(idx, func) {
+    return function () {
+        if (idx === 0) {
+            for (let i = 1; i < numCheckBox; i++) {
+                checkBox[i].checked = checkBox[0].checked
             }
+        } else {
+            let isAllChecked = true;
+            for (let i = 1; i < numCheckBox; i++) {
+                if (checkBox[i].checked === false) {
+                    isAllChecked = false;
+                    break;
+                }
+            }
+            checkBox[0].checked = isAllChecked
         }
-        if(i === 8) checkBox[0].checked = isAllChecked
+        func()
     }
-
-    showSearchList(checkBox);
 }
 
 
+let statusMap = ["status1", "status2", "status3", "status4", "status6", "status5", "status7"];
 
-document.getElementById("statusAll").onclick = function(){changeStatusCheckBox(0)};
-for(let i = 1; i <= 7; i++) document.getElementById("status" + i).onclick = function(){changeStatusCheckBox(i)};
+const container = document.getElementById("result_list");
+const distributorSelect = document.getElementById("select_distributor");
+const branchSelect = document.getElementById("select_branch");
+const startDateSelect = document.getElementById("select_start_date");
+const endDateSelect = document.getElementById("select_end_date");
+const paymentType = document.getElementsByName("payment_type");
+const serviceType = document.getElementsByName("service_type");
 
-document.getElementById("select_distributor").onchange = changeDistributeSelect;
+const checkBox = [];
+const statusText = [];
+
+checkBox[0] = document.getElementById("statusAll");
+statusText[0] = document.getElementById("statusTextAll");
+
+const numCheckBox = 8
+const numText = 8
+const shareCallIndex = 7
+
+for (let i = 1; i < numCheckBox; i++) {
+    checkBox[i] = document.getElementById("status" + i);
+}
+
+for (let i = 1; i < numText; i++) {
+    statusText[i] = document.getElementById("statusText" + i);
+}
+
+for (let i = 0; i < numCheckBox; i++) {
+    checkBox[i].onclick = changeStatusCheckBox(i, showSearchList)
+}
+
+distributorSelect.onchange = changeDistributeSelect;
 document.getElementById("btn_feature").onclick = showSearchList;
