@@ -22,7 +22,7 @@ class StatusDAO {
             val rs = template.queryForRowSet(sql)
 
             while (rs.next()) {
-                returnVal.add(rs.getString("distName") ?: "")
+                returnVal.add(rs.getString("name") ?: "")
             }
             return returnVal
         } catch (e: Exception) {
@@ -34,11 +34,13 @@ class StatusDAO {
     fun getBranchName(distributorName: String): List<String>? {
         try {
             val returnVal = mutableListOf<String>()
-            val sql = "SELECT userId FROM users WHERE `group` = 5 and `topUserId` = $distributorName"
+            val sql = "SELECT name FROM (SELECT Id FROM users WHERE `group` = 5 and topUserId in (SELECT userId FROM " +
+                        "(SELECT id FROM userInfos WHERE name = '$distributorName') as a LEFT OUTER JOIN users as f ON a.id = f.id )) as c " +
+                        "LEFT OUTER JOIN userInfos as d ON c.id = d.id"
             val rs = template.queryForRowSet(sql)
 
             while (rs.next()) {
-                returnVal.add(rs.getString("userId") ?: "")
+                returnVal.add(rs.getString("name") ?: "")
             }
             return returnVal
         } catch (e: Exception) {
@@ -72,7 +74,7 @@ class StatusDAO {
 
             if(isValidPayment && isValidService) {
                 var sql = "SELECT * FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? "  +
-                            "$paymentSql $serviceSql and branchId in (SELECT id FROM users WHERE userId = ?)"
+                            "$paymentSql $serviceSql and branchId in (SELECT id FROM userInfos WHERE name = ?)"
                 sql = "SELECT * FROM ($sql) as t1 LEFT OUTER JOIN (SELECT id as id2, name as shopName FROM userInfos) as t2 ON shopId = id2"
                 sql = "SELECT * FROM ($sql) as t3 LEFT OUTER JOIN (SELECT id as id3, name as riderName FROM userInfos) as t4 ON riderId = id3"
                 sql = "SELECT * FROM ($sql) as t5 LEFT OUTER JOIN (SELECT id as id4, label as paymentLabel FROM paymentTypes) as t6 ON paymentType = id4"
