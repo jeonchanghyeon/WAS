@@ -94,6 +94,7 @@ function showSearchList() {
         "&service_type=" + serviceCheckedArray;
 
     ajax(url, "get", resultJsSearchList);
+    return false;
 }
 
 function resultJsSearchList(obj) {
@@ -217,4 +218,4 @@ for (let i = 0; i < numCheckBox; i++) {
 }
 
 distributorSelect.onchange = changeDistributeSelect;
-document.getElementById("btn_feature").onclick = showSearchList;
+document.forms[0].onsubmit = showSearchList;
