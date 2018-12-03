@@ -18,10 +18,11 @@ class StatusDAO {
     fun getDistributor(userId: String): List<String>? {
         try {
             val returnVal = mutableListOf<String>()
-            val rs = template.queryForRowSet("SELECT userId FROM users WHERE `group` = 6")
+            val sql = "SELECT name FROM (SELECT Id FROM users WHERE `group` = 6) as a LEFT OUTER JOIN (SELECT Id, name FROM userInfos) as b ON a.id = b.id"
+            val rs = template.queryForRowSet(sql)
 
             while (rs.next()) {
-                returnVal.add(rs.getString("userId") ?: "")
+                returnVal.add(rs.getString("distName") ?: "")
             }
             return returnVal
         } catch (e: Exception) {
@@ -30,10 +31,11 @@ class StatusDAO {
         return null
     }
 
-    fun getBranchName(distributeNum: String): List<String>? {
+    fun getBranchName(distributorName: String): List<String>? {
         try {
             val returnVal = mutableListOf<String>()
-            val rs = template.queryForRowSet("SELECT userId FROM users WHERE `group` = 5 and `topUserId` = $distributeNum")
+            val sql = "SELECT userId FROM users WHERE `group` = 5 and `topUserId` = $distributorName"
+            val rs = template.queryForRowSet(sql)
 
             while (rs.next()) {
                 returnVal.add(rs.getString("userId") ?: "")
@@ -49,34 +51,63 @@ class StatusDAO {
         try {
             val returnValue = mutableMapOf<String, Any>()
             var orders = mutableListOf<Order>()
-            var counts = Array(9) { 0 }
+            var counts = Array(10) { 0 }
 
-            val sql = "SELECT * FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? and branchId in (SELECT id FROM users WHERE userId = ?)"
-            val rs = template.queryForRowSet(sql,
-                    condition.start_date,
-                    condition.end_date,
-                    condition.delay_time,
-                    condition.branch
-            )
+            var isValidPayment = false
+            var isValidService = false
 
-            while (rs.next()) {
-                val order = Order(
-                        rs.getInt("id"),
-                        rs.getString("shopId") ?: "",
-                        rs.getString("orderStatusId") ?: "",
-                        rs.getTimestamp("createDate") ?: Timestamp(0),
-                        rs.getTimestamp("allocateDate") ?: Timestamp(0),
-                        rs.getTimestamp("pickupDate") ?: Timestamp(0),
-                        rs.getTimestamp("completeDate") ?: Timestamp(0),
-                        rs.getTimestamp("cancelDate") ?: Timestamp(0),
-                        rs.getInt("deliveryCost"),
-                        rs.getString("additionalCost"),
-                        rs.getString("riderId") ?: "",
-                        rs.getString("paymentType") ?: "",
-                        rs.getString("memo") ?: ""
+            var paymentSql = "and paymentType in ("
+            for(i in 0 until condition.payment_type.size) {
+                isValidPayment = isValidPayment || condition.payment_type[i]
+                if(condition.payment_type[i]) paymentSql += "${i+1}, "
+            }
+            if(paymentSql !== "") paymentSql = paymentSql.substringBeforeLast(", ") + ")"
+
+            var serviceSql = "and isShared in ("
+            for(i in 0 until condition.service_type.size) {
+                isValidService = isValidService || condition.service_type[i]
+                if(condition.service_type[i]) serviceSql += "'${i == 1}', "
+            }
+            if(serviceSql !== "") serviceSql = serviceSql.substringBeforeLast(", ") + ")"
+
+            if(isValidPayment && isValidService) {
+                var sql = "SELECT * FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? "  +
+                            "$paymentSql $serviceSql and branchId in (SELECT id FROM users WHERE userId = ?)"
+                sql = "SELECT * FROM ($sql) as t1 LEFT OUTER JOIN (SELECT id as id2, name as shopName FROM userInfos) as t2 ON shopId = id2"
+                sql = "SELECT * FROM ($sql) as t3 LEFT OUTER JOIN (SELECT id as id3, name as riderName FROM userInfos) as t4 ON riderId = id3"
+                sql = "SELECT * FROM ($sql) as t5 LEFT OUTER JOIN (SELECT id as id4, label as paymentLabel FROM paymentTypes) as t6 ON paymentType = id4"
+                sql = "SELECT id, shopName, createDate, shopName, orderStatusLabel, allocateDate, pickupDate, completeDate, cancelDate, " +
+                        "deliveryCost, additionalCost, riderName, paymentLabel, memo, isShared, orderStatusId " +
+                        "FROM ($sql) as t7 LEFT OUTER JOIN (SELECT id as id5, label as orderStatusLabel FROM orderStatuses) as t8 ON orderStatusId = id5"
+
+                val rs = template.queryForRowSet(sql,
+                        condition.start_date,
+                        condition.end_date,
+                        condition.delay_time,
+                        condition.branch
                 )
-                orders.add(order)
-                counts[Integer.parseInt(rs.getString("orderStatusId")) - 1]++
+                while (rs.next()) {
+                    val order = Order(
+                            rs.getInt("id"),
+                            rs.getString("shopName") ?: "",
+                            rs.getString("orderStatusLabel") ?: "",
+                            rs.getString("orderStatusId"),
+                            rs.getString("isShared") ?: "false",
+                            rs.getTimestamp("createDate") ?: Timestamp(0),
+                            rs.getTimestamp("allocateDate") ?: Timestamp(0),
+                            rs.getTimestamp("pickupDate") ?: Timestamp(0),
+                            rs.getTimestamp("completeDate") ?: Timestamp(0),
+                            rs.getTimestamp("cancelDate") ?: Timestamp(0),
+                            rs.getInt("deliveryCost"),
+                            rs.getString("additionalCost"),
+                            rs.getString("riderName") ?: "",
+                            rs.getString("paymentLabel") ?: "",
+                            rs.getString("memo") ?: ""
+                    )
+                    orders.add(order)
+                    if (order.shared.equals("true")) counts[9]++
+                    else counts[Integer.parseInt(order.statusId) - 1]++
+                }
             }
 
             returnValue["orders"] = orders

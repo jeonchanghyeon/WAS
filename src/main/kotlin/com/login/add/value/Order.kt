@@ -6,6 +6,8 @@ data class Order(
         val id: Int,               // 순번
         val shop: String,          // 가맹정
         val status: String,        // 상태
+        val statusId: String,        // 상태ID
+        val shared: String,       //공유콜 여부
         val createDate: Timestamp,      // 접수시간
         val allocateDate: Timestamp,    // 배차시간
         val pickupDate: Timestamp,      // 픽업시간

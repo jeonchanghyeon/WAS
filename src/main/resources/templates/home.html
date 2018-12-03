@@ -74,22 +74,24 @@
                         </tr>
                         <tr>
                             <th>결제방법</th>
-                            <td><label>
-                                <input type="checkbox" name="payment_type" value="card"/>
+                            <td>
+                                <label>
+                                <input type="checkbox" name="payment_type" value="card" checked="checked"/>
                                 카드 </label>
                                 <label>
-                                    <input type="checkbox" name="payment_type" value="cash"/>
+                                    <input type="checkbox" name="payment_type" value="cash" checked="checked"/>
                                     현금 </label>
                                 <label>
-                                    <input type="checkbox" name="payment_type" value="prepayment"/>
+                                    <input type="checkbox" name="payment_type" value="prepayment" checked="checked"/>
                                     선결제</label>
                             </td>
                             <th> 서비스 종류</th>
-                            <td><label>
-                                <input type="checkbox" name="service_type" value="delivery_agent"/>
+                            <td>
+                                <label>
+                                <input type="checkbox" name="service_type" value="delivery_agent" checked="checked"/>
                                 배달대행 </label>
                                 <label>
-                                    <input type="checkbox" name="service_type" value="share"/>
+                                    <input type="checkbox" name="service_type" value="share" checked="checked"/>
                                     공유콜 </label>
                             </td>
                         </tr>
@@ -145,7 +147,7 @@
                             </td>
                             <td><input type="search" id="search_feature"/>
                             </td>
-                            <td><input type="submit" id="btn_feature" value="검색"/>
+                            <td><input type="button" id="btn_feature" value="검색"/>
                             </td>
                         </tr>
                     </table>
@@ -155,37 +157,37 @@
         <!-- 상태 -->
         <section class="status_area">
             <table>
-                <th><label>
-                    <input type="checkbox" checked="checked" id="statusAll" name="status"/>
-                    전체 </label>
+                <th>
+                    <input type="checkbox" checked="checked" id="statusAll"/>
+                    <label>전체 </label>
                     <span id="statusTextAll">0</span></th>
-                <td><label>
-                    <input type="checkbox" checked="checked" id="status1" name="status"/>
-                    접수 </label>
+                <td>
+                    <input type="checkbox" checked="checked" id="status1"/>
+                    <label>접수 </label>
                     <span id="statusText1">0</span></td>
-                <td><label>
-                    <input type="checkbox" checked="checked" id="status2" name="status"/>
-                    배차 </label>
+                <td>
+                    <input type="checkbox" checked="checked" id="status2"/>
+                    <label>배차 </label>
                     <span id="statusText2">0</span></td>
-                <td><label>
-                    <input type="checkbox" checked="checked" id="status3" name="status"/>
-                    픽업 </label>
+                <td>
+                    <input type="checkbox" checked="checked" id="status3"/>
+                    <label>픽업 </label>
                     <span id="statusText3">0</span></td>
-                <td><label>
-                    <input type="checkbox" checked="checked" id="status4" name="status"/>
-                    완료 </label>
+                <td>
+                    <input type="checkbox" checked="checked" id="status4"/>
+                    <label>완료 </label>
                     <span id="statusText4">0</span></td>
-                <td><label>
-                    <input type="checkbox" checked="checked" id="status6" name="status"/>
-                    대기 </label>
+                <td>
+                    <input type="checkbox" checked="checked" id="status6"/>
+                    <label>대기 </label>
                     <span id="statusText6">0</span></td>
-                <td><label>
-                    <input type="checkbox" checked="checked" id="status5" name="status"/>
-                    취소 </label>
+                <td>
+                    <input type="checkbox" checked="checked" id="status5"/>
+                    <label>취소 </label>
                     <span id="statusText5">0</span></td>
-                <td><label>
-                    <input type="checkbox" checked="checked" id="status7" name="status"/>
-                    공유 </label>
+                <td>
+                    <input type="checkbox" checked="checked" id="status7"/>
+                    <label>공유 </label>
                     <span id="statusText7">0</span></td>
             </table>
         </section>

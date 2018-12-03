@@ -17,9 +17,6 @@ String.prototype.numberWithCommas = function() {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-var statNameMap = ["", "접수", "배차", "픽업", "완료", "취소", "대기"];
-var payNameMap = ["", "카드", "현금", "선결제"];
-
 function ajax(url, method, func, content = null) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
@@ -28,6 +25,7 @@ function ajax(url, method, func, content = null) {
         if (this.status === 200) {
             try {
                 const obj = JSON.parse(this.responseText);
+                console.log(obj);
                 func(obj);
             } catch (error) {
             }
@@ -42,7 +40,7 @@ function changeDistributeSelect() {
     var selectText = distributorSelect.options[distributorSelect.selectedIndex].text;
 
     if(selectText === "--") selectText = "-1";
-    ajax("status/distributors?distributorNum=" + selectText, "get", resultJsSelector)
+    ajax("status/distributors?distributorName=" + selectText, "get", resultJsSelector)
 }
 
 function resultJsSelector(obj) {
@@ -64,28 +62,42 @@ function resultJsSelector(obj) {
 }
 
 function showSearchList() {
-    let content = null;
     const branchSelect = document.getElementById("select_branch");
     const startDateSelect = document.getElementById("select_start_date");
     const endDateSelect = document.getElementById("select_end_date");
+    const paymentType = document.getElementsByName("payment_type");
+    const serviceType = document.getElementsByName("service_type");
 
     var branchText = branchSelect.options[branchSelect.selectedIndex].text;
     const startDateText = startDateSelect.options[startDateSelect.selectedIndex].text;
     const endDateText = endDateSelect.options[endDateSelect.selectedIndex].text;
 
     if(branchText === "--") branchText = "-1";
-    ajax("status/orders?branch=" + branchText + "&start_date=" + startDateText + "&end_date=" + endDateText, "get", resultJsSearchList);
+
+    const paymentCheckedArray = [];
+    const serviceCheckedArray = [];
+    for(let i = 0; i < paymentType.length; i++) paymentCheckedArray.push(paymentType[i].checked)
+    for(let i = 0; i < serviceType.length; i++) serviceCheckedArray.push(serviceType[i].checked)
+
+    const url = "status/orders?branch=" + branchText + "&start_date=" + startDateText + "&end_date=" + endDateText +
+                    "&payment_type=" + paymentCheckedArray + "&service_type=" + serviceCheckedArray;
+
+    ajax(url, "get", resultJsSearchList);
 }
 
 function resultJsSearchList(obj) {
     const container = document.getElementById("result_list");
+    const orders = obj["resultObject"]["orders"];
+    const counts = obj["resultObject"]["counts"];
+
     container.innerHTML = '';
-    const size = obj["resultObject"]["orders"].length;
+    const size = orders.length;
 
     document.getElementById("statusTextAll").innerHTML = size;
-    for(let i = 1; i <= 7; i++) document.getElementById("statusText" + i).innerHTML = obj["resultObject"]["counts"][i-1];
+    for(let i = 1; i < 7; i++) document.getElementById("statusText" + i).innerHTML = counts[i-1];
+    document.getElementById("statusText7").innerHTML = counts[9];
 
-    if(size == 0) {
+    if(size === 0) {
         const branchSelect = document.getElementById("select_branch");
         const branchText = branchSelect.options[branchSelect.selectedIndex].text;
         if(branchText === "--") container.innerHTML = '';
@@ -98,24 +110,38 @@ function resultJsSearchList(obj) {
         return;
     }
 
+    const checkBox = [];
+    checkBox[0] = document.getElementById("statusAll");
+    for(let i = 1; i <= 7; i++) checkBox[i] = document.getElementById("status" + i);
+
     for(let i = 0; i < size; i++) {
         const row = document.createElement("tr");
-        const text = [ obj["resultObject"]["orders"][i].id.toString().fillZero(),
-                        (new Date(obj["resultObject"]["orders"][i].createDate)).mmdd() + "-" + (new Date(obj["resultObject"]["orders"][i].createDate)).HHMM(),
-                        obj["resultObject"]["orders"][i].shop,
-                        statNameMap[obj["resultObject"]["orders"][i].status],
-                        (new Date(obj["resultObject"]["orders"][i].createDate)).HHMM(),
-                        (new Date(obj["resultObject"]["orders"][i].allocateDate)).HHMM(),
-                        (new Date(obj["resultObject"]["orders"][i].pickupDate)).HHMM(),
-                        (new Date(obj["resultObject"]["orders"][i].completeDate)).HHMM(),
-                        (new Date(obj["resultObject"]["orders"][i].cancelDate)).HHMM(),
-                        obj["resultObject"]["orders"][i].deliveryCost.toString().numberWithCommas(),
+
+        var status;
+        if(orders[i].shared === "true") {
+            if(!checkBox[7].checked) continue;
+            status = "공유콜";
+        }
+        else {
+            if(!checkBox[orders[i].statusId].checked) continue;
+            status = orders[i].status;
+        }
+
+        const text = [ orders[i].id.toString().fillZero(),
+                        (new Date(orders[i].createDate)).mmdd() + "-" + (new Date(orders[i].createDate)).HHMM(),
+                        orders[i].shop,
+                        status,
+                        (new Date(orders[i].createDate)).HHMM(),
+                        (new Date(orders[i].allocateDate)).HHMM(),
+                        (new Date(orders[i].pickupDate)).HHMM(),
+                        (new Date(orders[i].completeDate)).HHMM(),
+                        (new Date(orders[i].cancelDate)).HHMM(),
+                        orders[i].deliveryCost.toString().numberWithCommas(),
                         "0",    //추가 대행료(계산필요)
-                        obj["resultObject"]["orders"][i].riderName,
-                        payNameMap[obj["resultObject"]["orders"][i].paymentType],
-                        obj["resultObject"]["orders"][i].requests];
+                        orders[i].riderName,
+                        orders[i].paymentType,
+                        orders[i].requests ];
         for(let j = 0; j < text.length; j++) {
-            console.log(text[j]);
             const col = document.createElement("td");
             col.innerHTML = text[j];
             row.appendChild(col);
@@ -125,13 +151,32 @@ function resultJsSearchList(obj) {
 }
 
 function changeStatusCheckBox(idx) {
-    const selectedCheckBox = document.getElementById("statusAll");
-    if(document.status.elements[0].checked == true)
-        for(let i = 1; i <= 7; i++) document.status.elements[i].checked = true
+    const checkBox = [];
+    checkBox[0] = document.getElementById("statusAll");
+    for(let i = 1; i <= 7; i++) checkBox[i] = document.getElementById("status" + i);
+
+    if(idx === 0) {
+        if(checkBox[0].checked === true) for(let i = 1; i <= 7; i++) checkBox[i].checked = true
+        else for(let i = 1; i <= 7; i++) checkBox[i].checked = false
+    } else {
+        var isAllChecked = checkBox[1].checked;
+        let i;
+        for(i = 2; i <= 7; i++) {
+            if(isAllChecked !== checkBox[i].checked) {
+                checkBox[0].checked = false;
+                break;
+            }
+        }
+        if(i === 8) checkBox[0].checked = isAllChecked
+    }
+
+    showSearchList(checkBox);
 }
 
+
+
 document.getElementById("statusAll").onclick = function(){changeStatusCheckBox(0)};
-for(let i = 1; i <= 7; i++) document.getElementById("statusAll").onclick = function(){changeStatusCheckBox(i)};
+for(let i = 1; i <= 7; i++) document.getElementById("status" + i).onclick = function(){changeStatusCheckBox(i)};
 
 document.getElementById("select_distributor").onchange = changeDistributeSelect;
 document.getElementById("btn_feature").onclick = showSearchList;
