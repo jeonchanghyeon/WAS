@@ -17,6 +17,7 @@ String.prototype.numberWithCommas = function() {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+var statusMap = [0, 1, 2, 3, 4, 6, 5, 7];
 function ajax(url, method, func, content = null) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
@@ -117,20 +118,17 @@ function resultJsSearchList(obj) {
     for(let i = 0; i < size; i++) {
         const row = document.createElement("tr");
 
-        var status;
         if(orders[i].shared === "true") {
-            if(!checkBox[7].checked) continue;
-            status = "공유콜";
+            orders[i].statusId = 7;
+            orders[i].status = "공유콜";
         }
-        else {
-            if(!checkBox[orders[i].statusId].checked) continue;
-            status = orders[i].status;
-        }
+
+        if(!checkBox[orders[i].statusId].checked) continue;
 
         const text = [ orders[i].id.toString().fillZero(),
                         (new Date(orders[i].createDate)).mmdd() + "-" + (new Date(orders[i].createDate)).HHMM(),
                         orders[i].shop,
-                        status,
+                        orders[i].status,
                         (new Date(orders[i].createDate)).HHMM(),
                         (new Date(orders[i].allocateDate)).HHMM(),
                         (new Date(orders[i].pickupDate)).HHMM(),
@@ -144,6 +142,7 @@ function resultJsSearchList(obj) {
         for(let j = 0; j < text.length; j++) {
             const col = document.createElement("td");
             col.innerHTML = text[j];
+            col.className = "status" + statusMap[orders[i].statusId];
             row.appendChild(col);
         }
         container.appendChild(row)

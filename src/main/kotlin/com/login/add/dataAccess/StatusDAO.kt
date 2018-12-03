@@ -90,6 +90,7 @@ class StatusDAO {
                         condition.delay_time,
                         condition.branch
                 )
+
                 while (rs.next()) {
                     val order = Order(
                             rs.getInt("id"),
@@ -113,7 +114,6 @@ class StatusDAO {
                     else counts[Integer.parseInt(order.statusId) - 1]++
                 }
             }
-
             returnValue["orders"] = orders
             returnValue["counts"] = counts
 
