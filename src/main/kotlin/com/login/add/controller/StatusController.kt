@@ -27,7 +27,7 @@ class StatusController {
         authInfo ?: return "login"
 
         var distributors = statusService.getDistributor(authInfo.id, authInfo.group) ?: listOf("")
-        var point = pointService.getPoint(authInfo.id)
+        var point = pointService.getPoint(authInfo.authKey)
 
         model.addAttribute("point", point)
         model.addAttribute("distributors", distributors)

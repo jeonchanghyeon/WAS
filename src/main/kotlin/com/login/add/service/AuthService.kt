@@ -24,7 +24,7 @@ class AuthService {
                 // id와 pw 와 맞지 않을 경우
             }
 
-            return AuthInfo(accountInfo?.userId ?: "", accountInfo?.group ?: -1)
+            return AuthInfo(accountInfo?.userId ?: "", accountInfo?.group ?: -1, accountInfo!!.authKey)
         } catch (e: Exception) {
             e.printStackTrace()
         }
