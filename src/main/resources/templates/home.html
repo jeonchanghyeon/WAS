@@ -3,12 +3,19 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
     <title>Please</title>
     <link rel="stylesheet" href="../home/home.css"/>
-    <script src="../home/home.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../home/codebase/fonts/font_roboto/roboto.css"/>
+    <link rel="stylesheet" type="text/css" href="../home/codebase/dhtmlxcalendar.css"/>
+
+    <script src="../home/codebase/dhtmlxcalendar.js"></script>
 </head>
 <body>
+
 <!-- Main Container -->
 <div class="container">
     <!-- Navigation -->
@@ -63,12 +70,13 @@
                         <tr>
                             <th>기간</th>
                             <td colspan="3"><select class="select_start_date" id="select_start_date">
-                                <option value=""></option>
-                                <!-- ...   -->
+                                <option id="tmp"></option>
                             </select>
+                                <!-- ...   -->
+
                                 ~
                                 <select class="select_end_date" id="select_end_date">
-                                    <option value=""></option>
+                                    <option id="end_calendar"></option>
                                     <!-- ...   -->
                                 </select></td>
                         </tr>
@@ -76,8 +84,8 @@
                             <th>결제방법</th>
                             <td>
                                 <label>
-                                <input type="checkbox" name="payment_type" value="card" checked="checked"/>
-                                카드 </label>
+                                    <input type="checkbox" name="payment_type" value="card" checked="checked"/>
+                                    카드 </label>
                                 <label>
                                     <input type="checkbox" name="payment_type" value="cash" checked="checked"/>
                                     현금 </label>
@@ -88,8 +96,9 @@
                             <th> 서비스 종류</th>
                             <td>
                                 <label>
-                                <input type="checkbox" name="service_type" value="delivery_agent" checked="checked"/>
-                                배달대행 </label>
+                                    <input type="checkbox" name="service_type" value="delivery_agent"
+                                           checked="checked"/>
+                                    배달대행 </label>
                                 <label>
                                     <input type="checkbox" name="service_type" value="share" checked="checked"/>
                                     공유콜 </label>
@@ -218,7 +227,7 @@
         </table>
     </section>
 </div>
-<script src="../home/home.js"/>
+<script src="../home/home.js"></script>
 <!-- Main Container Ends -->
 </body>
 </html>

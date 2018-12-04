@@ -18,6 +18,7 @@ String.prototype.numberWithCommas = function() {
 };
 
 var statusMap = [0, 1, 2, 3, 4, 6, 5, 7];
+
 function ajax(url, method, func, content = null) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
@@ -172,10 +173,19 @@ function changeStatusCheckBox(idx) {
     showSearchList(checkBox);
 }
 
-
+function calOnLoad(name) {
+    var myCalendar = new dhtmlXCalendarObject(name);
+    console.log("show calendar");
+    myCalendar.setDate(new Date(2013,2,1,16,0));
+    myCalendar.show();
+    myCalendar.showToday();
+}
 
 document.getElementById("statusAll").onclick = function(){changeStatusCheckBox(0)};
 for(let i = 1; i <= 7; i++) document.getElementById("status" + i).onclick = function(){changeStatusCheckBox(i)};
 
 document.getElementById("select_distributor").onchange = changeDistributeSelect;
 document.getElementById("btn_feature").onclick = showSearchList;
+
+document.getElementById("select_start_date").onclick = function(){calOnLoad("tmp")};
+document.getElementById("select_end_date").onclick = function(){calOnLoad("end_calendar")};
