@@ -3,10 +3,7 @@
 body {
     font-family: 'Noto Sans Mono CJK KR Regular';
     background-color: #f0f0f0;
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
+    margin: 0;
     font-style: normal;
     font-weight: 200;
 }
@@ -38,14 +35,12 @@ table tr th {
 }
 
 p {
-    margin-top: 0px;
+    margin-top: 0;
     margin-bottom: 4px;
 }
 
 button, input {
-    border: 1px;
-    border-color: #ff7100;
-    border-style: solid
+    border: 1px solid #ff7100;
 }
 
 input[type="checkbox"] {
@@ -118,14 +113,17 @@ select option {
 /* Hero Section */
 .hero {
     width: 100%;
-    height: 230px;
     background-color: #555555;
     font-size: 12px;
+    float: left;
 }
 
 .setting_area {
-    padding-top: 10px;
+    width: 100%;
     height: 180px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    float: left;
 }
 
 .setting_area div {
@@ -176,11 +174,10 @@ select option {
 }
 
 .condition_area {
+    margin-top: 5px;
+    margin-bottom: 5px;
     margin-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 5px 10px;
     float: left;
 }
 
@@ -208,6 +205,8 @@ select option {
 }
 
 .extension_area {
+    margin-top: 5px;
+    margin-bottom: 5px;
     margin-left: 10px;
     padding-left: 10px;
     padding-right: 10px;
@@ -242,14 +241,14 @@ select option {
 
 .feature_area {
     position: relative;
-    top: -45px;
+    top: -50px;
     margin-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
     width: 535px;
     clear: both;
+    /*float: left;*/
 }
 
 .feature_area select {
@@ -278,14 +277,14 @@ select option {
 }
 
 .status_area label {
-    position: relative;
+    /*position: relative;*/
     top: -4px;
     color: #FFFFFF;
     font-size: 12px;
 }
 
 .status_area span {
-    position: relative;
+    /*position: relative;*/
     top: -4px;
 }
 
@@ -337,8 +336,8 @@ select option {
 }
 
 .status4 {
-    background-color: #4a90e2;
-    color: #ffffff;
+    background-color: #e6f4ff;
+    color: #4a4a4a;
 }
 
 .status5 {
@@ -356,244 +355,14 @@ select option {
     color: #4a4a4a;
 }
 
-/* Mobile */
-@media (max-width: 320px) {
-    .logo {
-        width: 100%;
-        text-align: center;
-        margin-top: 13px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-    }
-
-    .container header .nav {
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        width: 100%;
-        float: none;
-        display: none;
-    }
-
-    .nav ul li {
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        width: 100%;
-        text-align: center;
-    }
-
-    .text_column {
-        width: 100%;
-        text-align: justify;
-        padding-top: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
-    }
-
-    .thumbnail {
-        width: 100%;
-    }
-
-    .footer_column {
-        width: 100%;
-        margin-top: 0px;
-    }
-
-    .parallax {
-        text-align: center;
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        padding-top: 40%;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
-        width: 100%;
-        font-size: 18px;
-    }
-
-    .parallax_description {
-        padding-top: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
-        width: 90%;
-        margin-top: 25px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 12px;
-        float: none;
-        text-align: center;
-    }
-
-    .banner {
-        background-color: #2D9AB7;
-        background-image: none;
-    }
-
-    .tagline {
-        margin-top: 20px;
-        line-height: 22px;
-    }
-
-    .hero_header {
-        padding-left: 10px;
-        padding-right: 10px;
-        line-height: 22px;
-        text-align: center;
-    }
-}
-
-/* Small Tablets */
-@media (min-width: 321px)and (max-width: 767px) {
-    .logo {
-        width: 100%;
-        text-align: center;
-        margin-top: 13px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        color: #043745;
-    }
-
-    .container header nav {
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        width: 100%;
-        float: none;
-        overflow: auto;
-        display: inline-block;
-        background: #52bad5;
-    }
-
-    header nav ul {
-        padding: 0px;
-        float: none;
-    }
-
-    nav ul li {
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        width: 100%;
-        text-align: center;
-        padding-top: 8px;
-        padding-bottom: 8px;
-    }
-
-    .text_column {
-        width: 100%;
-        text-align: left;
-        padding-top: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
-    }
-
-    .thumbnail {
-        width: 100%;
-    }
-
-    .footer_column {
-        width: 100%;
-        margin-top: 0px;
-    }
-
-    .parallax {
-        text-align: center;
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        padding-top: 40%;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
-        width: 100%;
-        font-size: 18px;
-    }
-
-    .parallax_description {
-        padding-top: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
-        margin-top: 30%;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        float: none;
-        width: 100%;
-        text-align: center;
-    }
-
-    .thumbnail {
-        width: 50%;
-    }
-
-    .parallax {
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
-        padding-top: 20%;
-    }
-
-    .parallax_description {
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        width: 100%;
-        padding-top: 30px;
-    }
-
-    .banner {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .footer_column {
-        width: 100%;
-    }
-}
-
 /* Small Desktops */
-@media (min-width: 768px) and (max-width: 1096px) {
-    .text_column {
-        width: 100%;
+@media (max-width: 898px) {
+    .setting_area {
+        height: inherit;
     }
 
-    .thumbnail {
-        width: 50%;
-    }
-
-    .text_column {
-        width: 100%;
-        margin-top: 0px;
-        margin-right: 0px;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        padding-top: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
-        padding-left: 0px;
-    }
-
-    .banner {
-        margin-top: 0px;
-        padding-top: 0px;
+    .feature_area {
+        position: static;
+        float: left;
     }
 }
