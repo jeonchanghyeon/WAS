@@ -110,7 +110,7 @@ function resultJsSearchList(obj) {
             statusText[shareCallIndex].innerHTML = counts[numText + 1];
         }
         else {
-            statusText[i].innerHTML = counts[i - 1];
+            statusText[statusMapIndex[i]].innerHTML = counts[i - 1];
         }
     }
 
@@ -124,7 +124,6 @@ function resultJsSearchList(obj) {
         return;
     }
 
-
     for (let i = 0; i < size; i++) {
         const order = orders[i];
         const row = document.createElement("tr");
@@ -134,7 +133,7 @@ function resultJsSearchList(obj) {
             order.status = "공유콜";
         }
 
-        if (!checkBox[order.statusId].checked) {
+        if (!checkBox[statusMapIndex[order.statusId]].checked) {
             continue;
         }
 
@@ -190,11 +189,11 @@ function calOnLoad(name) {
     console.log("show calendar");
     myCalendar.setDate(new Date(2013,2,1,16,0));
     myCalendar.show();
-    myCalendar.showToday();
+
 }
 
-
 let statusMap = ["status1", "status2", "status3", "status4", "status6", "status5", "status7"];
+let statusMapIndex = [0, 1, 2, 3, 4, 6, 5, 7];
 
 const container = document.getElementById("result_list");
 const distributorSelect = document.getElementById("select_distributor");
@@ -204,30 +203,24 @@ const endDateSelect = document.getElementById("select_end_date");
 const paymentType = document.getElementsByName("payment_type");
 const serviceType = document.getElementsByName("service_type");
 
-const checkBox = [];
+const checkBox = document.getElementsByName("status");
+
 const statusText = [];
-
-checkBox[0] = document.getElementById("statusAll");
-statusText[0] = document.getElementById("statusTextAll");
-
-const numCheckBox = 8
-const numText = 8
-const shareCallIndex = 7
-
-for (let i = 1; i < numCheckBox; i++) {
-    checkBox[i] = document.getElementById("status" + i);
+const col = document.getElementById("status_area").getElementsByTagName("table")[0].rows[0].cells;
+for(let i = 0; i < col.length; i++) {
+    statusText[i] = col[i].getElementsByTagName("span")[0];
 }
 
-for (let i = 1; i < numText; i++) {
-    statusText[i] = document.getElementById("statusText" + i);
-}
+const numCheckBox = 8;
+const numText = 8;
+const shareCallIndex = 7;
 
 for (let i = 0; i < numCheckBox; i++) {
     checkBox[i].onclick = changeStatusCheckBox(i, showSearchList)
 }
 
 document.getElementById("select_start_date").onclick = function(){calOnLoad("tmp")};
-document.getElementById("select_end_date").onclick = function(){calOnLoad("end_calendar")};
+document.getElementById("select_end_date").onclick = function(){calOnLoad("select_end_date")};
 distributorSelect.onchange = changeDistributeSelect;
 document.forms[0].onsubmit = showSearchList;
 

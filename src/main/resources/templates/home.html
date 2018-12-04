@@ -71,16 +71,14 @@
                         </tr>
                         <tr>
                             <th>기간</th>
-                            <td colspan="3"><select class="select_start_date" id="select_start_date">
-                                <option id="tmp"></option>
-                            </select>
-                                <!-- ...   -->
-
+                            <td colspan="3">
+                                <div class="select_start_date">
+                                    <input type="button"  id="select_start_date"/>
+                                    <div id="tmp" style="position:relative;height:350px;"></div>
+                                </div>
                                 ~
-                                <select class="select_end_date" id="select_end_date">
-                                    <option id="end_calendar"></option>
-                                    <!-- ...   -->
-                                </select></td>
+                                <input type="button" class="select_end_date" id="select_end_date"/>
+                                </td>
                         </tr>
                         <tr>
                             <th>결제방법</th>
@@ -166,40 +164,42 @@
             </div>
         </form>
         <!-- 상태 -->
-        <section class="status_area">
+        <section class="status_area" id="status_area">
             <table>
-                <th>
-                    <input type="checkbox" checked="checked" id="statusAll"/>
-                    <label>전체 </label>
-                    <span id="statusTextAll">0</span></th>
-                <td>
-                    <input type="checkbox" checked="checked" id="status1"/>
-                    <label>접수 </label>
-                    <span id="statusText1">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status2"/>
-                    <label>배차 </label>
-                    <span id="statusText2">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status3"/>
-                    <label>픽업 </label>
-                    <span id="statusText3">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status4"/>
-                    <label>완료 </label>
-                    <span id="statusText4">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status5"/>
-                    <label>대기 </label>
-                    <span id="statusText5">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status6"/>
-                    <label>취소 </label>
-                    <span id="statusText6">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status7"/>
-                    <label>공유 </label>
-                    <span id="statusText7">0</span></td>
+                <tr>
+                    <th>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>전체 </label>
+                        <span>0</span></th>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>접수 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>배차 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>픽업 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>완료 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>대기 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>취소 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>공유 </label>
+                        <span>0</span></td>
+                </tr>
             </table>
         </section>
 
