@@ -4,6 +4,7 @@ import com.login.add.dataAccess.StatusDAO
 import com.login.add.value.Condition
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.lang.Long.parseLong
 import java.sql.Timestamp
 
 @Service
@@ -23,12 +24,12 @@ class StatusService {
     }
 
     fun searchOrders(data: MutableMap<String, Any>, paymentType: Array<Boolean>, serviceType: Array<Boolean>): Map<String, Any>? {
+        println(data["start_date"])
+        println(data["end_date"])
         val condition = Condition(
                 data["branch"] as String? ?: "",
-//                data["start_date"] as Timestamp? ?: Timestamp(0),
-//                data["end_date"] as Timestamp? ?: Timestamp(23123123123123), // TODO INT 최대
-                Timestamp(0),
-                Timestamp(253402300799999),
+                if (data["start_date"] != "-1") Timestamp.valueOf(data["start_date"] as String) else Timestamp(0),
+                if (data["end_date"] != "-1") Timestamp.valueOf(data["end_date"] as String) else Timestamp(23123123123123), // TODO INT 최대
                 paymentType,
                 serviceType,
                 data["default_start"] as Int? ?: 0, // TODO INT 최대

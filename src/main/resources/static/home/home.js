@@ -10,6 +10,13 @@ Date.prototype.HHMM = function () {
     return (HH[1] ? HH : '0' + HH[0]) + ":" + (MM[1] ? MM : '0' + MM[0]);
 };
 
+String.prototype.toTimestampFormat = function () {
+    if (this.toString() === "--") return "-1";
+    const tmp = this.split(" / ");
+    const newDate = tmp[0] + " " + tmp[1] + ":00";
+    return newDate;
+};
+
 String.prototype.fillZero = function () {
     let zeroNum = 5 - this.length;
     if (zeroNum < 0) {
@@ -68,8 +75,8 @@ function resultJsSelector(obj) {
 
 function showSearchList() {
     let branchText = branchSelect.options[branchSelect.selectedIndex].text;
-    const startDateText = startDateSelect.options[startDateSelect.selectedIndex].text;
-    const endDateText = endDateSelect.options[endDateSelect.selectedIndex].text;
+    const startDateText = startDateSelect.value;
+    const endDateText = endDateSelect.value;
 
     if (branchSelect.selectedIndex === 0) {
         branchText = "-1";
@@ -88,8 +95,8 @@ function showSearchList() {
     const url =
         "status/orders?" +
         "branch=" + branchText +
-        "&start_date=" + startDateText +
-        "&end_date=" + endDateText +
+        "&start_date=" + startDateText.toTimestampFormat() +
+        "&end_date=" + endDateText.toTimestampFormat() +
         "&payment_type=" + paymentCheckedArray +
         "&service_type=" + serviceCheckedArray;
 
@@ -185,17 +192,21 @@ function changeStatusCheckBox(idx, func) {
 
 
 function calOnLoad() {
-    var myForm, formData, formData2;
-    formData = [
-        {type: "settings", position: "label-left", inputWidth: 145},
-        {type: "calendar", name: "with_icon", dateFormat: "%Y-%m-%d", value: ""}
-    ];
-    formData2 = [
-        {type: "settings", position: "label-left", labelWidth: 10, inputWidth: 145},
-        {type: "calendar", label: "~", dateFormat: "%Y-%m-%d", value: ""}
-    ];
-    new dhtmlXForm("select_start_date", formData);
-    new dhtmlXForm("select_end_date", formData2);
+    var myCalendar;
+    dhtmlXCalendarObject.prototype.langData["kr"] = {
+        dateformat: '%Y-%m-%d / 09:00',
+        monthesFNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+        monthesSNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+        daysFNames: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+        daysSNames: ["일", "월", "화", "수", "목", "금", "토"],
+        weekstart: 1,
+        weekname: "w",
+        today: "Heute",
+        clear: "Reinigen"
+    };
+    myCalendar = new dhtmlXCalendarObject(["select_start_date", "select_end_date"]);
+    myCalendar.hideTime();
+    myCalendar.loadUserLanguage('kr');
 }
 
 let statusMap = ["status1", "status2", "status3", "status4", "status6", "status5", "status7"];
@@ -208,12 +219,11 @@ const startDateSelect = document.getElementById("select_start_date");
 const endDateSelect = document.getElementById("select_end_date");
 const paymentType = document.getElementsByName("payment_type");
 const serviceType = document.getElementsByName("service_type");
-
 const checkBox = document.getElementsByName("status");
 
 const statusText = [];
 const col = document.getElementById("status_area").getElementsByTagName("table")[0].rows[0].cells;
-for(let i = 0; i < col.length; i++) {
+for (let i = 0; i < col.length; i++) {
     statusText[i] = col[i].getElementsByTagName("span")[0];
 }
 
