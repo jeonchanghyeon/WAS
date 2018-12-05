@@ -66,7 +66,8 @@ select {
 }
 
 .select_start_date, .select_end_date {
-    width: 170px;
+    padding-left: 8px;
+    width: 161px;
     height: 28px;
     background: url(select_btn.png) no-repeat 95% 50%;
     border: hidden;
