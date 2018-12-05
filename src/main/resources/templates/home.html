@@ -3,11 +3,17 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
     <title>Please</title>
     <link rel="stylesheet" href="../home/home.css"/>
+    <link rel="stylesheet" type="text/css" href="../home/codebase/fonts/font_roboto/roboto.css"/>
+    <link rel="stylesheet" type="text/css" href="../home/codebase/dhtmlx.css"/>
+    <script src="../home/codebase/dhtmlx.js"></script>
 </head>
-<body>
+<body onload="calOnLoad();">
+
 <!-- Main Container -->
 <div class="container">
     <!-- Navigation -->
@@ -61,22 +67,18 @@
                         </tr>
                         <tr>
                             <th>기간</th>
-                            <td colspan="3"><select class="select_start_date" id="select_start_date">
-                                <option value=""></option>
-                                <!-- ...   -->
-                            </select>
-                                ~
-                                <select class="select_end_date" id="select_end_date">
-                                    <option value=""></option>
-                                    <!-- ...   -->
-                                </select></td>
+                            <td colspan="3">
+                                <input type="text" id="select_start_date" readonly="readonly" value="--"/>
+                                <span> ~ </span>
+                                <input type="text" id="select_end_date" readonly="readonly" value="--"/>
+                            </td>
                         </tr>
                         <tr>
                             <th>결제방법</th>
                             <td>
                                 <label>
-                                <input type="checkbox" name="payment_type" value="card" checked="checked"/>
-                                카드 </label>
+                                    <input type="checkbox" name="payment_type" value="card" checked="checked"/>
+                                    카드 </label>
                                 <label>
                                     <input type="checkbox" name="payment_type" value="cash" checked="checked"/>
                                     현금 </label>
@@ -87,8 +89,9 @@
                             <th> 서비스 종류</th>
                             <td>
                                 <label>
-                                <input type="checkbox" name="service_type" value="delivery_agent" checked="checked"/>
-                                배달대행 </label>
+                                    <input type="checkbox" name="service_type" value="delivery_agent"
+                                           checked="checked"/>
+                                    배달대행 </label>
                                 <label>
                                     <input type="checkbox" name="service_type" value="share" checked="checked"/>
                                     공유콜 </label>
@@ -154,40 +157,42 @@
             </div>
         </form>
         <!-- 상태 -->
-        <section class="status_area">
+        <section class="status_area" id="status_area">
             <table>
-                <th>
-                    <input type="checkbox" checked="checked" id="statusAll"/>
-                    <label>전체 </label>
-                    <span id="statusTextAll">0</span></th>
-                <td>
-                    <input type="checkbox" checked="checked" id="status1"/>
-                    <label>접수 </label>
-                    <span id="statusText1">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status2"/>
-                    <label>배차 </label>
-                    <span id="statusText2">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status3"/>
-                    <label>픽업 </label>
-                    <span id="statusText3">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status4"/>
-                    <label>완료 </label>
-                    <span id="statusText4">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status5"/>
-                    <label>대기 </label>
-                    <span id="statusText5">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status6"/>
-                    <label>취소 </label>
-                    <span id="statusText6">0</span></td>
-                <td>
-                    <input type="checkbox" checked="checked" id="status7"/>
-                    <label>공유 </label>
-                    <span id="statusText7">0</span></td>
+                <tr>
+                    <th>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>전체 </label>
+                        <span>0</span></th>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>접수 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>배차 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>픽업 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>완료 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>대기 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>취소 </label>
+                        <span>0</span></td>
+                    <td>
+                        <input type="checkbox" checked="checked" name="status"/>
+                        <label>공유 </label>
+                        <span>0</span></td>
+                </tr>
             </table>
         </section>
 
@@ -217,7 +222,7 @@
         </table>
     </section>
 </div>
-<script src="../home/home.js"/>
+<script src="../home/home.js"></script>
 <!-- Main Container Ends -->
 </body>
 </html>

@@ -10,6 +10,13 @@ Date.prototype.HHMM = function () {
     return (HH[1] ? HH : '0' + HH[0]) + ":" + (MM[1] ? MM : '0' + MM[0]);
 };
 
+String.prototype.toTimestampFormat = function () {
+    if (this.toString() === "--") return "-1";
+    const tmp = this.split(" / ");
+    const newDate = tmp[0] + " " + tmp[1] + ":00";
+    return newDate;
+};
+
 String.prototype.fillZero = function () {
     let zeroNum = 5 - this.length;
     if (zeroNum < 0) {
@@ -68,8 +75,8 @@ function resultJsSelector(obj) {
 
 function showSearchList() {
     let branchText = branchSelect.options[branchSelect.selectedIndex].text;
-    const startDateText = startDateSelect.options[startDateSelect.selectedIndex].text;
-    const endDateText = endDateSelect.options[endDateSelect.selectedIndex].text;
+    const startDateText = startDateSelect.value;
+    const endDateText = endDateSelect.value;
 
     if (branchSelect.selectedIndex === 0) {
         branchText = "-1";
@@ -88,8 +95,8 @@ function showSearchList() {
     const url =
         "status/orders?" +
         "branch=" + branchText +
-        "&start_date=" + startDateText +
-        "&end_date=" + endDateText +
+        "&start_date=" + startDateText.toTimestampFormat() +
+        "&end_date=" + endDateText.toTimestampFormat() +
         "&payment_type=" + paymentCheckedArray +
         "&service_type=" + serviceCheckedArray;
 
@@ -110,7 +117,7 @@ function resultJsSearchList(obj) {
             statusText[shareCallIndex].innerHTML = counts[numText + 1];
         }
         else {
-            statusText[i].innerHTML = counts[i - 1];
+            statusText[statusMapIndex[i]].innerHTML = counts[i - 1];
         }
     }
 
@@ -124,7 +131,6 @@ function resultJsSearchList(obj) {
         return;
     }
 
-
     for (let i = 0; i < size; i++) {
         const order = orders[i];
         const row = document.createElement("tr");
@@ -134,7 +140,7 @@ function resultJsSearchList(obj) {
             order.status = "공유콜";
         }
 
-        if (!checkBox[order.statusId].checked) {
+        if (!checkBox[statusMapIndex[order.statusId]].checked) {
             continue;
         }
 
@@ -185,7 +191,26 @@ function changeStatusCheckBox(idx, func) {
 }
 
 
+function calOnLoad() {
+    var myCalendar;
+    dhtmlXCalendarObject.prototype.langData["kr"] = {
+        dateformat: '%Y-%m-%d / 09:00',
+        monthesFNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+        monthesSNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+        daysFNames: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
+        daysSNames: ["일", "월", "화", "수", "목", "금", "토"],
+        weekstart: 1,
+        weekname: "w",
+        today: "Heute",
+        clear: "Reinigen"
+    };
+    myCalendar = new dhtmlXCalendarObject(["select_start_date", "select_end_date"]);
+    myCalendar.hideTime();
+    myCalendar.loadUserLanguage('kr');
+}
+
 let statusMap = ["status1", "status2", "status3", "status4", "status6", "status5", "status7"];
+let statusMapIndex = [0, 1, 2, 3, 4, 6, 5, 7];
 
 const container = document.getElementById("result_list");
 const distributorSelect = document.getElementById("select_distributor");
@@ -194,24 +219,17 @@ const startDateSelect = document.getElementById("select_start_date");
 const endDateSelect = document.getElementById("select_end_date");
 const paymentType = document.getElementsByName("payment_type");
 const serviceType = document.getElementsByName("service_type");
+const checkBox = document.getElementsByName("status");
 
-const checkBox = [];
 const statusText = [];
-
-checkBox[0] = document.getElementById("statusAll");
-statusText[0] = document.getElementById("statusTextAll");
-
-const numCheckBox = 8
-const numText = 8
-const shareCallIndex = 7
-
-for (let i = 1; i < numCheckBox; i++) {
-    checkBox[i] = document.getElementById("status" + i);
+const col = document.getElementById("status_area").getElementsByTagName("table")[0].rows[0].cells;
+for (let i = 0; i < col.length; i++) {
+    statusText[i] = col[i].getElementsByTagName("span")[0];
 }
 
-for (let i = 1; i < numText; i++) {
-    statusText[i] = document.getElementById("statusText" + i);
-}
+const numCheckBox = 8;
+const numText = 8;
+const shareCallIndex = 7;
 
 for (let i = 0; i < numCheckBox; i++) {
     checkBox[i].onclick = changeStatusCheckBox(i, showSearchList)
@@ -219,3 +237,4 @@ for (let i = 0; i < numCheckBox; i++) {
 
 distributorSelect.onchange = changeDistributeSelect;
 document.forms[0].onsubmit = showSearchList;
+

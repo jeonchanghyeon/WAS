@@ -37,8 +37,8 @@ class StatusDAO {
         try {
             val returnVal = mutableListOf<String>()
             val sql = "SELECT name FROM (SELECT Id FROM users WHERE `group` = 5 and topUserId in (SELECT userId FROM " +
-                        "(SELECT id FROM userInfos WHERE name = '$distributorName') as a LEFT OUTER JOIN users as f ON a.id = f.id )) as c " +
-                        "LEFT OUTER JOIN userInfos as d ON c.id = d.id"
+                    "(SELECT id FROM userInfos WHERE name = '$distributorName') as a LEFT OUTER JOIN users as f ON a.id = f.id )) as c " +
+                    "LEFT OUTER JOIN userInfos as d ON c.id = d.id"
             val rs = template.queryForRowSet(sql)
 
             while (rs.next()) {
@@ -61,22 +61,22 @@ class StatusDAO {
             var isValidService = false
 
             var paymentSql = "and paymentType in ("
-            for(i in 0 until condition.payment_type.size) {
+            for (i in 0 until condition.payment_type.size) {
                 isValidPayment = isValidPayment || condition.payment_type[i]
-                if(condition.payment_type[i]) paymentSql += "${i+1}, "
+                if (condition.payment_type[i]) paymentSql += "${i + 1}, "
             }
-            if(paymentSql !== "") paymentSql = paymentSql.substringBeforeLast(", ") + ")"
+            if (paymentSql !== "") paymentSql = paymentSql.substringBeforeLast(", ") + ")"
 
             var serviceSql = "and isShared in ("
-            for(i in 0 until condition.service_type.size) {
+            for (i in 0 until condition.service_type.size) {
                 isValidService = isValidService || condition.service_type[i]
-                if(condition.service_type[i]) serviceSql += "'${i == 1}', "
+                if (condition.service_type[i]) serviceSql += "'${i == 1}', "
             }
-            if(serviceSql !== "") serviceSql = serviceSql.substringBeforeLast(", ") + ")"
+            if (serviceSql !== "") serviceSql = serviceSql.substringBeforeLast(", ") + ")"
 
-            if(isValidPayment && isValidService) {
-                var sql = "SELECT * FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? "  +
-                            "$paymentSql $serviceSql and branchId in (SELECT id FROM userInfos WHERE name = ?)"
+            if (isValidPayment && isValidService) {
+                var sql = "SELECT * FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? " +
+                        "$paymentSql $serviceSql and branchId in (SELECT id FROM userInfos WHERE name = ?)"
                 sql = "SELECT * FROM ($sql) as t1 LEFT OUTER JOIN (SELECT id as id2, name as shopName FROM userInfos) as t2 ON shopId = id2"
                 sql = "SELECT * FROM ($sql) as t3 LEFT OUTER JOIN (SELECT id as id3, name as riderName FROM userInfos) as t4 ON riderId = id3"
                 sql = "SELECT * FROM ($sql) as t5 LEFT OUTER JOIN (SELECT id as id4, label as paymentLabel FROM paymentTypes) as t6 ON paymentType = id4"
