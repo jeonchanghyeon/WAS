@@ -65,6 +65,13 @@ select {
     background: url(select_btn.png) no-repeat 95% 50%;
 }
 
+.select_start_date, .select_end_date {
+    width: 170px;
+    height: 28px;
+    background: url(select_btn.png) no-repeat 95% 50%;
+    border: hidden;
+}
+
 select::-ms-expand {
     display: none;
 }
@@ -133,15 +140,16 @@ select option {
 
 .setting_area input {
     background-color: #373737;
-    color: #ff7100;
 }
 
 .setting_area input[type="text"], input[type="search"] {
+    color: #FFFFFF;
     border: hidden;
     height: 28px;
 }
 
 .setting_area input[type="button"], input[type="submit"] {
+    color: #ff7100;
     font-size: 14px;
     outline: hidden;
 }
@@ -272,19 +280,19 @@ select option {
     width: 100%;
     height: 30px;
     background-color: #444444;
-    color: #ff7100;
     float: left;
 }
 
 .status_area label {
-    /*position: relative;*/
+    position: relative;
     top: -4px;
     color: #FFFFFF;
     font-size: 12px;
 }
 
 .status_area span {
-    /*position: relative;*/
+    position: relative;
+    color: #ff7100;
     top: -4px;
 }
 
