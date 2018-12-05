@@ -8,15 +8,11 @@
 
     <title>Please</title>
     <link rel="stylesheet" href="../home/home.css"/>
-
-
     <link rel="stylesheet" type="text/css" href="../home/codebase/fonts/font_roboto/roboto.css"/>
-    <link rel="stylesheet" type="text/css" href="../home/codebase/dhtmlxcalendar.css"/>
-
-    <script src="../home/codebase/dhtmlxcalendar.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="../home/codebase/dhtmlx.css"/>
+    <script src="../home/codebase/dhtmlx.js"></script>
 </head>
-<body>
+<body onload="calOnLoad();">
 
 <!-- Main Container -->
 <div class="container">
@@ -72,12 +68,8 @@
                         <tr>
                             <th>기간</th>
                             <td colspan="3">
-                                <div class="select_start_date">
-                                    <input type="button"  id="select_start_date"/>
-                                    <div id="tmp" style="position:relative;height:350px;"></div>
-                                </div>
-                                ~
-                                <input type="button" class="select_end_date" id="select_end_date"/>
+                                <div id="select_start_date"></div>
+                                <div id="select_end_date"></div>
                                 </td>
                         </tr>
                         <tr>

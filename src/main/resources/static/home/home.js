@@ -184,12 +184,18 @@ function changeStatusCheckBox(idx, func) {
 }
 
 
-function calOnLoad(name) {
-    var myCalendar = new dhtmlXCalendarObject(name);
-    console.log("show calendar");
-    myCalendar.setDate(new Date(2013,2,1,16,0));
-    myCalendar.show();
-
+function calOnLoad() {
+    var myForm, formData, formData2;
+    formData = [
+        {type: "settings", position: "label-left", inputWidth: 145},
+        {type: "calendar", name: "with_icon", dateFormat: "%Y-%m-%d", value: ""}
+    ];
+    formData2 = [
+        {type: "settings", position: "label-left", labelWidth: 10, inputWidth: 145},
+        {type: "calendar", label: "~", dateFormat: "%Y-%m-%d", value: ""}
+    ];
+    new dhtmlXForm("select_start_date", formData);
+    new dhtmlXForm("select_end_date", formData2);
 }
 
 let statusMap = ["status1", "status2", "status3", "status4", "status6", "status5", "status7"];
@@ -219,8 +225,6 @@ for (let i = 0; i < numCheckBox; i++) {
     checkBox[i].onclick = changeStatusCheckBox(i, showSearchList)
 }
 
-document.getElementById("select_start_date").onclick = function(){calOnLoad("tmp")};
-document.getElementById("select_end_date").onclick = function(){calOnLoad("select_end_date")};
 distributorSelect.onchange = changeDistributeSelect;
 document.forms[0].onsubmit = showSearchList;
 
