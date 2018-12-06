@@ -33,6 +33,9 @@ function ajax(url, method, func, content = null) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
 
+
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
     xhr.onreadystatechange = function () {
         if (this.status === 200) {
             try {
@@ -209,6 +212,23 @@ function calOnLoad() {
     myCalendar.loadUserLanguage('kr');
 }
 
+function useExtension() {
+    const url = "status/branch-settings";
+    const formData = new FormData(this);
+    let jsonObject = {};
+
+    for (const [key, value]  of formData.entries()) {
+        jsonObject[key] = value;
+    }
+
+    ajax(url, "POST",
+        function (obj) {
+            console.log(obj)
+        }
+        , JSON.stringify(jsonObject));
+    return false;
+}
+
 let statusMap = ["status1", "status2", "status3", "status4", "status6", "status5", "status7"];
 let statusMapIndex = [0, 1, 2, 3, 4, 6, 5, 7];
 
@@ -220,6 +240,10 @@ const endDateSelect = document.getElementById("select_end_date");
 const paymentType = document.getElementsByName("payment_type");
 const serviceType = document.getElementsByName("service_type");
 const checkBox = document.getElementsByName("status");
+
+const formDefaultStart = document.getElementById("form_default_start");
+const formDelayTime = document.getElementById("form_delay_time");
+const formAdditionalCost = document.getElementById("form_additional_cost");
 
 const statusText = [];
 const col = document.getElementById("status_area").getElementsByTagName("table")[0].rows[0].cells;
@@ -238,3 +262,6 @@ for (let i = 0; i < numCheckBox; i++) {
 distributorSelect.onchange = changeDistributeSelect;
 document.forms[0].onsubmit = showSearchList;
 
+formDefaultStart.onsubmit = useExtension;
+formDelayTime.onsubmit = useExtension;
+formAdditionalCost.onsubmit = useExtension;

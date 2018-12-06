@@ -31,7 +31,8 @@
             </tr>
         </table>
         <div class="point_area">
-			<span id="point" th:text="${point}">
+            <!--/*@thymesVar id="point" type="com.login.add.controller.StatusController"*/-->
+            <span id="point" th:text="${point}">
 		  -1
 				</span>
         </div>
@@ -52,11 +53,10 @@
                         <tr>
                             <th>총판명</th>
                             <td><select class="select_distributor" id="select_distributor">
-                                <option value=""> --</option>
                                 <!--/*@thymesVar id="distributors" type="com.login.add.controller.StatusController"*/-->
                                 <option th:each="distributor : ${distributors}"
                                         th:value="${distributor}"
-                                        th:utext="${distributor}"></option>
+                                        th:utext="${distributor}"/>
                             </select>
                             </td>
                             <th>지사명</th>
@@ -122,45 +122,45 @@
 
             <!-- 추가기능-->
             <div class="extension_area">
+                <form action="status/asdf" method="POST" id="form_default_start"/>
+                <form action="status/asdf" method="POST" id="form_delay_time"/>
+                <form action="status/asdf" method="POST" id="form_additional_cost"/>
                 <table>
                     <tr>
-                        <form action="" method="get">
-                            <th>기본출발</th>
-                            <td><select id="select_default_start">
+                        <th>기본출발</th>
+                        <td><select id="select_default_start" form="form_default_start" name="default_start">
+                            <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
+                                    th:text="${n} + 분"/>
+                        </select><label for="select_default_start">분</label>
+                        </td>
+                        <th><input type="submit" value="적용" class="btn_small" form="form_default_start"/>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>추가지연</th>
+                        <td>
+                            <select id="select_delay_time" form="form_delay_time" name="delay_time">
                                 <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
-                                        th:text="${n} + 분"></option>
-                            </select><label for="select_default_start">분</label>
-                            </td>
-                            <th><input type="submit" value="적용" class="btn_small"/>
-                            </th>
-                        </form>
+                                        th:text="${n} + 분"/>
+                            </select><label for="select_delay_time">분</label>
+                        </td>
+                        <th><input type="submit" value="적용" class="btn_small" form="form_delay_time"/>
+                        </th>
                     </tr>
                     <tr>
-                        <form action="" method="get">
-                            <th>추가지연</th>
-                            <td>
-                                <select id="select_delay_time">
-                                    <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
-                                            th:text="${n} + 분"></option>
-                                </select><label for="select_delay_time">분</label>
-                            </td>
-                            <th><input type="submit" value="적용" class="btn_small"/>
-                            </th>
-                        </form>
-                    </tr>
-                    <tr>
-                        <form action="" method="get">
-                            <th>할증</th>
-                            <td><p>
-                                <input type="text" id="cost_won"/><label for="cost_won">원 </label>
+                        <th>할증</th>
+                        <td>
+                            <p>
+                                <input type="text" id="cost_won" form="form_additional_cost" name="cost_won"/>
+                                <label for="cost_won">원 </label>
                             </p>
-                                <p>
-                                    <input type="text" id="cost_percent"/><label for="cost_percent">% </label>
-                                </p>
-                            </td>
-                            <th><input type="submit" class="btn_big" value="적용"/>
-                            </th>
-                        </form>
+                            <p>
+                                <input type="text" id="cost_percent" form="form_additional_cost" name="cost_percent"/>
+                                <label for="cost_percent">% </label>
+                            </p>
+                        </td>
+                        <th><input type="submit" class="btn_big" value="적용" form="form_additional_cost"/>
+                        </th>
                     </tr>
                 </table>
             </div>
@@ -171,36 +171,36 @@
             <table>
                 <tr>
                     <th>
-                        <input type="checkbox" checked="checked" name="status"/>
-                        <label>전체 </label>
+                        <input type="checkbox" checked="checked" name="status" id="checkbox_all"/>
+                        <label for="checkbox_all">전체</label>
                         <span>0</span></th>
                     <td>
-                        <input type="checkbox" checked="checked" name="status"/>
-                        <label>접수 </label>
+                        <input type="checkbox" checked="checked" name="status" id="checkbox_received"/>
+                        <label for="checkbox_received">접수</label>
                         <span>0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status"/>
-                        <label>배차 </label>
+                        <input type="checkbox" checked="checked" name="status" id="checkbox_allocated"/>
+                        <label for="checkbox_allocated">배차</label>
                         <span>0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status"/>
-                        <label>픽업 </label>
+                        <input type="checkbox" checked="checked" name="status" id="checkbox_pickup"/>
+                        <label for="checkbox_pickup">픽업</label>
                         <span>0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status"/>
-                        <label>완료 </label>
+                        <input type="checkbox" checked="checked" name="status" id="checkbox_completed"/>
+                        <label for="checkbox_completed">완료</label>
                         <span>0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status"/>
-                        <label>대기 </label>
+                        <input type="checkbox" checked="checked" name="status" id="checkbox_waiting"/>
+                        <label for="checkbox_waiting">대기</label>
                         <span>0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status"/>
-                        <label>취소 </label>
+                        <input type="checkbox" checked="checked" name="status" id="checkbox_canceled"/>
+                        <label for="checkbox_canceled">취소</label>
                         <span>0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status"/>
-                        <label>공유 </label>
+                        <input type="checkbox" checked="checked" name="status" id="checkbox_shared"/>
+                        <label for="checkbox_shared">공유</label>
                         <span>0</span></td>
                 </tr>
             </table>
