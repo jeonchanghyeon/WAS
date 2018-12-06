@@ -5,7 +5,10 @@ import org.springframework.jdbc.core.JdbcTemplate
 
 fun JdbcTemplate.queryForJSONObject(query: String, vararg args: Any): JSONObject? {
     try {
-        return queryForObject(query, JSONObject::class.java, args)
+        println("param : ${args.toList()}")
+        var str = queryForObject(query, args, String::class.java)
+        println(str)
+        return  JSONObject(str)
     } catch (e: Exception) {
         e.printStackTrace()
     }

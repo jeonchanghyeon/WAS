@@ -12,7 +12,6 @@ import java.sql.Timestamp
 
 @Repository
 class StatusDAO {
-
     @Autowired
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
@@ -22,6 +21,7 @@ class StatusDAO {
             val returnVal = mutableListOf<String>()
             val sql = "SELECT name FROM (SELECT Id FROM users WHERE `group` = 6) as a LEFT OUTER JOIN (SELECT Id, name FROM userInfos) as b ON a.id = b.id"
             val rs = template.queryForRowSet(sql)
+            println("tmp3: ${getOrders(JSONObject())}")
 
             while (rs.next()) {
                 returnVal.add(rs.getString("name") ?: "")
@@ -124,7 +124,13 @@ class StatusDAO {
         return null
     }
 
-    fun searchOrders(data: JSONObject): JSONObject? {
-        return template.queryForJSONObject("CALL 프로시저명(?)", data.toString())
+    fun getOrders(data: JSONObject): JSONObject? {
+        var tmp: JSONObject = JSONObject()
+        var tmp2: JSONObject?
+
+        println("toString : ${tmp.toString()}")
+        tmp2 = template.queryForJSONObject("CALL getUser(?, ?)", "6874b3d4aa9c8473f50fa3a2a29529f2", 1)
+        println("tmp2:  + $tmp2")
+        return template.queryForJSONObject("CALL getOrder(?, ?)", "6874b3d4aa9c8473f50fa3a2a29529f2", 1)
     }
 }
