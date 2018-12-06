@@ -43,8 +43,9 @@
     <!-- Hero Section -->
     <div class="hero" id="hero">
         <!--  <section class="hero" id="hero">-->
-        <form action="home.html" method="GET">
-            <div class="setting_area">
+
+        <div class="setting_area">
+            <form action="home.html" method="GET">
                 <!-- 총판명, 지사명, 기간, 결제방법, 서비스 종류-->
                 <div class="condition_area">
                     <table>
@@ -68,16 +69,18 @@
                         <tr>
                             <th>기간</th>
                             <td colspan="3">
-                                <input type="text" class = "select_start_date" id="select_start_date" readonly="readonly" value="--"/>
+                                <input type="text" class="select_start_date" id="select_start_date" readonly="readonly"
+                                       value="--"/>
                                 <span> ~ </span>
-                                <input type="text" class = "select_end_date" id="select_end_date" readonly="readonly" value="--"/>
+                                <input type="text" class="select_end_date" id="select_end_date" readonly="readonly"
+                                       value="--"/>
                             </td>
                         </tr>
                         <tr>
                             <th>결제방법</th>
                             <td>
                                 <label>
-                                    <input type="checkbox" name="payment_type" value="card" checked="checked" />
+                                    <input type="checkbox" name="payment_type" value="card" checked="checked"/>
                                     카드 </label>
                                 <label>
                                     <input type="checkbox" name="payment_type" value="cash" checked="checked"/>
@@ -100,45 +103,6 @@
                     </table>
                 </div>
 
-                <!-- 추가기능-->
-                <div class="extension_area">
-                    <table>
-                        <tr>
-                            <th>기본출발</th>
-                            <td><select id="select_default_start">
-                                <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
-                                        th:text="${n} + 분"></option>
-                            </select><label for="select_default_start">분</label>
-                            </td>
-                            <th><input type="button" value="적용" class="btn_small"/>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>추가지연</th>
-                            <td>
-                                <select id="select_delay_time">
-                                    <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
-                                            th:text="${n} + 분"></option>
-                                </select><label for="select_delay_time">분</label>
-                            </td>
-                            <th><input type="button" value="적용" class="btn_small"/>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>할증</th>
-                            <td><p>
-                                <input type="text" id="cost_won"/><label for="cost_won">원 </label>
-                            </p>
-                                <p>
-                                    <input type="text" id="cost_percent"/><label for="cost_percent">% </label>
-                                </p>
-                            </td>
-                            <th><input type="button" class="btn_big" value="적용"/>
-                            </th>
-                        </tr>
-                    </table>
-                </div>
-
                 <!-- 순번 ... -->
                 <div class="feature_area">
                     <table>
@@ -154,8 +118,54 @@
                         </tr>
                     </table>
                 </div>
+            </form>
+
+            <!-- 추가기능-->
+            <div class="extension_area">
+                <table>
+                    <tr>
+                        <form action="" method="get">
+                            <th>기본출발</th>
+                            <td><select id="select_default_start">
+                                <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
+                                        th:text="${n} + 분"></option>
+                            </select><label for="select_default_start">분</label>
+                            </td>
+                            <th><input type="submit" value="적용" class="btn_small"/>
+                            </th>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form action="" method="get">
+                            <th>추가지연</th>
+                            <td>
+                                <select id="select_delay_time">
+                                    <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
+                                            th:text="${n} + 분"></option>
+                                </select><label for="select_delay_time">분</label>
+                            </td>
+                            <th><input type="submit" value="적용" class="btn_small"/>
+                            </th>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form action="" method="get">
+                            <th>할증</th>
+                            <td><p>
+                                <input type="text" id="cost_won"/><label for="cost_won">원 </label>
+                            </p>
+                                <p>
+                                    <input type="text" id="cost_percent"/><label for="cost_percent">% </label>
+                                </p>
+                            </td>
+                            <th><input type="submit" class="btn_big" value="적용"/>
+                            </th>
+                        </form>
+                    </tr>
+                </table>
             </div>
-        </form>
+        </div>
+
         <!-- 상태 -->
         <section class="status_area" id="status_area">
             <table>

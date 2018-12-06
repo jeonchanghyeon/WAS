@@ -214,11 +214,15 @@ select option {
 }
 
 .extension_area {
+    position: relative;
+    top: -180px;
+    left: 565px;
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 10px;
     padding-left: 10px;
     padding-right: 10px;
+    clear: both;
     float: left;
 }
 
@@ -249,15 +253,12 @@ select option {
 }
 
 .feature_area {
-    position: relative;
-    top: -50px;
     margin-left: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
-    padding: 5px 10px;
-    width: 535px;
+    padding: 5px 8px;
     clear: both;
-    /*float: left;*/
+    float: left;
 }
 
 .feature_area select {
@@ -370,8 +371,7 @@ select option {
         height: inherit;
     }
 
-    .feature_area {
+    .extension_area {
         position: static;
-        float: left;
     }
 }
