@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest
 class StatusController {
     @Autowired
     private lateinit var statusService: StatusService
-
     @Autowired
     private lateinit var pointService: PointService
 

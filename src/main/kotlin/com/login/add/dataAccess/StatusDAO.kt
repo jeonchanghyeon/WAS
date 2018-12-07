@@ -167,7 +167,7 @@ class StatusDAO {
         return null
     }
 
-    fun setBranchSettings(authKey: String, jsonOb: JSONObject, id: String): Int {
+    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): Int {
         var curSettings: JSONObject?
         val newSettings = JSONObject()
 
@@ -180,12 +180,15 @@ class StatusDAO {
 
         curSettings = result.get("branchSettings") as JSONObject
 
+        println("1")
+        println("curSetting ${curSettings.get("basicStartTime")}")
+        println("2")
         newSettings.put("id", id)
-        newSettings.put("basicStartTime", jsonOb.get("basicStartTime") ?: curSettings.get("basicStartTime"))
-        newSettings.put("delayTime", jsonOb.get("delayTime") ?: curSettings.get("delayTime"))
-        newSettings.put("extraCharge", jsonOb.get("extraCharge") ?: curSettings.get("extraCharge"))
-        newSettings.put("extraChargePercent", jsonOb.get("extraChargePercent") ?: curSettings.get("extraChargePercent"))
-        newSettings.put("enableOrderAccept", jsonOb.get("enableOrderAccept") ?: curSettings.get("enableOrderAccept"))
+        newSettings.put("basicStartTime", data["basicStartTime"] ?: curSettings.get("basicStartTime"))
+        newSettings.put("delayTime", data["delayTime"] ?: curSettings.get("delayTime"))
+        newSettings.put("extraCharge", data["extraCharge"] ?: curSettings.get("extraCharge"))
+        newSettings.put("extraChargePercent", data["extraChargePercent"] ?: curSettings.get("extraChargePercent"))
+        newSettings.put("enableOrderAccept", data["enableOrderAccept"] ?: curSettings.get("enableOrderAccept"))
 
         result = template.queryForJSONObject("CALL setBranchSettings(?, ?)", authKey, newSettings.toString())
         return result?.get("resultCode") as Int
