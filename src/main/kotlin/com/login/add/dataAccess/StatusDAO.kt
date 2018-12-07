@@ -1,6 +1,7 @@
 package com.login.add.dataAccess
 
 import com.login.add.persistence.queryForJSONObject
+import com.login.add.value.AuthInfo
 import com.login.add.value.Condition
 import com.login.add.value.Order
 import org.json.JSONArray
@@ -8,6 +9,7 @@ import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.support.rowset.SqlRowSet
 import org.springframework.stereotype.Repository
 import java.sql.Timestamp
 
@@ -17,35 +19,75 @@ class StatusDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun getDistributor(userId: String): List<String>? {
-        try {
-            val returnVal = mutableListOf<String>()
-            val sql = "SELECT name FROM (SELECT Id FROM users WHERE `group` = 6) as a LEFT OUTER JOIN (SELECT Id, name FROM userInfos) as b ON a.id = b.id"
-            val rs = template.queryForRowSet(sql)
+    fun getDistributor(authInfo: AuthInfo): MutableList<Map<String, Any?>>? {
+        val id = template.queryForRowSet("CALL getUId('${authInfo.id}')")
+        val userInfo: JSONObject? = template.queryForJSONObject("CALL getUser(?, ?)", authInfo.authKey, id)
+        val returnVal = mutableListOf<Map<String, Any?>>()
 
-            while (rs.next()) {
-                returnVal.add(rs.getString("name") ?: "")
+        try {
+            when (userInfo?.get("group") as Int) {
+                7 -> {
+                    val rs = template.queryForRowSet("SELECT id FROM users WHERE `group` = 6 and topUserId = ${authInfo.id}")
+                    while (rs.next()) {
+                        val childId = rs.getInt("id")
+                        val childName = template.queryForJSONObject("SELECT getUserNameById($childId)")
+                        returnVal.add(mapOf("id" to childId, "name" to childName.toString()))
+                    }
+                }
+                6 -> {
+                    val resName = template.queryForJSONObject("SELECT getUserNameById($id)")
+                    returnVal.add(mapOf("id" to id, "name" to resName.toString()))
+                }
+                5 -> {
+                    val topUserId = template.queryForJSONObject("SELECT getTopUserIdById($id)")
+                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 6 and topUserId = $topUserId", Int::class.java)
+                    val resName = template.queryForJSONObject("SELECT getUserNameById($topId)")
+                    returnVal.add(mapOf("id" to topId, "name" to resName.toString()))
+                }
+                else -> {
+                    val topUserId = template.queryForJSONObject("SELECT getTopUserIdById($id)")
+                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 5 and topUserId = $topUserId", Int::class.java)
+                    val topTopUserId = template.queryForJSONObject("SELECT getTopUserIdById($topId)")
+                    val topTopId = template.queryForObject("SELECT id FROM users WHERE `group` = 6 and topUserId = $topUserId", Int::class.java)
+                    val resName = template.queryForJSONObject("SELECT getUserNameById($topTopId)")
+                    returnVal.add(mapOf("id" to topTopId, "name" to resName.toString()))
+                }
             }
             return returnVal
-        } catch (e: Exception) {
+        } catch(e: Exception) {
             e.printStackTrace()
         }
         return null
     }
 
-    fun getBranchName(distributorName: String): List<String>? {
-        try {
-            val returnVal = mutableListOf<String>()
-            val sql = "SELECT name FROM (SELECT Id FROM users WHERE `group` = 5 and topUserId in (SELECT userId FROM " +
-                    "(SELECT id FROM userInfos WHERE name = '$distributorName') as a LEFT OUTER JOIN users as f ON a.id = f.id )) as c " +
-                    "LEFT OUTER JOIN userInfos as d ON c.id = d.id"
-            val rs = template.queryForRowSet(sql)
+    fun getBranchs(authInfo: AuthInfo, distributorId: Int): MutableList<Map<String, Any?>>? {
+        val id = template.queryForRowSet("CALL getUId('${authInfo.id}')")
+        val userInfo: JSONObject? = template.queryForJSONObject("CALL getUser(?, ?)", authInfo.authKey, id)
+        val returnVal = mutableListOf<Map<String, Any?>>()
 
-            while (rs.next()) {
-                returnVal.add(rs.getString("name") ?: "")
+        try {
+            when (userInfo?.get("group") as Int) {
+                in 6 .. 7 -> {
+                    val rs = template.queryForRowSet("SELECT id FROM users WHERE `group` = 5 and topUserId = ${distributorId}")
+                    while (rs.next()) {
+                        val childId = rs.getInt("id")
+                        val childName = template.queryForJSONObject("SELECT getUserNameById($childId)")
+                        returnVal.add(mapOf("id" to childId, "name" to childName.toString()))
+                    }
+                }
+                5 -> {
+                    val resName = template.queryForJSONObject("SELECT getUserNameById($id)")
+                    returnVal.add(mapOf("id" to id, "name" to resName.toString()))
+                }
+                else -> {
+                    val topUserId = template.queryForJSONObject("SELECT getTopUserIdById($id)")
+                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 5 and topUserId = $topUserId", Int::class.java)
+                    val resName = template.queryForJSONObject("SELECT getUserNameById($topId)")
+                    returnVal.add(mapOf("id" to topId, "name" to resName.toString()))
+                }
             }
             return returnVal
-        } catch (e: Exception) {
+        } catch(e: Exception) {
             e.printStackTrace()
         }
         return null

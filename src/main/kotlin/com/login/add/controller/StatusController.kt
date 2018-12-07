@@ -25,12 +25,22 @@ class StatusController {
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
         authInfo ?: return "login"
-        var distributors = statusService.getDistributor(authInfo.id, authInfo.group) ?: listOf("")
+
+        var branchs = mutableListOf<Map<String, Any?>>()
+
         var point = pointService.getPoint(authInfo.authKey)
+        var distributors = statusService.getDistributors(authInfo) ?: mutableListOf()
+        if(distributors.size == 1) {
+            branchs = statusService.getBranchs(authInfo, distributors[0]["id"] as Int) ?: mutableListOf()
+        }
+        else {
+            distributors.add(0, mapOf("id" to -1, "name" to "--"))
+            if(branchs.size != 1) branchs.add(0, mapOf("id" to -1, "name" to "--"))
+        }
 
         model.addAttribute("point", point)
         model.addAttribute("distributors", distributors)
-
+        model.addAttribute("branchs", branchs)
         return "home"
     }
 
@@ -53,8 +63,15 @@ class StatusController {
 
     @GetMapping(value = ["distributors"])
     @ResponseBody
-    fun getBranchList(@RequestParam(value = "distributorName") distributorName: String): List<String>? {
-        var branchs = statusService.getBranchName(distributorName) ?: listOf("")
+    fun getBranchList(request: HttpServletRequest, @RequestParam(value = "distributorId") distributorId: Int): MutableList<Map<String, Any?>>? {
+        val session = request.session
+        val authInfo = session.getAttribute("authInfo") as AuthInfo?
+        var resultCode: Int
+
+        var branchs = statusService.getBranchs(authInfo!!, distributorId) ?: mutableListOf()
+        if(branchs.size != 1) {
+            branchs.add(0, mapOf("id" to -1, "name" to "--"))
+        }
         return branchs
     }
 
