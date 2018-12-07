@@ -2,6 +2,7 @@ package com.login.add.service
 
 import com.login.add.dataAccess.StatusDAO
 import com.login.add.value.Condition
+import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.lang.Long.parseLong
@@ -39,5 +40,17 @@ class StatusService {
         )
 
         return statusDAO.searchOrders(condition)
+    }
+
+    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): Int {
+        val parsingData: JSONObject = JSONObject()
+
+        parsingData.put("basicStartTime", data["basicStartTime"])
+        parsingData.put("delayTime", data["delayTime"])
+        parsingData.put("extraCharge", data["extraCharge"])
+        parsingData.put("extraChargePercent", data["extraChargePercent"])
+        parsingData.put("enableOrderAccept", data["enableOrderAccept"])
+
+        return statusDAO.setBranchSettings(authKey, parsingData, id)
     }
 }

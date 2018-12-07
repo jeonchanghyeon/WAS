@@ -25,7 +25,6 @@ class StatusController {
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
         authInfo ?: return "login"
-
         var distributors = statusService.getDistributor(authInfo.id, authInfo.group) ?: listOf("")
         var point = pointService.getPoint(authInfo.authKey)
 
@@ -57,5 +56,21 @@ class StatusController {
     fun getBranchList(@RequestParam(value = "distributorName") distributorName: String): List<String>? {
         var branchs = statusService.getBranchName(distributorName) ?: listOf("")
         return branchs
+    }
+
+    @PostMapping(value = ["branch-settings/{id}"])
+    @ResponseBody
+    fun setBranchSettings(request: HttpServletRequest, @RequestBody data: MutableMap<String, Any?>, @PathVariable id: String): Map<String, Any?> {
+        val session = request.session
+        val authInfo = session.getAttribute("authInfo") as AuthInfo?
+        var resultCode: Int
+
+        return try {
+            resultCode = statusService.setBranchSettings(authInfo!!.authKey, data, id)
+            mapOf("resultCode" to resultCode)
+        } catch(e: Exception) {
+            e.printStackTrace()
+            mapOf("resultCode" to 777)
+        }
     }
 }

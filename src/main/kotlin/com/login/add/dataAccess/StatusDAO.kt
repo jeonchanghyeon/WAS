@@ -3,6 +3,7 @@ package com.login.add.dataAccess
 import com.login.add.persistence.queryForJSONObject
 import com.login.add.value.Condition
 import com.login.add.value.Order
+import org.json.JSONArray
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -21,7 +22,6 @@ class StatusDAO {
             val returnVal = mutableListOf<String>()
             val sql = "SELECT name FROM (SELECT Id FROM users WHERE `group` = 6) as a LEFT OUTER JOIN (SELECT Id, name FROM userInfos) as b ON a.id = b.id"
             val rs = template.queryForRowSet(sql)
-            println("tmp3: ${getOrders(JSONObject())}")
 
             while (rs.next()) {
                 returnVal.add(rs.getString("name") ?: "")
@@ -124,13 +124,26 @@ class StatusDAO {
         return null
     }
 
-    fun getOrders(data: JSONObject): JSONObject? {
-        var tmp: JSONObject = JSONObject()
-        var tmp2: JSONObject?
+    fun setBranchSettings(authKey: String, jsonOb: JSONObject, id: String): Int {
+        var curSettings: JSONObject?
+        val newSettings = JSONObject()
 
-        println("toString : ${tmp.toString()}")
-        tmp2 = template.queryForJSONObject("CALL getUser(?, ?)", "6874b3d4aa9c8473f50fa3a2a29529f2", 1)
-        println("tmp2:  + $tmp2")
-        return template.queryForJSONObject("CALL getOrder(?, ?)", "6874b3d4aa9c8473f50fa3a2a29529f2", 1)
+        var result = template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, id)
+        if(result?.get("resultCode") as Int != 0) {
+            println("setBranchSettings : ${result.get("description")}")
+            return result.get("resultCode") as Int
+        }
+
+        curSettings = result.get("branchSettings") as JSONObject
+
+        newSettings.put("id", id)
+        newSettings.put("basicStartTime", jsonOb.get("basicStartTime") ?: curSettings.get("basicStartTime"))
+        newSettings.put("delayTime", jsonOb.get("delayTime") ?: curSettings.get("delayTime"))
+        newSettings.put("extraCharge", jsonOb.get("extraCharge") ?: curSettings.get("extraCharge"))
+        newSettings.put("extraChargePercent", jsonOb.get("extraChargePercent") ?: curSettings.get("extraChargePercent"))
+        newSettings.put("enableOrderAccept", jsonOb.get("enableOrderAccept") ?: curSettings.get("enableOrderAccept"))
+
+        result = template.queryForJSONObject("CALL setBranchSettings(?, ?)", authKey, newSettings.toString())
+        return result?.get("resultCode") as Int
     }
 }
