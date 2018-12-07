@@ -108,68 +108,73 @@ function showSearchList() {
 }
 
 function resultJsSearchList(obj) {
-    const orders = obj["resultObject"]["orders"];
-    const counts = obj["resultObject"]["counts"];
+    try {
+        const orders = obj["resultObject"]["orders"];
+        const counts = obj["resultObject"]["counts"];
 
-    container.innerHTML = '';
-    const size = orders.length;
+        container.innerHTML = '';
+        const size = orders.length;
 
-    statusText[0].innerHTML = size;
-    for (let i = 1; i < numText; i++) {
-        if (i === shareCallIndex) {
-            statusText[shareCallIndex].innerHTML = counts[numText + 1];
+        statusText[0].innerHTML = size;
+        for (let i = 1; i < numText; i++) {
+            if (i === shareCallIndex) {
+                statusText[shareCallIndex].innerHTML = counts[numText + 1];
+            }
+            else {
+                statusText[statusMapIndex[i]].innerHTML = counts[i - 1];
+            }
         }
-        else {
-            statusText[statusMapIndex[i]].innerHTML = counts[i - 1];
+
+        if (size === 0) {
+            throw new Error("데이터가 존재하지 않습니다.")
         }
+
+        for (let i = 0; i < size; i++) {
+            const order = orders[i];
+            const row = document.createElement("tr");
+
+            if (order.shared === "true") {
+                order.statusId = shareCallIndex;
+                order.status = "공유콜";
+            }
+
+            if (!checkBox[statusMapIndex[order.statusId]].checked) {
+                continue;
+            }
+
+            const text = [
+                order.id.toString().fillZero(),
+                (new Date(order.createDate)).mmdd() + "-" + (new Date(order.createDate)).HHMM(),
+                order.shop,
+                order.status,
+                (new Date(order.createDate)).HHMM(),
+                (new Date(order.allocateDate)).HHMM(),
+                (new Date(order.pickupDate)).HHMM(),
+                (new Date(order.completeDate)).HHMM(),
+                (new Date(order.cancelDate)).HHMM(),
+                order.deliveryCost.toString().numberWithCommas(),
+                "0",    //추가 대행료(계산필요)
+                order.riderName,
+                order.paymentType,
+                order.requests];
+
+            for (let j = 0; j < text.length; j++) {
+                const col = document.createElement("td");
+                col.innerHTML = text[j];
+                col.className = statusMap[order.statusId - 1];
+                row.appendChild(col);
+            }
+            container.appendChild(row)
+        }
+
     }
+    catch (error) {
+        console.log(error.message);
 
-    if (size === 0) {
-        if (branchSelect.selectedIndex !== 0) {
-            const td = document.createElement("td");
-            td.colSpan = 14;
-            td.innerHTML = "데이터가 존재하지 않습니다.";
-            container.appendChild(td);
-        }
-        return;
-    }
-
-    for (let i = 0; i < size; i++) {
-        const order = orders[i];
-        const row = document.createElement("tr");
-
-        if (order.shared === "true") {
-            order.statusId = shareCallIndex;
-            order.status = "공유콜";
-        }
-
-        if (!checkBox[statusMapIndex[order.statusId]].checked) {
-            continue;
-        }
-
-        const text = [
-            order.id.toString().fillZero(),
-            (new Date(order.createDate)).mmdd() + "-" + (new Date(order.createDate)).HHMM(),
-            order.shop,
-            order.status,
-            (new Date(order.createDate)).HHMM(),
-            (new Date(order.allocateDate)).HHMM(),
-            (new Date(order.pickupDate)).HHMM(),
-            (new Date(order.completeDate)).HHMM(),
-            (new Date(order.cancelDate)).HHMM(),
-            order.deliveryCost.toString().numberWithCommas(),
-            "0",    //추가 대행료(계산필요)
-            order.riderName,
-            order.paymentType,
-            order.requests];
-
-        for (let j = 0; j < text.length; j++) {
-            const col = document.createElement("td");
-            col.innerHTML = text[j];
-            col.className = statusMap[order.statusId - 1];
-            row.appendChild(col);
-        }
-        container.appendChild(row)
+        const td = document.createElement("td");
+        td.colSpan = 14;
+        td.innerHTML = error.message;
+        container.appendChild(td);
     }
 }
 
@@ -212,23 +217,33 @@ function calOnLoad() {
     myCalendar.loadUserLanguage('kr');
 }
 
-function useExtension() {
-    const branchId = branchSelect.options[branchSelect.selectedIndex].value;
-    const formData = new FormData(this);
-    const url = "status/branch-settings/" + branchId;
+function postOnSubmit(action, func) {
+    return function () {
+        try {
+            const formData = new FormData(this);
 
-    let jsonObject = {};
+            let jsonObject = {};
+            for (const [key, value]  of formData.entries()) {
+                jsonObject[key] = value;
+            }
 
-    for (const [key, value]  of formData.entries()) {
-        jsonObject[key] = value;
-    }
+            ajax(action, "POST", func, JSON.stringify(jsonObject));
 
-    ajax(url, "POST",
-        function (obj) {
-            console.log(obj)
+        } catch (error) {
+            console.log(error.message);
         }
-        , JSON.stringify(jsonObject));
-    return false;
+
+        return false;
+    }
+}
+
+function getCurrentBranchId() {
+    try {
+        return branchSelect.options[branchSelect.selectedIndex].value;
+    } catch (e) {
+        console.log(e.message);
+        return ""
+    }
 }
 
 let statusMap = ["status1", "status2", "status3", "status4", "status6", "status5", "status7"];
@@ -247,6 +262,17 @@ const formDefaultStart = document.getElementById("form_default_start");
 const formDelayTime = document.getElementById("form_delay_time");
 const formAdditionalCost = document.getElementById("form_additional_cost");
 
+const selectDefaultStart = document.getElementById("select_default_start");
+const selectDelayTime = document.getElementById("select_delay_time");
+
+selectDelayTime.onchange = selectDefaultStart.onchange = function () {
+    let element = this;
+    for (let i = 0; i < element.labels.length; i++) {
+        element.labels[i].style.color = "white";
+    }
+    element.style.color = "red";
+};
+
 const statusText = [];
 const col = document.getElementById("status_area").getElementsByTagName("table")[0].rows[0].cells;
 for (let i = 0; i < col.length; i++) {
@@ -264,6 +290,22 @@ for (let i = 0; i < numCheckBox; i++) {
 distributorSelect.onchange = changeDistributeSelect;
 document.forms[0].onsubmit = showSearchList;
 
-formDefaultStart.onsubmit = useExtension;
-formDelayTime.onsubmit = useExtension;
-formAdditionalCost.onsubmit = useExtension;
+formDefaultStart.onsubmit = postOnSubmit("status/branch-settings/" + getCurrentBranchId(), function () {
+    let element = selectDefaultStart;
+    for (let i = 0; i < element.labels.length; i++) {
+        element.labels[i].style.color = "#c1c1c1";
+    }
+    element.style.color = "#FFFFFF";
+});
+
+formDelayTime.onsubmit = postOnSubmit("status/branch-settings/" + getCurrentBranchId(), function () {
+    let element = selectDelayTime;
+    for (let i = 0; i < element.labels.length; i++) {
+        element.labels[i].style.color = "#c1c1c1";
+    }
+    element.style.color = "#FFFFFF";
+});
+
+formAdditionalCost.onsubmit = postOnSubmit("status/branch-settings/" + getCurrentBranchId(), function () {
+
+})

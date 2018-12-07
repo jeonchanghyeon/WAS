@@ -52,18 +52,21 @@
                     <table>
                         <tr>
                             <th>총판명</th>
-                            <td><select class="select_distributor" id="select_distributor">
-                                <option value=""> --</option>
-                                <!--/*@thymesVar id="distributors" type="com.login.add.controller.StatusController"*/-->
-                                <option th:each="distributor : ${distributors}"
-                                        th:value="${distributor}"
-                                        th:utext="${distributor}"/>
-                            </select>
+                            <td>
+                                <select class="select_distributor" id="select_distributor">
+                                    <!--/*@thymesVar id="distributors" type="List<Map<String,String>>"*/-->
+                                    <!--<option th:each="distributor : ${distributors}"-->
+                                    <!--th:value="${distributor.get('id')}"-->
+                                    <!--th:utext="${distributor.get('name')}"/>-->
+                                </select>
                             </td>
                             <th>지사명</th>
                             <td>
                                 <select class="select_branch" id="select_branch">
-                                    <option value="">--</option>
+                                    <!--/*@thymesVar id="branchs" type="List<Map<String,String>>"*/-->
+                                    <option th:each="branch : ${branchs}"
+                                            th:value="${branch.get('id')}"
+                                            th:utext="${branch.get('name')}"/>
                                 </select>
                             </td>
                         </tr>
@@ -123,27 +126,31 @@
 
             <!-- 추가기능-->
             <div class="extension_area">
-                <form action="status/asdf" method="POST" id="form_default_start"/>
-                <form action="status/asdf" method="POST" id="form_delay_time"/>
-                <form action="status/asdf" method="POST" id="form_additional_cost"/>
+                <form action="status/branch-settings" method="POST" id="form_default_start"/>
+                <form action="status/branch-settings" method="POST" id="form_delay_time"/>
+                <form action="status/branch-settings" method="POST" id="form_additional_cost"/>
                 <table>
                     <tr>
-                        <th>기본출발</th>
+                        <th>
+                            <label for="select_default_start">기본출발</label>
+                        </th>
                         <td><select id="select_default_start" form="form_default_start" name="default_start">
                             <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
                                     th:text="${n} + 분"/>
-                        </select><label for="select_default_start">분</label>
+                        </select><span>분</span>
                         </td>
                         <th><input type="submit" value="적용" class="btn_small" form="form_default_start"/>
                         </th>
                     </tr>
                     <tr>
-                        <th>추가지연</th>
+                        <th>
+                            <label for="select_delay_time">추가지연</label>
+                        </th>
                         <td>
                             <select id="select_delay_time" form="form_delay_time" name="delay_time">
                                 <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
                                         th:text="${n} + 분"/>
-                            </select><label for="select_delay_time">분</label>
+                            </select><span>분</span>
                         </td>
                         <th><input type="submit" value="적용" class="btn_small" form="form_delay_time"/>
                         </th>
@@ -153,11 +160,11 @@
                         <td>
                             <p>
                                 <input type="text" id="cost_won" form="form_additional_cost" name="cost_won"/>
-                                <label for="cost_won">원 </label>
+                                <span>원</span>
                             </p>
                             <p>
                                 <input type="text" id="cost_percent" form="form_additional_cost" name="cost_percent"/>
-                                <label for="cost_percent">% </label>
+                                <span>%</span>
                             </p>
                         </td>
                         <th><input type="submit" class="btn_big" value="적용" form="form_additional_cost"/>

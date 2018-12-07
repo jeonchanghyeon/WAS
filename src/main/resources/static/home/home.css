@@ -235,8 +235,8 @@ select option {
     padding-bottom: 6px;
 }
 
-.extension_area label {
-    padding-left: 7px;
+.extension_area span {
+    margin-left: 7px;
 }
 
 .extension_area th {
