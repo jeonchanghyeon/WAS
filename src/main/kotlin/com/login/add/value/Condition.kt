@@ -3,7 +3,7 @@ package com.login.add.value
 import java.sql.Timestamp
 
 data class Condition(
-        val branch: String,
+        val branchId: String,
         val start_date: Timestamp,
         val end_date: Timestamp,
         val payment_type: Array<Boolean>,

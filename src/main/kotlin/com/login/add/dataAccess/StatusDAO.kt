@@ -96,7 +96,7 @@ class StatusDAO {
         return null
     }
 
-    fun searchOrders(condition: Condition): Map<String, Any>? {
+    fun searchOrders(authInfo: AuthInfo, condition: Condition): Map<String, Any>? {
         try {
             val returnValue = mutableMapOf<String, Any>()
             var orders = mutableListOf<Order>()
@@ -121,7 +121,7 @@ class StatusDAO {
 
             if (isValidPayment && isValidService) {
                 var sql = "SELECT * FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? " +
-                        "$paymentSql $serviceSql and branchId in (SELECT id FROM userInfos WHERE name = ?)"
+                        "$paymentSql $serviceSql and branchId = ?"
                 sql = "SELECT * FROM ($sql) as t1 LEFT OUTER JOIN (SELECT id as id2, name as shopName FROM userInfos) as t2 ON shopId = id2"
                 sql = "SELECT * FROM ($sql) as t3 LEFT OUTER JOIN (SELECT id as id3, name as riderName FROM userInfos) as t4 ON riderId = id3"
                 sql = "SELECT * FROM ($sql) as t5 LEFT OUTER JOIN (SELECT id as id4, label as paymentLabel FROM paymentTypes) as t6 ON paymentType = id4"
@@ -133,7 +133,7 @@ class StatusDAO {
                         condition.start_date,
                         condition.end_date,
                         condition.delay_time,
-                        condition.branch
+                        condition.branchId
                 )
 
                 while (rs.next()) {
@@ -169,7 +169,7 @@ class StatusDAO {
         return null
     }
 
-    fun setBranchSettings(authKey: String, jsonOb: JSONObject, id: String): Int {
+    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): Int {
         var curSettings: JSONObject?
         val newSettings = JSONObject()
 
@@ -181,12 +181,15 @@ class StatusDAO {
 
         curSettings = result.get("branchSettings") as JSONObject
 
+        println("1")
+        println("curSetting ${curSettings.get("basicStartTime")}")
+        println("2")
         newSettings.put("id", id)
-        newSettings.put("basicStartTime", jsonOb.get("basicStartTime") ?: curSettings.get("basicStartTime"))
-        newSettings.put("delayTime", jsonOb.get("delayTime") ?: curSettings.get("delayTime"))
-        newSettings.put("extraCharge", jsonOb.get("extraCharge") ?: curSettings.get("extraCharge"))
-        newSettings.put("extraChargePercent", jsonOb.get("extraChargePercent") ?: curSettings.get("extraChargePercent"))
-        newSettings.put("enableOrderAccept", jsonOb.get("enableOrderAccept") ?: curSettings.get("enableOrderAccept"))
+        newSettings.put("basicStartTime", data["basicStartTime"] ?: curSettings.get("basicStartTime"))
+        newSettings.put("delayTime", data["delayTime"] ?: curSettings.get("delayTime"))
+        newSettings.put("extraCharge", data["extraCharge"] ?: curSettings.get("extraCharge"))
+        newSettings.put("extraChargePercent", data["extraChargePercent"] ?: curSettings.get("extraChargePercent"))
+        newSettings.put("enableOrderAccept", data["enableOrderAccept"] ?: curSettings.get("enableOrderAccept"))
 
         result = template.queryForJSONObject("CALL setBranchSettings(?, ?)", authKey, newSettings.toString())
         return result?.get("resultCode") as Int

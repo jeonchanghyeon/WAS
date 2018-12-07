@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest
 class StatusController {
     @Autowired
     private lateinit var statusService: StatusService
-
     @Autowired
     private lateinit var pointService: PointService
 
@@ -48,12 +47,16 @@ class StatusController {
     @GetMapping(value = ["orders"])
     @ResponseBody
     fun getCondition(
+            request: HttpServletRequest,
             @RequestParam data: MutableMap<String, Any>,
             @RequestParam(value = "payment_type") paymentType: Array<Boolean>,
             @RequestParam(value = "service_type") serviceType: Array<Boolean>)
             : Map<String, Any?> {
+        val session = request.session
+        val authInfo = session.getAttribute("authInfo") as AuthInfo?
+
         return try {
-            var value = statusService.searchOrders(data, paymentType, serviceType)
+            var value = statusService.searchOrders(authInfo!!, data, paymentType, serviceType)
             mapOf("resultCode" to 0, "resultObject" to value)
         } catch (e: Exception) {
             e.printStackTrace()
