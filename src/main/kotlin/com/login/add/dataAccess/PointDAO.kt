@@ -14,7 +14,6 @@ class PointDAO {
 
     fun getPoint(authKey: String): Int? {
         try {
-            print(authKey)
             return template.queryForObject("SELECT point FROM point WHERE authKey = ? ", Int::class.java, authKey)
         } catch (e: Exception) {
             e.printStackTrace()

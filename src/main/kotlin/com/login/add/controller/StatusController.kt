@@ -32,10 +32,11 @@ class StatusController {
         var distributors = statusService.getDistributors(authInfo) ?: mutableListOf()
         if(distributors.size == 1) {
             branchs = statusService.getBranchs(authInfo, distributors[0]["id"] as Int) ?: mutableListOf()
+            if(branchs.size != 1) branchs.add(0, mapOf("id" to -1, "name" to "--"))
         }
         else {
             distributors.add(0, mapOf("id" to -1, "name" to "--"))
-            if(branchs.size != 1) branchs.add(0, mapOf("id" to -1, "name" to "--"))
+            branchs.add(0, mapOf("id" to -1, "name" to "--"))
         }
 
         model.addAttribute("point", point)
@@ -53,7 +54,6 @@ class StatusController {
             : Map<String, Any?> {
         return try {
             var value = statusService.searchOrders(data, paymentType, serviceType)
-            println(value)
             mapOf("resultCode" to 0, "resultObject" to value)
         } catch (e: Exception) {
             e.printStackTrace()

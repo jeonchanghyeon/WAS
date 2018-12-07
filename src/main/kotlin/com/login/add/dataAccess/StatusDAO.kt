@@ -20,36 +20,37 @@ class StatusDAO {
     private lateinit var template: JdbcTemplate
 
     fun getDistributor(authInfo: AuthInfo): MutableList<Map<String, Any?>>? {
-        val id = template.queryForRowSet("CALL getUId('${authInfo.id}')")
-        val userInfo: JSONObject? = template.queryForJSONObject("CALL getUser(?, ?)", authInfo.authKey, id)
+        val id = template.queryForObject("SELECT getUId('${authInfo.id}')", Int::class.java)
+        val userInfoResult: JSONObject? = template.queryForJSONObject("CALL getUser(?, ?)", authInfo.authKey, id)
         val returnVal = mutableListOf<Map<String, Any?>>()
+        val userInfo = userInfoResult?.get("user") as JSONObject
 
         try {
-            when (userInfo?.get("group") as Int) {
+            when (userInfo.get("group") as Int) {
                 7 -> {
-                    val rs = template.queryForRowSet("SELECT id FROM users WHERE `group` = 6 and topUserId = ${authInfo.id}")
+                    val rs = template.queryForRowSet("SELECT id FROM users WHERE `group` = 6 and topUserId = '${authInfo.id}'")
                     while (rs.next()) {
                         val childId = rs.getInt("id")
-                        val childName = template.queryForJSONObject("SELECT getUserNameById($childId)")
+                        val childName = template.queryForObject("SELECT getUserNameById($childId)", String::class.java)
                         returnVal.add(mapOf("id" to childId, "name" to childName.toString()))
                     }
                 }
                 6 -> {
-                    val resName = template.queryForJSONObject("SELECT getUserNameById($id)")
+                    val resName = template.queryForObject("SELECT getUserNameById($id)", String::class.java)
                     returnVal.add(mapOf("id" to id, "name" to resName.toString()))
                 }
                 5 -> {
-                    val topUserId = template.queryForJSONObject("SELECT getTopUserIdById($id)")
-                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 6 and topUserId = $topUserId", Int::class.java)
-                    val resName = template.queryForJSONObject("SELECT getUserNameById($topId)")
+                    val topUserId = template.queryForObject("SELECT getTopUserIdById($id)", String::class.java)
+                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 6 and topUserId = '$topUserId'", Int::class.java)
+                    val resName = template.queryForObject("SELECT getUserNameById($topId)", String::class.java)
                     returnVal.add(mapOf("id" to topId, "name" to resName.toString()))
                 }
                 else -> {
-                    val topUserId = template.queryForJSONObject("SELECT getTopUserIdById($id)")
-                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 5 and topUserId = $topUserId", Int::class.java)
-                    val topTopUserId = template.queryForJSONObject("SELECT getTopUserIdById($topId)")
-                    val topTopId = template.queryForObject("SELECT id FROM users WHERE `group` = 6 and topUserId = $topUserId", Int::class.java)
-                    val resName = template.queryForJSONObject("SELECT getUserNameById($topTopId)")
+                    val topUserId = template.queryForObject("SELECT getTopUserIdById($id)", String::class.java)
+                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 5 and topUserId = '$topUserId'", Int::class.java)
+                    val topTopUserId = template.queryForObject("SELECT getTopUserIdById($topId)", String::class.java)
+                    val topTopId = template.queryForObject("SELECT id FROM users WHERE `group` = 6 and topUserId = '$topTopUserId'", Int::class.java)
+                    val resName = template.queryForObject("SELECT getUserNameById($topTopId)", String::class.java)
                     returnVal.add(mapOf("id" to topTopId, "name" to resName.toString()))
                 }
             }
@@ -61,28 +62,30 @@ class StatusDAO {
     }
 
     fun getBranchs(authInfo: AuthInfo, distributorId: Int): MutableList<Map<String, Any?>>? {
-        val id = template.queryForRowSet("CALL getUId('${authInfo.id}')")
-        val userInfo: JSONObject? = template.queryForJSONObject("CALL getUser(?, ?)", authInfo.authKey, id)
+        val id = template.queryForObject("SELECT getUId('${authInfo.id}')", Int::class.java)
+        val userInfoResult: JSONObject? = template.queryForJSONObject("CALL getUser(?, ?)", authInfo.authKey, id)
+        val userInfo = userInfoResult?.get("user") as JSONObject
         val returnVal = mutableListOf<Map<String, Any?>>()
 
         try {
-            when (userInfo?.get("group") as Int) {
+            when (userInfo.get("group") as Int) {
                 in 6 .. 7 -> {
-                    val rs = template.queryForRowSet("SELECT id FROM users WHERE `group` = 5 and topUserId = ${distributorId}")
+                    val topUserId = template.queryForObject("SELECT getUserIdById($distributorId)", String::class.java)
+                    val rs = template.queryForRowSet("SELECT id FROM users WHERE `group` = 5 and topUserId = '${topUserId}'")
                     while (rs.next()) {
                         val childId = rs.getInt("id")
-                        val childName = template.queryForJSONObject("SELECT getUserNameById($childId)")
+                        val childName = template.queryForObject("SELECT getUserNameById($childId)", String::class.java)
                         returnVal.add(mapOf("id" to childId, "name" to childName.toString()))
                     }
                 }
                 5 -> {
-                    val resName = template.queryForJSONObject("SELECT getUserNameById($id)")
+                    val resName = template.queryForObject("SELECT getUserNameById($id)", String::class.java)
                     returnVal.add(mapOf("id" to id, "name" to resName.toString()))
                 }
                 else -> {
-                    val topUserId = template.queryForJSONObject("SELECT getTopUserIdById($id)")
-                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 5 and topUserId = $topUserId", Int::class.java)
-                    val resName = template.queryForJSONObject("SELECT getUserNameById($topId)")
+                    val topUserId = template.queryForObject("SELECT getTopUserIdById($id)", String::class.java)
+                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 5 and topUserId = '$topUserId'", Int::class.java)
+                    val resName = template.queryForObject("SELECT getUserNameById($topId)", String::class.java)
                     returnVal.add(mapOf("id" to topId, "name" to resName.toString()))
                 }
             }
