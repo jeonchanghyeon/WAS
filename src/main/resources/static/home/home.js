@@ -97,7 +97,7 @@ function showSearchList() {
 
     const url =
         "status/orders?" +
-        "branch=" + branchValue +
+        "branchId=" + branchValue +
         "&start_date=" + startDateText.toTimestampFormat() +
         "&end_date=" + endDateText.toTimestampFormat() +
         "&payment_type=" + paymentCheckedArray +
