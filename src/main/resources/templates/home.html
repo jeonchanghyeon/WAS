@@ -134,7 +134,7 @@
                         <th>
                             <label for="select_default_start">기본출발</label>
                         </th>
-                        <td><select id="select_default_start" form="form_default_start" name="default_start">
+                        <td><select id="select_default_start" form="form_default_start" name="basicStartTime">
                             <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
                                     th:text="${n} + 분"/>
                         </select><span>분</span>
@@ -147,7 +147,7 @@
                             <label for="select_delay_time">추가지연</label>
                         </th>
                         <td>
-                            <select id="select_delay_time" form="form_delay_time" name="delay_time">
+                            <select id="select_delay_time" form="form_delay_time" name="delayTime">
                                 <option th:each="n : ${#numbers.sequence(10,60,10)}" th:value="${n}"
                                         th:text="${n} + 분"/>
                             </select><span>분</span>
@@ -159,11 +159,11 @@
                         <th>할증</th>
                         <td>
                             <p>
-                                <input type="text" id="cost_won" form="form_additional_cost" name="cost_won"/>
+                                <input type="text" id="cost_won" form="form_additional_cost" name="extraCharge"/>
                                 <span>원</span>
                             </p>
                             <p>
-                                <input type="text" id="cost_percent" form="form_additional_cost" name="cost_percent"/>
+                                <input type="text" id="cost_percent" form="form_additional_cost" name="extraChargePercent"/>
                                 <span>%</span>
                             </p>
                         </td>

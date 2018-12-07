@@ -220,6 +220,7 @@ function calOnLoad() {
 function postOnSubmit(action, func) {
     return function () {
         try {
+            let url = action + getCurrentBranchId();
             const formData = new FormData(this);
 
             let jsonObject = {};
@@ -227,7 +228,7 @@ function postOnSubmit(action, func) {
                 jsonObject[key] = value;
             }
 
-            ajax(action, "POST", func, JSON.stringify(jsonObject));
+            ajax(url, "POST", func, JSON.stringify(jsonObject));
 
         } catch (error) {
             console.log(error.message);
@@ -290,7 +291,7 @@ for (let i = 0; i < numCheckBox; i++) {
 distributorSelect.onchange = changeDistributeSelect;
 document.forms[0].onsubmit = showSearchList;
 
-formDefaultStart.onsubmit = postOnSubmit("status/branch-settings/" + getCurrentBranchId(), function () {
+formDefaultStart.onsubmit = postOnSubmit("status/branch-settings/", function () {
     let element = selectDefaultStart;
     for (let i = 0; i < element.labels.length; i++) {
         element.labels[i].style.color = "#c1c1c1";
@@ -298,7 +299,7 @@ formDefaultStart.onsubmit = postOnSubmit("status/branch-settings/" + getCurrentB
     element.style.color = "#FFFFFF";
 });
 
-formDelayTime.onsubmit = postOnSubmit("status/branch-settings/" + getCurrentBranchId(), function () {
+formDelayTime.onsubmit = postOnSubmit("status/branch-settings/", function () {
     let element = selectDelayTime;
     for (let i = 0; i < element.labels.length; i++) {
         element.labels[i].style.color = "#c1c1c1";
@@ -306,6 +307,6 @@ formDelayTime.onsubmit = postOnSubmit("status/branch-settings/" + getCurrentBran
     element.style.color = "#FFFFFF";
 });
 
-formAdditionalCost.onsubmit = postOnSubmit("status/branch-settings/" + getCurrentBranchId(), function () {
+formAdditionalCost.onsubmit = postOnSubmit("status/branch-settings/", function () {
 
 })
