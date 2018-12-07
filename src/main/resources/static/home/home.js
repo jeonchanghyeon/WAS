@@ -213,8 +213,10 @@ function calOnLoad() {
 }
 
 function useExtension() {
-    const url = "status/branch-settings";
+    const branchId = branchSelect.options[branchSelect.selectedIndex].value;
     const formData = new FormData(this);
+    const url = "status/branch-settings/" + branchId;
+
     let jsonObject = {};
 
     for (const [key, value]  of formData.entries()) {

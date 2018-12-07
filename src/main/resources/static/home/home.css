@@ -277,12 +277,16 @@ select option {
 }
 
 .status_area {
-    padding-left: 10px;
     padding-top: 5px;
     width: 100%;
     height: 30px;
     background-color: #444444;
+    clear: both;
     float: left;
+}
+
+.status_area table {
+    margin-left: 10px;
 }
 
 .status_area label {
@@ -308,7 +312,9 @@ select option {
 }
 
 .result_area {
-    float: top;
+    clear: both;
+    float: left;
+    width: 100%;
     background-color: #f0f0f0;
 }
 

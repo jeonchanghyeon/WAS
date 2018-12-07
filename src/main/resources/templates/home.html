@@ -53,6 +53,7 @@
                         <tr>
                             <th>총판명</th>
                             <td><select class="select_distributor" id="select_distributor">
+                                <option value=""> --</option>
                                 <!--/*@thymesVar id="distributors" type="com.login.add.controller.StatusController"*/-->
                                 <option th:each="distributor : ${distributors}"
                                         th:value="${distributor}"
