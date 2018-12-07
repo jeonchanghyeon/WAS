@@ -51,10 +51,10 @@ function ajax(url, method, func, content = null) {
 }
 
 function changeDistributeSelect() {
-    let selectText = distributorSelect.options[distributorSelect.selectedIndex].text;
+    let selectValue = distributorSelect.options[distributorSelect.selectedIndex].value;
 
     if (distributorSelect.selectedIndex !== 0) {
-        const url = "status/distributors?distributorName=" + selectText;
+        const url = "status/distributors?distributorId=" + selectValue;
         ajax(url, "get", resultJsSelector)
     }
 }
@@ -77,12 +77,12 @@ function resultJsSelector(obj) {
 }
 
 function showSearchList() {
-    let branchText = branchSelect.options[branchSelect.selectedIndex].text;
+    let branchValue = branchSelect.options[branchSelect.selectedIndex].value;
     const startDateText = startDateSelect.value;
     const endDateText = endDateSelect.value;
 
     if (branchSelect.selectedIndex === 0) {
-        branchText = "-1";
+        // branchText = "-1";
     }
 
     const paymentCheckedArray = [];
@@ -97,7 +97,7 @@ function showSearchList() {
 
     const url =
         "status/orders?" +
-        "branch=" + branchText +
+        "branch=" + branchValue +
         "&start_date=" + startDateText.toTimestampFormat() +
         "&end_date=" + endDateText.toTimestampFormat() +
         "&payment_type=" + paymentCheckedArray +

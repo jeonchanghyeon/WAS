@@ -55,9 +55,9 @@
                             <td>
                                 <select class="select_distributor" id="select_distributor">
                                     <!--/*@thymesVar id="distributors" type="List<Map<String,String>>"*/-->
-                                    <!--<option th:each="distributor : ${distributors}"-->
-                                    <!--th:value="${distributor.get('id')}"-->
-                                    <!--th:utext="${distributor.get('name')}"/>-->
+                                    <option th:each="distributor : ${distributors}"
+                                            th:value="${distributor.get('id')}"
+                                            th:utext="${distributor.get('name')}"/>
                                 </select>
                             </td>
                             <th>지사명</th>
