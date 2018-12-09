@@ -26,30 +26,40 @@ class StatusDAO {
         try {
             when (userInfo.get("group") as Int) {
                 7 -> {
-                    val rs = template.queryForRowSet("SELECT id FROM users WHERE `group` = 6 and topUserId = '${authInfo.id}'")
+                    val sql = "SELECT users.id, name FROM users INNER JOIN userInfos ON users.id = userInfos.id WHERE `group` = 6 and topUserId = '${authInfo.id}'"
+                    val rs = template.queryForRowSet(sql)
                     while (rs.next()) {
-                        val childId = rs.getInt("id")
-                        val childName = template.queryForObject("SELECT getUserNameById($childId)", String::class.java)
-                        returnVal.add(mapOf("id" to childId, "name" to childName.toString()))
+                        val resId = rs.getInt("id")
+                        val resName = rs.getString("name")
+                        returnVal.add(mapOf("id" to resId, "name" to resName.toString()))
                     }
                 }
                 6 -> {
-                    val resName = template.queryForObject("SELECT getUserNameById($id)", String::class.java)
-                    returnVal.add(mapOf("id" to id, "name" to resName.toString()))
+                    val sql = "SELECT getUserNameById($id)"
+                    val resName = template.queryForObject(sql, String::class.java)
+                    returnVal.add(mapOf("id" to id, "name" to resName))
                 }
                 5 -> {
-                    val topUserId = template.queryForObject("SELECT getTopUserIdById($id)", String::class.java)
-                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 6 and topUserId = '$topUserId'", Int::class.java)
-                    val resName = template.queryForObject("SELECT getUserNameById($topId)", String::class.java)
-                    returnVal.add(mapOf("id" to topId, "name" to resName.toString()))
+                    val sql = "SELECT id FROM users WHERE `group` = 6 and userId = getTopUserIdById($id)"
+                    val resId = template.queryForObject(sql, Int::class.java)
+                    val resName = template.queryForObject("SELECT getUserNameById($resId)", String::class.java)
+                    returnVal.add(mapOf("id" to resId, "name" to resName))
                 }
                 else -> {
-                    val topUserId = template.queryForObject("SELECT getTopUserIdById($id)", String::class.java)
-                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 5 and topUserId = '$topUserId'", Int::class.java)
-                    val topTopUserId = template.queryForObject("SELECT getTopUserIdById($topId)", String::class.java)
-                    val topTopId = template.queryForObject("SELECT id FROM users WHERE `group` = 6 and topUserId = '$topTopUserId'", Int::class.java)
-                    val resName = template.queryForObject("SELECT getUserNameById($topTopId)", String::class.java)
-                    returnVal.add(mapOf("id" to topTopId, "name" to resName.toString()))
+                    val branchId = template.queryForObject("SELECT getBranchUIdByUserId('${authInfo.id}')", Int::class.java)
+                    if(branchId != null) {
+                        val resId = template.queryForObject("SELECT getTopUserIdById($branchId)", String::class.java)
+                        val resName = template.queryForObject("SELECT getUserNameById($resId)", String::class.java)
+                        returnVal.add(mapOf("id" to resId, "name" to resName))
+                    } else {
+                        val sql = "SELECT users.id, name FROM users INNER JOIN userInfos ON users.id = userInfos.id WHERE `group` = 6 and topUserId = '${authInfo.id}'"
+                        val rs = template.queryForRowSet(sql)
+                        while (rs.next()) {
+                            val resId = rs.getInt("id")
+                            val resName = rs.getString("name")
+                            returnVal.add(mapOf("id" to resId, "name" to resName))
+                        }
+                    }
                 }
             }
             return returnVal
@@ -68,23 +78,24 @@ class StatusDAO {
         try {
             when (userInfo.get("group") as Int) {
                 in 6 .. 7 -> {
-                    val topUserId = template.queryForObject("SELECT getUserIdById($distributorId)", String::class.java)
-                    val rs = template.queryForRowSet("SELECT id FROM users WHERE `group` = 5 and topUserId = '${topUserId}'")
+                    val sql = "SELECT users.id, name FROM users INNER JOIN userInfos ON users.id = userInfos.id WHERE `group` = 5 and topUserId = getUserIdById($distributorId)"
+                    val rs = template.queryForRowSet(sql)
                     while (rs.next()) {
-                        val childId = rs.getInt("id")
-                        val childName = template.queryForObject("SELECT getUserNameById($childId)", String::class.java)
-                        returnVal.add(mapOf("id" to childId, "name" to childName.toString()))
+                        val resId = rs.getInt("id")
+                        val resName = rs.getString("name")
+                        returnVal.add(mapOf("id" to resId, "name" to resName))
                     }
                 }
                 5 -> {
                     val resName = template.queryForObject("SELECT getUserNameById($id)", String::class.java)
-                    returnVal.add(mapOf("id" to id, "name" to resName.toString()))
+                    returnVal.add(mapOf("id" to id, "name" to resName))
                 }
                 else -> {
-                    val topUserId = template.queryForObject("SELECT getTopUserIdById($id)", String::class.java)
-                    val topId = template.queryForObject("SELECT id FROM users WHERE `group` = 5 and topUserId = '$topUserId'", Int::class.java)
-                    val resName = template.queryForObject("SELECT getUserNameById($topId)", String::class.java)
-                    returnVal.add(mapOf("id" to topId, "name" to resName.toString()))
+                    val branchId = template.queryForObject("SELECT getBranchUIdByUserId($id)", Int::class.java)
+                    if(branchId != null) {
+                        val resName = template.queryForObject("SELECT getUserNameById($branchId)", String::class.java)
+                        returnVal.add(mapOf("id" to branchId, "name" to resName))
+                    }
                 }
             }
             return returnVal
@@ -180,16 +191,13 @@ class StatusDAO {
 
         curSettings = result.get("branchSettings") as JSONObject
 
-        println("1")
-        println("curSetting ${curSettings.get("basicStartTime")}")
-        println("2")
         newSettings.put("id", id)
         newSettings.put("basicStartTime", data["basicStartTime"] ?: curSettings.get("basicStartTime"))
         newSettings.put("delayTime", data["delayTime"] ?: curSettings.get("delayTime"))
         newSettings.put("extraCharge", data["extraCharge"] ?: curSettings.get("extraCharge"))
         newSettings.put("extraChargePercent", data["extraChargePercent"] ?: curSettings.get("extraChargePercent"))
         newSettings.put("enableOrderAccept", data["enableOrderAccept"] ?: curSettings.get("enableOrderAccept"))
-
+        println(newSettings.toString())
         result = template.queryForJSONObject("CALL setBranchSettings(?, ?)", authKey, newSettings.toString())
         return result?.get("resultCode") as Int
     }
