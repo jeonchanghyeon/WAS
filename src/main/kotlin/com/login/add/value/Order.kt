@@ -14,7 +14,7 @@ data class Order(
         val completeDate: Timestamp,    // 완료시간
         val cancelDate: Timestamp,      // 취소시간
         val deliveryCost: Int,     // 배달대행료
-        val additionalCost: String,   // 추가대행료
+        val additionalCost: Int,   // 추가대행료
         val riderName: String,     // 기사이름
         val paymentType: String,   // 결제방법
         val requests: String   // 요청사항

@@ -153,7 +153,7 @@ function resultJsSearchList(obj) {
                 (new Date(order.completeDate)).HHMM(),
                 (new Date(order.cancelDate)).HHMM(),
                 order.deliveryCost.toString().numberWithCommas(),
-                "0",    //추가 대행료(계산필요)
+                order.additionalCost,    //추가 대행료(계산필요)
                 order.riderName,
                 order.paymentType,
                 order.requests];

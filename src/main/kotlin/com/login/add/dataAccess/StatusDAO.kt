@@ -17,6 +17,7 @@ class StatusDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
+    //총판 이름과 id를 쿼리
     fun getDistributor(authInfo: AuthInfo): MutableList<Map<String, Any?>>? {
         val id = template.queryForObject("SELECT getUId('${authInfo.id}')", Int::class.java)
         val userInfoResult: JSONObject? = template.queryForJSONObject("CALL getUser(?, ?)", authInfo.authKey, id)
@@ -25,7 +26,7 @@ class StatusDAO {
 
         try {
             when (userInfo.get("group") as Int) {
-                7 -> {
+                7 -> {  //로그인 유저가 본사 권한을 가질 경우(총판 리스트)
                     val sql = "SELECT users.id, name FROM users INNER JOIN userInfos ON users.id = userInfos.id WHERE `group` = 6 and topUserId = '${authInfo.id}'"
                     val rs = template.queryForRowSet(sql)
                     while (rs.next()) {
@@ -34,24 +35,24 @@ class StatusDAO {
                         returnVal.add(mapOf("id" to resId, "name" to resName.toString()))
                     }
                 }
-                6 -> {
+                6 -> {  //로그인 유저가 총판 권한을 가질 경우(해당 총판 id, 이름)
                     val sql = "SELECT getUserNameById($id)"
                     val resName = template.queryForObject(sql, String::class.java)
                     returnVal.add(mapOf("id" to id, "name" to resName))
                 }
-                5 -> {
+                5 -> {  //로그인 유저가 지사 권한을 가질 경우(상위 총판 id, 이름)
                     val sql = "SELECT id FROM users WHERE `group` = 6 and userId = getTopUserIdById($id)"
                     val resId = template.queryForObject(sql, Int::class.java)
                     val resName = template.queryForObject("SELECT getUserNameById($resId)", String::class.java)
                     returnVal.add(mapOf("id" to resId, "name" to resName))
                 }
-                else -> {
+                else -> {   //로그인 유저가 지사 미만 권한을 가질 경우(상위 지사의 상위 총판 id, 이름)
                     val branchId = template.queryForObject("SELECT getBranchUIdByUserId('${authInfo.id}')", Int::class.java)
-                    if(branchId != null) {
+                    if (branchId != null) { //지사가 되어 있는 경우
                         val resId = template.queryForObject("SELECT getTopUserIdById($branchId)", String::class.java)
                         val resName = template.queryForObject("SELECT getUserNameById($resId)", String::class.java)
                         returnVal.add(mapOf("id" to resId, "name" to resName))
-                    } else {
+                    } else {     //지사가 지정 되어 있지 않은 경우
                         val sql = "SELECT users.id, name FROM users INNER JOIN userInfos ON users.id = userInfos.id WHERE `group` = 6 and topUserId = '${authInfo.id}'"
                         val rs = template.queryForRowSet(sql)
                         while (rs.next()) {
@@ -63,12 +64,13 @@ class StatusDAO {
                 }
             }
             return returnVal
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
     }
 
+    //지사 id와 이름 목록 쿼리
     fun getBranchs(authInfo: AuthInfo, distributorId: Int): MutableList<Map<String, Any?>>? {
         val id = template.queryForObject("SELECT getUId('${authInfo.id}')", Int::class.java)
         val userInfoResult: JSONObject? = template.queryForJSONObject("CALL getUser(?, ?)", authInfo.authKey, id)
@@ -77,7 +79,7 @@ class StatusDAO {
 
         try {
             when (userInfo.get("group") as Int) {
-                in 6 .. 7 -> {
+                in 6..7 -> {
                     val sql = "SELECT users.id, name FROM users INNER JOIN userInfos ON users.id = userInfos.id WHERE `group` = 5 and topUserId = getUserIdById($distributorId)"
                     val rs = template.queryForRowSet(sql)
                     while (rs.next()) {
@@ -92,19 +94,20 @@ class StatusDAO {
                 }
                 else -> {
                     val branchId = template.queryForObject("SELECT getBranchUIdByUserId($id)", Int::class.java)
-                    if(branchId != null) {
+                    if (branchId != null) {
                         val resName = template.queryForObject("SELECT getUserNameById($branchId)", String::class.java)
                         returnVal.add(mapOf("id" to branchId, "name" to resName))
                     }
                 }
             }
             return returnVal
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
     }
 
+    //검색 조건에 맞는 주문 목록 쿼리
     fun searchOrders(authInfo: AuthInfo, condition: Condition): Map<String, Any>? {
         try {
             val returnValue = mutableMapOf<String, Any>()
@@ -129,14 +132,10 @@ class StatusDAO {
             if (serviceSql !== "") serviceSql = serviceSql.substringBeforeLast(", ") + ")"
 
             if (isValidPayment && isValidService) {
-                var sql = "SELECT * FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? " +
-                        "$paymentSql $serviceSql and branchId = ?"
-                sql = "SELECT * FROM ($sql) as t1 LEFT OUTER JOIN (SELECT id as id2, name as shopName FROM userInfos) as t2 ON shopId = id2"
-                sql = "SELECT * FROM ($sql) as t3 LEFT OUTER JOIN (SELECT id as id3, name as riderName FROM userInfos) as t4 ON riderId = id3"
-                sql = "SELECT * FROM ($sql) as t5 LEFT OUTER JOIN (SELECT id as id4, label as paymentLabel FROM paymentTypes) as t6 ON paymentType = id4"
-                sql = "SELECT id, shopName, createDate, shopName, orderStatusLabel, allocateDate, pickupDate, completeDate, cancelDate, " +
-                        "deliveryCost, additionalCost, riderName, paymentLabel, memo, isShared, orderStatusId " +
-                        "FROM ($sql) as t7 LEFT OUTER JOIN (SELECT id as id5, label as orderStatusLabel FROM orderStatuses) as t8 ON orderStatusId = id5"
+                var sql = "SELECT *, getUserNameById(shopId) as shopName, getUserNameById(riderId) as riderName, getAdditionalCost(`additionalCost`) as calAdditionalCost " +
+                        "FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? $paymentSql $serviceSql and branchId = ?"
+                sql = "SELECT * from ($sql) as t1 LEFT OUTER JOIN (SELECT id as paymentId, label as paymentLabel FROM paymentTypes) as t2 ON t1.paymentType = t2.paymentId"
+                sql = "SELECT * from ($sql) as t1 LEFT OUTER JOIN (SELECT id as orderId, label as orderStatusLabel FROM orderStatuses) as t2 ON t1.orderStatusId = t2.orderId"
 
                 val rs = template.queryForRowSet(sql,
                         condition.start_date,
@@ -158,7 +157,7 @@ class StatusDAO {
                             rs.getTimestamp("completeDate") ?: Timestamp(0),
                             rs.getTimestamp("cancelDate") ?: Timestamp(0),
                             rs.getInt("deliveryCost"),
-                            rs.getString("additionalCost"),
+                            rs.getInt("calAdditionalCost"),
                             rs.getString("riderName") ?: "",
                             rs.getString("paymentLabel") ?: "",
                             rs.getString("memo") ?: ""
@@ -182,13 +181,11 @@ class StatusDAO {
         var curSettings: JSONObject?
         val newSettings = JSONObject()
 
-        println("id = $id")
         var result = template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, id)
-        if(result?.get("resultCode") as Int != 0) {
+        if (result?.get("resultCode") as Int != 0) {
             println("setBranchSettings : ${result.get("description")}")
             return result.get("resultCode") as Int
         }
-
         curSettings = result.get("branchSettings") as JSONObject
 
         newSettings.put("id", id)
@@ -197,8 +194,18 @@ class StatusDAO {
         newSettings.put("extraCharge", data["extraCharge"] ?: curSettings.get("extraCharge"))
         newSettings.put("extraChargePercent", data["extraChargePercent"] ?: curSettings.get("extraChargePercent"))
         newSettings.put("enableOrderAccept", data["enableOrderAccept"] ?: curSettings.get("enableOrderAccept"))
-        println(newSettings.toString())
+
         result = template.queryForJSONObject("CALL setBranchSettings(?, ?)", authKey, newSettings.toString())
+        if (result?.get("resultCode") as Int != 0) {
+            println("setBranchSettings : ${result?.get("description")}")
+            return result?.get("resultCode") as Int
+        }
+
         return result?.get("resultCode") as Int
+    }
+
+    fun getBranchSettings(authKey: String, branchId: Int): JSONObject {
+        val result = template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, branchId)
+        return result?.get("branchSettings") as JSONObject
     }
 }

@@ -24,7 +24,6 @@ class StatusService {
 
     fun searchOrders(authInfo: AuthInfo, data: MutableMap<String, Any>, paymentType: Array<Boolean>, serviceType: Array<Boolean>): Map<String, Any>? {
         val condition = Condition(
-
                 data["branchId"] as String? ?: "",
                 if (data["start_date"] != "-1") Timestamp.valueOf(data["start_date"] as String) else Timestamp(0),
                 if (data["end_date"] != "-1") Timestamp.valueOf(data["end_date"] as String) else Timestamp(23123123123123), // TODO INT 최대
@@ -41,5 +40,9 @@ class StatusService {
 
     fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): Int {
         return statusDAO.setBranchSettings(authKey, data, id)
+    }
+
+    fun getBranchSettings(authKey: String, branchId: Int): JSONObject {
+        return statusDAO.getBranchSettings(authKey, branchId)
     }
 }

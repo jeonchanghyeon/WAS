@@ -3,6 +3,7 @@ package com.login.add.controller
 import com.login.add.service.PointService
 import com.login.add.service.StatusService
 import com.login.add.value.AuthInfo
+import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -26,12 +27,18 @@ class StatusController {
         authInfo ?: return "login"
 
         var branchs = mutableListOf<Map<String, Any?>>()
+        var branchSettings = JSONObject()
 
         var point = pointService.getPoint(authInfo.authKey)
         var distributors = statusService.getDistributors(authInfo) ?: mutableListOf()
         if(distributors.size == 1) {
             branchs = statusService.getBranchs(authInfo, distributors[0]["id"] as Int) ?: mutableListOf()
-            if(branchs.size != 1) branchs.add(0, mapOf("id" to -1, "name" to "--"))
+            if(branchs.size == 1) {
+                branchSettings = statusService.getBranchSettings(authInfo.authKey, branchs[0]["id"] as Int)
+
+            } else {
+                branchs.add(0, mapOf("id" to -1, "name" to "--"))
+            }
         }
         else {
             distributors.add(0, mapOf("id" to -1, "name" to "--"))
@@ -41,6 +48,8 @@ class StatusController {
         model.addAttribute("point", point)
         model.addAttribute("distributors", distributors)
         model.addAttribute("branchs", branchs)
+        model.addAttribute("branchSettings", branchSettings)
+
         return "home"
     }
 
@@ -69,10 +78,11 @@ class StatusController {
     fun getBranchList(request: HttpServletRequest, @RequestParam(value = "distributorId") distributorId: Int): MutableList<Map<String, Any?>>? {
         val session = request.session
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
-        var resultCode: Int
 
         var branchs = statusService.getBranchs(authInfo!!, distributorId) ?: mutableListOf()
-        if(branchs.size != 1) {
+        if(branchs.size == 1) {
+
+        } else {
             branchs.add(0, mapOf("id" to -1, "name" to "--"))
         }
         return branchs
