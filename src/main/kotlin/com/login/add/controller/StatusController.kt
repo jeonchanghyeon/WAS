@@ -33,12 +33,7 @@ class StatusController {
         var distributors = statusService.getDistributors(authInfo) ?: mutableListOf()
         if (distributors.size == 1) {
             branchs = statusService.getBranchs(authInfo, distributors[0]["id"] as Int) ?: mutableListOf()
-            if (branchs.size == 1) {
-                branchSettings = statusService.getBranchSettings(authInfo.authKey, branchs[0]["id"] as Int)
-
-            } else {
-                branchs.add(0, mapOf("id" to -1, "name" to "--"))
-            }
+            if (branchs.size != 1) branchs.add(0, mapOf("id" to -1, "name" to "--"))
         } else {
             distributors.add(0, mapOf("id" to -1, "name" to "--"))
             branchs.add(0, mapOf("id" to -1, "name" to "--"))
@@ -79,24 +74,41 @@ class StatusController {
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
         var branchs = statusService.getBranchs(authInfo!!, distributorId) ?: mutableListOf()
-        if (branchs.size == 1) {
-
-        } else {
+        if (branchs.size != 1) {
             branchs.add(0, mapOf("id" to -1, "name" to "--"))
         }
         return branchs
     }
 
+    @GetMapping(value = ["branch-settings/{id}"])
+    @ResponseBody
+    fun getBranchSettings(request: HttpServletRequest, @PathVariable id: String): Any {
+        return try {
+            val session = request.session
+            val authInfo = session.getAttribute("authInfo") as AuthInfo?
+
+            var value = statusService.getBranchSettings(authInfo!!.authKey, id)
+
+            println(value)
+
+            value!!.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            mapOf("resultCode" to 777)
+        }
+    }
+
     @PostMapping(value = ["branch-settings/{id}"])
     @ResponseBody
-    fun setBranchSettings(request: HttpServletRequest, @RequestBody data: MutableMap<String, Any?>, @PathVariable id: String): Map<String, Any?> {
-        val session = request.session
-        val authInfo = session.getAttribute("authInfo") as AuthInfo?
-        var resultCode: Int
-
+    fun setBranchSettings(request: HttpServletRequest, @RequestBody data: MutableMap<String, Any?>, @PathVariable id: String): Any {
         return try {
-            resultCode = statusService.setBranchSettings(authInfo!!.authKey, data, id)
-            mapOf("resultCode" to resultCode)
+            val session = request.session
+            val authInfo = session.getAttribute("authInfo") as AuthInfo?
+            var value = statusService.setBranchSettings(authInfo!!.authKey, data, id)
+
+            println(value)
+
+            value!!.toString()
         } catch (e: Exception) {
             e.printStackTrace()
             mapOf("resultCode" to 777)

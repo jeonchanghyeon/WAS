@@ -177,35 +177,21 @@ class StatusDAO {
         return null
     }
 
-    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): Int {
-        var curSettings: JSONObject?
-        val newSettings = JSONObject()
-
-        var result = template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, id)
-        if (result?.get("resultCode") as Int != 0) {
-            println("setBranchSettings : ${result.get("description")}")
-            return result.get("resultCode") as Int
+    fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, branchId)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        curSettings = result.get("branchSettings") as JSONObject
-
-        newSettings.put("id", id)
-        newSettings.put("basicStartTime", data["basicStartTime"] ?: curSettings.get("basicStartTime"))
-        newSettings.put("delayTime", data["delayTime"] ?: curSettings.get("delayTime"))
-        newSettings.put("extraCharge", data["extraCharge"] ?: curSettings.get("extraCharge"))
-        newSettings.put("extraChargePercent", data["extraChargePercent"] ?: curSettings.get("extraChargePercent"))
-        newSettings.put("enableOrderAccept", data["enableOrderAccept"] ?: curSettings.get("enableOrderAccept"))
-
-        result = template.queryForJSONObject("CALL setBranchSettings(?, ?)", authKey, newSettings.toString())
-        if (result?.get("resultCode") as Int != 0) {
-            println("setBranchSettings : ${result?.get("description")}")
-            return result?.get("resultCode") as Int
-        }
-
-        return result?.get("resultCode") as Int
+        return null
     }
 
-    fun getBranchSettings(authKey: String, branchId: Int): JSONObject {
-        val result = template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, branchId)
-        return result?.get("branchSettings") as JSONObject
+    fun setBranchSettings(branchId: String, jsonData: String): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL setBranchSettings(?, ?)", branchId, jsonData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 }

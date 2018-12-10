@@ -59,6 +59,47 @@ function changeDistributeSelect() {
     }
 }
 
+function changeBranchSelect() {
+    let selectValue = branchSelect.options[branchSelect.selectedIndex].value;
+
+    if (branchSelect.selectedIndex !== 0) {
+        const url = "status/branch-settings/" + selectValue;
+        ajax(url, "get", getBranchSetting)
+    }
+}
+
+function getBranchSetting(obj) {
+    try {
+        const branchSetting = obj["branchSettings"];
+
+        const selectDefaultStart = document.getElementById('select_default_start');
+        const selectDelayTime = document.getElementById('select_delay_time');
+        const costWon = document.getElementById('cost_won');
+        const costPercent = document.getElementById('cost_percent');
+
+
+        let basicStartTime = branchSetting["basicStartTime"];
+        let delayTime = branchSetting["delayTime"];
+
+        let basicStartTimeIndex = null;
+        let delayTimeIndex = null;
+
+        if (basicStartTime >= 0 && basicStartTime <= 60) {
+            basicStartTimeIndex = basicStartTime / 10
+        }
+        if (delayTime >= 0 && delayTime <= 60) {
+            delayTimeIndex = delayTime / 10;
+        }
+
+        costWon.value = branchSetting["extraCharge"];
+        costPercent.value = branchSetting["extraChargePercent"] * 100;
+        selectDefaultStart.selectedIndex = basicStartTimeIndex;
+        selectDelayTime.selectedIndex = delayTimeIndex;
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 function resultJsSelector(obj) {
     let option = document.createElement('option');
 
@@ -106,6 +147,9 @@ function showSearchList() {
     ajax(url, "get", resultJsSearchList);
     return false;
 }
+
+let selectedRow = null;
+let selectedRowClassName = null;
 
 function resultJsSearchList(obj) {
     try {
@@ -163,6 +207,23 @@ function resultJsSearchList(obj) {
                 col.innerHTML = text[j];
                 col.className = statusMap[order.statusId - 1];
                 row.appendChild(col);
+            }
+
+            row.onclick = function () {
+                if (selectedRow != null) {
+                    let cols = selectedRow.getElementsByTagName("td");
+                    for (let i = 0; i < cols.length; i++) {
+                        cols[i].className = selectedRowClassName;
+                    }
+                }
+
+                let cols = this.getElementsByTagName("td");
+                for (let i = 0; i < cols.length; i++) {
+                    cols[i].className = 'selected_row';
+                }
+
+                selectedRow = row;
+                selectedRowClassName = statusMap[order.statusId - 1];
             }
             container.appendChild(row)
         }
@@ -225,7 +286,11 @@ function postOnSubmit(action, func) {
 
             let jsonObject = {};
             for (const [key, value]  of formData.entries()) {
-                jsonObject[key] = value;
+                if (key === 'extraChargePercent') {
+                    jsonObject[key] = value / 100.0;
+                } else {
+                    jsonObject[key] = value;
+                }
             }
 
             ajax(url, "POST", func, JSON.stringify(jsonObject));
@@ -289,6 +354,7 @@ for (let i = 0; i < numCheckBox; i++) {
 }
 
 distributorSelect.onchange = changeDistributeSelect;
+branchSelect.onchange = changeBranchSelect;
 document.forms[0].onsubmit = showSearchList;
 
 formDefaultStart.onsubmit = postOnSubmit("status/branch-settings/", function () {
@@ -309,4 +375,5 @@ formDelayTime.onsubmit = postOnSubmit("status/branch-settings/", function () {
 
 formAdditionalCost.onsubmit = postOnSubmit("status/branch-settings/", function () {
 
-})
+});
+

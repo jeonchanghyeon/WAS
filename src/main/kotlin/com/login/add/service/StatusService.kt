@@ -37,8 +37,32 @@ class StatusService {
         return statusDAO.searchOrders(authInfo, condition)
     }
 
-    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): Int {
-        return statusDAO.setBranchSettings(authKey, data, id)
+    fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
+        return statusDAO.getBranchSettings(authKey, branchId)
+    }
+
+    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): JSONObject? {
+        println(data)
+        val settings = statusDAO.getBranchSettings(authKey, id)
+
+        println(settings.toString())
+        if (settings != null) {
+            var branchSetting = settings.get("branchSettings") as JSONObject
+            val newSettings = JSONObject()
+
+            val names = arrayOf("basicStartTime", "delayTime", "extraCharge", "extraChargePercent", "enableOrderAccept")
+
+            newSettings.put("id", id)
+            for (name in names) {
+                newSettings.put(name, data[name] ?: branchSetting.get(name))
+            }
+
+            println(newSettings.toString())
+
+            return statusDAO.setBranchSettings(authKey, newSettings.toString())
+        }
+
+        return null
     }
 
     fun getBranchSettings(authKey: String, branchId: Int): JSONObject {
