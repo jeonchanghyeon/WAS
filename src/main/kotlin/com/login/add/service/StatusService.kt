@@ -65,7 +65,4 @@ class StatusService {
         return null
     }
 
-    fun getBranchSettings(authKey: String, branchId: Int): JSONObject {
-        return statusDAO.getBranchSettings(authKey, branchId)
-    }
 }
