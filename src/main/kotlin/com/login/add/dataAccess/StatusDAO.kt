@@ -47,7 +47,7 @@ class StatusDAO {
                 }
                 else -> {
                     val branchId = template.queryForObject("SELECT getBranchUIdByUserId('${authInfo.id}')", Int::class.java)
-                    if(branchId != null) {
+                    if (branchId != null) {
                         val resId = template.queryForObject("SELECT getTopUserIdById($branchId)", String::class.java)
                         val resName = template.queryForObject("SELECT getUserNameById($resId)", String::class.java)
                         returnVal.add(mapOf("id" to resId, "name" to resName))
@@ -63,7 +63,7 @@ class StatusDAO {
                 }
             }
             return returnVal
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
@@ -77,7 +77,7 @@ class StatusDAO {
 
         try {
             when (userInfo.get("group") as Int) {
-                in 6 .. 7 -> {
+                in 6..7 -> {
                     val sql = "SELECT users.id, name FROM users INNER JOIN userInfos ON users.id = userInfos.id WHERE `group` = 5 and topUserId = getUserIdById($distributorId)"
                     val rs = template.queryForRowSet(sql)
                     while (rs.next()) {
@@ -92,14 +92,14 @@ class StatusDAO {
                 }
                 else -> {
                     val branchId = template.queryForObject("SELECT getBranchUIdByUserId($id)", Int::class.java)
-                    if(branchId != null) {
+                    if (branchId != null) {
                         val resName = template.queryForObject("SELECT getUserNameById($branchId)", String::class.java)
                         returnVal.add(mapOf("id" to branchId, "name" to resName))
                     }
                 }
             }
             return returnVal
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
@@ -178,27 +178,21 @@ class StatusDAO {
         return null
     }
 
-    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): Int {
-        var curSettings: JSONObject?
-        val newSettings = JSONObject()
-
-        println("id = $id")
-        var result = template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, id)
-        if(result?.get("resultCode") as Int != 0) {
-            println("setBranchSettings : ${result.get("description")}")
-            return result.get("resultCode") as Int
+    fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, branchId)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+        return null
+    }
 
-        curSettings = result.get("branchSettings") as JSONObject
-
-        newSettings.put("id", id)
-        newSettings.put("basicStartTime", data["basicStartTime"] ?: curSettings.get("basicStartTime"))
-        newSettings.put("delayTime", data["delayTime"] ?: curSettings.get("delayTime"))
-        newSettings.put("extraCharge", data["extraCharge"] ?: curSettings.get("extraCharge"))
-        newSettings.put("extraChargePercent", data["extraChargePercent"] ?: curSettings.get("extraChargePercent"))
-        newSettings.put("enableOrderAccept", data["enableOrderAccept"] ?: curSettings.get("enableOrderAccept"))
-        println(newSettings.toString())
-        result = template.queryForJSONObject("CALL setBranchSettings(?, ?)", authKey, newSettings.toString())
-        return result?.get("resultCode") as Int
+    fun setBranchSettings(branchId: String, jsonData: String): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL setBranchSettings(?, ?)", branchId, jsonData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 }

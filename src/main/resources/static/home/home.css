@@ -371,6 +371,11 @@ select option {
     color: #4a4a4a;
 }
 
+.selected_row {
+    color: #ffffff;
+    background-color: #4a90e2;
+}
+
 /* Small Desktops */
 @media (max-width: 898px) {
     .setting_area {
