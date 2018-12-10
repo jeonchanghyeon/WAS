@@ -31,16 +31,15 @@ class StatusController {
 
         var point = pointService.getPoint(authInfo.authKey)
         var distributors = statusService.getDistributors(authInfo) ?: mutableListOf()
-        if(distributors.size == 1) {
+        if (distributors.size == 1) {
             branchs = statusService.getBranchs(authInfo, distributors[0]["id"] as Int) ?: mutableListOf()
-            if(branchs.size == 1) {
+            if (branchs.size == 1) {
                 branchSettings = statusService.getBranchSettings(authInfo.authKey, branchs[0]["id"] as Int)
 
             } else {
                 branchs.add(0, mapOf("id" to -1, "name" to "--"))
             }
-        }
-        else {
+        } else {
             distributors.add(0, mapOf("id" to -1, "name" to "--"))
             branchs.add(0, mapOf("id" to -1, "name" to "--"))
         }
@@ -80,7 +79,7 @@ class StatusController {
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
         var branchs = statusService.getBranchs(authInfo!!, distributorId) ?: mutableListOf()
-        if(branchs.size == 1) {
+        if (branchs.size == 1) {
 
         } else {
             branchs.add(0, mapOf("id" to -1, "name" to "--"))
@@ -98,7 +97,7 @@ class StatusController {
         return try {
             resultCode = statusService.setBranchSettings(authInfo!!.authKey, data, id)
             mapOf("resultCode" to resultCode)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             mapOf("resultCode" to 777)
         }
