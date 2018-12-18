@@ -25,11 +25,9 @@ class StatusService {
         val condition = Condition(
                 data["branchId"] as String? ?: "",
                 if (data["start_date"] != "-1") Timestamp.valueOf(data["start_date"] as String) else Timestamp(0),
-                if (data["end_date"] != "-1") Timestamp.valueOf(data["end_date"] as String) else Timestamp(Long.MAX_VALUE), // TODO INT 최대
+                if (data["end_date"] != "-1") Timestamp.valueOf(data["end_date"] as String) else Timestamp.valueOf("2850-12-01 00:00:00"),
                 paymentType,
-                serviceType,
-                data["default_start"] as Int? ?: 0, // TODO INT 최대
-                data["delay_time"] as Int? ?: Int.MAX_VALUE // TODO INT 최대
+                serviceType
         )
 
         return statusDAO.searchOrders(authInfo, condition)

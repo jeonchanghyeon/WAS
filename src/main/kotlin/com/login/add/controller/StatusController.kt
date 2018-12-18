@@ -60,6 +60,7 @@ class StatusController {
 
         return try {
             var value = statusService.searchOrders(authInfo!!, data, paymentType, serviceType)
+            println(value)
             mapOf("resultCode" to 0, "resultObject" to value)
         } catch (e: Exception) {
             e.printStackTrace()

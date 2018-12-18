@@ -36,7 +36,7 @@ class StatusDAO {
         var returnVal: MutableList<Map<String, Any?>>? = null
 
         try {
-            when(authInfo.group) {
+            when (authInfo.group) {
                 in 6..7 -> {
                     val sql = "SELECT users.id, name FROM users INNER JOIN userInfos ON users.id = userInfos.id WHERE `group` = 5 and topUserId = getUserIdById($distributorId)"
                     returnVal = template.queryForList(sql)
@@ -56,8 +56,8 @@ class StatusDAO {
     fun searchOrders(authInfo: AuthInfo, condition: Condition): Map<String, Any>? {
         try {
             val returnValue = mutableMapOf<String, Any>()
-            val orders = mutableListOf<Order>()
-            val counts = Array(10) { 0 }
+            var orders = mutableListOf<Order>()
+            var counts = Array(10) { 0 }
 
             var isValidPayment = false
             var isValidService = false
@@ -78,14 +78,13 @@ class StatusDAO {
 
             if (isValidPayment && isValidService) {
                 var sql = "SELECT *, getUserNameById(shopId) as shopName, getUserNameById(riderId) as riderName, getAdditionalCost(`additionalCost`) as calAdditionalCost " +
-                        "FROM orders WHERE createDate > ? and createDate < ? and delayTime < ? $paymentSql $serviceSql and branchId = ?"
+                        "FROM orders WHERE createDate > ? and createDate < ? $paymentSql $serviceSql and branchId = ?"
                 sql = "SELECT * from ($sql) as t1 LEFT OUTER JOIN (SELECT id as paymentId, label as paymentLabel FROM paymentTypes) as t2 ON t1.paymentType = t2.paymentId"
                 sql = "SELECT * from ($sql) as t1 LEFT OUTER JOIN (SELECT id as orderId, label as orderStatusLabel FROM orderStatuses) as t2 ON t1.orderStatusId = t2.orderId"
 
                 val rs = template.queryForRowSet(sql,
                         condition.start_date,
                         condition.end_date,
-                        condition.delay_time,
                         condition.branchId
                 )
 
