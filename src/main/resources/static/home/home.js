@@ -62,6 +62,11 @@ function changeDistributeSelect() {
 function changeBranchSelect() {
     let selectValue = branchSelect.options[branchSelect.selectedIndex].value;
 
+    changeToSubmittedStyle(selectDefaultStart);
+    changeToSubmittedStyle(selectDelayTime);
+    changeToSubmittedStyle(costWon);
+    changeToSubmittedStyle(costPercent);
+
     if (branchSelect.selectedIndex !== 0) {
         const url = "status/branch-settings/" + selectValue;
         ajax(url, "get", getBranchSetting)
@@ -71,12 +76,6 @@ function changeBranchSelect() {
 function getBranchSetting(obj) {
     try {
         const branchSetting = obj["branchSettings"];
-
-        const selectDefaultStart = document.getElementById('select_default_start');
-        const selectDelayTime = document.getElementById('select_delay_time');
-        const costWon = document.getElementById('cost_won');
-        const costPercent = document.getElementById('cost_percent');
-
 
         let basicStartTime = branchSetting["basicStartTime"];
         let delayTime = branchSetting["delayTime"];
@@ -163,8 +162,7 @@ function resultJsSearchList(obj) {
         for (let i = 1; i < numText; i++) {
             if (i === shareCallIndex) {
                 statusText[shareCallIndex].innerHTML = counts[numText + 1];
-            }
-            else {
+            } else {
                 statusText[statusMapIndex[i]].innerHTML = counts[i - 1];
             }
         }
@@ -224,12 +222,11 @@ function resultJsSearchList(obj) {
 
                 selectedRow = row;
                 selectedRowClassName = statusMap[order.statusId - 1];
-            }
+            };
             container.appendChild(row)
         }
 
-    }
-    catch (error) {
+    } catch (error) {
         console.log(error.message);
 
         const td = document.createElement("td");
@@ -261,7 +258,7 @@ function changeStatusCheckBox(idx, func) {
 
 
 function calOnLoad() {
-    var myCalendar;
+    let myCalendar;
     dhtmlXCalendarObject.prototype.langData["kr"] = {
         dateformat: '%Y-%m-%d / 09:00',
         monthesFNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
@@ -312,6 +309,20 @@ function getCurrentBranchId() {
     }
 }
 
+function changeToSubmittedStyle(element) {
+    for (let i = 0; i < element.labels.length; i++) {
+        element.labels[i].style.color = "#c1c1c1";
+    }
+    element.style.color = "#FFFFFF";
+}
+
+function changeToUnsubmittedStyle(element) {
+    for (let i = 0; i < element.labels.length; i++) {
+        element.labels[i].style.color = "white";
+    }
+    element.style.color = "red";
+}
+
 let statusMap = ["status1", "status2", "status3", "status4", "status6", "status5", "status7"];
 let statusMapIndex = [0, 1, 2, 3, 4, 6, 5, 7];
 
@@ -330,13 +341,15 @@ const formAdditionalCost = document.getElementById("form_additional_cost");
 
 const selectDefaultStart = document.getElementById("select_default_start");
 const selectDelayTime = document.getElementById("select_delay_time");
+const costWon = document.getElementById('cost_won');
+const costPercent = document.getElementById('cost_percent');
+
+costPercent.onchange = costWon.onchange = selectDelayTime.onchange = selectDefaultStart.onchange = function () {
+    changeToUnsubmittedStyle(this)
+};
 
 selectDelayTime.onchange = selectDefaultStart.onchange = function () {
-    let element = this;
-    for (let i = 0; i < element.labels.length; i++) {
-        element.labels[i].style.color = "white";
-    }
-    element.style.color = "red";
+    changeToUnsubmittedStyle(this)
 };
 
 const statusText = [];
@@ -358,22 +371,14 @@ branchSelect.onchange = changeBranchSelect;
 document.forms[0].onsubmit = showSearchList;
 
 formDefaultStart.onsubmit = postOnSubmit("status/branch-settings/", function () {
-    let element = selectDefaultStart;
-    for (let i = 0; i < element.labels.length; i++) {
-        element.labels[i].style.color = "#c1c1c1";
-    }
-    element.style.color = "#FFFFFF";
+    changeToSubmittedStyle(selectDefaultStart);
 });
 
 formDelayTime.onsubmit = postOnSubmit("status/branch-settings/", function () {
-    let element = selectDelayTime;
-    for (let i = 0; i < element.labels.length; i++) {
-        element.labels[i].style.color = "#c1c1c1";
-    }
-    element.style.color = "#FFFFFF";
+    changeToSubmittedStyle(selectDelayTime);
 });
 
 formAdditionalCost.onsubmit = postOnSubmit("status/branch-settings/", function () {
-
+    changeToSubmittedStyle(costWon);
+    changeToSubmittedStyle(costPercent);
 });
-
