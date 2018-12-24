@@ -13,6 +13,7 @@ import java.sql.Timestamp
 
 @Repository
 class StatusDAO {
+
     @Autowired
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
