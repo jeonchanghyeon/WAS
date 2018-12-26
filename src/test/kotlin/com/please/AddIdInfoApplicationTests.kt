@@ -1,4 +1,4 @@
-package com.login.add
+package com.please
 
 import org.junit.Test
 import org.junit.runner.RunWith

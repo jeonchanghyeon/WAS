@@ -1,8 +1,8 @@
-package com.login.add.service
+package com.please.service
 
-import com.login.add.dataAccess.StatusDAO
-import com.login.add.value.AuthInfo
-import com.login.add.value.Condition
+import com.please.dataAccess.StatusDAO
+import com.please.value.AuthInfo
+import com.please.value.Condition
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

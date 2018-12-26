@@ -1,9 +1,9 @@
-package com.login.add.dataAccess
+package com.please.dataAccess
 
-import com.login.add.persistence.queryForJSONObject
-import com.login.add.value.AuthInfo
-import com.login.add.value.Condition
-import com.login.add.value.Order
+import com.please.persistence.queryForJSONObject
+import com.please.value.AuthInfo
+import com.please.value.Condition
+import com.please.value.Order
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier

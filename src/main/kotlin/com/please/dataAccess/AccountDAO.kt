@@ -1,6 +1,6 @@
-package com.login.add.dataAccess
+package com.please.dataAccess
 
-import com.login.add.value.AccountInfo
+import com.please.value.AccountInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate

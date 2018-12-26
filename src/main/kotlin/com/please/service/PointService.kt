@@ -1,6 +1,6 @@
-package com.login.add.service
+package com.please.service
 
-import com.login.add.dataAccess.PointDAO
+import com.please.dataAccess.PointDAO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
