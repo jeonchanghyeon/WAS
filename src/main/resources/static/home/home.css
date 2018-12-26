@@ -100,18 +100,32 @@ select option {
     letter-spacing: 4px;
 }
 
-.nav tr th {
-    width: 79px;
-    height: 40px;
-    float: left;
-    color: #FFFFFF;
-    font-size: 16px;
-    margin-top: 7px;
+.nav {
+    margin-top: 5px;
 }
 
-.nav tr th a {
-    color: #FFFFFF;
+.nav tr {
+    font-size: 16px;
+}
+
+.nav th {
+    margin-top: 7px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.nav td {
+    padding: 7px 24px;
+}
+
+.nav th a {
+    color: #ff7100;
     text-decoration: none;
+}
+
+.nav td a {
+    text-decoration: none;
+    color: #FFFFFF;
 }
 
 .area {

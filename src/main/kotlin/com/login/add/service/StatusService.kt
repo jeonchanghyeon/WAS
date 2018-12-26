@@ -17,7 +17,7 @@ class StatusService {
         return statusDAO.getDistributor(authInfo)
     }
 
-    fun getBranchs(authInfo: AuthInfo, distributeId: Int): MutableList<Map<String, Any?>>? {
+    fun getBranchs(authInfo: AuthInfo, distributeId: Long): MutableList<Map<String, Any?>>? {
         return statusDAO.getBranchs(authInfo, distributeId)
     }
 
@@ -25,13 +25,9 @@ class StatusService {
         val condition = Condition(
                 data["branchId"] as String? ?: "",
                 if (data["start_date"] != "-1") Timestamp.valueOf(data["start_date"] as String) else Timestamp(0),
-                if (data["end_date"] != "-1") Timestamp.valueOf(data["end_date"] as String) else Timestamp(23123123123123), // TODO INT 최대
+                if (data["end_date"] != "-1") Timestamp.valueOf(data["end_date"] as String) else Timestamp.valueOf("2850-12-01 00:00:00"),
                 paymentType,
-                serviceType,
-                data["default_start"] as Int? ?: 0, // TODO INT 최대
-                data["delay_time"] as Int? ?: 1232342342, // TODO INT 최대
-                data["additional_cost_percent"] as Int? ?: 100,
-                data["additional_cost_won"] as Int? ?: 0
+                serviceType
         )
 
         return statusDAO.searchOrders(authInfo, condition)

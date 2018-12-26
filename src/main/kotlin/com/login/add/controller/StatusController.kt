@@ -32,7 +32,7 @@ class StatusController {
         var point = pointService.getPoint(authInfo.authKey)
         var distributors = statusService.getDistributors(authInfo) ?: mutableListOf()
         if (distributors.size == 1) {
-            branchs = statusService.getBranchs(authInfo, distributors[0]["id"] as Int) ?: mutableListOf()
+            branchs = statusService.getBranchs(authInfo, distributors[0]["id"] as Long) ?: mutableListOf()
             if (branchs.size != 1) branchs.add(0, mapOf("id" to -1, "name" to "--"))
         } else {
             distributors.add(0, mapOf("id" to -1, "name" to "--"))
@@ -60,6 +60,7 @@ class StatusController {
 
         return try {
             var value = statusService.searchOrders(authInfo!!, data, paymentType, serviceType)
+            println(value)
             mapOf("resultCode" to 0, "resultObject" to value)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -69,7 +70,7 @@ class StatusController {
 
     @GetMapping(value = ["distributors"])
     @ResponseBody
-    fun getBranchList(request: HttpServletRequest, @RequestParam(value = "distributorId") distributorId: Int): MutableList<Map<String, Any?>>? {
+    fun getBranchList(request: HttpServletRequest, @RequestParam(value = "distributorId") distributorId: Long): MutableList<Map<String, Any?>>? {
         val session = request.session
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
