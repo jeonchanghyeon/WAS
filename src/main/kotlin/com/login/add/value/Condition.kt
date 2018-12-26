@@ -4,8 +4,12 @@ import java.sql.Timestamp
 
 data class Condition(
         val branchId: String,
-        val start_date: Timestamp,
-        val end_date: Timestamp,
-        val payment_type: Array<Boolean>,
-        val service_type: Array<Boolean>
+        val id: String?,
+        val shopName: String?,
+        val riderName: String?,
+        val orderStatusIds: MutableList<Int>?,
+        val paymentTypes: MutableList<Int>?,
+        val isShared: Boolean?,
+        val startDate: Timestamp?,
+        val endDate: Timestamp?
 )
