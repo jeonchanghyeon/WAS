@@ -1,6 +1,6 @@
-package com.login.add.controller
+package com.please.controller
 
-import com.login.add.service.AuthService
+import com.please.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping

@@ -1,8 +1,8 @@
-package com.login.add.controller
+package com.please.controller
 
-import com.login.add.service.PointService
-import com.login.add.service.StatusService
-import com.login.add.value.AuthInfo
+import com.please.service.PointService
+import com.please.service.StatusService
+import com.please.value.AuthInfo
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller

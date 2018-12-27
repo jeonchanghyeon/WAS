@@ -1,4 +1,4 @@
-package com.login.add.persistence
+package com.please.persistence
 
 import org.json.JSONObject
 import org.springframework.jdbc.core.JdbcTemplate
