@@ -138,11 +138,7 @@ function showSearchList() {
     const searchType = document.getElementById("search_type");
     const selectFeature = document.getElementById("search_feature");
 
-<<<<<<< HEAD:src/main/resources/static/home/home.js
-    const searchType_ = searchType.options[searchType.selectedIndex].value;
-=======
     const searchType_ = searchType.options[searchType.selectedIndex].name;
->>>>>>> b41e32b88863c417f13ef4aa8b1ae00aea5c5447:src/main/resources/static/js/home.js
     const word = selectFeature.value;
 
     const url =
@@ -152,7 +148,7 @@ function showSearchList() {
         "&end-date=" + endDateText.toTimestampFormat() +
         "&payment-type=" + paymentCheckedArray +
         "&is-shared=" + serviceCheckedArray +
-        "&" + searchType_ + word;
+        "&" + searchType_ + "=" + word;
 
     ajax(url, "get", resultJsSearchList);
     return false;
