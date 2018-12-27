@@ -7,6 +7,7 @@ import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
+import java.util.*
 
 @Service
 class StatusService {
@@ -21,16 +22,35 @@ class StatusService {
         return statusDAO.getBranchs(authInfo, distributeId)
     }
 
-    fun searchOrders(authInfo: AuthInfo, data: MutableMap<String, Any>, paymentType: Array<Boolean>, serviceType: Array<Boolean>): Map<String, Any>? {
+    fun searchOrders(authInfo: AuthInfo, data: MutableMap<String, Any>, paymentType: MutableList<Int>?, orderStatusIds: MutableList<Int>?): JSONObject? {
         val condition = Condition(
-                data["branchId"] as String? ?: "",
-                if (data["start_date"] != "-1") Timestamp.valueOf(data["start_date"] as String) else Timestamp(0),
-                if (data["end_date"] != "-1") Timestamp.valueOf(data["end_date"] as String) else Timestamp.valueOf("2850-12-01 00:00:00"),
+                data["branch-id"] as String,
+                data["id"] as String?,
+                data["shop-name"] as String?,
+                data["rider-name"] as String?,
+                orderStatusIds,
                 paymentType,
-                serviceType
+                data["is-shared"] as Boolean?,
+                Timestamp.valueOf(data["start-date"] as String? ?: "1000-01-01 00:00:00"),
+                Timestamp.valueOf(data["end-date"] as String? ?: "9999-12-31 23:59:59")
         )
 
-        return statusDAO.searchOrders(authInfo, condition)
+        val conditionJSONObject = JSONObject()
+        conditionJSONObject.put("branchId", condition.branchId)
+        conditionJSONObject.put("id", condition.id)
+        conditionJSONObject.put("shopName", condition.shopName)
+        conditionJSONObject.put("riderName", condition.riderName)
+        conditionJSONObject.put("orderStatusIds", condition.orderStatusIds)
+        conditionJSONObject.put("paymentTypes", condition.paymentTypes)
+        conditionJSONObject.put("isShared", condition.isShared)
+        conditionJSONObject.put("dateType", "create")
+        conditionJSONObject.put("startDate", condition.startDate)
+        conditionJSONObject.put("endDate", condition.endDate)
+
+        println(conditionJSONObject.toString())
+        val result = statusDAO.searchOrders(authInfo, conditionJSONObject)
+        println("result : $result")
+        return result
     }
 
     fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
