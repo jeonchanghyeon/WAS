@@ -129,27 +129,30 @@ function showSearchList() {
     const serviceCheckedArray = [];
 
     for (let i = 0; i < paymentType.length; i++) {
-        paymentCheckedArray.push(paymentType[i].checked)
+        paymentCheckedArray.push(i)
     }
     for (let i = 0; i < serviceType.length; i++) {
-        serviceCheckedArray.push(serviceType[i].checked)
+        serviceCheckedArray.push(i)
     }
 
     const searchType = document.getElementById("search_type");
     const selectFeature = document.getElementById("search_feature");
 
+<<<<<<< HEAD:src/main/resources/static/home/home.js
     const searchType_ = searchType.options[searchType.selectedIndex].value;
+=======
+    const searchType_ = searchType.options[searchType.selectedIndex].name;
+>>>>>>> b41e32b88863c417f13ef4aa8b1ae00aea5c5447:src/main/resources/static/js/home.js
     const word = selectFeature.value;
 
     const url =
         "status/orders?" +
-        "branchId=" + branchValue +
-        "&start_date=" + startDateText.toTimestampFormat() +
-        "&end_date=" + endDateText.toTimestampFormat() +
-        "&payment_type=" + paymentCheckedArray +
-        "&service_type=" + serviceCheckedArray +
-        "&search_type=" + searchType_ +
-        "&word=" + word;
+        "branch-id=" + branchValue +
+        "&start-date=" + startDateText.toTimestampFormat() +
+        "&end-date=" + endDateText.toTimestampFormat() +
+        "&payment-type=" + paymentCheckedArray +
+        "&is-shared=" + serviceCheckedArray +
+        "&" + searchType_ + word;
 
     ajax(url, "get", resultJsSearchList);
     return false;
