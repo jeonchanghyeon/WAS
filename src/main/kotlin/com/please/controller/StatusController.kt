@@ -49,19 +49,19 @@ class StatusController {
 
     @GetMapping(value = ["orders"])
     @ResponseBody
-    fun getCondition(
-            request: HttpServletRequest,
-            @RequestParam data: MutableMap<String, Any>,
-            @RequestParam(value = "payment_type") paymentType: Array<Boolean>,
-            @RequestParam(value = "service_type") serviceType: Array<Boolean>)
-            : Map<String, Any?> {
+    fun getCondition(request: HttpServletRequest,
+                     @RequestParam data: MutableMap<String, Any>,
+                     @RequestParam(value = "payment-type", required = false) paymentTypes: MutableList<Int>?,
+                     @RequestParam(value = "is-shared", required = false) orderStatusIds: MutableList<Int>?): Any {
         val session = request.session
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
         return try {
-            var value = statusService.searchOrders(authInfo!!, data, paymentType, serviceType)
+            println("start : ${data["start-date"]}")
+            println("end : ${data["end-date"]}")
+            var value = statusService.searchOrders(authInfo!!, data, paymentTypes, orderStatusIds)
             println(value)
-            mapOf("resultCode" to 0, "resultObject" to value)
+            value!!.toString()
         } catch (e: Exception) {
             e.printStackTrace()
             mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
@@ -89,9 +89,7 @@ class StatusController {
             val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
             var value = statusService.getBranchSettings(authInfo!!.authKey, id)
-
             println(value)
-
             value!!.toString()
         } catch (e: Exception) {
             e.printStackTrace()
