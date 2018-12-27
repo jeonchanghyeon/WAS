@@ -122,7 +122,7 @@ function showSearchList() {
     const endDateText = endDateSelect.value;
 
     if (branchSelect.selectedIndex === 0) {
-        // branchText = "-1";
+        //branchText = "-1";
     }
 
     const paymentCheckedArray = [];
@@ -139,7 +139,7 @@ function showSearchList() {
     const selectFeature = document.getElementById("search_feature");
 
     const searchType_ = searchType.options[searchType.selectedIndex].value;
-    const word = selectFeature.value
+    const word = selectFeature.value;
 
     const url =
         "status/orders?" +
