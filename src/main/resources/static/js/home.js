@@ -29,6 +29,14 @@ String.prototype.numberWithCommas = function () {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+function convertToValidDate(date) {
+    if (isNaN(Date.parse(date))) {
+        return "-"
+    }
+
+    return (new Date(date)).HHMM()
+}
+
 function ajax(url, method, func, content = null) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
@@ -122,7 +130,7 @@ function showSearchList() {
     const endDateText = endDateSelect.value;
 
     if (branchSelect.selectedIndex === 0) {
-        // branchText = "-1";
+        //branchText = "-1";
     }
 
     const paymentCheckedArray = [];
@@ -138,7 +146,7 @@ function showSearchList() {
     const searchType = document.getElementById("search_type");
     const selectFeature = document.getElementById("search_feature");
 
-    const searchType_ = searchType.options[searchType.selectedIndex].name;
+    const searchType_ = searchType.options[searchType.selectedIndex].value;
     const word = selectFeature.value;
 
     const url =
@@ -147,8 +155,8 @@ function showSearchList() {
         "&start-date=" + startDateText.toTimestampFormat() +
         "&end-date=" + endDateText.toTimestampFormat() +
         "&payment-type=" + paymentCheckedArray +
-        "&is-shared=" + serviceCheckedArray +
-        "&" + searchType_ + "=" + word;
+        "&is-shared=" + serviceCheckedArray;
+    // "&" + searchType_ + "=" + word;
 
     ajax(url, "get", resultJsSearchList);
     return false;
@@ -159,8 +167,8 @@ let selectedRowClassName = null;
 
 function resultJsSearchList(obj) {
     try {
-        const orders = obj["resultObject"]["orders"];
-        const counts = obj["resultObject"]["counts"];
+        const orders = obj["orders"];
+        const counts = obj["counts"];
 
         container.innerHTML = '';
         const size = orders.length;
@@ -183,34 +191,42 @@ function resultJsSearchList(obj) {
             const row = document.createElement("tr");
 
             if (order.shared === "true") {
-                order.statusId = shareCallIndex;
+                order.orderStatusId = shareCallIndex;
                 order.status = "공유콜";
             }
 
-            if (!checkBox[statusMapIndex[order.statusId]].checked) {
+            if (!checkBox[statusMapIndex[order.orderStatusId]].checked) {
                 continue;
             }
+
+            let sumOfadditionalCost = 0;
+            for (let i = 0; i < order.additionalCost.length; i++) {
+                sumOfadditionalCost += order.additionalCost[i].cost;
+            }
+
+            let parsingStatus = ["대기", "배차", "상점거절", "상점확인전", "예약", "완료", "접수", "취소", "픽업"];
+            let parsingPaymentType = ["카드", "현금", "선결제"];
 
             const text = [
                 order.id.toString().fillZero(),
                 (new Date(order.createDate)).mmdd() + "-" + (new Date(order.createDate)).HHMM(),
-                order.shop,
-                order.status,
-                (new Date(order.createDate)).HHMM(),
-                (new Date(order.allocateDate)).HHMM(),
-                (new Date(order.pickupDate)).HHMM(),
-                (new Date(order.completeDate)).HHMM(),
-                (new Date(order.cancelDate)).HHMM(),
+                order.shopName,
+                parsingStatus[order.orderStatusId - 1],
+                convertToValidDate(order.createDate),
+                convertToValidDate(order.allocateDate),
+                convertToValidDate(order.pickupDate),
+                convertToValidDate(order.completeDate),
+                convertToValidDate(order.cancelDate),
                 order.deliveryCost.toString().numberWithCommas(),
-                order.additionalCost,    //추가 대행료(계산필요)
+                sumOfadditionalCost,
                 order.riderName,
-                order.paymentType,
-                order.requests];
+                parsingPaymentType[order.paymentType - 1],
+                order.memo];
 
             for (let j = 0; j < text.length; j++) {
                 const col = document.createElement("td");
                 col.innerHTML = text[j];
-                col.className = statusMap[order.statusId - 1];
+                col.className = statusMap[order.orderStatusId - 1];
                 row.appendChild(col);
             }
 
@@ -228,7 +244,7 @@ function resultJsSearchList(obj) {
                 }
 
                 selectedRow = row;
-                selectedRowClassName = statusMap[order.statusId - 1];
+                selectedRowClassName = statusMap[order.orderStatusId - 1];
             };
             container.appendChild(row)
         }
@@ -367,7 +383,7 @@ for (let i = 0; i < col.length; i++) {
 
 const numCheckBox = 8;
 const numText = 8;
-const shareCallIndex = 7;
+const shareCallIndex = 8;
 
 for (let i = 0; i < numCheckBox; i++) {
     checkBox[i].onclick = changeStatusCheckBox(i, showSearchList)

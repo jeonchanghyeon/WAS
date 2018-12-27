@@ -8,6 +8,7 @@
 
     <title>Please</title>
     <link rel="stylesheet" href="/css/home.css"/>
+    <link rel="stylesheet" href="css/header.css"/>
     <link rel="stylesheet" type="text/css" href="/codebase/fonts/font_roboto/roboto.css"/>
     <link rel="stylesheet" type="text/css" href="/codebase/dhtmlx.css"/>
     <script src="/codebase/dhtmlx.js"></script>
@@ -17,30 +18,25 @@
 <!-- Main Container -->
 <div class="container">
     <!-- Navigation -->
-    <!--	<div class ="header">-->
     <header>
-        <a href="">
-            <div class="logo"><img alt="logo" src="img/logo_small.png" width="21px" height="23px"/></div>
-        </a>
-        <table class="nav">
-            <tr>
-                <th><a href="/status">현황</a></th>
-                <td><a href="/status#">관제</a></td>
-                <td><a href="/status#">통계</a></td>
-                <td><a href="/status#">설정</a></td>
-            </tr>
-        </table>
-        <div class="point_area">
-            <!--/*@thymesVar id="point" type="com.please.controller.StatusController"*/-->
-            <span id="point" th:text="${point}">
-		  -1
-				</span>
+        <div class="logo"><img alt="logo" src="img/logo_small.png" width="21px" height="23px"/></div>
+        <nav>
+            <ul>
+                <li>현황</li>
+                <li>관제</li>
+                <li>관리</li>
+                <li>통계</li>
+                <li>설정</li>
+            </ul>
+        </nav>
+
+        <div class="header_right">
+            <div class="point_area">
+                <span id="point" th:text="${point}">-1</span>
+            </div>
+            <button class="button">접수하기</button>
         </div>
-
-        <button class="submit">접수하기</button>
-
     </header>
-    <!--		</div>-->
     <!-- Hero Section -->
     <div class="hero" id="hero">
         <!--  <section class="hero" id="hero">-->
@@ -117,7 +113,7 @@
                                 <option value="rider-name">기사 이름</option>
                             </select>
                             </td>
-                            <td><input type="search" id="search_feature" name = "word"/>
+                            <td><input type="search" id="search_feature" name="word"/>
                             </td>
                             <td><input type="submit" id="btn_feature" value="검색"/>
                             </td>
