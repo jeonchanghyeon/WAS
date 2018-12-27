@@ -21,19 +21,20 @@ class StatusService {
         return statusDAO.getBranchs(authInfo, distributeId)
     }
 
-    fun searchOrders(authInfo: AuthInfo, data: MutableMap<String, Any>, paymentType: MutableList<Int>?, orderStatusIds: MutableList<Int>?): JSONObject? {
+    fun searchOrders(authInfo: AuthInfo, data: MutableMap<String, Any>, paymentTypes: MutableList<Int>?, orderStatusIds: MutableList<Int>?): JSONObject? {
+
         val condition = Condition(
                 data["branch-id"] as String,
                 data["id"] as String?,
                 data["shop-name"] as String?,
                 data["rider-name"] as String?,
                 //orderStatusIds,
-                mutableListOf(1, 2, 3, 4, 5, 6, 7),
-                paymentType,
+                null, //mutableListOf(1, 2, 3, 4, 5, 6),
+                null, //paymentTypes,
                 //data["is-shared"] as Boolean?,
                 null,
-                Timestamp.valueOf(data["start-date"] as String? ?: "1000-01-01 00:00:00"),
-                Timestamp.valueOf(data["end-date"] as String? ?: "9999-12-31 23:59:59")
+                if(data["start-date"] != "-1") Timestamp(data["start-date"] as Long) else Timestamp.valueOf("1000-01-01 00:00:00"),
+                if(data["end-date"] != "-1") Timestamp(data["end-data"] as Long) else Timestamp.valueOf("9999-12-31 23:59:59")
         )
 
         val conditionJSONObject = JSONObject()
@@ -41,12 +42,12 @@ class StatusService {
         conditionJSONObject.put("id", condition.id)
         conditionJSONObject.put("shopName", condition.shopName)
         conditionJSONObject.put("riderName", condition.riderName)
-        conditionJSONObject.put("orderStatusIds", condition.orderStatusIds)
-        conditionJSONObject.put("paymentTypes", condition.paymentTypes)
+//        conditionJSONObject.put("orderStatusIds", condition.orderStatusIds)
+//        conditionJSONObject.put("paymentTypes", condition.paymentTypes)
         conditionJSONObject.put("isShared", condition.isShared)
-        conditionJSONObject.put("dateType", "create")
-        conditionJSONObject.put("startDate", condition.startDate)
-        conditionJSONObject.put("endDate", condition.endDate)
+//        conditionJSONObject.put("dateType", "create")
+//        conditionJSONObject.put("startDate", condition.startDate)
+//        conditionJSONObject.put("endDate", condition.endDate)
 
         println(conditionJSONObject.toString())
         try {
