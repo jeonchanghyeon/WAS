@@ -148,7 +148,7 @@ function showSearchList() {
         "&end-date=" + endDateText.toTimestampFormat() +
         "&payment-type=" + paymentCheckedArray +
         "&is-shared=" + serviceCheckedArray +
-        "&" + searchType_ + word;
+        "&" + searchType_ + "=" + word;
 
     ajax(url, "get", resultJsSearchList);
     return false;
