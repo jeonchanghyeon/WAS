@@ -22,7 +22,6 @@ class StatusService {
     }
 
     fun searchOrders(authInfo: AuthInfo, data: MutableMap<String, Any>, paymentTypes: MutableList<Int>?, orderStatusIds: MutableList<Int>?): JSONObject? {
-
         val condition = Condition(
                 data["branch-id"] as String,
                 data["id"] as String?,
@@ -36,10 +35,11 @@ class StatusService {
                 if(data["start-date"] != "-1") Timestamp(data["start-date"] as Long) else Timestamp.valueOf("1000-01-01 00:00:00"),
                 if(data["end-date"] != "-1") Timestamp(data["end-data"] as Long) else Timestamp.valueOf("9999-12-31 23:59:59")
         )
+        val id = if(condition.id != null) condition.id.toLongOrNull() ?: -1 else null
 
         val conditionJSONObject = JSONObject()
         conditionJSONObject.put("branchId", condition.branchId)
-        conditionJSONObject.put("id", condition.id)
+        conditionJSONObject.put("id", id)
         conditionJSONObject.put("shopName", condition.shopName)
         conditionJSONObject.put("riderName", condition.riderName)
 //        conditionJSONObject.put("orderStatusIds", condition.orderStatusIds)
