@@ -7,7 +7,6 @@ import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
-import java.util.*
 
 @Service
 class StatusService {
@@ -28,9 +27,11 @@ class StatusService {
                 data["id"] as String?,
                 data["shop-name"] as String?,
                 data["rider-name"] as String?,
-                orderStatusIds,
+                //orderStatusIds,
+                mutableListOf(1, 2, 3, 4, 5, 6, 7),
                 paymentType,
-                data["is-shared"] as Boolean?,
+                //data["is-shared"] as Boolean?,
+                null,
                 Timestamp.valueOf(data["start-date"] as String? ?: "1000-01-01 00:00:00"),
                 Timestamp.valueOf(data["end-date"] as String? ?: "9999-12-31 23:59:59")
         )
@@ -48,9 +49,15 @@ class StatusService {
         conditionJSONObject.put("endDate", condition.endDate)
 
         println(conditionJSONObject.toString())
-        val result = statusDAO.searchOrders(authInfo, conditionJSONObject)
-        println("result : $result")
-        return result
+        try {
+            val result = statusDAO.searchOrders(authInfo, conditionJSONObject)
+            result!!.put("counts", mutableListOf(0, 0, 0, 0, 0, 0, 0))
+            println("result : $result")
+            return result
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 
     fun getBranchSettings(authKey: String, branchId: String): JSONObject? {

@@ -52,7 +52,7 @@ class StatusController {
     fun getCondition(request: HttpServletRequest,
                      @RequestParam data: MutableMap<String, Any>,
                      @RequestParam(value = "payment-types", required = false) paymentTypes: MutableList<Int>?,
-                     @RequestParam(value = "order-status-ids", required = false) orderStatusIds: MutableList<Int>?): Any {
+                     @RequestParam(value = "is-shared", required = false) orderStatusIds: MutableList<Int>?): Any {
         val session = request.session
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
