@@ -7,9 +7,9 @@ data class Condition(
         val id: String?,
         val shopName: String?,
         val riderName: String?,
-        val orderStatusIds: MutableList<Int>?,
-        val paymentTypes: MutableList<Int>?,
+        val orderStatusIds: MutableList<Int>,
+        val paymentTypes: MutableList<Int>,
         val isShared: Boolean?,
-        val startDate: Timestamp?,
-        val endDate: Timestamp?
+        val startDate: Timestamp,
+        val endDate: Timestamp
 )

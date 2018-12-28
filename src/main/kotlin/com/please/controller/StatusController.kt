@@ -51,15 +51,13 @@ class StatusController {
     @ResponseBody
     fun getCondition(request: HttpServletRequest,
                      @RequestParam data: MutableMap<String, Any>,
-                     @RequestParam(value = "payment-type", required = false) paymentTypes: MutableList<Int>?,
-                     @RequestParam(value = "is-shared", required = false) orderStatusIds: MutableList<Int>?): Any {
+                     @RequestParam(value = "payment-types", required = true) paymentTypes: MutableList<Int>,
+                     @RequestParam(value = "order-status-ids", required = true) orderStatusIds: MutableList<Int>): Any {
         val session = request.session
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
         return try {
-            println("start : ${data["start-date"]}")
-            println("end : ${data["end-date"]}")
-            var value = statusService.searchOrders(authInfo!!, data, paymentTypes, orderStatusIds)
+            val value = statusService.searchOrdersInfo(authInfo!!, data, paymentTypes, orderStatusIds)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

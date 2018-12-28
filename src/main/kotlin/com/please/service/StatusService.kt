@@ -3,6 +3,7 @@ package com.please.service
 import com.please.dataAccess.StatusDAO
 import com.please.value.AuthInfo
 import com.please.value.Condition
+import org.json.JSONArray
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -21,39 +22,41 @@ class StatusService {
         return statusDAO.getBranchs(authInfo, distributeId)
     }
 
-    fun searchOrders(authInfo: AuthInfo, data: MutableMap<String, Any>, paymentTypes: MutableList<Int>?, orderStatusIds: MutableList<Int>?): JSONObject? {
+    fun searchOrdersInfo(authInfo: AuthInfo, data: MutableMap<String, Any>, paymentTypes: MutableList<Int>, orderStatusIds: MutableList<Int>): JSONArray? {
         val condition = Condition(
                 data["branch-id"] as String,
                 data["id"] as String?,
                 data["shop-name"] as String?,
                 data["rider-name"] as String?,
-                //orderStatusIds,
-                null, //mutableListOf(1, 2, 3, 4, 5, 6),
-                null, //paymentTypes,
-                //data["is-shared"] as Boolean?,
-                null,
-                if(data["start-date"] != "-1") Timestamp(data["start-date"] as Long) else Timestamp.valueOf("1000-01-01 00:00:00"),
-                if(data["end-date"] != "-1") Timestamp(data["end-data"] as Long) else Timestamp.valueOf("9999-12-31 23:59:59")
+                orderStatusIds,
+                paymentTypes,
+                data["is-shared"] as Boolean?,
+                Timestamp.valueOf(data["start-date"] as String? ?: "1000-01-01 00:00:00"),
+                Timestamp.valueOf(data["end-data"] as String? ?: "9999-12-31 23:59:59")
         )
-        val id = if(condition.id != null) condition.id.toLongOrNull() ?: -1 else null
+        val id = if (condition.id != null) condition.id.toLongOrNull() ?: -1 else null
+        val orderSet = if(orderStatusIds.isNotEmpty()) orderStatusIds else mutableListOf(-1)
+        val paymentSet = if(paymentTypes.isNotEmpty()) paymentTypes else mutableListOf(-1)
 
         val conditionJSONObject = JSONObject()
-        conditionJSONObject.put("branchId", condition.branchId)
         conditionJSONObject.put("id", id)
         conditionJSONObject.put("shopName", condition.shopName)
         conditionJSONObject.put("riderName", condition.riderName)
-//        conditionJSONObject.put("orderStatusIds", condition.orderStatusIds)
-//        conditionJSONObject.put("paymentTypes", condition.paymentTypes)
+        conditionJSONObject.put("orderStatusIds", orderSet)
+        conditionJSONObject.put("paymentTypes", paymentSet)
         conditionJSONObject.put("isShared", condition.isShared)
-//        conditionJSONObject.put("dateType", "create")
-//        conditionJSONObject.put("startDate", condition.startDate)
-//        conditionJSONObject.put("endDate", condition.endDate)
+        conditionJSONObject.put("dateType", "create")
+        conditionJSONObject.put("startDate", condition.startDate)
+        conditionJSONObject.put("endDate", condition.endDate)
 
-        println(conditionJSONObject.toString())
         try {
-            val result = statusDAO.searchOrders(authInfo, conditionJSONObject)
-            result!!.put("counts", mutableListOf(0, 0, 0, 0, 0, 0, 0))
-            println("result : $result")
+            val ordersResult = statusDAO.searchOrders(condition.branchId, conditionJSONObject)
+            val countsResult = statusDAO.getOrderStatusCounts(condition.branchId, condition.startDate, condition.endDate)
+
+            val result = JSONArray()
+            result.put(0, ordersResult)
+            result.put(1, countsResult)
+
             return result
         } catch (e: Exception) {
             e.printStackTrace()
@@ -88,5 +91,4 @@ class StatusService {
 
         return null
     }
-
 }
