@@ -32,8 +32,10 @@ class StatusService {
                 paymentTypes,
                 data["is-shared"] as Boolean?,
                 Timestamp.valueOf(data["start-date"] as String? ?: "1000-01-01 00:00:00"),
-                Timestamp.valueOf(data["end-data"] as String? ?: "9999-12-31 23:59:59")
+                Timestamp.valueOf(data["end-data"] as String? ?: "9999-12-31 23:59:59"),
+                data["page-Index"] as Long?
         )
+
         val id = if (condition.id != null) condition.id.toLongOrNull() ?: -1 else null
         val orderSet = if(orderStatusIds.isNotEmpty()) orderStatusIds else mutableListOf(-1)
         val paymentSet = if(paymentTypes.isNotEmpty()) paymentTypes else mutableListOf(-1)
@@ -48,6 +50,7 @@ class StatusService {
         conditionJSONObject.put("dateType", "create")
         conditionJSONObject.put("startDate", condition.startDate)
         conditionJSONObject.put("endDate", condition.endDate)
+        conditionJSONObject.put("pageIndex", condition.pageIndex)
 
         try {
             val ordersResult = statusDAO.searchOrders(condition.branchId, conditionJSONObject)

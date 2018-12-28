@@ -11,5 +11,6 @@ data class Condition(
         val paymentTypes: MutableList<Int>,
         val isShared: Boolean?,
         val startDate: Timestamp,
-        val endDate: Timestamp
+        val endDate: Timestamp,
+        val pageIndex: Long?
 )
