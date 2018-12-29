@@ -165,7 +165,7 @@ table {
 }
 
 
-.btn_cash {
+.btn_unselected {
 	width: 60px;
 	height: 24px;
 	border: 1px solid #9b9b9b;
@@ -176,18 +176,7 @@ table {
 	color: #4a4a4a;
 }
 
-.btn_card {
-	width: 60px;
-	height: 24px;
-	border: 1px solid #9b9b9b;
-	background-color : #FFFFFF;
-	border-radius: 2px;
-	font-size: 13px;
-	font-weight: 500;
-	color: #4a4a4a;
-}
-
-.btn_prepay {
+.btn_selected  {
 	width: 60px;
 	height: 24px;
 	border: 1px solid #ff7100;
@@ -238,7 +227,7 @@ table {
 	text-align : right;
 }
 
-.aside_cash {
+.aside_btn_unselected {
 	width: 68px;
 	height: 24px;
 	border: 1px solid #9b9b9b;
@@ -249,7 +238,7 @@ table {
 	color: #ffffff;
 }
 
-.aside_point {
+.aside_btn_selected {
 	width: 68px;
 	height: 24px;
 	border: 1px solid #ff9037;
