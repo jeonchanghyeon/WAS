@@ -16,6 +16,7 @@ class ShopsInfoPrintService {
         val info = JSONObject()
         info.put("shopName", shopName)
         info.put("shopStatusIds", shopStatusIds)
+        info.put("pageIndex", data["page-index"] as Long?)
 
         return shopManagementDAO.searchShops(authKey, info)
     }

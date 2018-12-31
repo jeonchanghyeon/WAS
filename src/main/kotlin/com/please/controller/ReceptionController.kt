@@ -21,7 +21,7 @@ class ReceptionController {
 
     @GetMapping(value = ["efg"])
     @ResponseBody
-    fun getCondition(request: HttpServletRequest,
+    fun addOrder(request: HttpServletRequest,
                      @RequestParam data: MutableMap<String, Any>): Any {
         val session = request.session
         val authInfo = session.getAttribute("authInfo") as AuthInfo?

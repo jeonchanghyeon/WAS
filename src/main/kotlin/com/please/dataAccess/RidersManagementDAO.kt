@@ -15,7 +15,7 @@ internal class RidersManagementDAO {
 
     fun searchRiders(authKey: String, riderInfo: JSONObject): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedRiders(?, ?)", authKey, riderInfo)
+            return template.queryForJSONObject("CALL getSearchedRiders(?, ?)", authKey, riderInfo.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }

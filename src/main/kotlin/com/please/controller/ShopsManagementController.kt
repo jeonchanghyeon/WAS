@@ -18,7 +18,7 @@ class ShopsManagementController {
 
     @GetMapping(value = ["efg"])
     @ResponseBody
-    fun getCondition(request: HttpServletRequest,
+    fun searchShops(request: HttpServletRequest,
                      @RequestParam data: MutableMap<String, Any>,
                      @RequestParam(value = "shop-status-ids") shopStatusIds: MutableList<Int>): Any {
         val session = request.session

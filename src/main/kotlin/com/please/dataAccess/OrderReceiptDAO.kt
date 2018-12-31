@@ -14,7 +14,7 @@ internal class OrderReceiptDAO {
     private lateinit var template: JdbcTemplate
     fun addOrderReceipt(authKey: String, orderInfo: JSONObject): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL addOrder(?, ?)", authKey, orderInfo)
+            return template.queryForJSONObject("CALL addOrder(?, ?)", authKey, orderInfo.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -16,6 +16,7 @@ class RidersInfoPrintService {
         val info = JSONObject()
         info.put("riderName", riderName)
         info.put("riderStatusIds", riderStatusIds)
+        info.put("pageIndex", data["page-index"] as Long?)
 
         return riderManagementDAO.searchRiders(authKey, info)
     }
