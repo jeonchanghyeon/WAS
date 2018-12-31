@@ -21,4 +21,13 @@ internal class AddressDAO {
         }
         return null
     }
+
+    fun getEnableDong(authKey: String, shopId: Long): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL getEnableDong(?, ?)", authKey, shopId)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 }
