@@ -1,6 +1,6 @@
 package com.please.dataAccess
 
-import com.please.value.AccountInfo
+import com.please.value.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
@@ -14,11 +14,11 @@ class AccountDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun getAccountInfo(id: String): AccountInfo? {
+    fun getUser(id: String): User? {
         try {
             template.queryForRowSet("SELECT * FROM users WHERE userId = ?", id).run {
                 first()
-                return AccountInfo(
+                return User(
                         getString("userId") ?: "",
                         getString("password") ?: "",
                         getString("authKey") ?: "",

@@ -1,5 +1,6 @@
 package com.please.controller
 
+import com.please.persistence.getAuthInfo
 import com.please.service.PointService
 import com.please.service.StatusService
 import com.please.value.AuthInfo
@@ -21,10 +22,7 @@ class StatusController {
 
     @GetMapping
     fun status(request: HttpServletRequest, model: Model): String {
-        val session = request.session
-        val authInfo = session.getAttribute("authInfo") as AuthInfo?
-
-        authInfo ?: return "login"
+        val authInfo = getAuthInfo()!!
 
         var branchs = mutableListOf<Map<String, Any?>>()
         var branchSettings = JSONObject()
@@ -53,8 +51,7 @@ class StatusController {
                      @RequestParam data: MutableMap<String, Any>,
                      @RequestParam(value = "payment-type", required = false) paymentTypes: MutableList<Int>?,
                      @RequestParam(value = "is-shared", required = false) orderStatusIds: MutableList<Int>?): Any {
-        val session = request.session
-        val authInfo = session.getAttribute("authInfo") as AuthInfo?
+        val authInfo = getAuthInfo()!!
 
         return try {
             println("start : ${data["start-date"]}")
@@ -71,8 +68,7 @@ class StatusController {
     @GetMapping(value = ["distributors"])
     @ResponseBody
     fun getBranchList(request: HttpServletRequest, @RequestParam(value = "distributorId") distributorId: Long): MutableList<Map<String, Any?>>? {
-        val session = request.session
-        val authInfo = session.getAttribute("authInfo") as AuthInfo?
+        val authInfo = getAuthInfo()!!
 
         var branchs = statusService.getBranchs(authInfo!!, distributorId) ?: mutableListOf()
         if (branchs.size != 1) {
@@ -85,8 +81,7 @@ class StatusController {
     @ResponseBody
     fun getBranchSettings(request: HttpServletRequest, @PathVariable id: String): Any {
         return try {
-            val session = request.session
-            val authInfo = session.getAttribute("authInfo") as AuthInfo?
+            val authInfo = getAuthInfo()!!
 
             var value = statusService.getBranchSettings(authInfo!!.authKey, id)
             println(value)
@@ -101,8 +96,7 @@ class StatusController {
     @ResponseBody
     fun setBranchSettings(request: HttpServletRequest, @RequestBody data: MutableMap<String, Any?>, @PathVariable id: String): Any {
         return try {
-            val session = request.session
-            val authInfo = session.getAttribute("authInfo") as AuthInfo?
+            val authInfo = getAuthInfo()!!
             var value = statusService.setBranchSettings(authInfo!!.authKey, data, id)
 
             println(value)
