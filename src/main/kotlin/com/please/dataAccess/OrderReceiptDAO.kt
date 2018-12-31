@@ -20,6 +20,4 @@ internal class OrderReceiptDAO {
         }
         return null
     }
-
-
 }
