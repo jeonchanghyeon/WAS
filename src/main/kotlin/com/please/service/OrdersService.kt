@@ -1,6 +1,5 @@
 package com.please.service
 
-import com.please.dataAccess.AccountDAO
 import com.please.dataAccess.OrdersDAO
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +10,7 @@ class OrdersService {
     @Autowired
     private lateinit var ordersDAO: OrdersDAO
 
-    fun getDeliveryDetails(authKey : String, orderId : Int): JSONObject? {
+    fun getDeliveryDetails(authKey: String, orderId: Int): JSONObject? {
         return ordersDAO.getDeliveryDetails(authKey, orderId)
     }
 }

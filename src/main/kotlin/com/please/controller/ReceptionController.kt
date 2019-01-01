@@ -1,12 +1,9 @@
 package com.please.controller
 
 import com.please.service.ReceptionService
-import com.please.service.StatusService
 import com.please.value.AuthInfo
-import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -22,7 +19,7 @@ class ReceptionController {
     @GetMapping(value = ["efg"])
     @ResponseBody
     fun addOrder(request: HttpServletRequest,
-                     @RequestParam data: MutableMap<String, Any>): Any {
+                 @RequestParam data: MutableMap<String, Any>): Any {
         val session = request.session
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 

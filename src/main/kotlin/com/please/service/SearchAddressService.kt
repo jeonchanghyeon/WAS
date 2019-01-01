@@ -1,7 +1,6 @@
 package com.please.service
 
 import com.please.dataAccess.AddressDAO
-import com.please.dataAccess.RidersManagementDAO
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

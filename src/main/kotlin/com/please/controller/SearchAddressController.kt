@@ -2,7 +2,6 @@ package com.please.controller
 
 import com.please.service.SearchAddressService
 import com.please.service.ShopEnableAreaService
-import com.please.service.ShopsInfoPrintService
 import com.please.value.AuthInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -36,7 +35,7 @@ class SearchAddressController {
     @GetMapping(value = ["ewe"])
     @ResponseBody
     fun getEnableArea(request: HttpServletRequest,
-            @RequestParam data: MutableMap<String, Any>): Any {
+                      @RequestParam data: MutableMap<String, Any>): Any {
         val session = request.session
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
