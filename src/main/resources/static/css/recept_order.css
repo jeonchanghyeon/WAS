@@ -232,6 +232,7 @@ article {
 }
 
 .btn_wait {
+    text-align: center;
     margin-left: 5px;
     margin-right: 5px;
     padding-top: 7px;
@@ -437,7 +438,7 @@ article {
 }
 
 .buttons {
-    margin: 15px calc(50% - 205px);
+    margin: 15px calc(50% - 210px);
     float: left;
 }
 
