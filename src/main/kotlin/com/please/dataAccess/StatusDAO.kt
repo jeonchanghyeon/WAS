@@ -2,8 +2,6 @@ package com.please.dataAccess
 
 import com.please.persistence.queryForJSONObject
 import com.please.value.AuthInfo
-import com.please.value.Condition
-import com.please.value.Order
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -54,9 +52,9 @@ class StatusDAO {
     }
 
     //검색 조건에 맞는 주문 목록 쿼리
-    fun searchOrders(branchId: String, conditionJSONObject: JSONObject): JSONObject? {
+    fun searchOrders(branchId: String, conditionParseString: String): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedOrders(getUserAuthKeyById(?), ?)", branchId, conditionJSONObject.toString())
+            return template.queryForJSONObject("CALL getSearchedOrders(getUserAuthKeyById(?), ?)", branchId, conditionParseString)
         } catch(e: Exception) {
             e.printStackTrace()
         }

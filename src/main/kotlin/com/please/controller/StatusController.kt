@@ -1,15 +1,21 @@
 package com.please.controller
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.please.persistence.getAuthInfo
 import com.please.service.PointService
 import com.please.service.StatusService
 import com.please.value.AuthInfo
+import com.please.value.Condition
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
+import org.springframework.web.bind.annotation.RequestMethod
+import java.sql.Timestamp
+
 
 @CrossOrigin(origins = arrayOf("*"), allowCredentials = "false")
 @Controller
@@ -47,14 +53,11 @@ class StatusController {
 
     @GetMapping(value = ["orders"])
     @ResponseBody
-    fun getCondition(request: HttpServletRequest,
-                     @RequestParam data: MutableMap<String, Any>,
-                     @RequestParam(value = "payment-types", required = true) paymentTypes: MutableList<Int>,
-                     @RequestParam(value = "order-status-ids", required = true) orderStatusIds: MutableList<Int>): Any {
+    fun getCondition(condition: Condition): Any {
         val authInfo = getAuthInfo()!!
 
         return try {
-            val value = statusService.searchOrdersInfo(authInfo!!, data, paymentTypes, orderStatusIds)
+            val value = statusService.searchOrdersInfo(authInfo, condition)
             println(value)
             value!!.toString()
         } catch (e: Exception) {
@@ -63,12 +66,13 @@ class StatusController {
         }
     }
 
+
     @GetMapping(value = ["distributors"])
     @ResponseBody
     fun getBranchList(request: HttpServletRequest, @RequestParam(value = "distributorId") distributorId: Long): MutableList<Map<String, Any?>>? {
         val authInfo = getAuthInfo()!!
 
-        var branchs = statusService.getBranchs(authInfo!!, distributorId) ?: mutableListOf()
+        var branchs = statusService.getBranchs(authInfo, distributorId) ?: mutableListOf()
         if (branchs.size != 1) {
             branchs.add(0, mapOf("id" to -1, "name" to "--"))
         }
