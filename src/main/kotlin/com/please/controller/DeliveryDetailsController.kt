@@ -1,5 +1,6 @@
 package com.please.controller
 
+import com.please.persistence.getAuthInfo
 import com.please.service.OrdersService
 import com.please.value.AuthInfo
 import com.please.value.OrderStatus
@@ -26,12 +27,7 @@ class DeliveryDetailsController {
     @ResponseBody
     fun getOrder(request: HttpServletRequest, @PathVariable id: Int): Any {
         return try {
-//            val session = request.session
-//            val authInfo = session.getAttribute("authInfo") as AuthInfo?
-//
-//            authInfo ?: return "login"
-
-            val authInfo = AuthInfo("god", 7, "6874b3d4aa9c8473f50fa3a2a29529f2")
+            val authInfo = getAuthInfo()!!
 
             var value = ordersService.getOrder(authInfo.authKey, id)
             println(value)
@@ -46,12 +42,7 @@ class DeliveryDetailsController {
     @ResponseBody
     fun setOrderStatus(request: HttpServletRequest, @PathVariable id: Int, @RequestBody orderStatus: OrderStatus): Any {
         return try {
-//            val session = request.session
-//            val authInfo = session.getAttribute("authInfo") as AuthInfo?
-//
-//            authInfo ?: return "login"
-
-            val authInfo = AuthInfo("god", 7, "6874b3d4aa9c8473f50fa3a2a29529f2")
+            val authInfo = getAuthInfo()!!
 
             var value = ordersService.setOrderStatus(authInfo.authKey, orderStatus)
             println(value)
