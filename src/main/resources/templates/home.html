@@ -11,10 +11,9 @@
     <link rel="stylesheet" href="css/header.css"/>
     <link rel="stylesheet" type="text/css" href="/codebase/fonts/font_roboto/roboto.css"/>
     <link rel="stylesheet" type="text/css" href="/codebase/dhtmlx.css"/>
-    <script src="/codebase/dhtmlx.js" type="module"></script>
-    <script src="/js/myCalendar.js" type="module"></script>
+    <script src="/codebase/dhtmlx.js"></script>
 </head>
-<body onload="calOnLoad();">
+<body>
 
 <!-- Main Container -->
 <div class="container">
@@ -43,7 +42,7 @@
         <!--  <section class="hero" id="hero">-->
 
         <div class="setting_area">
-            <form action="home.html" method="GET">
+            <form action="home.html" method="GET" id="form_search">
                 <!-- 총판명, 지사명, 기간, 결제방법, 서비스 종류-->
                 <div class="condition_area">
                     <table>
@@ -59,7 +58,7 @@
                             </td>
                             <th>지사명</th>
                             <td>
-                                <select class="select_branch" id="select_branch">
+                                <select name="branch-id" class="select_branch" id="select_branch">
                                     <!--/*@thymesVar id="branchs" type="List<Map<String,String>>"*/-->
                                     <option th:each="branch : ${branchs}"
                                             th:value="${branch.get('id')}"
@@ -70,35 +69,27 @@
                         <tr>
                             <th>기간</th>
                             <td colspan="3">
-                                <input type="text" class="select_start_date" id="select_start_date" readonly="readonly"
-                                       value="--"/>
+                                <input type="text" name="start-date" class="select_start_date" id="select_start_date"
+                                       readonly="readonly"
+                                       value="2019-01-01 / 09:00"/>
                                 <span> ~ </span>
-                                <input type="text" class="select_end_date" id="select_end_date" readonly="readonly"
-                                       value="--"/>
+                                <input type="text" name="end-date" class="select_end_date" id="select_end_date"
+                                       readonly="readonly"
+                                       value="2019-12-31 / 09:00"/>
                             </td>
                         </tr>
                         <tr>
                             <th>결제방법</th>
                             <td>
                                 <label>
-                                    <input type="checkbox" name="payment_type" value="card" checked="checked"/>
+                                    <input type="checkbox" name="payment-types[0]" value="1" checked="checked"/>
                                     카드 </label>
                                 <label>
-                                    <input type="checkbox" name="payment_type" value="cash" checked="checked"/>
+                                    <input type="checkbox" name="payment-types[1]" value="2" checked="checked"/>
                                     현금 </label>
                                 <label>
-                                    <input type="checkbox" name="payment_type" value="prepayment" checked="checked"/>
+                                    <input type="checkbox" name="payment-types[2]" value="3" checked="checked"/>
                                     선결제</label>
-                            </td>
-                            <th> 서비스 종류</th>
-                            <td>
-                                <label>
-                                    <input type="checkbox" name="service_type" value="delivery_agent"
-                                           checked="checked"/>
-                                    배달대행 </label>
-                                <label>
-                                    <input type="checkbox" name="service_type" value="share" checked="checked"/>
-                                    공유콜 </label>
                             </td>
                         </tr>
                     </table>
@@ -108,13 +99,17 @@
                 <div class="feature_area">
                     <table>
                         <tr>
-                            <td><select id="search_type" name="search-type">
-                                <option value="id">순번</option>
-                                <option value="shop-name">상점 이름</option>
-                                <option value="rider-name">기사 이름</option>
-                            </select>
+                            <input type="hidden" name="id"/>
+                            <input type="hidden" name="shop-name"/>
+                            <input type="hidden" name="rider-name"/>
+                            <td>
+                                <select id="search_type">
+                                    <option value="id">순번</option>
+                                    <option value="shop-name">상점 이름</option>
+                                    <option value="rider-name">기사 이름</option>
+                                </select>
                             </td>
-                            <td><input type="search" id="search_feature" name="word"/>
+                            <td><input type="search" id="search_feature"/>
                             </td>
                             <td><input type="submit" id="btn_feature" value="검색"/>
                             </td>
@@ -179,37 +174,51 @@
             <table>
                 <tr>
                     <th>
-                        <input type="checkbox" checked="checked" name="status" id="checkbox_all"/>
+                        <input type="checkbox" checked="checked" name="order-status-ids[0]" value="1" id="checkbox_all"
+                               form="form_search"/>
                         <label for="checkbox_all">전체</label>
-                        <span>0</span></th>
+                        <span id="count_all">0</span></th>
                     <td>
-                        <input type="checkbox" checked="checked" name="status" id="checkbox_received"/>
+                        <input type="checkbox" checked="checked" name="order-status-ids[1]" value="2"
+                               id="checkbox_received"
+                               form="form_search"/>
                         <label for="checkbox_received">접수</label>
-                        <span>0</span></td>
+                        <span id="count_recived">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status" id="checkbox_allocated"/>
+                        <input type="checkbox" checked="checked" name="order-status-ids[2]" value="3"
+                               id="checkbox_allocated"
+                               form="form_search"/>
                         <label for="checkbox_allocated">배차</label>
-                        <span>0</span></td>
+                        <span id="count_allocated">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status" id="checkbox_pickup"/>
+                        <input type="checkbox" checked="checked" name="order-status-ids[3]" value="4"
+                               id="checkbox_pickup"
+                               form="form_search"/>
                         <label for="checkbox_pickup">픽업</label>
-                        <span>0</span></td>
+                        <span id="count_pickup">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status" id="checkbox_completed"/>
+                        <input type="checkbox" checked="checked" name="order-status-ids[4]" value="5"
+                               id="checkbox_completed"
+                               form="form_search"/>
                         <label for="checkbox_completed">완료</label>
-                        <span>0</span></td>
+                        <span id="count_completed">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status" id="checkbox_waiting"/>
+                        <input type="checkbox" checked="checked" name="order-status-ids[5]" value="6"
+                               id="checkbox_waiting"
+                               form="form_search"/>
                         <label for="checkbox_waiting">대기</label>
-                        <span>0</span></td>
+                        <span id="count_waiting">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status" id="checkbox_canceled"/>
+                        <input type="checkbox" checked="checked" name="order-status-ids[6]" value="7"
+                               id="checkbox_canceled"
+                               form="form_search"/>
                         <label for="checkbox_canceled">취소</label>
-                        <span>0</span></td>
+                        <span id="count_canceled">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="status" id="checkbox_shared"/>
+                        <input type="checkbox" checked="checked" name="is-shared" value="true" id="checkbox_shared"
+                               form="form_search"/>
                         <label for="checkbox_shared">공유</label>
-                        <span>0</span></td>
+                        <span id="count_shared">0</span></td>
                 </tr>
             </table>
         </section>
@@ -240,6 +249,7 @@
         </table>
     </section>
 </div>
+<script src="/js/myCalendar.js"></script>
 <script src="/js/home.js" type="module"></script>
 <!-- Main Container Ends -->
 </body>
