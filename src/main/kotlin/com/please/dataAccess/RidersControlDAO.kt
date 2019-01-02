@@ -8,14 +8,14 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 
 @Repository
-internal class ShopsManagementDAO {
+internal class RidersControlDAO {
     @Autowired
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun searchShops(authKey: String, shopInfo: JSONObject): JSONObject? {
+    fun searchRiders(authKey: String, riderInfo: JSONObject): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedShops(?, ?)", authKey, shopInfo.toString())
+            return template.queryForJSONObject("CALL getSearchedRiders(?, ?)", authKey, riderInfo.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }

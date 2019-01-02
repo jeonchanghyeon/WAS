@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 import javax.servlet.http.HttpServletRequest
 
 @Controller
-@RequestMapping("/abc")
+@RequestMapping("/abce")
 class SearchAddressController {
     @Autowired
     private lateinit var searchAddressService: SearchAddressService

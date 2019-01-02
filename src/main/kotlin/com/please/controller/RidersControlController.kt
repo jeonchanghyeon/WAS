@@ -1,6 +1,6 @@
 package com.please.controller
 
-import com.please.service.ShopsInfoPrintService
+import com.please.service.RidersInfoPrintService
 import com.please.value.AuthInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -12,20 +12,20 @@ import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/abc")
-class ShopsManagementController {
+class RidersControlController {
     @Autowired
-    private lateinit var shopsInfoPrintService: ShopsInfoPrintService
+    private lateinit var ridersInfoPrintService: RidersInfoPrintService
 
     @GetMapping(value = ["efg"])
     @ResponseBody
-    fun searchShops(request: HttpServletRequest,
+    fun searchRiders(request: HttpServletRequest,
                      @RequestParam data: MutableMap<String, Any>,
-                     @RequestParam(value = "shop-status-ids") shopStatusIds: MutableList<Int>): Any {
+                     @RequestParam(value = "rider-status-ids") riderStatusIds: MutableList<Int>): Any {
         val session = request.session
         val authInfo = session.getAttribute("authInfo") as AuthInfo?
 
         return try {
-            val value = shopsInfoPrintService.infoPrint(authInfo!!.authKey, data, shopStatusIds)
+            val value = ridersInfoPrintService.infoPrint(authInfo!!.authKey, data, riderStatusIds)
             println(value)
             value!!.toString()
         } catch (e: Exception) {
