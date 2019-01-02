@@ -1,3 +1,5 @@
+import {ajax} from './ajax.js'
+
 Date.prototype.mmdd = function () {
     let mm = (this.getMonth() + 1).toString();
     let dd = this.getDate().toString();
@@ -35,27 +37,6 @@ function convertToValidDate(date) {
     }
 
     return (new Date(date)).HHMM()
-}
-
-function ajax(url, method, func, content = null) {
-    let xhr = new XMLHttpRequest();
-    xhr.open(method, url, true);
-
-
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-    xhr.onreadystatechange = function () {
-        if (this.status === 200) {
-            try {
-                const obj = JSON.parse(this.responseText);
-                console.log(obj);
-                func(obj);
-            } catch (error) {
-            }
-        }
-    };
-
-    xhr.send(content)
 }
 
 function changeDistributeSelect() {
@@ -137,10 +118,14 @@ function showSearchList() {
     const serviceCheckedArray = [];
 
     for (let i = 0; i < paymentType.length; i++) {
-        paymentCheckedArray.push(i)
+        if (paymentType[i].checked) {
+            paymentCheckedArray.push(i)
+        }
     }
     for (let i = 0; i < serviceType.length; i++) {
-        serviceCheckedArray.push(i)
+        if (serviceType[i].checked) {
+            serviceCheckedArray.push(i)
+        }
     }
 
     const searchType = document.getElementById("search_type");
@@ -155,8 +140,8 @@ function showSearchList() {
         "&start-date=" + startDateText.toTimestampFormat() +
         "&end-date=" + endDateText.toTimestampFormat() +
         "&payment-type=" + paymentCheckedArray +
-        "&is-shared=" + serviceCheckedArray;
-    // "&" + searchType_ + "=" + word;
+        "&is-shared=" + serviceCheckedArray +
+        "&" + searchType_ + "=" + word;
 
     ajax(url, "get", resultJsSearchList);
     return false;

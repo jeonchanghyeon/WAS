@@ -15,7 +15,7 @@ class OrdersDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun getDeliveryDetails(authKey : String, orderId : Int): JSONObject? {
+    fun getOrder(authKey: String, orderId: Int): JSONObject? {
         try {
             return template.queryForJSONObject("CALL getOrder(?, ?)", authKey, orderId)
         } catch (e: Exception) {
@@ -24,4 +24,15 @@ class OrdersDAO {
         return null
     }
 
+    fun setOrderStatus(authKey: String, data: String): JSONObject? {
+        println(data)
+//        try {
+//            return template.queryForJSONObject("CALL setOrderStatus(?, ?)", authKey, jsonData)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+        return null
+
+    }
+    
 }

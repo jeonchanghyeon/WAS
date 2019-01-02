@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -9,15 +8,15 @@
 
     <title>Please</title>
     <link rel="stylesheet" href="/css/delivery_details.css"/>
-    <script src="/js/delivery_details.js"></script>
 </head>
 
-<body onload="onload();">
+<body>
 <div class="container">
     <!-- 헤더 -->
     <header class="header">
         <span>배송 상세 보기</span>
     </header>
+    <input type="hidden" id="ordersId" th:value="${id}"/>
     <!-- 사이드 바 -->
     <aside class="aside">
         <!-- 기본 정보 -->
@@ -26,11 +25,11 @@
             <table class="aside_table">
                 <tr>
                     <th>거리</th>
-                    <td id="distance">1.26cm</td>
+                    <td id="distance"></td>
                 </tr>
                 <tr>
                     <th>구역</th>
-                    <td id="district">두암동</td>
+                    <td id="branchName"></td>
                 </tr>
             </table>
         </div>
@@ -53,7 +52,7 @@
                 </tr>
                 <tr>
                     <th>대행료합계</th>
-                    <td>4200원</td>
+                    <td>0원</td>
                 </tr>
             </table>
         </div>
@@ -61,8 +60,8 @@
         <!-- 배달대행로 지불방법 -->
         <div class="delivery_pay">
             <span class="aside_subsection_title">배달대행료 지불방법</span>
-            <button class="aside_cash" id="aside_cash">현금</button>
-            <button class="aside_point" id="aside_point">포인트</button>
+            <button class="aside_btn_unselected" id="aside_cash">현금</button>
+            <button class="aside_btn_unselected" id="aside_point">포인트</button>
         </div>
 
         <!-- 배송상태 -->
@@ -79,13 +78,15 @@
 
         <!-- 상태변경 -->
         <div class="change_status">
-            <span class="aside_subsection_title">상태변경</span>
-            <button class="btn">주문수정</button>
-            <button class="btn">주문취소</button>
-            <button class="btn">배차취소</button>
-            <button class="btn">배달기사 재배차</button>
-            <button class="btn">픽업</button>
-            <button class="btn">추가접수</button>
+            <form id="changeStatus">
+                <span class="aside_subsection_title">상태변경</span>
+                <button class="btn" name="orderStatusId" value="1">주문수정</button>
+                <button class="btn" name="orderStatusId" value="2">주문취소</button>
+                <button class="btn" name="orderStatusId" value="3">배차취소</button>
+                <button class="btn" name="orderStatusId" value="4">배달기사 재배차</button>
+                <button class="btn" name="orderStatusId" value="5">픽업</button>
+                <button class="btn" name="orderStatusId" value="6">추가접수</button>
+            </form>
         </div>
     </aside>
 
@@ -164,54 +165,38 @@
                     <td>판매가</td>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="menu_table">
                 <tr>
-                    <td>5</td>
-                    <td>짬뽕</td>
-                    <td>중화요리</td>
-                    <td>7,000</td>
-                    <td>1</td>
-                    <td>7,000</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>탕수육</td>
-                    <td>중화요리</td>
-                    <td>7,000</td>
-                    <td>1</td>
-                    <td>7,000</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>짬뽕</td>
-                    <td>중화요리</td>
-                    <td>7,000</td>
-                    <td>1</td>
-                    <td>7,000</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 </tbody>
             </table>
             <table class="table2">
                 <tr>
                     <th>상품 요금</th>
-                    <td>20,500원</td>
+                    <td id="menuPrice"></td>
                     <th>조리시간</th>
                     <td id="cookTime"></td>
                 </tr>
                 <tr>
                     <th>상품추가요금</th>
-                    <td>0원</td>
+                    <td id="additionalMenuPrice"></td>
                     <th>주문자동취소</th>
                     <td id="orderAutoCancelTime"></td>
                 </tr>
                 <tr>
                     <th>고객요금합계</th>
-                    <td>10,000원</td>
+                    <td id="totalPrice"></td>
                     <th>결제방법</th>
                     <td>
-                        <button class="btn_cash">현금</button>
-                        <button class="btn_card">카드</button>
-                        <button class="btn_prepay">선결제</button>
+                        <button class="btn_unselected" id="cash">현금</button>
+                        <button class="btn_unselected" id="card">카드</button>
+                        <button class="btn_unselected" id="prepay">선결제</button>
                     </td>
                 </tr>
             </table>
@@ -261,7 +246,7 @@
         </article>
     </section>
 </div>
-
+<script src="/js/delivery_details.js" type="module"></script>
 </body>
 
 </html>
