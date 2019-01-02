@@ -17,13 +17,6 @@ body {
     background-color: #FFFFFF;
 }
 
-/* Navigation */
-header {
-    position: relative;
-    width: 100%;
-    height: 40px;
-    background-color: #282828; /*	border-bottom: 1px solid #2C9AB7;*/
-}
 
 table {
     text-align: left;
@@ -92,42 +85,6 @@ select option {
     height: 60px;
 }
 
-.logo {
-    float: left;
-    margin-top: 8px;
-    margin-left: 13px;
-    margin-right: 13px;
-    letter-spacing: 4px;
-}
-
-.nav {
-    margin-top: 5px;
-}
-
-.nav tr {
-    font-size: 16px;
-}
-
-.nav th {
-    margin-top: 7px;
-    padding-left: 24px;
-    padding-right: 24px;
-}
-
-.nav td {
-    padding: 7px 24px;
-}
-
-.nav th a {
-    color: #ff7100;
-    text-decoration: none;
-}
-
-.nav td a {
-    text-decoration: none;
-    color: #FFFFFF;
-}
-
 .area {
     background-color: #111111;
 }
@@ -167,33 +124,6 @@ select option {
     color: #ff7100;
     font-size: 14px;
     outline: hidden;
-}
-
-.point_area {
-    position: absolute;
-    top: 5px;
-    width: 177px;
-    height: 30px;
-    background-color: #141414;
-    border-radius: 5px;
-    color: #FFFFFF;
-    right: 106px;
-}
-
-.point_area span {
-    position: absolute;
-    top: 6px;
-    right: 11px;
-}
-
-.submit {
-    position: absolute;
-    top: 6px;
-    right: 10px;
-    width: 80px;
-    height: 28px;
-    background-color: #ff7100;
-    color: #FFFFFF;
 }
 
 .condition_area {
