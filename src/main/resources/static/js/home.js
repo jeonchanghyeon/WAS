@@ -1,14 +1,54 @@
 import {ajax, withGetMethod, withPostMethod} from './ajax.js'
 
+Date.prototype.mmdd = function () {
+    let mm = (this.getMonth() + 1).toString();
+    let dd = this.getDate().toString();
+    return (mm[1] ? mm : '0' + mm[0]) + "-" + (dd[1] ? dd : '0' + dd[0]);
+};
+
+Date.prototype.HHMM = function () {
+    if (isNaN(this)) {
+        return "-"
+    }
+
+    let HH = this.getHours().toString();
+    let MM = this.getMinutes().toString();
+    return (HH[1] ? HH : '0' + HH[0]) + ":" + (MM[1] ? MM : '0' + MM[0]);
+};
+
+String.prototype.fillZero = function () {
+    let zeroNum = 5 - this.length;
+    if (zeroNum < 0) {
+        return this;
+    }
+    return '00000'.substr(this.length, zeroNum) + this;
+};
+
+String.prototype.numberWithCommas = function () {
+    return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 let selectedRow = null;
 let selectedRowClassName = null;
 
 const loadCounts = (counts) => {
-    statusText[0].innerHTML = size;
+    // const arr = [
+    //     "acceptCount",
+    //     "allocateCount",
+    //     "pickupCount",
+    //     "completeCount",
+    //     "cancelCount",
+    //      "suspendCount",
+    //     "shareCallCount"
+    // ];
 
-    for (let i = 1; i < counts.length; i++) {
-        statusText[i].innerHTML = counts[i];
-    }
+    statusText[1].innerHTML = counts["acceptCount"];
+    statusText[2].innerHTML = counts["allocateCount"];
+    statusText[3].innerHTML = counts["pickupCount"];
+    statusText[4].innerHTML = counts["completeCount"];
+    statusText[5].innerHTML = counts["cancelCount"];
+    statusText[6].innerHTML = counts["suspendCount"];
+    statusText[7].innerHTML = counts["shareCallCount"];
 };
 
 const createRow = (text, orderStatusId) => {
@@ -23,17 +63,20 @@ const createRow = (text, orderStatusId) => {
 
     row.onclick = function () {
         if (selectedRow != null) {
+            // 스타일 복구
             let cols = selectedRow.getElementsByTagName("td");
             for (let i = 0; i < cols.length; i++) {
                 cols[i].className = selectedRowClassName;
             }
         }
 
+        // 선택 스타일 지정
         let cols = this.getElementsByTagName("td");
         for (let i = 0; i < cols.length; i++) {
             cols[i].className = 'selected_row';
         }
 
+        // 스타일 저장
         selectedRow = row;
         selectedRowClassName = statusStyleName[orderStatusId - 1];
     };
@@ -46,9 +89,11 @@ const resultJsSearchList = (obj) => {
         const orders = obj["orders"];
         const counts = obj["counts"];
 
+        console.log(orders);
         container.innerHTML = '';
         const size = orders.length;
 
+        statusText[0].innerHTML = size;
         loadCounts(counts);
 
         if (size === 0) {
@@ -58,26 +103,46 @@ const resultJsSearchList = (obj) => {
         for (let i = 0; i < size; i++) {
             const order = orders[i];
 
+            const createDate = new Date(order["createDate"]);
+            const allocateDate = new Date(order["allocateDate"]);
+            const pickupDate = new Date(order["pickupDate"]);
+            const completeDate = new Date(order["completeDate"]);
+            const cancelDate = new Date(order["cancelDate"]);
+
+            const id = order["id"].toString().fillZero();
+            const createDay = createDate.mmdd() + "-" + createDate.mmdd();
+            const shopName = order["shopName"];
+            const parsingOrderStatus = statusStr[order["orderStatusId"] - 1];
+            const createTime = createDate.HHMM();
+            const allocateTime = allocateDate.HHMM();
+            const pickupTime = pickupDate.HHMM();
+            const completeTime = completeDate.HHMM();
+            const cancelTime = cancelDate.HHMM();
+            const deliveryCost = order["deliveryCost"].toString().numberWithCommas();
             let sumOfadditionalCost = 0;
+            const riderName = order["riderName"];
+            const parsingPaymentType = paymentTypeStr[order["paymentType"] - 1];
+            const memo = order["memo"];
+
             for (let i = 0; i < order["additionalCost"].length; i++) {
                 sumOfadditionalCost += order["additionalCost"][i]["cost"];
             }
 
             const text = [
-                order["id"].toString().fillZero(),
-                order["createDate"].mmdd() + "-" + order["createDate"].mmdd(),
-                order["shopName"],
-                parsingStatus[order["orderStatusId"] - 1],
-                order["createDate"].HHMM(),
-                order["allocateDate"].HHMM(),
-                order["pickupDate"].HHMM(),
-                order["completeDate"].HHMM(),
-                order["cancelDate"].HHMM(),
-                order["deliveryCost"].toString().numberWithCommas(),
+                id,
+                createDay,
+                shopName,
+                parsingOrderStatus,
+                createTime,
+                allocateTime,
+                pickupTime,
+                completeTime,
+                cancelTime,
+                deliveryCost,
                 sumOfadditionalCost,
-                order["riderName"],
-                parsingPaymentType[order["paymentType"] - 1],
-                order["memo"]
+                riderName,
+                parsingPaymentType,
+                memo,
             ];
 
             const row = createRow(text, order["orderStatusId"]);
@@ -99,42 +164,44 @@ const getCurrentBranchId = () => {
     return branchSelect.options[branchSelect.selectedIndex].value;
 };
 
-const changeToSubmittedStyle = (element) => {
+const changeToStyleSafe = (element) => {
     for (let i = 0; i < element.labels.length; i++) {
         element.labels[i].style.color = "#c1c1c1";
     }
     element.style.color = "#FFFFFF";
 };
 
-const changeToUnsubmittedStyle = (element) => {
+const changeToStyleWarning = (element) => {
     for (let i = 0; i < element.labels.length; i++) {
         element.labels[i].style.color = "white";
     }
     element.style.color = "red";
 };
 
-const parsingStatus = ["접수", "배차", "픽업", "완료", "취소", "대기", "상점확인전", "상점거절", "예약"];
-const parsingPaymentType = ["카드", "현금", "선결제"];
-const statusStyleName = ["status1", "status2", "status3", "status4", "status6", "status5", "status7"];
+const statusStr = ["접수", "배차", "픽업", "완료", "취소", "대기", "상점확인전", "상점거절", "예약"];
+const paymentTypeStr = ["카드", "현금", "선결제"];
+const statusStyleName = ["status1", "status2", "status3", "status4", "status5", "status6", "status7"];
+
 const checkboxIds = [
     "checkbox_all",
-    "checkbox_received",
-    "checkbox_allocated",
+    "checkbox_accept",
+    "checkbox_allocate",
     "checkbox_pickup",
-    "checkbox_completed",
-    "checkbox_waiting",
-    "checkbox_canceled",
-    "checkbox_shared"
+    "checkbox_complete",
+    "checkbox_cancel",
+    "checkbox_suspend",
+    "checkbox_share"
 ];
+
 const spanIds = [
     "count_all",
-    "count_recived",
-    "count_allocated",
+    "count_accept",
+    "count_allocate",
     "count_pickup",
-    "count_completed",
-    "count_waiting",
-    "count_canceled",
-    "count_shared",
+    "count_complete",
+    "count_cancel",
+    "count_suspend",
+    "count_share"
 ];
 
 const container = document.getElementById("result_list");
@@ -154,6 +221,7 @@ for (let i = 0; i < spanIds.length; i++) {
 const formDefaultStart = document.getElementById("form_default_start");
 const formDelayTime = document.getElementById("form_delay_time");
 const formAdditionalCost = document.getElementById("form_additional_cost");
+const formSearch = document.getElementById("form_search");
 
 const selectDefaultStart = document.getElementById("select_default_start");
 const selectDelayTime = document.getElementById("select_delay_time");
@@ -161,40 +229,57 @@ const costWon = document.getElementById('cost_won');
 const costPercent = document.getElementById('cost_percent');
 
 function showSearchList() {
+    const selectSearchType = document.getElementById('search_type');
+
+    for (let i = 0; i < selectSearchType.options.length; i++) {
+        const searchTypeName = selectSearchType.options[i].value;
+        let dstSearchType = document.getElementById(searchTypeName).value;
+
+        if (i === selectSearchType.selectedIndex) {
+            dstSearchType = document.getElementById("search_feature").value
+        } else {
+            dstSearchType = null;
+        }
+    }
+
     const url = "status/orders";
-    withGetMethod(url, resultJsSearchList, this);
+    withGetMethod(url, resultJsSearchList, formSearch);
 
     return false;
-};
+}
 
 const uncheckOthers = () => {
     for (let i = 1; i < checkbox.length; i++) {
-        checkbox[i].checked = !checkbox[0].checked
+        checkbox[i].checked = false;
     }
 };
 
-checkbox[0].onclick = () => {
-    uncheckOthers();
+const isAllUnchecked = () => {
+    let reval = true;
+
+    for (let i = 1; i < checkbox.length; i++) {
+        if (checkbox[i].checked === true) {
+            reval = false;
+            break;
+        }
+    }
+
+    return reval;
+};
+
+checkbox[0].onclick = function () {
+    if (this.checked === true) {
+        uncheckOthers();
+    }
     showSearchList();
 };
 
 for (let i = 1; i < checkbox.length; i++) {
-    checkbox[i].onclick = showSearchList;
+    checkbox[i].onclick = () => {
+        checkbox[0].checked = isAllUnchecked();
+        showSearchList();
+    };
 }
-
-costPercent.onchange
-    = costWon.onchange
-    = selectDelayTime.onchange
-    = selectDefaultStart.onchange
-    = function () {
-    changeToUnsubmittedStyle(this)
-};
-
-selectDelayTime.onchange
-    = selectDefaultStart.onchange
-    = function () {
-    changeToUnsubmittedStyle(this)
-};
 
 distributorSelect.onchange = () => {
     let selectValue = distributorSelect.options[distributorSelect.selectedIndex].value;
@@ -224,28 +309,35 @@ distributorSelect.onchange = () => {
 branchSelect.onchange = () => {
     let selectValue = branchSelect.options[branchSelect.selectedIndex].value;
 
-    changeToSubmittedStyle(selectDefaultStart);
-    changeToSubmittedStyle(selectDelayTime);
-    changeToSubmittedStyle(costWon);
-    changeToSubmittedStyle(costPercent);
-
     if (branchSelect.selectedIndex !== 0) {
         const url = "status/branch-settings/" + selectValue;
         ajax(url, "get", (obj) => {
             try {
                 const branchSetting = obj["branchSettings"];
 
-                let basicStartTime = branchSetting["basicStartTime"];
-                let delayTime = branchSetting["delayTime"];
+                const basicStartTime = branchSetting["basicStartTime"];
+                const basicStartTimeIndex = basicStartTime / 10;
+                selectDefaultStart.selectedIndex = basicStartTimeIndex;
 
-                let basicStartTimeIndex = basicStartTime / 10;
-                let delayTimeIndex = delayTime / 10;
+                if (basicStartTimeIndex === 0) {
+                    changeToStyleSafe(selectDefaultStart);
+                } else {
+                    changeToStyleWarning(selectDefaultStart);
+                }
+
+                const delayTime = branchSetting["delayTime"];
+                const delayTimeIndex = delayTime / 10;
+                selectDelayTime.selectedIndex = delayTimeIndex;
+
+                if (delayTimeIndex === 0) {
+                    changeToStyleSafe(selectDelayTime);
+                } else {
+                    changeToStyleWarning(selectDelayTime);
+                }
 
                 costWon.value = branchSetting["extraCharge"];
                 costPercent.value = branchSetting["extraChargePercent"] * 100;
 
-                selectDefaultStart.selectedIndex = basicStartTimeIndex;
-                selectDelayTime.selectedIndex = delayTimeIndex;
             } catch (error) {
                 console.log(error.message)
             }
@@ -253,32 +345,25 @@ branchSelect.onchange = () => {
     }
 };
 
-document.forms[0].onsubmit = showSearchList;
+formSearch.onsubmit = showSearchList;
 
 formDefaultStart.onsubmit = () => {
     const url = "status/branch-settings/" + getCurrentBranchId();
-    withPostMethod(url, () => {
-        changeToSubmittedStyle(selectDefaultStart);
-    });
+    withPostMethod(url);
 
     return false;
 };
 
 formDelayTime.onsubmit = () => {
     const url = "status/branch-settings/" + getCurrentBranchId();
-    withPostMethod(url, () => {
-        changeToSubmittedStyle(selectDelayTime);
-    });
+    withPostMethod(url);
 
     return false;
 };
 
 formAdditionalCost.onsubmit = () => {
     const url = "status/branch-settings/" + getCurrentBranchId();
-    withPostMethod(url, () => {
-        changeToSubmittedStyle(costWon);
-        changeToSubmittedStyle(costPercent);
-    });
+    withPostMethod(url);
 
     return false;
 };

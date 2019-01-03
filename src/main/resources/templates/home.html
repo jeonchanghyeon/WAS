@@ -58,7 +58,7 @@
                             </td>
                             <th>지사명</th>
                             <td>
-                                <select name="branch-id" class="select_branch" id="select_branch">
+                                <select name="branchId" class="select_branch" id="select_branch">
                                     <!--/*@thymesVar id="branchs" type="List<Map<String,String>>"*/-->
                                     <option th:each="branch : ${branchs}"
                                             th:value="${branch.get('id')}"
@@ -69,26 +69,26 @@
                         <tr>
                             <th>기간</th>
                             <td colspan="3">
-                                <input type="text" name="start-date" class="select_start_date" id="select_start_date"
+                                <input type="text" name="startDate" class="select_start_date" id="select_start_date"
                                        readonly="readonly"
-                                       value="2019-01-01 / 09:00"/>
+                                       value="2018-01-01 / 09:00"/>
                                 <span> ~ </span>
-                                <input type="text" name="end-date" class="select_end_date" id="select_end_date"
+                                <input type="text" name="endDate" class="select_end_date" id="select_end_date"
                                        readonly="readonly"
-                                       value="2019-12-31 / 09:00"/>
+                                       value="2018-12-31 / 09:00"/>
                             </td>
                         </tr>
                         <tr>
                             <th>결제방법</th>
                             <td>
                                 <label>
-                                    <input type="checkbox" name="payment-types[0]" value="1" checked="checked"/>
+                                    <input type="checkbox" name="paymentTypes[0]" value="1" checked="checked"/>
                                     카드 </label>
                                 <label>
-                                    <input type="checkbox" name="payment-types[1]" value="2" checked="checked"/>
+                                    <input type="checkbox" name="paymentTypes[1]" value="2" checked="checked"/>
                                     현금 </label>
                                 <label>
-                                    <input type="checkbox" name="payment-types[2]" value="3" checked="checked"/>
+                                    <input type="checkbox" name="paymentTypes[2]" value="3" checked="checked"/>
                                     선결제</label>
                             </td>
                         </tr>
@@ -99,14 +99,14 @@
                 <div class="feature_area">
                     <table>
                         <tr>
-                            <input type="hidden" name="id"/>
-                            <input type="hidden" name="shop-name"/>
-                            <input type="hidden" name="rider-name"/>
+                            <input type="hidden" name="id" id="searchByid"/>
+                            <input type="hidden" name="shopName" id="searchByshopName"/>
+                            <input type="hidden" name="riderName" id="searchByriderName"/>
                             <td>
                                 <select id="search_type">
-                                    <option value="id">순번</option>
-                                    <option value="shop-name">상점 이름</option>
-                                    <option value="rider-name">기사 이름</option>
+                                    <option value="searchByid">순번</option>
+                                    <option value="searchByshopName">상점 이름</option>
+                                    <option value="searchByriderName">기사 이름</option>
                                 </select>
                             </td>
                             <td><input type="search" id="search_feature"/>
@@ -174,51 +174,50 @@
             <table>
                 <tr>
                     <th>
-                        <input type="checkbox" checked="checked" name="order-status-ids[0]" value="1" id="checkbox_all"
-                               form="form_search"/>
+                        <input type="checkbox" id="checkbox_all" checked="checked"/>
                         <label for="checkbox_all">전체</label>
                         <span id="count_all">0</span></th>
                     <td>
-                        <input type="checkbox" checked="checked" name="order-status-ids[1]" value="2"
-                               id="checkbox_received"
+                        <input type="checkbox" id="checkbox_accept"
+                               name="orderStatusIds[0]" value="1"
                                form="form_search"/>
-                        <label for="checkbox_received">접수</label>
-                        <span id="count_recived">0</span></td>
+                        <label for="checkbox_accept">접수</label>
+                        <span id="count_accept">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="order-status-ids[2]" value="3"
-                               id="checkbox_allocated"
+                        <input type="checkbox" id="checkbox_allocate"
+                               name="orderStatusIds[1]" value="2"
                                form="form_search"/>
-                        <label for="checkbox_allocated">배차</label>
-                        <span id="count_allocated">0</span></td>
+                        <label for="checkbox_allocate">배차</label>
+                        <span id="count_allocate">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="order-status-ids[3]" value="4"
-                               id="checkbox_pickup"
+                        <input type="checkbox" id="checkbox_pickup"
+                               name="orderStatusIds[2]" value="3"
                                form="form_search"/>
                         <label for="checkbox_pickup">픽업</label>
                         <span id="count_pickup">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="order-status-ids[4]" value="5"
-                               id="checkbox_completed"
+                        <input type="checkbox" id="checkbox_complete"
+                               name="orderStatusIds[3]" value="4"
                                form="form_search"/>
-                        <label for="checkbox_completed">완료</label>
-                        <span id="count_completed">0</span></td>
+                        <label for="checkbox_complete">완료</label>
+                        <span id="count_complete">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="order-status-ids[5]" value="6"
-                               id="checkbox_waiting"
+                        <input type="checkbox" id="checkbox_cancel"
+                               name="orderStatusIds[4]" value="5"
                                form="form_search"/>
-                        <label for="checkbox_waiting">대기</label>
-                        <span id="count_waiting">0</span></td>
+                        <label for="checkbox_cancel">취소</label>
+                        <span id="count_cancel">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="order-status-ids[6]" value="7"
-                               id="checkbox_canceled"
+                        <input type="checkbox" id="checkbox_suspend"
+                               name="orderStatusIds[5]" value="6"
                                form="form_search"/>
-                        <label for="checkbox_canceled">취소</label>
-                        <span id="count_canceled">0</span></td>
+                        <label for="checkbox_suspend">대기</label>
+                        <span id="count_suspend">0</span></td>
                     <td>
-                        <input type="checkbox" checked="checked" name="is-shared" value="true" id="checkbox_shared"
-                               form="form_search"/>
-                        <label for="checkbox_shared">공유</label>
-                        <span id="count_shared">0</span></td>
+                        <input type="checkbox" id="checkbox_share"
+                               name="isShared" value="true"/>
+                        <label for="checkbox_share">공유</label>
+                        <span id="count_share">0</span></td>
                 </tr>
             </table>
         </section>
