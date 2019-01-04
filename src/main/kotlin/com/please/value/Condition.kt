@@ -15,4 +15,5 @@ class Condition {
     var endDate: String? = null
     var pageIndex: Long? = null
     var dateType: String = "create"
+    var limitCount = 30
 }

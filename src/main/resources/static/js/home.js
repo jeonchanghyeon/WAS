@@ -1,8 +1,8 @@
 import {ajax, withGetMethod, withPostMethod} from './ajax.js'
 
 Date.prototype.mmdd = function () {
-    let mm = (this.getMonth() + 1).toString();
-    let dd = this.getDate().toString();
+    const mm = (this.getMonth() + 1).toString();
+    const dd = this.getDate().toString();
     return (mm[1] ? mm : '0' + mm[0]) + "-" + (dd[1] ? dd : '0' + dd[0]);
 };
 
@@ -11,13 +11,13 @@ Date.prototype.HHMM = function () {
         return "-"
     }
 
-    let HH = this.getHours().toString();
-    let MM = this.getMinutes().toString();
+    const HH = this.getHours().toString();
+    const MM = this.getMinutes().toString();
     return (HH[1] ? HH : '0' + HH[0]) + ":" + (MM[1] ? MM : '0' + MM[0]);
 };
 
 String.prototype.fillZero = function () {
-    let zeroNum = 5 - this.length;
+    const zeroNum = 5 - this.length;
     if (zeroNum < 0) {
         return this;
     }
@@ -28,35 +28,35 @@ String.prototype.numberWithCommas = function () {
     return this.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-let selectedRow = null;
-let selectedRowClassName = null;
+function copyFormData(src) {
+    const dst = new FormData();
 
-const loadCounts = (counts) => {
-    // const arr = [
-    //     "acceptCount",
-    //     "allocateCount",
-    //     "pickupCount",
-    //     "completeCount",
-    //     "cancelCount",
-    //      "suspendCount",
-    //     "shareCallCount"
-    // ];
+    for (const pair of src.entries()) {
+        dst.append(pair[0], pair[1]);
+    }
 
-    statusText[1].innerHTML = counts["acceptCount"];
-    statusText[2].innerHTML = counts["allocateCount"];
-    statusText[3].innerHTML = counts["pickupCount"];
-    statusText[4].innerHTML = counts["completeCount"];
-    statusText[5].innerHTML = counts["cancelCount"];
-    statusText[6].innerHTML = counts["suspendCount"];
-    statusText[7].innerHTML = counts["shareCallCount"];
+    return dst;
+}
+
+const loadCounts = (orders) => {
+    const counts = [0, 0, 0, 0, 0, 0, 0];
+
+    for (let i = 0; i < orders.length; i++) {
+        counts[orders[i]["orderStatusId"] - 1]++;
+    }
+
+    statusText[0].innerHTML = orders.length;
+    for (let i = 1; i < statusText.length; i++) {
+        statusText[i].innerHTML = counts[i - 1];
+    }
 };
 
 const createRow = (text, orderStatusId) => {
     const row = document.createElement("tr");
 
-    for (let j = 0; j < text.length; j++) {
+    for (let i = 0; i < text.length; i++) {
         const col = document.createElement("td");
-        col.innerHTML = text[j];
+        col.innerHTML = text[i];
         col.className = statusStyleName[orderStatusId - 1];
         row.appendChild(col);
     }
@@ -64,14 +64,14 @@ const createRow = (text, orderStatusId) => {
     row.onclick = function () {
         if (selectedRow != null) {
             // 스타일 복구
-            let cols = selectedRow.getElementsByTagName("td");
+            const cols = selectedRow.getElementsByTagName("td");
             for (let i = 0; i < cols.length; i++) {
                 cols[i].className = selectedRowClassName;
             }
         }
 
         // 선택 스타일 지정
-        let cols = this.getElementsByTagName("td");
+        const cols = this.getElementsByTagName("td");
         for (let i = 0; i < cols.length; i++) {
             cols[i].className = 'selected_row';
         }
@@ -84,81 +84,70 @@ const createRow = (text, orderStatusId) => {
     return row;
 };
 
-const resultJsSearchList = (obj) => {
-    try {
-        const orders = obj["orders"];
-        const counts = obj["counts"];
+function createTable(resultList, orders) {
 
-        console.log(orders);
-        container.innerHTML = '';
-        const size = orders.length;
+    for (let i = 0; i < orders.length; i++) {
+        const order = orders[i];
 
-        statusText[0].innerHTML = size;
-        loadCounts(counts);
+        const createDate = new Date(order["createDate"]);
+        const allocateDate = new Date(order["allocateDate"]);
+        const pickupDate = new Date(order["pickupDate"]);
+        const completeDate = new Date(order["completeDate"]);
+        const cancelDate = new Date(order["cancelDate"]);
 
-        if (size === 0) {
-            throw new Error("데이터가 존재하지 않습니다.")
+        const id = order["id"].toString().fillZero();
+        const createDay = createDate.mmdd() + "-" + createDate.mmdd();
+        const shopName = order["shopName"];
+        const parsingOrderStatus = statusStr[order["orderStatusId"] - 1];
+        const createTime = createDate.HHMM();
+        const allocateTime = allocateDate.HHMM();
+        const pickupTime = pickupDate.HHMM();
+        const completeTime = completeDate.HHMM();
+        const cancelTime = cancelDate.HHMM();
+        const deliveryCost = order["deliveryCost"].toString().numberWithCommas();
+        let sumOfadditionalCost = 0;
+        const riderName = order["riderName"];
+        const parsingPaymentType = paymentTypeStr[order["paymentType"] - 1];
+        const memo = order["memo"];
+
+        for (let i = 0; i < order["additionalCost"].length; i++) {
+            sumOfadditionalCost += order["additionalCost"][i]["cost"];
         }
 
-        for (let i = 0; i < size; i++) {
-            const order = orders[i];
+        const text = [
+            id,
+            createDay,
+            shopName,
+            parsingOrderStatus,
+            createTime,
+            allocateTime,
+            pickupTime,
+            completeTime,
+            cancelTime,
+            deliveryCost,
+            sumOfadditionalCost,
+            riderName,
+            parsingPaymentType,
+            memo,
+        ];
 
-            const createDate = new Date(order["createDate"]);
-            const allocateDate = new Date(order["allocateDate"]);
-            const pickupDate = new Date(order["pickupDate"]);
-            const completeDate = new Date(order["completeDate"]);
-            const cancelDate = new Date(order["cancelDate"]);
+        const row = createRow(text, order["orderStatusId"]);
 
-            const id = order["id"].toString().fillZero();
-            const createDay = createDate.mmdd() + "-" + createDate.mmdd();
-            const shopName = order["shopName"];
-            const parsingOrderStatus = statusStr[order["orderStatusId"] - 1];
-            const createTime = createDate.HHMM();
-            const allocateTime = allocateDate.HHMM();
-            const pickupTime = pickupDate.HHMM();
-            const completeTime = completeDate.HHMM();
-            const cancelTime = cancelDate.HHMM();
-            const deliveryCost = order["deliveryCost"].toString().numberWithCommas();
-            let sumOfadditionalCost = 0;
-            const riderName = order["riderName"];
-            const parsingPaymentType = paymentTypeStr[order["paymentType"] - 1];
-            const memo = order["memo"];
-
-            for (let i = 0; i < order["additionalCost"].length; i++) {
-                sumOfadditionalCost += order["additionalCost"][i]["cost"];
-            }
-
-            const text = [
-                id,
-                createDay,
-                shopName,
-                parsingOrderStatus,
-                createTime,
-                allocateTime,
-                pickupTime,
-                completeTime,
-                cancelTime,
-                deliveryCost,
-                sumOfadditionalCost,
-                riderName,
-                parsingPaymentType,
-                memo,
-            ];
-
-            const row = createRow(text, order["orderStatusId"]);
-
-            container.appendChild(row)
-        }
-
-    } catch (error) {
-        console.log(error.message);
-
-        const td = document.createElement("td");
-        td.colSpan = 14;
-        td.innerHTML = error.message;
-        container.appendChild(td);
+        resultList.appendChild(row)
     }
-};
+}
+
+function displayError(error) {
+
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+
+    td.colSpan = 14;
+    td.innerHTML = error.message;
+
+    resultList.appendChild(tr);
+    tr.appendChild(td);
+}
 
 const getCurrentBranchId = () => {
     return branchSelect.options[branchSelect.selectedIndex].value;
@@ -204,7 +193,8 @@ const spanIds = [
     "count_share"
 ];
 
-const container = document.getElementById("result_list");
+const container = document.getElementById("container");
+const resultList = document.getElementById("result_list");
 const distributorSelect = document.getElementById("select_distributor");
 const branchSelect = document.getElementById("select_branch");
 
@@ -228,11 +218,18 @@ const selectDelayTime = document.getElementById("select_delay_time");
 const costWon = document.getElementById('cost_won');
 const costPercent = document.getElementById('cost_percent');
 
-function showSearchList() {
+let baseForm = null;
+let lastSubmittedFormData = null;
+let selectedRow = null;
+let selectedRowClassName = null;
+let pageIndex = 1;
+let isEmpty = false;
+
+function setSearchType() {
     const selectSearchType = document.getElementById('search_type');
 
     for (let i = 0; i < selectSearchType.options.length; i++) {
-        const searchTypeName = selectSearchType.options[i].value;
+        let searchTypeName = selectSearchType.options[i].value;
         let dstSearchType = document.getElementById(searchTypeName).value;
 
         if (i === selectSearchType.selectedIndex) {
@@ -241,11 +238,6 @@ function showSearchList() {
             dstSearchType = null;
         }
     }
-
-    const url = "status/orders";
-    withGetMethod(url, resultJsSearchList, formSearch);
-
-    return false;
 }
 
 const uncheckOthers = () => {
@@ -267,22 +259,62 @@ const isAllUnchecked = () => {
     return reval;
 };
 
+function submitOrderStatus() {
+    if (baseForm === null) {
+        return;
+    }
+
+    const formData = copyFormData(baseForm);
+
+    for (let i = 1; i < checkbox.length; i++) {
+        if (checkbox[i].checked === true) {
+            formData.append(checkbox[i].name, checkbox[i].value)
+        }
+    }
+
+    lastSubmittedFormData = formData;
+
+    getOrders(
+        formData,
+        (obj) => {
+            const orders = obj["orders"];
+
+            resultList.innerHTML = '';
+
+            if (orders.length === 0) {
+                isEmpty = true;
+                emptyHandler();
+            } else {
+                isEmpty = false;
+            }
+
+            createTable(resultList, orders);
+
+            pageIndex = 2;
+        }
+    );
+}
+
+function emptyHandler() {
+    throw new Error("데이터가 존재하지 않습니다.");
+}
+
 checkbox[0].onclick = function () {
     if (this.checked === true) {
         uncheckOthers();
     }
-    showSearchList();
+    submitOrderStatus();
 };
 
 for (let i = 1; i < checkbox.length; i++) {
     checkbox[i].onclick = () => {
         checkbox[0].checked = isAllUnchecked();
-        showSearchList();
+        submitOrderStatus();
     };
 }
 
 distributorSelect.onchange = () => {
-    let selectValue = distributorSelect.options[distributorSelect.selectedIndex].value;
+    const selectValue = distributorSelect.options[distributorSelect.selectedIndex].value;
 
     if (distributorSelect.selectedIndex !== 0) {
         const url = "status/distributors?distributorId=" + selectValue;
@@ -307,7 +339,7 @@ distributorSelect.onchange = () => {
 };
 
 branchSelect.onchange = () => {
-    let selectValue = branchSelect.options[branchSelect.selectedIndex].value;
+    const selectValue = branchSelect.options[branchSelect.selectedIndex].value;
 
     if (branchSelect.selectedIndex !== 0) {
         const url = "status/branch-settings/" + selectValue;
@@ -345,25 +377,85 @@ branchSelect.onchange = () => {
     }
 };
 
-formSearch.onsubmit = showSearchList;
+formSearch.onsubmit = function () {
+    setSearchType();
 
-formDefaultStart.onsubmit = () => {
-    const url = "status/branch-settings/" + getCurrentBranchId();
-    withPostMethod(url);
+    const formData = new FormData(this);
+    lastSubmittedFormData = baseForm = formData;
+
+    getOrders(
+        formData,
+        (obj) => {
+            const orders = obj["orders"];
+
+            resultList.innerHTML = '';
+            loadCounts(orders);
+
+            if (orders.length === 0) {
+                isEmpty = true;
+                emptyHandler()
+            } else {
+                isEmpty = false;
+            }
+
+            createTable(resultList, orders);
+
+            pageIndex = 2;
+        }
+    );
 
     return false;
 };
 
-formDelayTime.onsubmit = () => {
-    const url = "status/branch-settings/" + getCurrentBranchId();
-    withPostMethod(url);
+formDefaultStart.onsubmit
+    = formDelayTime.onsubmit
+    = formAdditionalCost.onsubmit = function () {
+
+    const branchId = getCurrentBranchId();
+    if (branchId !== -1) {
+        const url = "status/branch-settings/" + branchId;
+        const formData = new FormData(this);
+        withPostMethod(url, formData);
+    }
 
     return false;
 };
 
-formAdditionalCost.onsubmit = () => {
-    const url = "status/branch-settings/" + getCurrentBranchId();
-    withPostMethod(url);
+window.onscroll = function () {
+    if ((window.innerHeight + window.scrollY) < container.offsetHeight - 1 || lastSubmittedFormData === null || isEmpty === true) {
+        return;
+    }
 
-    return false;
+    const formData = copyFormData(lastSubmittedFormData);
+    formData.append("pageIndex", pageIndex);
+
+    getOrders(
+        formData,
+        (obj) => {
+            const orders = obj["orders"];
+
+            isEmpty = orders.length === 0;
+
+            createTable(resultList, orders);
+            pageIndex++;
+        }
+    );
 };
+
+function getOrders(formData, func) {
+    const url = "status/orders";
+
+    withGetMethod(
+        url,
+        formData,
+        (obj) => {
+            try {
+                func(obj);
+            } catch (error) {
+                console.log(error.message);
+                displayError(error);
+            }
+        });
+}
+
+// TODO is-shred 동작 구현

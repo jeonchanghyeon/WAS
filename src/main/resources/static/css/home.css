@@ -1,3 +1,4 @@
+/* TODO 크기 120 증가 */
 @charset "UTF-8";
 /* Body */
 body {
@@ -9,12 +10,12 @@ body {
 }
 
 /* Container */
-.container {
+#container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    height: 1000px;
     background-color: #FFFFFF;
+    float : left;
 }
 
 

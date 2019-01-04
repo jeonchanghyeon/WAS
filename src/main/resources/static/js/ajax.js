@@ -6,12 +6,14 @@ export function ajax(url, method, func, content = null) {
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
     xhr.onreadystatechange = function () {
-        if (this.status === 200) {
-            try {
-                const obj = JSON.parse(this.responseText);
-                console.log(obj);
-                func(obj);
-            } catch (error) {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (this.status === 200) {
+                try {
+                    const obj = JSON.parse(this.responseText);
+                    console.log(obj);
+                    func(obj);
+                } catch (error) {
+                }
             }
         }
     };
@@ -19,9 +21,8 @@ export function ajax(url, method, func, content = null) {
     xhr.send(content)
 }
 
-export function withGetMethod(url, func, form) {
+export function withGetMethod(url, formData, func) {
     try {
-        const formData = new FormData(form);
         url += "?";
         url += new URLSearchParams(formData).toString();
 
@@ -43,9 +44,8 @@ const jsonify = (formData) => {
     return jsonObject;
 };
 
-export function withPostMethod(url, func, form) {
+export function withPostMethod(url, formData, func) {
     try {
-        const formData = new FormData(form);
         const jsonObject = jsonify(formData);
 
         ajax(url, "POST", func, JSON.stringify(jsonObject));
