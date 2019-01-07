@@ -1,30 +1,27 @@
 package com.please.controller
 
+import com.please.persistence.getAuthInfo
 import com.please.service.OrderReceptionService
-import com.please.value.AuthInfo
+import com.please.value.OrderReceiptInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
-import javax.servlet.http.HttpServletRequest
 
 @Controller
-@RequestMapping("/abcf")
+@RequestMapping("/order-reception")
 class OrderReceptionController {
     @Autowired
-    private lateinit var receptionServce: OrderReceptionService
+    private lateinit var receptionService: OrderReceptionService
 
-    @GetMapping(value = ["efg"])
+    @RequestMapping(value = ["efg"], method = [RequestMethod.PUT])
     @ResponseBody
-    fun addOrder(request: HttpServletRequest,
-                 @RequestParam data: MutableMap<String, Any>): Any {
-        val session = request.session
-        val authInfo = session.getAttribute("authInfo") as AuthInfo?
-
+    fun addOrder(@RequestBody orderReceiptInfo: OrderReceiptInfo): Any {
         return try {
-            val value = receptionServce.addOrder(authInfo!!.authKey, data)
+            val authInfo = getAuthInfo()!!
+            val value = receptionService.addOrder(authInfo.authKey, orderReceiptInfo)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 
-
 @Repository
 class OrderDAO {
-
     @Autowired
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
@@ -32,7 +30,14 @@ class OrderDAO {
 //            e.printStackTrace()
 //        }
         return null
-
     }
-    
+
+    fun addOrder(authKey: String, orderInfo: String): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL addOrder(?, ?)", authKey, orderInfo)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 }

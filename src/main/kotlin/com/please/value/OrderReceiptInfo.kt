@@ -1,28 +1,52 @@
 package com.please.value
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class OrderReceiptInfo(
-    val shopId: Long,
-    val customerTel: String?,
-    val jibun: String,
-    val road: String,
-    val addressDetail: String,
-    val distanceFactor: Double?,
-    val latitude: Double?,
-    val longitude: Double?,
-    val distance: Double?,
-    val menu: String,
-    val menuPrice: Long,
-    val additionalMenuPrice: Long?,
-    val paymentType: Int,
-    val cookTime: Int,
-    val orderAutoCancelTime: Int,
-    val deliveryCost: Long,
-    val additionalCost: String?,
-    val deliveryCostPaymentType: Int,
-    val memo: String?,
-    val isSuspend: Boolean?, //true이거나 값x(false x)
-    //??
-    val point: Long?,
-    val orderLimitAmount: Long?,
-    val isShared: Boolean?
+        @JsonProperty("shop-id")
+        val shopId: Long,
+        @JsonProperty("customer-tel")
+        val customerTel: String?,
+        @JsonProperty("jibun")
+        val jibun: String,
+        @JsonProperty("road")
+        val road: String,
+        @JsonProperty("address-detail")
+        val addressDetail: String,
+        @JsonProperty("distance-factor")
+        val distanceFactor: Double?,
+        @JsonProperty("latitude")
+        val latitude: Double?,
+        @JsonProperty("longitude")
+        val longitude: Double?,
+        @JsonProperty("distance")
+        val distance: Double?,
+        @JsonProperty("menu")
+        val menu: String,
+        @JsonProperty("menu-price")
+        val menuPrice: Long,
+        @JsonProperty("additional-menuPrice")
+        val additionalMenuPrice: Long?,
+        @JsonProperty("payment-type")
+        val paymentType: Int,
+        @JsonProperty("cook-time")
+        val cookTime: Int,
+        @JsonProperty("order-auto-cancel-time")
+        val orderAutoCancelTime: Int,
+        @JsonProperty("delivery-cost")
+        val deliveryCost: Long,
+        @JsonProperty("additional-cost")
+        val additionalCost: String?,
+        @JsonProperty("delivery-cost-payment-type")
+        val deliveryCostPaymentType: Int,
+        @JsonProperty("memo")
+        val memo: String?,
+        @JsonProperty("is-shared")
+        val isSuspend: Boolean?,
+        @JsonProperty("point")
+        val point: Long?,
+        @JsonProperty("order-limit-amount")
+        val orderLimitAmount: Long?,
+        @JsonProperty("is-suspend")
+        val isShared: Boolean?
 )
