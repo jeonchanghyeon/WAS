@@ -1,11 +1,8 @@
 package com.please.controller
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.please.persistence.getAuthInfo
 import com.please.service.PointService
 import com.please.service.StatusService
-import com.please.value.AuthInfo
 import com.please.value.Condition
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,8 +10,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
-import org.springframework.web.bind.annotation.RequestMethod
-import java.sql.Timestamp
 
 
 @CrossOrigin(origins = arrayOf("*"), allowCredentials = "false")
@@ -54,9 +49,8 @@ class StatusController {
     @GetMapping(value = ["orders"])
     @ResponseBody
     fun getCondition(condition: Condition): Any {
-        val authInfo = getAuthInfo()!!
-
         return try {
+            val authInfo = getAuthInfo()!!
             val value = statusService.searchOrdersInfo(authInfo, condition)
             println(value)
             value!!.toString()
@@ -69,7 +63,7 @@ class StatusController {
 
     @GetMapping(value = ["distributors"])
     @ResponseBody
-    fun getBranchList(request: HttpServletRequest, @RequestParam(value = "distributorId") distributorId: Long): MutableList<Map<String, Any?>>? {
+    fun getBranchList(@RequestParam(value = "distributorId") distributorId: Long): MutableList<Map<String, Any?>>? {
         val authInfo = getAuthInfo()!!
 
         var branchs = statusService.getBranchs(authInfo, distributorId) ?: mutableListOf()
@@ -85,7 +79,7 @@ class StatusController {
         return try {
             val authInfo = getAuthInfo()!!
 
-            var value = statusService.getBranchSettings(authInfo!!.authKey, id)
+            var value = statusService.getBranchSettings(authInfo.authKey, id)
             println(value)
             value!!.toString()
         } catch (e: Exception) {
@@ -99,7 +93,7 @@ class StatusController {
     fun setBranchSettings(request: HttpServletRequest, @RequestBody data: MutableMap<String, Any?>, @PathVariable id: String): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            var value = statusService.setBranchSettings(authInfo!!.authKey, data, id)
+            var value = statusService.setBranchSettings(authInfo.authKey, data, id)
 
             println(value)
 

@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody
 @RequestMapping("/order-reception")
 class OrderReceptionController {
     @Autowired
-    private lateinit var receptionService: OrderReceptionService
+    private lateinit var receptionServce: OrderReceptionService
 
     @RequestMapping(value = ["efg"], method = [RequestMethod.PUT])
     @ResponseBody
     fun addOrder(@RequestBody orderReceiptInfo: OrderReceiptInfo): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = receptionService.addOrder(authInfo.authKey, orderReceiptInfo)
+            val value = receptionServce.addOrder(authInfo.authKey, orderReceiptInfo)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

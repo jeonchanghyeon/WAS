@@ -1,15 +1,14 @@
 package com.please.controller
 
+import com.please.persistence.getAuthInfo
 import com.please.service.SearchAddressService
 import com.please.service.ShopEnableAreaService
-import com.please.value.AuthInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
-import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/abce")
@@ -34,13 +33,10 @@ class SearchAddressController {
 
     @GetMapping(value = ["ewe"])
     @ResponseBody
-    fun getEnableArea(request: HttpServletRequest,
-                      @RequestParam data: MutableMap<String, Any>): Any {
-        val session = request.session
-        val authInfo = session.getAttribute("authInfo") as AuthInfo?
-
+    fun getEnableArea(@RequestParam data: MutableMap<String, Any>): Any {
         return try {
-            val value = enableAreaService.getEnableArea(authInfo!!.authKey, data)
+            val authInfo = getAuthInfo()!!
+            val value = enableAreaService.getEnableArea(authInfo.authKey, data)
             println(value)
             value!!.toString()
         } catch (e: Exception) {
