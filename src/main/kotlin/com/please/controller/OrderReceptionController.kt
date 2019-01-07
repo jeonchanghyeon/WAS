@@ -1,6 +1,6 @@
 package com.please.controller
 
-import com.please.service.ReceptionService
+import com.please.service.OrderReceptionService
 import com.please.value.AuthInfo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/abcf")
-class ReceptionController {
+class OrderReceptionController {
     @Autowired
-    private lateinit var receptionServce: ReceptionService
+    private lateinit var receptionServce: OrderReceptionService
 
     @GetMapping(value = ["efg"])
     @ResponseBody

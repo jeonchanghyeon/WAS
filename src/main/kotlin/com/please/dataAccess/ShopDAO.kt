@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 
 @Repository
-internal class ShopsControlDAO {
+internal class ShopDAO {
     @Autowired
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate

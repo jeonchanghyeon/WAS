@@ -1,18 +1,18 @@
 package com.please.service
 
 import com.please.dataAccess.OrderReceiptDAO
-import com.please.value.ReceiptInfo
+import com.please.value.OrderReceiptInfo
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ReceptionService {
+class OrderReceptionService {
     @Autowired
     private lateinit var receiptDAO: OrderReceiptDAO
 
     fun addOrder(authKey: String, data: MutableMap<String, Any>): JSONObject? {
-        val receiptInfo = ReceiptInfo(
+        val receiptInfo = OrderReceiptInfo(
                 data["shop-id"] as Long,
                 data["customer-tel"] as String?,
                 data["jibun"] as String,

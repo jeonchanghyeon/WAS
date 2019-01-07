@@ -1,6 +1,6 @@
 package com.please.value
 
-data class ReceiptInfo(
+data class OrderReceiptInfo(
     val shopId: Long,
     val customerTel: String?,
     val jibun: String,

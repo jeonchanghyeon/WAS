@@ -7,18 +7,32 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 
+
 @Repository
-internal class RidersControlDAO {
+class OrderDAO {
+
     @Autowired
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun searchRiders(authKey: String, riderInfo: JSONObject): JSONObject? {
+    fun getOrder(authKey: String, orderId: Int): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedRiders(?, ?)", authKey, riderInfo.toString())
+            return template.queryForJSONObject("CALL getOrder(?, ?)", authKey, orderId)
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
     }
+
+    fun setOrderStatus(authKey: String, data: String): JSONObject? {
+        println(data)
+//        try {
+//            return template.queryForJSONObject("CALL setOrderStatus(?, ?)", authKey, jsonData)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+        return null
+
+    }
+    
 }
