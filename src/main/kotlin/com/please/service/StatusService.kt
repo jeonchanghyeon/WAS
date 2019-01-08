@@ -23,27 +23,29 @@ class StatusService {
     }
 
     fun searchOrdersInfo(authInfo: AuthInfo, condition: Condition): JSONObject? {
-//        val condition = Condition(
-//                data["branch-id"] as String,
-//                data["id"] as String?,
-//                data["shop-name"] as String?,
-//                data["rider-name"] as String?,
-//                orderStatusIds,
-//                paymentTypes,
-//                data["is-shared"] as Boolean?,
-//                Timestamp.valueOf(data["start-date"] as String? ?: "1000-01-01 00:00:00"),
-//                Timestamp.valueOf(data["end-data"] as String? ?: "9999-12-31 23:59:59"),
-//                data["page-Index"] as Long?
-//        )
-        println("condition = $condition")
-        val ordersResult = statusDAO.searchOrders(condition.branchId, ObjectMapper().writeValueAsString(condition))
-                ?: return null
-        val countsResult = statusDAO.getOrderStatusCounts(condition.branchId, condition.startDate, condition.endDate)
-                ?: return null
+        val branchId = condition.branchId
+        branchId ?: return null
 
-        val result = JSONObject()
-        result.put("orders", ordersResult)
-        result.put("counts", countsResult)
+        val ordersResult = statusDAO.searchOrders(branchId, ObjectMapper().writeValueAsString(condition))
+
+        print("ordersResult")
+        println(ordersResult)
+        ordersResult ?: return null
+
+        val startDate = Timestamp.valueOf(condition.startDate) ?: return null
+        val endDate = Timestamp.valueOf(condition.endDate) ?: return null
+
+        val countsResult = statusDAO.getOrderStatusCounts(branchId, startDate, endDate)
+
+        print("countsResult")
+        println(countsResult)
+
+        countsResult ?: return null
+
+        var result = JSONObject()
+
+        result.put("orders", ordersResult["orders"])
+        result.put("counts", countsResult["info"])
 
         return result
     }
