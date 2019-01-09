@@ -25,7 +25,7 @@ data class OrderReceiptInfo(
         val menu: String,
         @JsonProperty("menu-price")
         val menuPrice: Long,
-        @JsonProperty("additional-menuPrice")
+        @JsonProperty("additional-menu-price")
         val additionalMenuPrice: Long?,
         @JsonProperty("payment-type")
         val paymentType: Int,
@@ -36,17 +36,15 @@ data class OrderReceiptInfo(
         @JsonProperty("delivery-cost")
         val deliveryCost: Long,
         @JsonProperty("additional-cost")
-        val additionalCost: String?,
+        val additionalCost: Long?,
         @JsonProperty("delivery-cost-payment-type")
         val deliveryCostPaymentType: Int,
         @JsonProperty("memo")
         val memo: String?,
         @JsonProperty("is-shared")
-        val isSuspend: Boolean?,
+        val isSuspend: Boolean?,        //지연됐을 경우만 true, 지연되지 않았을 경우 false(x) -> null
         @JsonProperty("point")
         val point: Long?,
-        @JsonProperty("order-limit-amount")
-        val orderLimitAmount: Long?,
         @JsonProperty("is-suspend")
         val isShared: Boolean?
 )
