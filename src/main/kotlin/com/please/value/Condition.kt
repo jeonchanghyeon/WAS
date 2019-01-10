@@ -2,18 +2,18 @@ package com.please.value
 
 import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class Condition {
-    var branchId: String? = null
+    lateinit var branchId: String
     var id: Long? = null
     var shopName: String? = null
-    var riderName: String? = null
-    var orderStatusIds: List<Int>? = null
-    var paymentTypes: List<Int>? = null
-    var _isShared: Boolean? = null
-    var startDate: String? = null
-    var endDate: String? = null
-    var pageIndex: Long? = null
+//    var riderName: String? = null
+    var orderStatusIds: MutableList<Int> = mutableListOf()
+    var paymentTypes: MutableList<Int> = mutableListOf()
+    var isShared: Boolean = false
+    lateinit var startDate: String
+    lateinit var endDate: String
+    var pageIndex: Long = 1
     var dateType: String = "create"
     var limitCount = 30
 }

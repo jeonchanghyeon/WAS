@@ -1,0 +1,69 @@
+.main {
+  width: 100%;
+  height: 100%;
+  float: left;
+}
+.main .main-subject {
+  border-top: 1px solid #d0d0d0;
+  width: 100%;
+  float: left;
+  clear: both;
+}
+.main .main-subject .main-subject-title {
+  width: calc(100% - 40px);
+  padding: 10px 20px;
+  border: 1px solid #d0d0d0;
+  float: left;
+  clear: both;
+}
+.main .main-subject .main-subject-content {
+  width: 100%;
+  padding-left: 2px;
+  padding-right: 2px;
+  float: left;
+  clear: both;
+  text-align: center;
+}
+
+.menu {
+  width: 100%;
+  float: left;
+  clear: both;
+  text-align: center;
+}
+.menu ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: inline-block;
+}
+.menu ul li {
+  float: left;
+}
+.menu ul li .btn-menu {
+  margin-bottom: -4px;
+  width: 143px;
+  height: 45px;
+  border: 0;
+  background-color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 500;
+  color: #979797;
+  border-bottom: 4px solid #FFFFFF00;
+  float: left;
+}
+.menu ul li .btn-menu-selected,
+.menu ul li button:hover {
+  margin-bottom: -4px;
+  width: 143px;
+  height: 45px;
+  border: 0;
+  background-color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 500;
+  color: #ff9037;
+  border-bottom: 4px solid #ff9037;
+  float: left;
+}
+
+/*# sourceMappingURL=main.css.map */

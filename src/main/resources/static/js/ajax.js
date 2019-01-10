@@ -1,9 +1,10 @@
-export function ajax(url, method, func, content = null) {
+export function ajax(url, method, func, content = null, csrfHeader, csrfToken) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
 
 
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.setRequestHeader(csrfHeader, csrfToken);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -44,11 +45,11 @@ const jsonify = (formData) => {
     return jsonObject;
 };
 
-export function withPostMethod(url, formData, func) {
+export function withPostMethod(url, formData, func, csrfHeader, csrfToken) {
     try {
         const jsonObject = jsonify(formData);
 
-        ajax(url, "POST", func, JSON.stringify(jsonObject));
+        ajax(url, "POST", func, JSON.stringify(jsonObject), csrfHeader, csrfToken);
 
     } catch (error) {
         console.log(error.message);

@@ -1,4 +1,6 @@
 import {ajax, withGetMethod, withPostMethod} from './ajax.js'
+import {loadDetail} from './delivery_details.js'
+import {getMeta} from './meta.js'
 
 Date.prototype.mmdd = function () {
     const mm = (this.getMonth() + 1).toString();
@@ -38,47 +40,57 @@ function copyFormData(src) {
     return dst;
 }
 
-const loadCounts = (orders) => {
-    const counts = [0, 0, 0, 0, 0, 0, 0];
+const loadCounts = (counts) => {
 
-    for (let i = 0; i < orders.length; i++) {
-        counts[orders[i]["orderStatusId"] - 1]++;
-    }
+    const arr = [
+        "acceptCount",
+        "allocateCount",
+        "pickupCount",
+        "completeCount",
+        "cancelCount",
+        "suspendCount",
+        "shareCallCount"
+    ];
 
-    statusText[0].innerHTML = orders.length;
+    let sum = 0;
     for (let i = 1; i < statusText.length; i++) {
-        statusText[i].innerHTML = counts[i - 1];
+        const count = counts[arr[i - 1]];
+        if (i !== 6) {
+            statusText[i].innerHTML = count;
+            sum += parseInt(count);
+        }
     }
+
+    statusText[0].innerHTML = sum;
 };
 
 const createRow = (text, orderStatusId) => {
     const row = document.createElement("tr");
 
+    row.className = statusStyleName[orderStatusId - 1];
+
     for (let i = 0; i < text.length; i++) {
         const col = document.createElement("td");
         col.innerHTML = text[i];
-        col.className = statusStyleName[orderStatusId - 1];
         row.appendChild(col);
     }
 
     row.onclick = function () {
         if (selectedRow != null) {
             // 스타일 복구
-            const cols = selectedRow.getElementsByTagName("td");
-            for (let i = 0; i < cols.length; i++) {
-                cols[i].className = selectedRowClassName;
-            }
+            selectedRow = selectedRowClassName;
         }
 
         // 선택 스타일 지정
-        const cols = this.getElementsByTagName("td");
-        for (let i = 0; i < cols.length; i++) {
-            cols[i].className = 'selected_row';
-        }
+        selectedRow = 'selected_row';
 
         // 스타일 저장
         selectedRow = row;
         selectedRowClassName = statusStyleName[orderStatusId - 1];
+    };
+
+    row.ondblclick = function () {
+        loadDetail(text[0]);
     };
 
     return row;
@@ -98,7 +110,15 @@ function createTable(resultList, orders) {
         const id = order["id"].toString().fillZero();
         const createDay = createDate.mmdd() + "-" + createDate.mmdd();
         const shopName = order["shopName"];
-        const parsingOrderStatus = statusStr[order["orderStatusId"] - 1];
+
+        let parsingOrderStatus = null;
+
+        if (order["orderStatusId"] === 1 && order["branchId"] !== parseInt(getCurrentBranchId())) {
+            parsingOrderStatus = "공유";
+        } else {
+            parsingOrderStatus = statusStr[order["orderStatusId"] - 1];
+        }
+
         const createTime = createDate.HHMM();
         const allocateTime = allocateDate.HHMM();
         const pickupTime = pickupDate.HHMM();
@@ -193,7 +213,7 @@ const spanIds = [
     "count_share"
 ];
 
-const container = document.getElementById("container");
+const container = document.getElementById("window-parent");
 const resultList = document.getElementById("result_list");
 const distributorSelect = document.getElementById("select_distributor");
 const branchSelect = document.getElementById("select_branch");
@@ -217,6 +237,8 @@ const selectDefaultStart = document.getElementById("select_default_start");
 const selectDelayTime = document.getElementById("select_delay_time");
 const costWon = document.getElementById('cost_won');
 const costPercent = document.getElementById('cost_percent');
+const csrfToken = getMeta("_csrf");
+const csrfHeader = getMeta("_csrf_header");
 
 let baseForm = null;
 let lastSubmittedFormData = null;
@@ -230,12 +252,12 @@ function setSearchType() {
 
     for (let i = 0; i < selectSearchType.options.length; i++) {
         let searchTypeName = selectSearchType.options[i].value;
-        let dstSearchType = document.getElementById(searchTypeName).value;
+        let dstSearchType = document.getElementById(searchTypeName);
 
         if (i === selectSearchType.selectedIndex) {
-            dstSearchType = document.getElementById("search_feature").value
+            dstSearchType.value = document.getElementById("search_feature").value
         } else {
-            dstSearchType = null;
+            dstSearchType.value = "";
         }
     }
 }
@@ -378,31 +400,35 @@ branchSelect.onchange = () => {
 };
 
 formSearch.onsubmit = function () {
-    setSearchType();
+    if (parseInt(getCurrentBranchId()) !== -1) {
+        setSearchType();
 
-    const formData = new FormData(this);
-    lastSubmittedFormData = baseForm = formData;
+        const formData = new FormData(this);
+        lastSubmittedFormData = baseForm = formData;
 
-    getOrders(
-        formData,
-        (obj) => {
-            const orders = obj["orders"];
+        getOrders(
+            formData,
+            (obj) => {
+                const orders = obj["orders"];
+                const counts = obj["counts"];
 
-            resultList.innerHTML = '';
-            loadCounts(orders);
+                resultList.innerHTML = '';
 
-            if (orders.length === 0) {
-                isEmpty = true;
-                emptyHandler()
-            } else {
-                isEmpty = false;
+                loadCounts(counts);
+
+                if (orders.length === 0) {
+                    isEmpty = true;
+                    emptyHandler()
+                } else {
+                    isEmpty = false;
+                }
+
+                createTable(resultList, orders);
+
+                pageIndex = 2;
             }
-
-            createTable(resultList, orders);
-
-            pageIndex = 2;
-        }
-    );
+        );
+    }
 
     return false;
 };
@@ -411,11 +437,19 @@ formDefaultStart.onsubmit
     = formDelayTime.onsubmit
     = formAdditionalCost.onsubmit = function () {
 
-    const branchId = getCurrentBranchId();
+    const branchId = parseInt(getCurrentBranchId());
     if (branchId !== -1) {
         const url = "status/branch-settings/" + branchId;
         const formData = new FormData(this);
-        withPostMethod(url, formData);
+        withPostMethod(
+            url,
+            formData,
+            () => {
+
+            },
+            csrfHeader,
+            csrfToken
+        );
     }
 
     return false;
@@ -457,5 +491,3 @@ function getOrders(formData, func) {
             }
         });
 }
-
-// TODO is-shred 동작 구현
