@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Please</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/management/shop_setting.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="header :: header"></div>
+
+    <section class="main">
+        <!-- 매출정산, 공유콜 정산 -->
+        <div class="menu">
+            <ul>
+                <li>
+                    <button>지사</button>
+                </li>
+                <li>
+                    <button>가맹점</button>
+                </li>
+                <li>
+                    <button>기사</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-subject">
+
+            <!-- 내용 -->
+            <div class="main-subject-content">
+                <div class="title">
+                    <span>똘똘이 족발 - 부산남구지사</span>
+                </div>
+                <br>
+                <div class="menu_position">
+                    <div class="menu">
+                        <ul>
+                            <li>
+                                <button>가맹점정보</button>
+                            </li>
+                            <li>
+                                <button>가맹점설정</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <form>
+                    <div class="center">
+
+                        <div class="condition">
+                            <div class="left_side">
+                                <div class="oper_info_area">
+                                    <span class="item_title">운영정보</span>
+                                    <div>
+                                        <span class="title_style">근무시간</span>
+                                        <div>
+                                            <select class="select_long" name="" id=""></select>
+                                            <select class="select_long" name="" id=""></select>
+                                        </div>
+                                        <div>
+                                            <select class="select_long" name="" id=""></select>
+                                            <select class="select_long" name="" id=""></select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="day_off_area">
+                                    <span class="item_title">휴무일</span> <br>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="" id="">
+                                            <label for="">월</label>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="" id="">
+                                            <label for="">화</label>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="" id="">
+                                            <label for="">수</label>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="" id="">
+                                            <label for="">목</label>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="" id="">
+                                            <label for="">금</label>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="" id="">
+                                            <label for="">토</label>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="" id="">
+                                            <label for="">일</label>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="time_area">
+                                    <label for="cook_time" class="item_title">조리시간</label>
+                                    <select class="select_long" name="cook_time" id="cook_time"></select>
+
+                                    <label for="cancel_time" class="item_title">주문자동취소</label>
+                                    <select class="select_long" name="cancel_time" id="cancel_time"></select>
+
+                                    <input type="checkbox" name="use_share_call" id="use_share_call"/>
+                                    <label for="use_share_call" class="item_title">공유콜 사용</label>
+                                </div>
+
+                                <div class="delivery_proxy_settings">
+                                    <span class="item_title">배달대행설정</span>
+                                    <div>
+                                        <div>
+                                            <input type="radio" name="by_fee" id="by_fee">
+                                            <label for="by_fee" class="title_style">정액</label>
+                                        </div>
+                                        <div>
+                                            <span class="light"> 기본료</span>
+                                            <div>
+                                                <select class="select_long" name="" id=""></select>
+                                                <select class="select_long" name="" id=""></select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="btn_light">관리비 설정</button>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div>
+                                            <input type="radio" name="by_case" id="by_case">
+                                            <label class="title_style" for="by_case">건당</label>
+                                        </div>
+                                        <div>
+                                            <div>
+
+                                                <span class="light"> 기본료</span>
+                                                <div>
+                                                    <select class="select_long" name="" id=""></select>
+                                                    <select class="select_long" name="" id=""></select>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span class="light"> 건당</span>
+                                                <div>
+                                                    <select class="select_long" name="" id=""></select>
+                                                    <select class="select_long" name="" id=""></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div>
+                                            <span class="title_style"> 예치금</span>
+                                            <br>
+                                            <input class="number" type="number" name="" id="">
+                                        </div>
+                                        <div>
+                                            <span class="title_style"> 주문제한 포인트 설정</span>
+                                            <br>
+                                            <input class="number" type="number" name="" id="">
+                                        </div>
+                                        <div>
+                                            <span class="title_style"> 배달가능동 설정</span>
+                                            <br>
+                                            <button class="btn_light">배달가능동 설정</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="right_side">
+                                <div class="delivery_proxy_fee_settings">
+                                    <span class="item_title">배달대행료 설정</span>
+                                    <ul>
+                                        <li>
+                                            <span class="title_style">배달대행료 지불방법</span>
+                                            <div>
+                                                <div>
+                                                    <input type="radio" name="" id="">
+                                                    <label class="title_style" for="">현금</label>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" name="" id="">
+                                                    <label class="title_style" for="">포인트</label>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span class="title_style">배달대행료 기본설정</span>
+                                            <div>
+                                                <div>
+                                                    <input type="radio" name="" id="">
+                                                    <label class="title_style" for="">거리별</label>
+                                                    <button class="btn_setting">설정</button>
+                                                </div>
+                                                <div>
+                                                    <input type="radio" name="" id="">
+                                                    <label class="title_style" for="">동별</label>
+                                                    <button class="btn_setting1">설정</button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="additional_cost_setting">
+                                    <span class="item_title">추가할증 설정</span>
+                                    <ul>
+                                        <li>
+                                            <div>
+                                                <input type="checkbox" name="" id="">
+                                                <label class="title_style" for="">요일별 할증 사용</label>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <input class="number" type="number"/>
+                                                </div>
+
+                                                <div>
+                                                    <input type="checkbox" name="" id="">
+                                                    <label for="">월</label>
+                                                    <input type="checkbox" name="" id="">
+                                                    <label for="">화</label>
+                                                    <input type="checkbox" name="" id="">
+                                                    <label for="">수</label>
+                                                    <input type="checkbox" name="" id="">
+                                                    <label for="">목</label>
+                                                    <input type="checkbox" name="" id="">
+                                                    <label for="">금</label>
+                                                    <input type="checkbox" name="" id="">
+                                                    <label for="">토</label>
+                                                    <input type="checkbox" name="" id="">
+                                                    <label for="">일</label>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <div>
+                                                <input type="checkbox" name="" id="">
+                                                <label class="title_style" for="">시간별 할증 사용</label>
+                                            </div>
+
+                                            <div>
+
+                                                <div>
+                                                    <input class="number" type="number"/>
+                                                </div>
+
+                                                <div>
+                                                    <div>
+                                                        <select class="select_short" name="" id=""></select>
+                                                        <select class="select_short" name="" id=""></select>
+                                                    </div>
+                                                    <div>
+                                                        <select class="select_short" name="" id=""></select>
+                                                        <select class="select_short" name="" id=""></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>
+                                                <input type="checkbox" name="" id="">
+                                                <label class="title_style" for="">구역별 할증 사용</label>
+                                            </div>
+                                            <div>
+                                                <button class="btn_light">구역별 할증 사용</button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="reg_area">
+                            <input type="submit" class="btn_reg" value="등록"/>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+</div>
+</body>
+
+</html>
