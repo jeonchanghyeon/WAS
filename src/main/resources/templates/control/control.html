@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Please</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/control/control.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="header :: header"></div>
+
+    <section class="main">
+        <section class="center_section">
+            <aside class="aside">
+                <div class="title_area">
+                    <span>기사관제</span>
+                    <button class="btn_x">X</button>
+                </div>
+
+                <div class="search_area">
+                    <label for="기사명" class="title"> 기사명</label>
+                    <input type="search" id="기사명"/>
+                    <input type="submit" value="검색"/>
+                </div>
+
+                <div class="rider_numbers_area">
+                    <ul>
+                        <li>
+                            <span class="title">근무자수</span>
+                            <span class="contents">총 20명</span>
+                        </li>
+                        <li>
+                            <span class="title">운행자수</span>
+                            <span class="contents">총 12명</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="rider_status_area">
+                    <span class="title">기사상태</span>
+                    <ul>
+                        <li>
+
+                            <input type="checkbox" id="운행중"/>
+                            <label class="contents" for="운행중">운행중</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="대기중"/>
+                            <label class="contents" for="대기중">대기중</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="휴식중"/>
+                            <label class="contents" for="휴식중">휴식중</label>
+                        </li>
+                    </ul>
+                </div>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td>기사상태</td>
+                        <td>기사명</td>
+                        <td>배차</td>
+                        <td>픽업</td>
+                        <td>전화번호</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>운행</td>
+                        <td>홍길동</td>
+                        <td>01</td>
+                        <td>01</td>
+                        <td>010-1234-1234</td>
+                    </tr>
+                    <tr>
+                        <td>대기</td>
+                        <td>홍길동</td>
+                        <td>01</td>
+                        <td>01</td>
+                        <td>010-1234-1234</td>
+                    </tr>
+                    <tr>
+                        <td>휴식</td>
+                        <td>홍길동</td>
+                        <td>01</td>
+                        <td>01</td>
+                        <td>010-1234-1234</td>
+                    </tr>
+                    <tr>
+                        <td>운행</td>
+                        <td>홍길동</td>
+                        <td>01</td>
+                        <td>01</td>
+                        <td>010-1234-1234</td>
+                    </tr>
+                    <tr>
+                        <td>운행</td>
+                        <td>홍길동</td>
+                        <td>01</td>
+                        <td>01</td>
+                        <td>010-1234-1234</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </aside>
+
+            <section class="right">
+                <section class="map">
+
+                </section>
+
+                <section class="map_down">
+                    <ul>
+                        <li>
+                            <button class="btn_pickup">픽업</button>
+                            <span>우리집통닭 > </span>
+                            <span>부산진역</span>
+                            <button class="btn_detail">주문상세보기</button>
+                        </li>
+                        <li>
+                            <button class="btn_allow">배차</button>
+                            <span>우리집통닭 > </span>
+                            <span>부산진역</span>
+                            <button class="btn_detail">주문상세보기</button>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+        </section>
+
+        <!-- 기사관제, 상점관제 ,기상명보기-->
+        <section class="footer">
+            <button class="btn1">기사관제</button>
+            <button class="btn2">상점관제</button>
+
+            <div class="option_rider">
+                <input type="checkbox" id="기사명보기"/>
+                <label for="기사명보기">기사명보기</label>
+            </div>
+        </section>
+    </section>
+</div>
+</body>
+
+</html>
