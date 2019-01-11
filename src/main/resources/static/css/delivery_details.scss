@@ -10,9 +10,10 @@
   float: left;
   clear: both;
   background-color: #FFFFFF;
-}
-.detail th {
-  font-weight: normal;
+
+  th {
+    font-weight: normal;
+  }
 }
 
 .detail-header {
@@ -84,19 +85,22 @@
   float: left;
   font-size: 14px;
   font-weight: normal;
-}
-.table2 th {
-  padding: 3px 14px;
-  color: #9b9b9b;
-}
-.table2 td {
-  padding: 3px 14px;
-  color: #4a4a4a;
+
+  th {
+    padding: 3px 14px;
+    color: #9b9b9b;
+  }
+
+  td {
+    padding: 3px 14px;
+    color: #4a4a4a;
+  }
 }
 
 .order-history table, .item-details table {
   clear: both;
 }
+
 
 .table {
   text-align: left;
@@ -104,27 +108,33 @@
   border: 1px solid #d0d0d0;
   float: left;
   clear: both;
+
+  thead {
+    background-color: #eaeaea;
+    font-size: 12px;
+    font-weight: normal;
+    color: #4a4a4a;
+    border-top: 1px solid #eaeaea;
+
+    td, th {
+      border-bottom: 1px solid #eaeaea;
+      padding: 3px 40px 3px 10px;
+    }
+  }
+
+  tbody {
+    font-size: 14px;
+    font-weight: normal;
+    color: #1f1f1f;
+
+    td, th {
+      border-bottom: 1px solid #eaeaea;
+      padding: 5px 40px 5px 10px;
+    }
+  }
+
 }
-.table thead {
-  background-color: #eaeaea;
-  font-size: 12px;
-  font-weight: normal;
-  color: #4a4a4a;
-  border-top: 1px solid #eaeaea;
-}
-.table thead td, .table thead th {
-  border-bottom: 1px solid #eaeaea;
-  padding: 3px 40px 3px 10px;
-}
-.table tbody {
-  font-size: 14px;
-  font-weight: normal;
-  color: #1f1f1f;
-}
-.table tbody td, .table tbody th {
-  border-bottom: 1px solid #eaeaea;
-  padding: 5px 40px 5px 10px;
-}
+
 
 .btn-unselected {
   width: 60px;
@@ -161,6 +171,7 @@
   margin-bottom: 2px;
 }
 
+
 .aside-subsection-title {
   font-size: 14px;
   font-weight: bold;
@@ -174,14 +185,16 @@
   width: 150px;
   font-size: 14px;
   font-weight: normal;
-}
-.aside-table th {
-  letter-spacing: -0.7px;
-  color: #9b9b9b;
-}
-.aside-table td {
-  color: #ffffff;
-  text-align: right;
+
+  th {
+    letter-spacing: -0.7px;
+    color: #9b9b9b;
+  }
+
+  td {
+    color: #ffffff;
+    text-align: right;
+  }
 }
 
 .aside-btn-unselected {
@@ -272,21 +285,21 @@
 
 .delivery-status {
   text-align: center;
-}
-.delivery-status ul {
-  padding: 0;
-  display: inline-block;
-}
-.delivery-status ul li {
-  font-size: 12px;
-  display: inline;
-  letter-spacing: -0.6px;
-  margin-left: 5px;
-  margin-right: 5px;
+
+  ul {
+    padding: 0;
+    display: inline-block;
+
+    li {
+      font-size: 12px;
+      display: inline;
+      letter-spacing: -0.6px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  }
 }
 
 .btn-close {
   float: right;
 }
-
-/*# sourceMappingURL=delivery_details.css.map */

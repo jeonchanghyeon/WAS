@@ -1,0 +1,256 @@
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Noto Sans CJK KR", sans-serif;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  float: left;
+}
+
+.center_section {
+  width: 100%;
+  float: left;
+}
+
+.aside {
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  float: left;
+  border-right: 1px solid #d0d0d0;
+  height: 100%;
+  width: 370px;
+
+  div {
+    border-bottom: 1px solid #d0d0d0;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    color: #FFFFFF;
+    float: left;
+  }
+}
+
+.right {
+  width: calc(100% - 371px);
+  float: left;
+}
+
+.map {
+  width: 100%;
+  height: 300px;
+  float: left;
+  background-color: #d0d0d0;
+}
+
+.map_down {
+  width: 100%;
+  float: left;
+  clear: both;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  box-shadow: 0 -2px 4px 0 rgba(77, 77, 77, 0.21);
+  border: 1px solid #d0d0d0;
+  width: 100%;
+  float: left;
+  clear: both;
+}
+
+.option_rider {
+  border-left: 1px solid #c1c1c1;
+  padding: 14px 21px;
+  float: right;
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #4a4a4a;
+  }
+}
+
+.title_area {
+  padding-left: 10px;
+  padding-right: 10px;
+  width: calc(100% - 20px);
+  float: left;
+  clear: both;
+
+  span {
+    margin-top: 9px;
+    margin-bottom: 9px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #4a4a4a;
+    float: left;
+  }
+
+  button {
+    border: 0;
+    width: 20px;
+    height: 20px;
+    margin: 10px;
+    padding: 5px;
+    float: right;
+    background-color: #9b9b9b;
+  }
+}
+
+.search_area {
+  padding: 15px;
+  width: calc(100% - 30px);
+  float: left;
+  clear: both;
+
+  input[type = "search"] {
+    padding: 5px;
+    border: 1px solid #d0d0d0;
+    width: 220px;
+  }
+
+  input[type = "submit"] {
+    width: 66px;
+    height: 28px;
+    background-color: #ff9037;
+    border: 1px solid #ff9037;
+    color: #FFFFFF;
+  }
+}
+
+.title {
+  margin-right: 10px;
+  font-size: 12px;
+  font-weight: 300;
+  color: #9b9b9b;
+  float: left;
+}
+
+.contents {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a4a4a;
+}
+
+.rider_numbers_area {
+  padding: 15px;
+  width: calc(100% - 30px);
+  float: left;
+  clear: both;
+
+  ul li {
+    margin-top: 9px;
+    margin-bottom: 9px;
+    padding-right: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    float: left;
+  }
+}
+
+.rider_status_area {
+  padding: 15px;
+  width: calc(100% - 30px);
+  float: left;
+  clear: both;
+
+  ul li {
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    float: left;
+  }
+}
+
+.table {
+  width: 100%;
+  float: left;
+  clear: both;
+  border-collapse: collapse;
+
+  thead td {
+    background-color: #e3e3e3;
+    font-size: 12px;
+    font-weight: normal;
+    color: #979797;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  tbody td {
+    font-size: 13px;
+    font-weight: 500;
+    color: #4a4a4a;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.btn_pickup {
+  width: 48px;
+  height: 24px;
+  border-radius: 21px;
+  background-color: #9013fe;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.btn_allow {
+  width: 48px;
+  height: 24px;
+  border-radius: 21px;
+  background-color: #d0021b;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.btn_detail {
+  border: 1px solid #d0d0d0;
+  width: 90px;
+  height: 30px;
+  background-color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  color: #4a4a4a;
+}
+
+.btn1 {
+  margin: 5px 3px;
+  width: 120px;
+  height: 36px;
+  background-color: #ffffff;
+  border: 1px solid #ff7100;
+  font-size: 14px;
+  font-weight: 500;
+
+  color: #ff7100;
+  float: left;
+}
+
+.btn2 {
+  margin: 5px 3px;
+  width: 120px;
+  height: 36px;
+  background-color: #ffffff;
+  border: 1px solid #bababa;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a4a4a;
+  float: left;
+}

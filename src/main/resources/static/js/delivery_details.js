@@ -1,30 +1,78 @@
 import {ajax} from './ajax.js'
+import {getMeta} from "./meta.js";
 
-let id = null;
+const windowModal = document.getElementById("modal");
+const textDistance = document.getElementById("distance");
+const textBranchName = document.getElementById("branchName");
+const textDeliveryCost = document.getElementById("deliveryCost");
+const btnAsideCash = document.getElementById("aside_cash");
+const btnAsidePoint = document.getElementById("aside_point");
+const imgStatusBar = document.getElementById("statusBar");
+const textShopName = document.getElementById("shopName");
+const textStartingTel = document.getElementById("startingTel");
+const textStartingRoad = document.getElementById("startingRoad");
+const textRiderName = document.getElementById("riderName");
+const textRiderTel = document.getElementById("riderTel");
+const textCustomerTel = document.getElementById("customerTel");
+const textRoad = document.getElementById("road");
+const textMemo = document.getElementById("memo");
+const tableMenu = document.getElementById("menu_table");
+const textMenuPrice = document.getElementById("menuPrice");
+const textAdditionalMenuPrice = document.getElementById("additionalMenuPrice");
+const textTotalPrice = document.getElementById("totalPrice");
+const textOrderAutoCancelTime = document.getElementById("orderAutoCancelTime");
+const textCookTime = document.getElementById("cookTime");
+const btnCash = document.getElementById("cash");
+const btnCard = document.getElementById("card");
+const btnPrepay = document.getElementById("prepay");
+const textExtraCharge = document.getElementById("extraCharge");
+const textAddCost = document.getElementById("addCost");
+const textSum = document.getElementById("sum");
 
-document.body.onload = () => {
+
+export const loadDetail = (id, riderId) => {
     try {
-        id = document.getElementById("ordersId").value;
         const url = "/orders/" + id;
 
         ajax(url, "GET", (obj) => {
                 const order = obj["order"];
 
-                document.getElementById("distance").innerText = order["distance"] + "km";
-                document.getElementById("branchName").innerText = order["branchName"];
+                riderId = order["riderId"];
 
-                document.getElementById("deliveryCost").innerText = order["deliveryCost"];
+                textDistance.innerText = order["distance"] + "km";
+                textBranchName.innerText = order["branchName"];
+
+                textDeliveryCost.innerText = order["deliveryCost"] + "원";
+
+                const additionalCost = order["additionalCost"];
+
+                let addCost = 0;
+                let sum = 0;
+
+                for (let i = 0; i < additionalCost.length; i++) {
+                    if (additionalCost[i]["label"] == "추가대행료") {
+                        addCost = additionalCost[i]["cost"];
+                    }
+                    sum += additionalCost[i]["cost"];
+                }
+                const extraCharge = sum - addCost;
+
+                sum += order["deliveryCost"];
+
+                textExtraCharge.innerText = extraCharge + "원";
+                textAddCost.innerText = addCost + "원";
+                textSum.innerText = sum + "원";
 
                 const deliveryCostPaymentType = order["deliveryCostPaymentType"];
 
                 switch (deliveryCostPaymentType) {
                     case 1:
-                        document.getElementById("aside_cash").className = "aside_btn_selected";
-                        document.getElementById("aside_point").className = "aside_btn_unselected";
+                        btnAsideCash.className = "aside-btn-selected";
+                        btnAsidePoint.className = "aside-btn-unselected";
                         break;
                     case 2:
-                        document.getElementById("aside_cash").className = "aside_btn_unselected";
-                        document.getElementById("aside_point").className = "aside_btn_selected";
+                        btnAsideCash.className = "aside-btn-unselected";
+                        btnAsidePoint.className = "aside-btn-selected";
                         break;
                 }
 
@@ -32,34 +80,33 @@ document.body.onload = () => {
 
                 switch (orderStatusId) {
                     case 1:
-                        document.getElementById("statusBar").src = "/img/status_bar4.png";
+                        imgStatusBar.src = "/img/status_bar4.png";
                         break;
                     case 2:
-                        document.getElementById("statusBar").src = "/img/status_bar3.png";
+                        imgStatusBar.src = "/img/status_bar3.png";
                         break;
                     case 3:
-                        document.getElementById("statusBar").src = "/img/status_bar2.png";
+                        imgStatusBar.src = "/img/status_bar2.png";
                         break;
                     case 4:
-                        document.getElementById("statusBar").src = "/img/status_bar1.png";
+                        imgStatusBar.src = "/img/status_bar1.png";
                         break;
                 }
 
-                document.getElementById("shopName").innerText = order["shopName"];
-                document.getElementById("startingTel").innerText = order["startingTel"];
-                document.getElementById("startingRoad").innerText = order["startingRoad"];
+                textShopName.innerText = order["shopName"];
+                textStartingTel.innerText = order["startingTel"];
+                textStartingRoad.innerText = order["startingRoad"];
 
-                document.getElementById("riderName").innerText = order["riderName"];
-                document.getElementById("riderTel").innerText = order["riderTel"];
+                textRiderName.innerText = order["riderName"];
+                textRiderTel.innerText = order["riderTel"];
 
-                document.getElementById("customerTel").innerText = order["customerTel"];
-                document.getElementById("road").innerText = order["road"];
-                document.getElementById("memo").innerText = order["memo"];
+                textCustomerTel.innerText = order["customerTel"];
+                textRoad.innerText = order["road"];
+                textMemo.innerText = order["memo"];
 
                 const menu = order["menu"];
 
-                const menuTable = document.getElementById("menu_table");
-                menuTable.innerHTML = "";
+                tableMenu.innerHTML = "";
 
                 for (let i = 0; i < menu.length; i++) {
                     const row = document.createElement("tr");
@@ -74,35 +121,64 @@ document.body.onload = () => {
                         }
                         row.appendChild(col);
                     }
-                    menuTable.appendChild(row);
+                    tableMenu.appendChild(row);
                 }
 
-                document.getElementById("menuPrice").innerText = order["menuPrice"] + "원";
-                document.getElementById("additionalMenuPrice").innerText = order["additionalMenuPrice"] + "원";
-                document.getElementById("totalPrice").innerText = order["additionalMenuPrice"] + order["menuPrice"] + "원";
+                textMenuPrice.innerText = order["menuPrice"] + "원";
+                textAdditionalMenuPrice.innerText = order["additionalMenuPrice"] + "원";
+                textTotalPrice.innerText = order["additionalMenuPrice"] + order["menuPrice"] + "원";
 
-                document.getElementById("orderAutoCancelTime").innerText = order["orderAutoCancelTime"] + "분";
-                document.getElementById("cookTime").innerText = order["cookTime"] + "분";
+                textOrderAutoCancelTime.innerText = order["orderAutoCancelTime"] + "분";
+                textCookTime.innerText = order["cookTime"] + "분";
 
                 const paymentType = order["paymentType"];
 
                 switch (paymentType) {
                     case 1:
-                        document.getElementById("cash").className = "btn_selected";
-                        document.getElementById("card").className = "btn_unselected";
-                        document.getElementById("prepay").className = "btn_unselected";
+                        btnCash.className = "btn-selected";
+                        btnCard.className = "btn-unselected";
+                        btnPrepay.className = "btn-unselected";
                         break;
                     case 2:
-                        document.getElementById("cash").className = "btn_unselected";
-                        document.getElementById("card").className = "btn_selected";
-                        document.getElementById("prepay").className = "btn_unselected";
+                        btnCash.className = "btn-unselected";
+                        btnCard.className = "btn-selected";
+                        btnPrepay.className = "btn-unselected";
                         break;
                     case 3:
-                        document.getElementById("cash").className = "btn_unselected";
-                        document.getElementById("prepay").className = "btn_selected";
-                        document.getElementById("card").className = "btn_unselected";
+                        btnCash.className = "btn-unselected";
+                        btnPrepay.className = "btn-selected";
+                        btnCard.className = "btn-unselected";
                         break;
                 }
+
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].onclick = function () {
+                        const url = "/orders/" + id;
+
+                        const obj = {
+                            "id": id,
+                            "orderStatusId": this.value,
+                            "riderId": riderId
+                        };
+
+                        const content = JSON.stringify(obj);
+
+                        ajax(
+                            url,
+                            "PATCH",
+                            () => {
+
+                            },
+                            content,
+                            csrfHeader,
+                            csrfToken
+                        )
+                    };
+
+                    buttons[i].onsubmit = () => false;
+                }
+
+                windowModal.style.visibility = "visible";
             }
         )
     } catch (error) {
@@ -110,20 +186,25 @@ document.body.onload = () => {
     }
 };
 
-document.getElementById("changeStatus").onsubmit = () => {
-    try {
-        const url = "orders/" + id;
-        const formData = new FormData(this);
+const ids = [
+    "orderStatusId1",
+    "orderStatusId2",
+    "orderStatusId3",
+    "orderStatusId4",
+    "orderStatusId5",
+    "orderStatusId6"
+];
 
-        let jsonObject = {};
-        for (const [key, value]  of formData.entries()) {
-            jsonObject[key] = value;
-        }
+const buttons = [];
 
-        ajax(url, "PATCH");
-    } catch (error) {
-        console.log(error.message);
-    }
+for (let i = 0; i < ids.length; i++) {
+    buttons[i] = document.getElementById(ids[i]);
+}
 
-    return false;
+const btnClose = document.getElementById("btn_close");
+btnClose.onclick = () => {
+    windowModal.style.visibility = "hidden";
 };
+
+const csrfToken = getMeta("_csrf");
+const csrfHeader = getMeta("_csrf_header");

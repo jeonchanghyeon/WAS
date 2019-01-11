@@ -24,9 +24,8 @@ class StatusService {
 
     fun searchOrdersInfo(authInfo: AuthInfo, condition: Condition): JSONObject? {
         val branchId = condition.branchId
-        branchId ?: return null
 
-        val ordersResult = statusDAO.searchOrders(branchId, ObjectMapper().writeValueAsString(condition))
+        val ordersResult = statusDAO.searchOrders(branchId, ObjectMapper().writeValueAsString(condition).toString().replace("shared", "isShared"))
 
         print("ordersResult")
         println(ordersResult)

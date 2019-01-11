@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Please</title>
+    <link rel="stylesheet" href="/css/header.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/statistics.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="header :: header"></div>
+
+    <section class="main">
+        <!-- 매출정산, 공유콜 정산 -->
+        <div class="menu">
+            <ul>
+                <li>
+                    <button>매출정산</button>
+                </li>
+                <li>
+                    <button>공유콜 정산</button>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="main-subject">
+            <!-- 날짜 -->
+            <div class="main-subject-title">
+                <span class="span_day">날짜</span>
+                <div class="day_area">
+                    <select></select>
+                    <select></select>
+                </div>
+                <div class="time_area">
+                    <select></select>
+                    <select></select>
+                    <input class="btn_search" type="submit" value="검색"/>
+                </div>
+                <button class="btn_excel">엑셀다운</button>
+            </div>
+
+            <!-- 내용 -->
+            <div class="main-subject-content ">
+
+                <div class="setting_area">
+
+                    <div class="setting_title_area">
+                        <span>관리비 설정</span>
+                        <button>X</button>
+                    </div>
+
+                    <div class="setting_content_area">
+                        <div class="balance_area">
+                            <span class="balance_title">출금가능한금액</span> <br>
+                            <span class="balance">100,000,000</span>
+                        </div>
+
+                        <div class="setting_condition_area">
+                            <div class="deposit_target">
+                                <span>입금할 대상</span>
+                                <ul>
+                                    <li>
+                                        <input type="radio" id="item1"/>
+                                        <label for="item1">내계좌 입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item2"/>
+                                        <label for="item1">가맹점입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item3"/>
+                                        <label for="item1">기사입금</label>
+                                    </li>
+                                </ul>
+
+                                <div class="target_setting">
+                                    <div>
+                                        <label for="input1">입금계좌번호</label>
+                                        <input type="text" id="input1"/>
+                                    </div>
+                                    <div>
+                                        <label for="input2">출금금액</label>
+                                        <input type="text" id="input2"/>
+                                    </div>
+
+                                    <div>
+                                        <label for="input3">수수료</label>
+                                        <input type="text" id="input3"/>
+                                    </div>
+                                    <div>
+                                        <label for="input4">차감금액</label>
+                                        <input type="text" id="input4"/>
+                                    </div>
+                                    <div>
+                                        <label for="input5">출금비밀번호</label>
+                                        <input type="password" id="input5"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submit_area">
+                            <button class="apply_withdraw">출금신청</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting_area">
+
+                    <div class="setting_title_area">
+                        <span>관리비 설정</span>
+                        <button>X</button>
+                    </div>
+
+                    <div class="setting_content_area">
+                        <div class="balance_area">
+                            <span class="balance_title">출금가능한금액</span> <br>
+                            <span class="balance">100,000,000</span>
+                        </div>
+
+                        <div class="setting_condition_area">
+                            <div class="deposit_target">
+                                <span>입금할 대상</span>
+                                <ul>
+                                    <li>
+                                        <input type="radio" id="item1"/>
+                                        <label for="item1">내계좌 입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item2"/>
+                                        <label for="item1">가맹점입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item3"/>
+                                        <label for="item1">기사입금</label>
+                                    </li>
+                                </ul>
+
+                                <div class="target_setting">
+                                    <div>
+                                        <label for="input1">상점명</label>
+                                        <input type="text" id="input1"/>
+                                    </div>
+                                    <div>
+                                        <label for="input2">송금포인트</label>
+                                        <input type="text" id="input2"/>
+                                    </div>
+                                    <div>
+                                        <label for="input5">출금비밀번호</label>
+                                        <input type="password" id="input5"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submit_area">
+                            <button class="apply_withdraw">송금</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting_area">
+
+                    <div class="setting_title_area">
+                        <span>관리비 설정</span>
+                        <button>X</button>
+                    </div>
+
+                    <div class="setting_content_area">
+                        <div class="balance_area">
+                            <span class="balance_title">출금가능한금액</span> <br>
+                            <span class="balance">100,000,000</span>
+                        </div>
+
+                        <div class="setting_condition_area">
+                            <div class="deposit_target">
+                                <span>입금할 대상</span>
+                                <ul>
+                                    <li>
+                                        <input type="radio" id="item1"/>
+                                        <label for="item1">내계좌 입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item2"/>
+                                        <label for="item1">가맹점입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item3"/>
+                                        <label for="item1">기사입금</label>
+                                    </li>
+                                </ul>
+
+                                <div class="target_setting">
+                                    <div>
+                                        <label for="input1">기사명</label>
+                                        <input type="text" id="input1"/>
+                                    </div>
+                                    <div>
+                                        <label for="input2">송금포인트</label>
+                                        <input type="text" id="input2"/>
+                                    </div>
+
+                                    <div>
+                                        <label for="input5">출금비밀번호</label>
+                                        <input type="password" id="input5"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submit_area">
+                            <button class="apply_withdraw">출금신청</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting_area">
+
+                    <div class="setting_title_area">
+                        <span>관리비 설정</span>
+                        <button>X</button>
+                    </div>
+
+                    <div class="setting_content_area">
+                        <div class="balance_area">
+                            <span class="balance_title">출금가능한금액</span> <br>
+                            <span class="balance">100,000,000</span>
+                        </div>
+
+                        <div class="setting_condition_area">
+                            <div class="deposit_target">
+                                <span>입금할 대상</span>
+                                <ul>
+                                    <li>
+                                        <input type="radio" id="item1"/>
+                                        <label for="item1">내계좌 입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item2"/>
+                                        <label for="item1">가맹점입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item3"/>
+                                        <label for="item1">기사입금</label>
+                                    </li>
+                                </ul>
+
+                                <div class="target_setting">
+                                    <div>
+                                        <label for="input1">입금계좌번호</label>
+                                        <input type="text" id="input1"/>
+                                    </div>
+                                    <div>
+                                        <label for="input2">출금금액</label>
+                                        <input type="text" id="input2"/>
+                                    </div>
+
+                                    <div>
+                                        <label for="input3">수수료</label>
+                                        <input type="text" id="input3"/>
+                                    </div>
+                                    <div>
+                                        <label for="input4">차감금액</label>
+                                        <input type="text" id="input4"/>
+                                    </div>
+                                    <div>
+                                        <label for="input5">출금비밀번호</label>
+                                        <input type="password" id="input5"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="submit_area">
+                            <button class="apply_withdraw">출금신청</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting_area">
+
+                    <div class="setting_title_area">
+                        <span>관리비 설정</span>
+                        <button>X</button>
+                    </div>
+
+                    <div class="setting_content_area">
+                        <div class="balance_area">
+                            <span class="balance_title">출금가능한금액</span> <br>
+                            <span class="balance">100,000,000</span>
+                        </div>
+
+                        <div class="setting_condition_area">
+                            <div class="deposit_target">
+                                <span>입금할 대상</span>
+                                <ul>
+                                    <li>
+                                        <input type="radio" id="item1"/>
+                                        <label for="item1">내계좌 입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item2"/>
+                                        <label for="item1">가맹점입금</label>
+
+                                    </li>
+                                    <li>
+                                        <input type="radio" id="item3"/>
+                                        <label for="item1">기사입금</label>
+                                    </li>
+                                </ul>
+
+                                <div class="target_setting">
+                                    <div>
+                                        <label for="input1">입금계좌번호</label>
+                                        <input type="text" id="input1"/>
+                                    </div>
+                                    <div>
+                                        <label for="input2">출금금액</label>
+                                        <input type="text" id="input2"/>
+                                    </div>
+
+                                    <div>
+                                        <label for="input3">수수료</label>
+                                        <input type="text" id="input3"/>
+                                    </div>
+                                    <div>
+                                        <label for="input4">차감금액</label>
+                                        <input type="text" id="input4"/>
+                                    </div>
+                                    <div>
+                                        <label for="input5">출금비밀번호</label>
+                                        <input type="password" id="input5"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="submit_area">
+                            <button class="apply_withdraw">출금신청</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+</body>
+
+</html>

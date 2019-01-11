@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Please</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/notices/notice.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="header :: header"></div>
+
+    <section class="main">
+        <!-- 매출정산, 공유콜 정산 -->
+        <div class="menu">
+            <ul>
+                <li>
+                    <button class="btn-menu-selected">본사 공지</button>
+                </li>
+                <li>
+                    <button class="btn-menu">지사 공지</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-subject">
+            <!-- 날짜 -->
+            <div class="main-subject-title">
+                <div>
+                    <input type="checkbox" id="for_all"/>
+                    <label for="for_all">전체</label>
+                    <input type="checkbox" id="for_shop"/>
+                    <label for="for_shop">상점용</label>
+                    <input type="checkbox" id="for_rider"/>
+                    <label for="for_rider">기사용</label>
+                    <button class="btn_excel">공지작성</button>
+                </div>
+            </div>
+            <!-- 내용 -->
+            <div class="main-subject-content">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td>순번</td>
+                        <td>날짜</td>
+                        <td>제목</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>00001</td>
+                        <td>2018-10-22 16:26:33</td>
+                        <td>플리즈 공지사항입니다.</td>
+                    </tr>
+                    <tr>
+                        <td>00001</td>
+                        <td>2018-10-22 16:26:33</td>
+                        <td>플리즈 공지사항입니다.</td>
+                    </tr>
+                    <tr>
+                        <td>00001</td>
+                        <td>2018-10-22 16:26:33</td>
+                        <td>플리즈 공지사항입니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+</div>
+</body>
+
+</html>

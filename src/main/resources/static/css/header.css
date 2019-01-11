@@ -1,77 +1,75 @@
-header {
-    background-color: #282828;
-    float : left;
-    width : 100%;
-}
-
 .logo {
-    float: left;
-    margin-top: 8px;
-    margin-left: 13px;
-    margin-right: 13px;
-    letter-spacing: 4px;
+  float: left;
+  margin-top: 8px;
+  margin-left: 13px;
+  margin-right: 13px;
 }
 
-header nav {
-    float: left;
+.header {
+  background-color: #282828;
+  float: left;
+  width: 100%;
+}
+.header nav {
+  float: left;
+}
+.header nav ul {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style-type: none;
+  color: #FFFFFF;
+  float: left;
+}
+.header nav ul li {
+  margin-top: 9px;
+  margin-bottom: 9px;
+  padding-left: 24px;
+  padding-right: 24px;
+  font-size: 16px;
+  font-weight: 500;
+  float: left;
+}
+.header nav ul li a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+.header nav ul li:hover a {
+  color: #ff7100;
+}
+.header .header-right {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  float: right;
+}
+.header .header-right .button {
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid #ff7100;
+  width: 80px;
+  height: 28px;
+  background-color: #ff7100;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  float: left;
 }
 
-header nav ul {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    list-style-type: none;
-    color: #FFFFFF;
-    float: left;
+.point-area {
+  margin-left: 6px;
+  margin-right: 6px;
+  padding: 5px 10px;
+  width: 157px;
+  height: 20px;
+  border-radius: 24px;
+  background-color: #141414;
+  float: left;
+}
+.point-area span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #ffffff;
+  float: right;
 }
 
-header nav ul li {
-    margin-top: 9px;
-    margin-bottom: 9px;
-    padding-left : 24px;
-    padding-right : 24px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #ffffff;
-    float: left;
-}
-
-header .header_right {
-    margin-top : 6px;
-    margin-bottom : 6px;
-    float : right;
-}
-
-header .header_right div {
-    margin-left : 6px;
-    margin-right : 6px;
-    padding-left : 10px;
-    padding-right : 10px;
-    padding-top : 5px;
-    padding-bottom : 5px;
-    width: 157px;
-    height: 20px;
-    border-radius: 24px;
-    background-color: #141414;
-    float : left;
-}
-
-header .header_right div span {
-    font-size: 16px;
-    font-weight: 500;
-    color: #ffffff;
-    float : right;
-}
-
-header .header_right .button {
-    margin-left : 10px;
-    margin-right : 10px;
-    border : 1px solid #ff7100;
-    width: 80px;
-    height: 28px;
-    background-color: #ff7100;
-    font-size: 14px;
-    font-weight: bold;
-    color: #ffffff;
-    float : left;
-}
+/*# sourceMappingURL=header.css.map */

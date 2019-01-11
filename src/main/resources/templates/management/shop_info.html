@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Please</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/shop_info.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="header :: header"></div>
+
+    <section class="main">
+        <!-- 매출정산, 공유콜 정산 -->
+        <div class="menu">
+            <ul>
+                <li>
+                    <button>지사</button>
+                </li>
+                <li>
+                    <button>가맹점</button>
+                </li>
+                <li>
+                    <button>기사</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-subject">
+
+            <!-- 내용 -->
+            <div class="main-subject-content">
+                <div class="title">
+                    <span>똘똘이 족발 - 부산남구지사</span>
+                </div>
+                <br>
+
+                <div class="menu_position">
+                    <div class="menu">
+                        <ul>
+                            <li>
+                                <button>가맹점정보</button>
+                            </li>
+                            <li>
+                                <button>가맹점설정</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+                <form>
+                    <div class="center">
+                        <div class="condition">
+                            <div class="left_side">
+                                <div class="personal_info_area">
+                                    <ul>
+                                        <li>
+                                            <label>아이디</label>
+                                            <div>
+                                                <input type="text" placeholder="아이디를 입력하세요" class="text_short"/>
+                                                <button class="btn_duplicate_check">중복체크</button>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <label>상호명</label>
+                                            <div>
+                                                <input type="text" placeholder="대표자 이름을 입력하시오" class="text_long"/>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <label>대표자</label>
+                                            <div>
+                                                <input type="text" placeholder="이메일 입력하세요." class="text_long"/>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <label>업태</label>
+                                            <div>
+                                                <input type="text" placeholder="주민등록번호를 입력하세요." class="text_long"/>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <label>종목</label>
+                                            <div>
+                                                <input type="text" placeholder="주민등록번호를 입력하세요." class="text_long"/>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <label>연락처</label>
+                                            <div>
+                                                <input type="text" placeholder="010-0000-0000" class="text_long"/>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="addres_info_area">
+                                    <ul>
+                                        <li>
+                                            <label>주소</label>
+                                            <div>
+                                                <input type="text" class="text_short"/>
+                                                <button class="btn_duplicate_check">검색</button>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label>상세주소</label>
+                                            <div>
+                                                <input type="text" class="text_long"/>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <label>비고</label>
+                                            <div>
+                                                <input type="text" class="text_long"/>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="right_side">
+                                <ul>
+                                    <li>
+                                        <label>출금계좌 은행</label>
+                                        <div>
+                                            <select class="select_long">
+
+                                            </select>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <label>출금계좌 예금주</label>
+                                        <div>
+                                            <input type="text" class="text_long"/>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <label>출금계좌 번호</label>
+                                        <div>
+                                            <input type="text" class="text_short"/>
+                                            <button class="btn_duplicate_check">계좌확인</button>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <label>가상계좌 은행</label>
+                                        <div>
+                                            <select class="select_long">
+
+                                            </select>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <label>가상계좌 번호</label>
+                                        <div>
+                                            <input type="text" class="text_long"/>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <label>출금계좌 은행</label>
+                                        <div>
+                                            <select class="select_long">
+                                            </select>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="reg_area">
+                            <input type="submit" class="btn_reg" value="등록"/>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+</div>
+</body>
+
+</html>
