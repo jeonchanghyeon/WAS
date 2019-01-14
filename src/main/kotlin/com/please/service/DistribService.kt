@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class SearchDistributorListService {
+class DistribService {
     @Autowired
     private lateinit var distribDAO: DistribDAO
 

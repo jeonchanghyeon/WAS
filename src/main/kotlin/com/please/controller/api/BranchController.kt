@@ -1,8 +1,7 @@
 package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
-import com.please.service.SearchBranchListService
-import com.please.service.StatusService
+import com.please.service.BranchService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
@@ -13,13 +12,13 @@ class BranchController {
     @Autowired
     private lateinit var statusService: StatusService
     @Autowired
-    private lateinit var searchBranchListService: SearchBranchListService
+    private lateinit var branchService: BranchService
 
     @GetMapping
     fun getBranchList(@RequestParam(value = "id") id: Long): MutableList<Map<String, Any?>>? {
         val authInfo = getAuthInfo()!!
 
-        val branchs = searchBranchListService.getBranchs(authInfo, id) ?: mutableListOf()
+        val branchs = branchService.getBranchs(authInfo, id) ?: mutableListOf()
         if (branchs.size != 1) {
             branchs.add(0, mapOf("id" to -1, "name" to "--"))
         }

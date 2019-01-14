@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class OrdersService {
+class OrderService {
     @Autowired
     private lateinit var orderDAO: OrderDAO
 

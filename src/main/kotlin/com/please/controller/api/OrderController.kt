@@ -1,8 +1,6 @@
 package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
-import com.please.service.OrderReceptionService
-import com.please.service.StatusService
 import com.please.value.Condition
 import com.please.value.OrderReceiptInfo
 import org.springframework.beans.factory.annotation.Autowired

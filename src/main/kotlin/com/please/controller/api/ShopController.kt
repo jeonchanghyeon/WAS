@@ -1,7 +1,7 @@
 package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
-import com.please.service.ShopsInfoPrintService
+import com.please.service.ShopService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody
 @RequestMapping("/api/shops")
 class ControlsController {
     @Autowired
-    private lateinit var shopsInfoPrintService: ShopsInfoPrintService
+    private lateinit var shopService: ShopService
 
     @GetMapping
     @ResponseBody
     fun searchShops(@RequestParam data: MutableMap<String, Any>): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = shopsInfoPrintService.infoPrint(authInfo.authKey, data)
+            val value = shopService.infoPrint(authInfo.authKey, data)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

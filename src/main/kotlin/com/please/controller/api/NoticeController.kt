@@ -1,9 +1,7 @@
 package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
-import com.please.service.AddNoticeService
-import com.please.service.ShowNoticeListService
-import com.please.service.ShowNoticeService
+import com.please.service.NoticeService
 import com.please.value.Notice
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -16,7 +14,7 @@ class NoticesController {
     @Autowired
     private lateinit var showNoticeService: ShowNoticeService
     @Autowired
-    private lateinit var addNoticeService: AddNoticeService
+    private lateinit var noticeService: NoticeService
 
     @GetMapping
     fun showNoticeList(@RequestParam(value = "types", required = true) types: MutableList<Int>,
@@ -36,7 +34,7 @@ class NoticesController {
     fun addNotice(@RequestBody notice: Notice): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = addNoticeService.addNotice(authInfo.authKey, notice)
+            val value = noticeService.addNotice(authInfo.authKey, notice)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

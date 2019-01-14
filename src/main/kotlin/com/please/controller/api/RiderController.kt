@@ -1,7 +1,7 @@
 package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
-import com.please.service.RidersInfoPrintService
+import com.please.service.RiderService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/riders")
 class RidersControlController {
     @Autowired
-    private lateinit var ridersInfoPrintService: RidersInfoPrintService
+    private lateinit var riderService: RiderService
 
     @GetMapping
     @ResponseBody
@@ -17,7 +17,7 @@ class RidersControlController {
                      @RequestParam(value = "rider-status-ids", required = false) riderStatusIds: MutableList<Int>?): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = ridersInfoPrintService.infoPrint(authInfo.authKey, data, riderStatusIds)
+            val value = riderService.infoPrint(authInfo.authKey, data, riderStatusIds)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

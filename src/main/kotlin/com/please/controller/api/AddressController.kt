@@ -1,8 +1,7 @@
 package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
-import com.please.service.SearchAddressService
-import com.please.service.ShopEnableAreaService
+import com.please.service.AddressService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,7 +14,7 @@ class AddressController {
     @Autowired
     private lateinit var searchAddressService: SearchAddressService
     @Autowired
-    private lateinit var enableAreaService: ShopEnableAreaService
+    private lateinit var enableAreaService: AddressService
 
     @GetMapping
     fun searchAddress(@RequestParam data: MutableMap<String, Any>): Any {

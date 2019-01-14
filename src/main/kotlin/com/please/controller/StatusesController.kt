@@ -2,9 +2,8 @@ package com.please.controller
 
 import com.please.persistence.getAuthInfo
 import com.please.service.PointService
-import com.please.service.SearchBranchListService
-import com.please.service.SearchDistributorListService
-import com.please.service.StatusService
+import com.please.service.BranchService
+import com.please.service.DistribService
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -20,9 +19,9 @@ class StatusesController {
     @Autowired
     private lateinit var pointService: PointService
     @Autowired
-    private lateinit var searchBranchListService: SearchBranchListService
+    private lateinit var branchService: BranchService
     @Autowired
-    private lateinit var searchDistributorListService: SearchDistributorListService
+    private lateinit var distribService: DistribService
 
     @GetMapping
     fun status(model: Model): String {
@@ -32,9 +31,9 @@ class StatusesController {
         var branchSettings = JSONObject()
 
         var point = pointService.getPoint(authInfo.authKey)
-        var distributors = searchDistributorListService.getDistributors(authInfo) ?: mutableListOf()
+        var distributors = distribService.getDistributors(authInfo) ?: mutableListOf()
         if (distributors.size == 1) {
-            branchs = searchBranchListService.getBranchs(authInfo, distributors[0]["id"] as Long) ?: mutableListOf()
+            branchs = branchService.getBranchs(authInfo, distributors[0]["id"] as Long) ?: mutableListOf()
             if (branchs.size != 1) branchs.add(0, mapOf("id" to -1, "name" to "--"))
         } else {
             distributors.add(0, mapOf("id" to -1, "name" to "--"))

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class ShopEnableAreaService {
+class AddressService {
     @Autowired
     private lateinit var addressDAO: AddressDAO
 
