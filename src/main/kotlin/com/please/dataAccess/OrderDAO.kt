@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
+import java.sql.Timestamp
 
 @Repository
 class OrderDAO {
@@ -35,6 +36,26 @@ class OrderDAO {
     fun addOrder(authKey: String, orderInfo: String): JSONObject? {
         try {
             return template.queryForJSONObject("CALL addOrder(?, ?)", authKey, orderInfo)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    //검색 조건에 맞는 주문 목록 쿼리
+    fun searchOrders(branchId: String, conditionParseString: String): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL getSearchedOrders(getUserAuthKeyById(?), ?)", branchId, conditionParseString)
+        } catch(e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    //검색 조건에 맞는 각각의 상태 개수 쿼리(검색 조건 중 날짜로만 필터)
+    fun getOrderStatusCounts(branchId: String, startTimestamp: Timestamp, endTimestamp: Timestamp): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL getOrderInformationsByTimestamp(getUserAuthKeyById(?), ?, ?)", branchId, startTimestamp, endTimestamp)
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -15,10 +15,15 @@ class RidersControlController {
     @Autowired
     private lateinit var ridersInfoPrintService: RidersInfoPrintService
 
+    @GetMapping
+    fun show(): String {
+        return "rider_control"
+    }
+
     @GetMapping(value = ["riders"])
     @ResponseBody
     fun searchRiders(@RequestParam data: MutableMap<String, Any>,
-                     @RequestParam(value = "rider-status-ids") riderStatusIds: MutableList<Int>): Any {
+                     @RequestParam(value = "rider-status-ids", required = false) riderStatusIds: MutableList<Int>?): Any {
         return try {
             val authInfo = getAuthInfo()!!
             val value = ridersInfoPrintService.infoPrint(authInfo.authKey, data, riderStatusIds)

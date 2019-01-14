@@ -15,7 +15,7 @@ class ShopDAO {
 
     fun searchShopList(authKey: String, shopInfo: JSONObject): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedShops(?, ?)", authKey, shopInfo.toString())
+            return template.queryForJSONObject("CALL getSearchedShopsByShopName(?, ?)", authKey, shopInfo.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }

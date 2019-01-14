@@ -10,13 +10,14 @@ class RidersInfoPrintService {
     @Autowired
     private lateinit var riderDAO: RiderDAO
 
-    fun infoPrint(authKey: String, data: MutableMap<String, Any>, riderStatusIds: MutableList<Int>): JSONObject? {
-        val riderName: String? = data["rider-name"] as String?
+    fun infoPrint(authKey: String, data: MutableMap<String, Any>, riderStatusIds: MutableList<Int>?): JSONObject? {
+        val riderName: String? = data["rider-name"] as? String
+        val pageIndex: Long? = (data["page-index"] as? String)?.toLong()
 
         val info = JSONObject()
         info.put("riderName", riderName)
         info.put("riderStatusIds", riderStatusIds)
-        info.put("pageIndex", data["page-index"] as Long?)
+        info.put("pageIndex", pageIndex)
 
         return riderDAO.searchRiderList(authKey, info)
     }

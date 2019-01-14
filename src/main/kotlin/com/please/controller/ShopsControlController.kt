@@ -15,13 +15,17 @@ class ShopsControlController {
     @Autowired
     private lateinit var shopsInfoPrintService: ShopsInfoPrintService
 
+    @GetMapping
+    fun show(): String {
+        return "shop_control"
+    }
+
     @GetMapping(value = ["shops"])
     @ResponseBody
-    fun searchShops(@RequestParam data: MutableMap<String, Any>,
-                    @RequestParam(value = "shop-status-ids") shopStatusIds: MutableList<Int>): Any {
+    fun searchShops(@RequestParam data: MutableMap<String, Any>): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = shopsInfoPrintService.infoPrint(authInfo.authKey, data, shopStatusIds)
+            val value = shopsInfoPrintService.infoPrint(authInfo.authKey, data)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

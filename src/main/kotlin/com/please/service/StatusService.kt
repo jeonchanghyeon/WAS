@@ -1,6 +1,7 @@
 package com.please.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.please.dataAccess.OrderDAO
 import com.please.dataAccess.StatusDAO
 import com.please.value.AuthInfo
 import com.please.value.Condition
@@ -13,6 +14,8 @@ import java.sql.Timestamp
 class StatusService {
     @Autowired
     private lateinit var statusDAO: StatusDAO
+    @Autowired
+    private lateinit var orderDAO: OrderDAO
 
     fun getDistributors(authInfo: AuthInfo): MutableList<Map<String, Any?>>? {
         return statusDAO.getDistributor(authInfo)
@@ -25,7 +28,7 @@ class StatusService {
     fun searchOrdersInfo(authInfo: AuthInfo, condition: Condition): JSONObject? {
         val branchId = condition.branchId
 
-        val ordersResult = statusDAO.searchOrders(branchId, ObjectMapper().writeValueAsString(condition).toString().replace("shared", "isShared"))
+        val ordersResult = orderDAO.searchOrders(branchId, ObjectMapper().writeValueAsString(condition).toString().replace("shared", "isShared"))
 
         print("ordersResult")
         println(ordersResult)
@@ -34,14 +37,14 @@ class StatusService {
         val startDate = Timestamp.valueOf(condition.startDate) ?: return null
         val endDate = Timestamp.valueOf(condition.endDate) ?: return null
 
-        val countsResult = statusDAO.getOrderStatusCounts(branchId, startDate, endDate)
+        val countsResult = orderDAO.getOrderStatusCounts(branchId, startDate, endDate)
 
         print("countsResult")
         println(countsResult)
 
         countsResult ?: return null
 
-        var result = JSONObject()
+        val result = JSONObject()
 
         result.put("orders", ordersResult["orders"])
         result.put("counts", countsResult["info"])
@@ -59,7 +62,7 @@ class StatusService {
 
         println(settings.toString())
         if (settings != null) {
-            var branchSetting = settings.get("branchSettings") as JSONObject
+            val branchSetting = settings.get("branchSettings") as JSONObject
             val newSettings = JSONObject()
 
             val names = arrayOf("basicStartTime", "delayTime", "extraCharge", "extraChargePercent", "enableOrderAccept")

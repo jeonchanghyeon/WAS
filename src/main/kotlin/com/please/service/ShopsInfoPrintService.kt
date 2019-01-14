@@ -10,13 +10,13 @@ class ShopsInfoPrintService {
     @Autowired
     private lateinit var shopDAO: ShopDAO
 
-    fun infoPrint(authKey: String, data: MutableMap<String, Any>, shopStatusIds: MutableList<Int>): JSONObject? {
-        val shopName: String? = data["shop-name"] as String?
+    fun infoPrint(authKey: String, data: MutableMap<String, Any>): JSONObject? {
+        val shopName: String? = data["shop-name"] as? String
+        val pageIndex: Long? = (data["page-index"] as? String)?.toLong()
 
         val info = JSONObject()
         info.put("shopName", shopName)
-        info.put("shopStatusIds", shopStatusIds)
-        info.put("pageIndex", data["page-index"] as Long?)
+        info.put("pageIndex", pageIndex)
 
         return shopDAO.searchShopList(authKey, info)
     }
