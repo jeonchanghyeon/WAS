@@ -13,10 +13,9 @@ class BranchController {
     private lateinit var branchService: BranchService
 
     @GetMapping
-    fun getBranchList(@RequestParam(value = "id") id: Long): MutableList<Map<String, Any?>>? {
-        val authInfo = getAuthInfo()!!
-
-        val branches = branchService.getBranches(authInfo, id) ?: mutableListOf()
+    fun getBranchList(@RequestParam id: Long,
+                      @RequestParam group: Int): MutableList<Map<String, Any?>>? {
+        val branches = branchService.getBranches(id, group) ?: mutableListOf()
         if (branches.size != 1) {
             branches.add(0, mapOf("id" to -1, "name" to "--"))
         }

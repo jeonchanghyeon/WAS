@@ -13,12 +13,40 @@ class ShopDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun searchShopList(authKey: String, shopInfo: JSONObject): JSONObject? {
+    fun searchShopList(branchId: Long, shopInfo: JSONObject): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedShopsByShopName(?, ?)", authKey, shopInfo.toString())
+            return template.queryForJSONObject("CALL getSearchedShopsByShopName(getUserAuthKeyById(?), ?)", branchId, shopInfo.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
+    }
+    fun getShops(id: Long, group: Int): MutableList<Map<String, Any?>>? {
+        var returnVal: MutableList<Map<String, Any?>>? = null
+        val sql: String
+
+        try {
+            when (group) {
+                7 -> {
+                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 3 and getTopIdById(getTopIdById(getUId(topUserId))) = ?"
+                    returnVal = template.queryForList(sql, id)
+                }
+                6 -> {
+                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 3 and getTopIdById(getUId(topUserId)) = ?"
+                    returnVal = template.queryForList(sql, id)
+                }
+                in 4..5 -> {
+                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 3 and getUId(topUserId) = ?"
+                    returnVal = template.queryForList(sql, id)
+                }
+                3 -> {
+                    sql = "SELECT ? as id, getUserNameById(?) as name"
+                    returnVal = mutableListOf(template.queryForMap(sql, id, id))
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return returnVal
     }
 }

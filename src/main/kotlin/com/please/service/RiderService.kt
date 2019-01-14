@@ -10,15 +10,18 @@ class RiderService {
     @Autowired
     private lateinit var riderDAO: RiderDAO
 
-    fun searchList(authKey: String, data: MutableMap<String, Any>, riderStatusIds: MutableList<Int>?): JSONObject? {
+    fun searchList(branchId: Long, data: MutableMap<String, Any>): JSONObject? {
         val riderName: String? = data["rider-name"] as? String
         val pageIndex: Long? = (data["page-index"] as? String)?.toLong()
 
         val info = JSONObject()
         info.put("riderName", riderName)
-        info.put("riderStatusIds", riderStatusIds)
         info.put("pageIndex", pageIndex)
 
-        return riderDAO.searchRiderList(authKey, info)
+        return riderDAO.searchRiderList(branchId, info)
+    }
+
+    fun getRiders(id: Long, group: Int): MutableList<Map<String, Any?>>? {
+        return riderDAO.getRiders(id, group)
     }
 }

@@ -13,12 +13,41 @@ class RiderDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun searchRiderList(authKey: String, riderInfo: JSONObject): JSONObject? {
+    fun searchRiderList(branchId: Long, riderInfo: JSONObject): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedRiders2(?, ?)", authKey, riderInfo.toString())
+            return template.queryForJSONObject("CALL getSearchedRiders2(getUserAuthKeyById(?), ?)", branchId, riderInfo.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
+    }
+
+    fun getRiders(id: Long, group: Int): MutableList<Map<String, Any?>>? {
+        var returnVal: MutableList<Map<String, Any?>>? = null
+        val sql: String
+
+        try {
+            when (group) {
+                7 -> {
+                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 2 and getTopIdById(getTopIdById(getUId(topUserId))) = ?"
+                    returnVal = template.queryForList(sql, id)
+                }
+                6 -> {
+                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 2 and getTopIdById(getUId(topUserId)) = ?"
+                    returnVal = template.queryForList(sql, id)
+                }
+                5 -> {
+                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 2 and getUId(topUserId) = ?"
+                    returnVal = template.queryForList(sql, id)
+                }
+                2 -> {
+                    sql = "SELECT ? as id, getUserNameById(?) as name"
+                    returnVal = mutableListOf(template.queryForMap(sql, id, id))
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return returnVal
     }
 }
