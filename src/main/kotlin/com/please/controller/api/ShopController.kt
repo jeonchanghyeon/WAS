@@ -1,27 +1,26 @@
-package com.please.controller
+package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
-import com.please.service.OrderReceptionService
-import com.please.value.OrderReceiptInfo
+import com.please.service.ShopsInfoPrintService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
-@RequestMapping("/order-reception")
-class OrderReceptionController {
+@RequestMapping("/api/shops")
+class ControlsController {
     @Autowired
-    private lateinit var receptionService: OrderReceptionService
+    private lateinit var shopsInfoPrintService: ShopsInfoPrintService
 
-    @RequestMapping(value = ["efg"], method = [RequestMethod.PUT])
+    @GetMapping
     @ResponseBody
-    fun addOrder(@RequestBody orderReceiptInfo: OrderReceiptInfo): Any {
+    fun searchShops(@RequestParam data: MutableMap<String, Any>): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = receptionService.addOrder(authInfo.authKey, orderReceiptInfo)
+            val value = shopsInfoPrintService.infoPrint(authInfo.authKey, data)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

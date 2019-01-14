@@ -1,71 +1,81 @@
 package com.please.controller
 
 import com.please.persistence.getAuthInfo
-import com.please.service.AddNoticeService
-import com.please.service.ShowNoticeListService
-import com.please.service.ShowNoticeService
-import com.please.value.Notice
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/notices")
 class NoticesController {
-    @Autowired
-    private lateinit var showNoticeListService: ShowNoticeListService
-    @Autowired
-    private lateinit var showNoticeService: ShowNoticeService
-    @Autowired
-    private lateinit var addNoticeService: AddNoticeService
-
     @GetMapping
-    fun notice(request: HttpServletRequest, model: Model): String {
-        return "notice"
+    fun showList(): String {
+        val authInfo = getAuthInfo()!!
+        when (authInfo.group) {
+            7 -> {
+                return "notices/notice_list_head"
+            }
+            6 -> {
+                return "notices/notice_list_distrib"
+            }
+            in 4..5 -> {
+                return "notices/notice_list_branch"
+            }
+            3 -> {
+                return "notices/notice_list_shop"
+            }
+            2 -> {
+                return "notices/notice_list_rider"
+            }
+        }
+        return "login"
     }
 
-    @RequestMapping(value = ["all"], method = [RequestMethod.GET])
-    @ResponseBody
-    fun showNoticeList(@RequestParam(value = "types", required = true) types: MutableList<Int>,
-                       @RequestParam(value = "page-index", required = false) pageIndex: Int?): Any {
-        return try {
-            val authInfo = getAuthInfo()!!
-            val value = showNoticeListService.showList(authInfo.authKey, types, pageIndex)
-            println(value)
-            value!!.toString()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
+    @GetMapping(value = ["detail"])
+    fun showDetail(request: HttpServletRequest, model: Model): String {
+        val authInfo = getAuthInfo()!!
+        when (authInfo.group) {
+            7 -> {
+                return "notices/notice_detail_head"
+            }
+            6 -> {
+                return "notices/notice_detail_distrib"
+            }
+            in 4..5 -> {
+                return "notices/notice_detail_branch"
+            }
+            3 -> {
+                return "notices/notice_detail_shop"
+            }
+            2 -> {
+                return "notices/notice_detail_rider"
+            }
         }
+        return "login"
     }
 
-    @RequestMapping(method = [RequestMethod.POST])
-    @ResponseBody
-    fun addNotice(@RequestBody notice: Notice): Any {
-        return try {
-            val authInfo = getAuthInfo()!!
-            val value = addNoticeService.addNotice(authInfo.authKey, notice)
-            println(value)
-            value!!.toString()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
+    @GetMapping(value = ["add"])
+    fun add(request: HttpServletRequest, model: Model): String {
+        val authInfo = getAuthInfo()!!
+        when (authInfo.group) {
+            7 -> {
+                return "notices/notice_add_head"
+            }
+            6 -> {
+                return "notices/notice_add_distrib"
+            }
+            in 4..5 -> {
+                return "notices/notice_add_branch"
+            }
+            3 -> {
+                return "notices/notice_add_shop"
+            }
+            2 -> {
+                return "notices/notice_add_rider"
+            }
         }
-    }
-
-    @RequestMapping(value = ["noticeId"], method = [RequestMethod.GET])
-    @ResponseBody
-    fun showNotice(@PathVariable noticeId: Int): Any {
-        return try {
-            val authInfo = getAuthInfo()!!
-            val value = showNoticeService.showNotice(authInfo.authKey, noticeId)
-            println(value)
-            value!!.toString()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
-        }
+        return "login"
     }
 }
