@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
 @RequestMapping("/abce")
-class SearchAddressController {
+class AddressController {
     @Autowired
     private lateinit var searchAddressService: SearchAddressService
     @Autowired

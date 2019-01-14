@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest
 @CrossOrigin(origins = arrayOf("*"), allowCredentials = "false")
 @Controller
 @RequestMapping("/status")
-class StatusController {
+class StatusesController {
     @Autowired
     private lateinit var statusService: StatusService
     @Autowired

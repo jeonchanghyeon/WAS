@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
 @RequestMapping("/shop-control")
-class ShopsControlController {
+class ControlsController {
     @Autowired
     private lateinit var shopsInfoPrintService: ShopsInfoPrintService
 

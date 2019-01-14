@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest
 
 @Controller
 @RequestMapping("/notices")
-class NoticeController {
+class NoticesController {
     @Autowired
     private lateinit var showNoticeListService: ShowNoticeListService
     @Autowired
