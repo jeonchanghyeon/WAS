@@ -14,4 +14,11 @@ class AddressService {
         val shopId = data["shop-id"] as Long
         return addressDAO.getEnableDong(authKey, shopId)
     }
+
+    fun searchAddress(data: MutableMap<String, Any>): JSONObject? {
+        val pageIndex = data["page-index"] as Int
+        val address = data["address"] as String
+        val category = data["category"] as Int
+        return addressDAO.getAddressList(pageIndex, address, category)
+    }
 }

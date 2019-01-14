@@ -8,11 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/notices")
-class NoticesController {
-    @Autowired
-    private lateinit var showNoticeListService: ShowNoticeListService
-    @Autowired
-    private lateinit var showNoticeService: ShowNoticeService
+class NoticeController {
     @Autowired
     private lateinit var noticeService: NoticeService
 
@@ -21,7 +17,7 @@ class NoticesController {
                        @RequestParam(value = "page-index", required = false) pageIndex: Int?): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = showNoticeListService.showList(authInfo.authKey, types, pageIndex)
+            val value = noticeService.showNoticeList(authInfo.authKey, types, pageIndex)
             println(value)
             value!!.toString()
         } catch (e: Exception) {
@@ -43,11 +39,11 @@ class NoticesController {
         }
     }
 
-    @RequestMapping(value = ["noticeId"], method = [RequestMethod.GET])
-    fun showNotice(@PathVariable noticeId: Int): Any {
+    @GetMapping(value = ["notice-id"])
+    fun showNotice(@PathVariable(value = "notice-id") noticeId: Int): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = showNoticeService.showNotice(authInfo.authKey, noticeId)
+            val value = noticeService.showNoticeDetail(authInfo.authKey, noticeId)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

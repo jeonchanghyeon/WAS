@@ -2,7 +2,6 @@ package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
 import com.please.service.AddressService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -11,15 +10,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/address")
 class AddressController {
-    @Autowired
-    private lateinit var searchAddressService: SearchAddressService
-    @Autowired
-    private lateinit var enableAreaService: AddressService
+    private lateinit var addressService: AddressService
 
     @GetMapping
     fun searchAddress(@RequestParam data: MutableMap<String, Any>): Any {
         return try {
-            val value = searchAddressService.searchAddress(data)
+            val value = addressService.searchAddress(data)
             println(value)
             value!!.toString()
         } catch (e: Exception) {
@@ -32,7 +28,7 @@ class AddressController {
     fun getEnableArea(@RequestParam data: MutableMap<String, Any>): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = enableAreaService.getEnableArea(authInfo.authKey, data)
+            val value = addressService.getEnableArea(authInfo.authKey, data)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

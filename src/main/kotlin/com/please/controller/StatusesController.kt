@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/statuses")
 class StatusesController {
     @Autowired
-    private lateinit var statusService: StatusService
-    @Autowired
     private lateinit var pointService: PointService
     @Autowired
     private lateinit var branchService: BranchService
@@ -28,12 +26,12 @@ class StatusesController {
         val authInfo = getAuthInfo()!!
 
         var branchs = mutableListOf<Map<String, Any?>>()
-        var branchSettings = JSONObject()
+        val branchSettings = JSONObject()
 
-        var point = pointService.getPoint(authInfo.authKey)
-        var distributors = distribService.getDistributors(authInfo) ?: mutableListOf()
+        val point = pointService.getPoint(authInfo.authKey)
+        val distributors = distribService.getDistributors(authInfo) ?: mutableListOf()
         if (distributors.size == 1) {
-            branchs = branchService.getBranchs(authInfo, distributors[0]["id"] as Long) ?: mutableListOf()
+            branchs = branchService.getBranches(authInfo, distributors[0]["id"] as Long) ?: mutableListOf()
             if (branchs.size != 1) branchs.add(0, mapOf("id" to -1, "name" to "--"))
         } else {
             distributors.add(0, mapOf("id" to -1, "name" to "--"))

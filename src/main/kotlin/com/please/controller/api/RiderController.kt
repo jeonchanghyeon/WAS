@@ -12,12 +12,11 @@ class RidersControlController {
     private lateinit var riderService: RiderService
 
     @GetMapping
-    @ResponseBody
     fun searchRiders(@RequestParam data: MutableMap<String, Any>,
                      @RequestParam(value = "rider-status-ids", required = false) riderStatusIds: MutableList<Int>?): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = riderService.infoPrint(authInfo.authKey, data, riderStatusIds)
+            val value = riderService.searchList(authInfo.authKey, data, riderStatusIds)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

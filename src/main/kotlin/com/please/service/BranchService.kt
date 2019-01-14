@@ -2,6 +2,7 @@ package com.please.service
 
 import com.please.dataAccess.BranchDAO
 import com.please.value.AuthInfo
+import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -10,7 +11,35 @@ class BranchService {
     @Autowired
     private lateinit var branchDAO: BranchDAO
 
-    fun getBranchs(authInfo: AuthInfo, distributeId: Long): MutableList<Map<String, Any?>>? {
+    fun getBranches(authInfo: AuthInfo, distributeId: Long): MutableList<Map<String, Any?>>? {
         return branchDAO.getBranchs(authInfo, distributeId)
+    }
+
+    fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
+        return branchDAO.getBranchSettings(authKey, branchId)
+    }
+
+    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): JSONObject? {
+        println(data)
+        val settings = branchDAO.getBranchSettings(authKey, id)
+
+        println(settings.toString())
+        if (settings != null) {
+            val branchSetting = settings.get("branchSettings") as JSONObject
+            val newSettings = JSONObject()
+
+            val names = arrayOf("basicStartTime", "delayTime", "extraCharge", "extraChargePercent", "enableOrderAccept")
+
+            newSettings.put("id", id)
+            for (name in names) {
+                newSettings.put(name, data[name] ?: branchSetting.get(name))
+            }
+
+            println(newSettings.toString())
+
+            return branchDAO.setBranchSettings(authKey, newSettings.toString())
+        }
+
+        return null
     }
 }

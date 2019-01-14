@@ -10,7 +10,7 @@ class RiderService {
     @Autowired
     private lateinit var riderDAO: RiderDAO
 
-    fun infoPrint(authKey: String, data: MutableMap<String, Any>, riderStatusIds: MutableList<Int>?): JSONObject? {
+    fun searchList(authKey: String, data: MutableMap<String, Any>, riderStatusIds: MutableList<Int>?): JSONObject? {
         val riderName: String? = data["rider-name"] as? String
         val pageIndex: Long? = (data["page-index"] as? String)?.toLong()
 

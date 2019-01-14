@@ -10,7 +10,7 @@ class ShopService {
     @Autowired
     private lateinit var shopDAO: ShopDAO
 
-    fun infoPrint(authKey: String, data: MutableMap<String, Any>): JSONObject? {
+    fun searchList(authKey: String, data: MutableMap<String, Any>): JSONObject? {
         val shopName: String? = data["shop-name"] as? String
         val pageIndex: Long? = (data["page-index"] as? String)?.toLong()
 
