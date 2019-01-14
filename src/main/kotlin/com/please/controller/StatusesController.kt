@@ -29,9 +29,9 @@ class StatusesController {
         val branchSettings = JSONObject()
 
         val point = pointService.getPoint(authInfo.authKey)
-        val distributors = distribService.getDistributors(authInfo) ?: mutableListOf()
+            val distributors = distribService.getDistributors(authInfo.id, authInfo.group) ?: mutableListOf()
         if (distributors.size == 1) {
-            branchs = branchService.getBranches(authInfo, distributors[0]["id"] as Long) ?: mutableListOf()
+            branchs = branchService.getBranches(distributors[0]["id"] as Long, authInfo.group) ?: mutableListOf()
             if (branchs.size != 1) branchs.add(0, mapOf("id" to -1, "name" to "--"))
         } else {
             distributors.add(0, mapOf("id" to -1, "name" to "--"))
@@ -40,7 +40,7 @@ class StatusesController {
 
         model.addAttribute("point", point)
         model.addAttribute("distributors", distributors)
-        model.addAttribute("branchs", branchs)
+        model.addAttribute("branches", branchs)
         model.addAttribute("branchSettings", branchSettings)
 
         when (authInfo.group) {

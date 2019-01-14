@@ -19,6 +19,7 @@ class AccountDAO {
             template.queryForRowSet("SELECT * FROM users WHERE userId = ?", id).run {
                 first()
                 return User(
+                        getLong("id"),
                         getString("userId") ?: "",
                         getString("password") ?: "",
                         getString("authKey") ?: "",

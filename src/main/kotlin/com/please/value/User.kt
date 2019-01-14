@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.sql.Timestamp
 
 data class User(
+        val id: Long,
         val userId: String,
         private val hashedPassword: String,
         val authKey: String,

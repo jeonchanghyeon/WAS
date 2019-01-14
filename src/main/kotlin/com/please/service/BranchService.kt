@@ -1,7 +1,6 @@
 package com.please.service
 
 import com.please.dataAccess.BranchDAO
-import com.please.value.AuthInfo
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -11,8 +10,8 @@ class BranchService {
     @Autowired
     private lateinit var branchDAO: BranchDAO
 
-    fun getBranches(authInfo: AuthInfo, distributeId: Long): MutableList<Map<String, Any?>>? {
-        return branchDAO.getBranchs(authInfo, distributeId)
+    fun getBranches(id: Long, group: Int): MutableList<Map<String, Any?>>? {
+        return branchDAO.getBranches(id, group)
     }
 
     fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
