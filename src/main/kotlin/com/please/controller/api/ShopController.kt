@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/shops")
-class ControlsController {
+class ShopController {
     @Autowired
     private lateinit var shopService: ShopService
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/riders")
-class RidersControlController {
+class RiderController {
     @Autowired
     private lateinit var riderService: RiderService
 
