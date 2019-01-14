@@ -26,7 +26,7 @@ class OrderController {
         }
     }
 
-    @RequestMapping(value = ["order"], method = [RequestMethod.PUT])
+    @RequestMapping(method = [RequestMethod.PUT])
     fun addOrder(@RequestBody orderReceiptInfo: OrderReceiptInfo): Any {
         return try {
             val authInfo = getAuthInfo()!!

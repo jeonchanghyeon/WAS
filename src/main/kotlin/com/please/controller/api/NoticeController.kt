@@ -26,7 +26,7 @@ class NoticeController {
         }
     }
 
-    @RequestMapping(method = [RequestMethod.POST])
+    @RequestMapping(method = [RequestMethod.PUT])
     fun addNotice(@RequestBody notice: Notice): Any {
         return try {
             val authInfo = getAuthInfo()!!
@@ -39,7 +39,7 @@ class NoticeController {
         }
     }
 
-    @GetMapping(value = ["notice-id"])
+    @GetMapping(value = ["{notice-id}"])
     fun showNotice(@PathVariable(value = "notice-id") noticeId: Int): Any {
         return try {
             val authInfo = getAuthInfo()!!
