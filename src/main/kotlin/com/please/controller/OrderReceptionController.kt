@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
-@RequestMapping("/order-reception")
+@RequestMapping("order-reception")
 class OrderReceptionController {
     @Autowired
     private lateinit var receptionService: OrderReceptionService

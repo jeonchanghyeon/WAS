@@ -17,7 +17,9 @@ class ShopsControlController {
 
     @GetMapping
     fun show(): String {
-        return "shop_control"
+        val authInfo = getAuthInfo()!!
+        authInfo.group
+        return "fffshop_control"
     }
 
     @GetMapping(value = ["shops"])

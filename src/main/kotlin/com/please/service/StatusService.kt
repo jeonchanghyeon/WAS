@@ -34,8 +34,8 @@ class StatusService {
         println(ordersResult)
         ordersResult ?: return null
 
-        val startDate = Timestamp.valueOf(condition.startDate) ?: return null
-        val endDate = Timestamp.valueOf(condition.endDate) ?: return null
+        val startDate = Timestamp.valueOf(condition.startDate)
+        val endDate = Timestamp.valueOf(condition.endDate)
 
         val countsResult = orderDAO.getOrderStatusCounts(branchId, startDate, endDate)
 
