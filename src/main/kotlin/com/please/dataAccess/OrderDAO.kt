@@ -46,7 +46,7 @@ class OrderDAO {
     fun searchOrders(branchId: String, conditionParseString: String): JSONObject? {
         try {
             return template.queryForJSONObject("CALL getSearchedOrders(getUserAuthKeyById(?), ?)", branchId, conditionParseString)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return null
@@ -56,6 +56,15 @@ class OrderDAO {
     fun getOrderStatusCounts(branchId: String, startTimestamp: Timestamp, endTimestamp: Timestamp): JSONObject? {
         try {
             return template.queryForJSONObject("CALL getOrderInformationsByTimestamp(getUserAuthKeyById(?), ?, ?)", branchId, startTimestamp, endTimestamp)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    fun getSearchLogOrders(logCondition: String): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL getSearchedLogOrders2(?)", logCondition)
         } catch (e: Exception) {
             e.printStackTrace()
         }

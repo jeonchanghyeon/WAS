@@ -57,4 +57,13 @@ class OrderService {
         return result
     }
 
+    fun searchOrderLogs(orderId: Long, shopId: Long, pageIndex: Int?): JSONObject? {
+        val logCondition = JSONObject()
+
+        logCondition.put("oId", orderId)
+        logCondition.put("uId", shopId)
+        logCondition.put("pageIndex", pageIndex)
+
+        return orderDAO.getSearchLogOrders(logCondition.toString())
+    }
 }

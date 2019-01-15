@@ -38,15 +38,13 @@ data class OrderReceiptInfo(
         @JsonProperty("additional-cost")
         val additionalCost: Long?,
         @JsonProperty("delivery-cost-payment-type")
-        val deliveryCostPaymentType: Int,
+        val deliveryCostPaymentType: Int,       //포인트: 1, 현금: 2
         @JsonProperty("memo")
         val memo: String?,
         @JsonProperty("is-suspend")
         val isSuspend: Boolean?,        //접수대기 버튼 누를경우: true, 배송요청 누를 경우: false(x) -> null
         @JsonProperty("point")
-        val point: Long?,
+        val point: Long,
         @JsonProperty("is-shared")
-        val isShared: Boolean?,
-        @JsonProperty("is-point")
-        val isPoint: Boolean?
+        val isShared: Boolean?
 )
