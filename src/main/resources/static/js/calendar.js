@@ -1,5 +1,5 @@
 
-document.body.onload = () => {
+export const calendarListener = () => {
     let myCalendar;
     dhtmlXCalendarObject.prototype.langData["kr"] = {
         dateformat: '%Y-%m-%d 09:00:00',
