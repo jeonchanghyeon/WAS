@@ -1,6 +1,7 @@
 import {ajax, withGetMethod, withPostMethod} from './ajax.js'
 import {loadDetail} from './delivery_details.js'
 import {getMeta} from './meta.js'
+import {calendarListener} from './calendar.js'
 
 Date.prototype.mmdd = function () {
     const mm = (this.getMonth() + 1).toString();
@@ -78,15 +79,15 @@ const createRow = (text, orderStatusId) => {
     row.onclick = function () {
         if (selectedRow != null) {
             // 스타일 복구
-            selectedRow = selectedRowClassName;
+            selectedRow.className = selectedRowClassName;
         }
 
-        // 선택 스타일 지정
-        selectedRow = 'selected_row';
-
         // 스타일 저장
-        selectedRow = row;
+        selectedRow = this;
         selectedRowClassName = statusStyleName[orderStatusId - 1];
+
+        // 선택 스타일 지정
+        this.className = 'selected-row';
     };
 
     row.ondblclick = function () {
@@ -108,7 +109,8 @@ function createTable(resultList, orders) {
         const cancelDate = new Date(order["cancelDate"]);
 
         const id = order["id"].toString().fillZero();
-        const createDay = createDate.mmdd() + "-" + createDate.mmdd();
+        const createDay = createDate.mmdd() + "-" + createDate.HHMM();
+
         const shopName = order["shopName"];
 
         let parsingOrderStatus = null;
@@ -335,36 +337,77 @@ for (let i = 1; i < checkbox.length; i++) {
     };
 }
 
+function appendOptions(element, size, texts, values) {
+    element.innerHTML = "";
+
+    let option = document.createElement('option');
+    option.defaultSelected;
+    option.value = "";
+    option.text = "--";
+    element.appendChild(option);
+
+    for (let i = 0; i < size; i++) {
+        option = document.createElement('option');
+        option.text = texts[i];
+        option.value = values[i];
+        element.appendChild(option);
+    }
+    console.log(element);
+}
+
+const getBranchList = (distribId) => {
+    const url = "/api/branches/list?group=6&id=" + distribId;
+
+    ajax(
+        url,
+        "get",
+        (obj) => {
+            const values = [];
+            const texts = [];
+
+            for (let i = 0; i < obj.length; i++) {
+                values[i] = obj[i]["id"];
+                texts[i] = obj[i]["name"];
+            }
+
+            appendOptions(branchSelect, obj.length, texts, values);
+        }
+    );
+};
+
+const getDistribList = (headId) => {
+    const url = "/api/distribs?id=" + headId;
+
+    ajax(
+        url,
+        "get",
+        (obj) => {
+            const values = [];
+            const texts = [];
+
+            for (let i = 0; i < obj.length; i++) {
+                values[i] = obj[i]["id"];
+                texts[i] = obj[i]["name"];
+            }
+
+            appendOptions(distributorSelect, obj.length, texts, values);
+        });
+};
+
 distributorSelect.onchange = () => {
-    const selectValue = distributorSelect.options[distributorSelect.selectedIndex].value;
-
-    if (distributorSelect.selectedIndex !== 0) {
-        const url = "status/distributors?distributorId=" + selectValue;
-        ajax(url, "get",
-            (obj) => {
-                let option = document.createElement('option');
-
-                branchSelect.innerHTML = "";
-                option.defaultSelected;
-                option.value = "";
-                option.text = "--";
-                branchSelect.appendChild(option);
-
-                for (let i = 0; i < obj.length; i++) {
-                    option = document.createElement('option');
-                    option.value = obj[i];
-                    option.text = obj[i];
-                    branchSelect.appendChild(option);
-                }
-            });
+    if (distributorSelect.options[distributorSelect.selectedIndex].value === -1) {
+        appendOptions(branchSelect, 0)
+    } else {
+        getBranchList(distributorSelect.options[distributorSelect.selectedIndex].value);
     }
 };
+
 
 branchSelect.onchange = () => {
     const selectValue = branchSelect.options[branchSelect.selectedIndex].value;
 
     if (branchSelect.selectedIndex !== 0) {
-        const url = "status/branch-settings/" + selectValue;
+        const url = "/api/branches/" + selectValue + "/settings";
         ajax(url, "get", (obj) => {
             try {
                 const branchSetting = obj["branchSettings"];
@@ -439,7 +482,7 @@ formDefaultStart.onsubmit
 
     const branchId = parseInt(getCurrentBranchId());
     if (branchId !== -1) {
-        const url = "status/branch-settings/" + branchId;
+        const url = "/api/branches/" + branchId + "/settings";
         const formData = new FormData(this);
         withPostMethod(
             url,
@@ -477,7 +520,7 @@ window.onscroll = function () {
 };
 
 function getOrders(formData, func) {
-    const url = "status/orders";
+    const url = "/api/orders";
 
     withGetMethod(
         url,
@@ -491,3 +534,9 @@ function getOrders(formData, func) {
             }
         });
 }
+
+document.body.onload = () => {
+    const id = document.getElementById("userId").value;
+    getDistribList(id);
+    calendarListener();
+};

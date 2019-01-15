@@ -1,12 +1,17 @@
+@charset "UTF-8";
 #modal {
   position: fixed;
   visibility: hidden;
 }
 
+/* TODO modal 반응형 */
 .detail {
-  width: 100%;
-  margin-left: auto;
+  width: 1260px;
   margin-right: auto;
+  top: 50%;
+  left: 50%;
+  margin-left: -620px;
+  margin-top: -400px;
   float: left;
   clear: both;
   background-color: #FFFFFF;
@@ -24,6 +29,15 @@
   font-weight: 300;
   color: #4a4a4a;
 }
+.detail-header .btn-close {
+  background-color: #FFFFFF;
+  float: right;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #9b9b9b;
+  font-size: 30px;
+  /* TODO X 버튼 스타일 */
+}
 
 .aside {
   width: 160px;
@@ -35,7 +49,7 @@
 }
 
 .section {
-  width: calc(100% - 200px);
+  width: calc(100% - 190px);
   float: left;
   display: block;
   border-top: 1px solid #d0d0d0;
@@ -285,8 +299,11 @@
   margin-right: 5px;
 }
 
-.btn-close {
-  float: right;
+@media (max-width: 1280px) {
+  .detail {
+    width: 810px;
+    margin-left: -405px;
+  }
 }
 
 /*# sourceMappingURL=delivery_details.css.map */

@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -20,84 +20,65 @@
 <div class="window-parent" id="window-parent">
 
     <!-- Navigation -->
-    <div th:replace="header :: header"></div>
+    <div th:replace="/header/header :: header"></div>
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="top-area">
             <!-- 검색 조건 -->
-            <div class="search-area">
-                <form id="form_search">
-                    <!-- 총판명, 지사명, 기간, 결제방법-->
-                    <div class="search-condition-area">
-                        <table>
-                            <tr>
-                                <th>총판명</th>
-                                <td>
-                                    <select id="select_distributor">
-                                        <option th:each="distributor : ${distributors}"
-                                                th:value="${distributor['id']}"
-                                                th:utext="${distributor['name']}"/>
-                                    </select>
-                                </td>
-                                <th>지사명</th>
-                                <td>
-                                    <select name="branchId" id="select_branch">
-                                        <option th:each="branch : ${branchs}" th:value="${branch['id']}"
-                                                th:utext="${branch['name']}"/>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>기간</th>
-                                <td colspan="3">
-                                    <input type="text" name="startDate" class="select-start-date" id="select_start_date"
-                                           readonly="readonly" value="2018-01-01 / 09:00"/>
-                                    <span> ~ </span>
-                                    <input type="text" name="endDate" class="select-end-date" id="select_end_date"
-                                           readonly="readonly" value="2018-12-31 / 09:00"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>결제방법</th>
-                                <td colspan="3">
-                                    <label>
-                                        <input type="checkbox" name="paymentTypes[0]" value="1" checked="checked"/>
-                                        카드 </label>
-                                    <label>
-                                        <input type="checkbox" name="paymentTypes[1]" value="2" checked="checked"/>
-                                        현금 </label>
-                                    <label>
-                                        <input type="checkbox" name="paymentTypes[2]" value="3" checked="checked"/>
-                                        선결제</label>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+            <form id="form_search" class="search-area">
+                <!-- 총판명, 지사명, 기간, 결제방법-->
+                <div class="search-condition-area">
+                    <div>
+                        <div class="item distrib-area">
+                            <span>총판명</span>
 
-                    <!-- 검색 키워드 -->
-                    <div class="keyword-area">
-                        <table>
-                            <tr>
-                                <td>
-                                    <input type="hidden" name="id" id="searchByid"/>
-                                    <input type="hidden" name="shopName" id="searchByshopName"/>
-                                    <input type="hidden" name="riderName" id="searchByriderName"/>
-                                    <select id="search_type">
-                                        <option value="searchByid">순번</option>
-                                        <option value="searchByshopName">상점 이름</option>
-                                        <option value="searchByriderName">기사 이름</option>
-                                    </select>
-                                </td>
-                                <td><input type="search" id="search_feature"/>
-                                </td>
-                                <td><input type="submit" id="btn_feature" value="검색"/>
-                                </td>
-                            </tr>
-                        </table>
+                            <select id="select_distributor" class="item-content"></select>
+                        </div>
+                        <div class="item branch-area">
+                            <span>지사명</span>
+                            <select name="branchId" id="select_branch" class="item-content"></select>
+                        </div>
                     </div>
-                </form>
-            </div>
+                    <div class="item">
+                        <span>기간</span>
+                        <div class="item-content">
+                            <input type="text" name="startDate" class="select-start-date" id="select_start_date"
+                                   readonly="readonly" value="2018-01-01 / 09:00"/>
+                            <span> ~ </span>
+                            <input type="text" name="endDate" class="select-end-date" id="select_end_date"
+                                   readonly="readonly" value="2018-12-31 / 09:00"/>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <span>결제방법</span>
+                        <div class="item-content">
+                            <label>
+                                <input type="checkbox" name="paymentTypes[0]" value="1" checked="checked"/>
+                                카드 </label>
+                            <label>
+                                <input type="checkbox" name="paymentTypes[1]" value="2" checked="checked"/>
+                                현금 </label>
+                            <label>
+                                <input type="checkbox" name="paymentTypes[2]" value="3" checked="checked"/>
+                                선결제</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 검색 키워드 -->
+                <div class="keyword-area">
+                    <input type="hidden" name="id" id="searchById"/>
+                    <input type="hidden" name="shopName" id="searchByShopName"/>
+                    <input type="hidden" name="riderName" id="searchByRiderName"/>
+                    <select id="search_type">
+                        <option value="searchById">순번</option>
+                        <option value="searchByShopName">상점 이름</option>
+                        <option value="searchByRiderName">기사 이름</option>
+                    </select><input type="search" id="search_feature"/>
+                    <input type="submit" id="btn_feature" value="검색"/>
+                </div>
+            </form>
 
             <!-- 추가기능-->
             <div class="extension-area">
@@ -151,311 +132,17 @@
         </div>
 
         <!-- 배송 상태 -->
-        <section class="status-area" id="status_area">
-            <table>
-                <tr>
-                    <th>
-                        <input type="checkbox" id="checkbox_all" checked="checked"/>
-                        <label for="checkbox_all">전체</label>
-                        <span id="count_all">0</span></th>
-                    <td>
-                        <input type="checkbox" id="checkbox_accept" name="orderStatusIds[0]" value="1"/>
-                        <label for="checkbox_accept">접수</label>
-                        <span id="count_accept">0</span></td>
-                    <td>
-                        <input type="checkbox" id="checkbox_allocate" name="orderStatusIds[1]" value="2"/>
-                        <label for="checkbox_allocate">배차</label>
-                        <span id="count_allocate">0</span></td>
-                    <td>
-                        <input type="checkbox" id="checkbox_pickup" name="orderStatusIds[2]" value="3"/>
-                        <label for="checkbox_pickup">픽업</label>
-                        <span id="count_pickup">0</span></td>
-                    <td>
-                        <input type="checkbox" id="checkbox_complete" name="orderStatusIds[3]" value="4"/>
-                        <label for="checkbox_complete">완료</label>
-                        <span id="count_complete">0</span></td>
-                    <td>
-                        <input type="checkbox" id="checkbox_cancel" name="orderStatusIds[4]" value="5"/>
-                        <label for="checkbox_cancel">취소</label>
-                        <span id="count_cancel">0</span></td>
-                    <td>
-                        <input type="checkbox" id="checkbox_suspend" name="orderStatusIds[5]" value="6"/>
-                        <label for="checkbox_suspend">대기</label>
-                        <span id="count_suspend">0</span></td>
-                    <td>
-                        <input type="checkbox" id="checkbox_share" name="shared" value="true"/>
-                        <label for="checkbox_share">공유</label>
-                        <span id="count_share">0</span></td>
-                </tr>
-            </table>
-        </section>
+        <div th:replace="/statues/status_area :: status_area"></div>
 
     </section>
 
-    <section class="result-area">
-        <table>
-            <thead>
-            <tr>
-                <td> 순번</td>
-                <td> 접수일</td>
-                <td> 가맹점명</td>
-                <td> 상태</td>
-                <td> 접수시간</td>
-                <td> 배차시간</td>
-                <td> 픽업시간</td>
-                <td> 완료시간</td>
-                <td> 취소시간</td>
-                <td> 배달대행료</td>
-                <td> 추가대행료</td>
-                <td> 기사이름</td>
-                <td> 결제방법</td>
-                <td> 요청사항</td>
-            </tr>
-            </thead>
-            <tbody id="result_list"></tbody>
-        </table>
-    </section>
+    <div th:replace="/statues/result_area :: result_area"></div>
+
 </div>
 
 <!-- 모달 창 -->
-<div class="detail" id="modal">
+<div th:replace="/statues/modal :: modal"></div>
 
-    <!-- 헤더 -->
-    <header class="detail-header">
-        <span>배송 상세 보기</span>
-        <button id="btn_close">x</button>
-    </header>
-
-    <!-- 사이드 바 -->
-    <aside class="aside">
-
-        <!-- 기본 정보 -->
-        <div class="basic-inform">
-            <span class="aside-subsection-title">기본정보</span>
-            <table class="aside-table">
-                <tr>
-                    <th>거리</th>
-                    <td id="distance"></td>
-                </tr>
-                <tr>
-                    <th>구역</th>
-                    <td id="branchName"></td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- 배달대행료 -->
-        <div class="delivery-cost">
-            <span class="aside-subsection-title">배달대행료</span>
-            <table class="aside-table">
-                <tr>
-                    <th>배달대행료</th>
-                    <td id="deliveryCost"></td>
-                </tr>
-                <tr>
-                    <th>할증</th>
-                    <td id="extraCharge">0원</td>
-                </tr>
-                <tr>
-                    <th>배달추가요금</th>
-                    <td id="addCost">0원</td>
-                </tr>
-                <tr>
-                    <th>대행료합계</th>
-                    <td id="sum">0원</td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- 배달대행로 지불방법 -->
-        <div class="delivery-pay">
-            <span class="aside-subsection-title">배달대행료 지불방법</span>
-            <button class="aside-btn-unselected" id="aside_cash">현금</button>
-            <button class="aside-btn-unselected" id="aside_point">포인트</button>
-        </div>
-
-        <!-- 배송상태 -->
-        <div class="delivery-status">
-            <span class="aside-subsection-title">배송상태</span>
-            <img src="/img/status_bar1.png" width="150px" height="10px" id="statusBar" alt="상태"/>
-            <ul>
-                <li> 접수</li>
-                <li> 배차</li>
-                <li> 픽업</li>
-                <li> 완료</li>
-            </ul>
-        </div>
-
-        <!-- 상태변경 -->
-        <div class="change-status">
-            <span class="aside-subsection-title">상태변경</span>
-            <button class="btn" id="orderStatusId1" value="1">주문수정</button>
-            <button class="btn" id="orderStatusId2" value="2">주문취소</button>
-            <button class="btn" id="orderStatusId3" value="3">배차취소</button>
-            <button class="btn" id="orderStatusId4" value="4">배달기사 재배차</button>
-            <button class="btn" id="orderStatusId5" value="5">픽업</button>
-            <button class="btn" id="orderStatusId6" value="6">추가접수</button>
-        </div>
-    </aside>
-
-    <section class="section">
-        <!-- 출발지, 도착지, 기사정보, 배송메시지 -->
-        <article class="information">
-
-            <div class="starting-point">
-                <span class="subsection-title">출발지</span>
-                <table class="table2">
-                    <tr>
-                        <th>출발지역</th>
-                        <td id="shopName"></td>
-                    </tr>
-                    <tr>
-                        <th>전화번호</th>
-                        <td id="startingTel"></td>
-                    </tr>
-                    <tr>
-                        <th>주소</th>
-                        <td id="startingRoad"></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="rider-inform">
-                <span class="subsection-title">기사정보</span>
-                <table class="table2">
-                    <tr>
-                        <th>기사명</th>
-                        <td id="riderName"></td>
-                    </tr>
-                    <tr>
-                        <th>전화번호</th>
-                        <td id="riderTel"></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="destination">
-                <span class="subsection-title">도착지</span>
-                <table class="table2">
-                    <tr>
-                        <th>전화번호</th>
-                        <td id="customerTel"></td>
-                    </tr>
-                    <tr>
-                        <th>주소</th>
-                        <td id="road"></td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="delivery-memo">
-                <span class="subsection-title">배송메세지</span>
-                <table class="table2">
-                    <tr>
-                        <td id="memo"></td>
-                    </tr>
-                </table>
-            </div>
-
-        </article>
-
-        <!-- 상품 내역 -->
-        <article class="item-details">
-            <span class="subsection-title">상품 내역</span>
-            <table class="table">
-                <thead>
-                <tr>
-                    <td>순번</td>
-                    <td>상품명</td>
-                    <td>구분</td>
-                    <td>단가</td>
-                    <td>갯수</td>
-                    <td>판매가</td>
-                </tr>
-                </thead>
-                <tbody id="menu_table">
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
-            <table class="table2">
-                <tr>
-                    <th>상품 요금</th>
-                    <td id="menuPrice"></td>
-                    <th>조리시간</th>
-                    <td id="cookTime"></td>
-                </tr>
-                <tr>
-                    <th>상품추가요금</th>
-                    <td id="additionalMenuPrice"></td>
-                    <th>주문자동취소</th>
-                    <td id="orderAutoCancelTime"></td>
-                </tr>
-                <tr>
-                    <th>고객요금합계</th>
-                    <td id="totalPrice"></td>
-                    <th>결제방법</th>
-                    <td>
-                        <button class="btn-unselected" id="cash">현금</button>
-                        <button class="btn-unselected" id="card">카드</button>
-                        <button class="btn-unselected" id="prepay">선결제</button>
-                    </td>
-                </tr>
-            </table>
-        </article>
-
-        <!-- 주문이력 -->
-        <article class="order-history">
-            <span class="subsection-title"> 주문 이력 </span>
-            <table class="table">
-                <thead>
-                <tr>
-                    <td>순번</td>
-                    <td>시간</td>
-                    <td>변경사항</td>
-                    <td>행위자</td>
-                    <td>기존이력</td>
-                    <td>변경내용</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>17</td>
-                    <td>시간</td>
-                    <td>전화번호변경</td>
-                    <td>안상점</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>17</td>
-                    <td>시간</td>
-                    <td>전화번호변경</td>
-                    <td>안상점</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>17</td>
-                    <td>시간</td>
-                    <td>전화번호변경</td>
-                    <td>안상점</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
-        </article>
-    </section>
-</div>
-
-<script src="/js/myCalendar.js"></script>
 <script src="/js/home.js" type="module"></script>
 <script src="/js/delivery_details.js" type="module"></script>
 <!-- Main Container Ends -->

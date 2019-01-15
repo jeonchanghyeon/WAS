@@ -32,7 +32,7 @@ const textSum = document.getElementById("sum");
 
 export const loadDetail = (id, riderId) => {
     try {
-        const url = "/orders/" + id;
+        const url = "/api/orders/" + id;
 
         ajax(url, "GET", (obj) => {
                 const order = obj["order"];
@@ -153,7 +153,7 @@ export const loadDetail = (id, riderId) => {
 
                 for (let i = 0; i < buttons.length; i++) {
                     buttons[i].onclick = function () {
-                        const url = "/orders/" + id;
+                        const url = "/api/orders/" + id;
 
                         const obj = {
                             "id": id,

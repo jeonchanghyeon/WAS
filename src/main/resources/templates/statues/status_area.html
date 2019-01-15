@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<section th:fragment="status_area" class="status-area" id="status_area">
+    <div>
+        <input type="checkbox" id="checkbox_all" checked="checked"/>
+        <label for="checkbox_all">전체</label>
+        <span id="count_all">0</span>
+    </div>
+    <div>
+        <input type="checkbox" id="checkbox_accept" name="orderStatusIds[0]" value="1"/>
+        <label for="checkbox_accept">접수</label>
+        <span id="count_accept">0</span>
+    </div>
+    <div>
+        <input type="checkbox" id="checkbox_allocate" name="orderStatusIds[1]" value="2"/>
+        <label for="checkbox_allocate">배차</label>
+        <span id="count_allocate">0</span>
+    </div>
+    <div>
+        <input type="checkbox" id="checkbox_pickup" name="orderStatusIds[2]" value="3"/>
+        <label for="checkbox_pickup">픽업</label>
+        <span id="count_pickup">0</span>
+    </div>
+    <div>
+        <input type="checkbox" id="checkbox_complete" name="orderStatusIds[3]" value="4"/>
+        <label for="checkbox_complete">완료</label>
+        <span id="count_complete">0</span>
+    </div>
+    <div>
+        <input type="checkbox" id="checkbox_cancel" name="orderStatusIds[4]" value="5"/>
+        <label for="checkbox_cancel">취소</label>
+        <span id="count_cancel">0</span>
+    </div>
+    <div>
+        <input type="checkbox" id="checkbox_suspend" name="orderStatusIds[5]" value="6"/>
+        <label for="checkbox_suspend">대기</label>
+        <span id="count_suspend">0</span>
+    </div>
+    <div>
+        <input type="checkbox" id="checkbox_share" name="shared" value="true"/>
+        <label for="checkbox_share">공유</label>
+        <span id="count_share">0</span>
+    </div>
+</section>
+</html>
