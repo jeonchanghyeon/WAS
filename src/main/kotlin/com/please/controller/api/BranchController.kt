@@ -12,7 +12,7 @@ class BranchController {
     @Autowired
     private lateinit var branchService: BranchService
 
-    @GetMapping
+    @GetMapping(value = ["list"])
     fun getBranchList(@RequestParam(required = false) id: Long?,
                       @RequestParam(required = false) group: Int?): MutableList<Map<String, Any?>>? {
         val branches: MutableList<Map<String, Any?>>?

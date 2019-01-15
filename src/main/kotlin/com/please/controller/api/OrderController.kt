@@ -40,7 +40,7 @@ class OrderController {
         }
     }
 
-    @GetMapping("/orders/{id}")
+    @GetMapping("{id}")
     fun getOrder(@PathVariable id: Int): Any {
         return try {
             val authInfo = getAuthInfo()!!
@@ -53,7 +53,7 @@ class OrderController {
         }
     }
 
-    @RequestMapping("/orders/{id}", method = [RequestMethod.PATCH])
+    @RequestMapping("{id}", method = [RequestMethod.PATCH])
     fun setOrderStatus(@PathVariable id: Int, @RequestBody orderStatus: OrderStatus): Any {
         return try {
             val authInfo = getAuthInfo()!!

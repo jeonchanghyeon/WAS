@@ -12,10 +12,12 @@ class RiderService {
 
     fun searchList(branchId: Long, data: MutableMap<String, Any>): JSONObject? {
         val riderName: String? = data["rider-name"] as? String
-        val pageIndex: Long? = (data["page-index"] as? String)?.toLong()
+        val riderStatusId: Int? = (data["rider-status-id"] as? String)?.toInt()
+        val pageIndex: Int? = (data["page-index"] as? String)?.toInt()
 
         val info = JSONObject()
         info.put("riderName", riderName)
+        info.put("riderStatusId", riderStatusId)
         info.put("pageIndex", pageIndex)
 
         return riderDAO.searchRiderList(branchId, info)

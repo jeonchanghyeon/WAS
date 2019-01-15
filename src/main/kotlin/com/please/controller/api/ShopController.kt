@@ -28,7 +28,7 @@ class ShopController {
     }
 
     /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
-    @GetMapping
+    @GetMapping(value = ["list"])
     fun getShopList(@RequestParam id: Long,
                     @RequestParam group: Int): MutableList<Map<String, Any?>>? {
         val shops = shopService.getShops(id, group) ?: mutableListOf()

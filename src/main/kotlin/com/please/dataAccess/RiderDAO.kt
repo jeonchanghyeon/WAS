@@ -15,7 +15,7 @@ class RiderDAO {
 
     fun searchRiderList(branchId: Long, riderInfo: JSONObject): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedRiders2(getUserAuthKeyById(?), ?)", branchId, riderInfo.toString())
+            return template.queryForJSONObject("CALL getSearchedRiders(getUserAuthKeyById(?), ?)", branchId, riderInfo.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }
