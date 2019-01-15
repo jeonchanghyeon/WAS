@@ -36,7 +36,7 @@ input[type="button"] {
   padding: 0;
   width: 100%;
 
-  ul li {
+  li {
     width: 100%;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -188,8 +188,8 @@ input[type="button"] {
 }
 
 .title {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 50px;
+  margin-bottom: 50px;
   display: inline-block;
 
   span {
@@ -202,7 +202,7 @@ input[type="button"] {
 }
 
 .menu_position {
-  margin-top: 20px;
+  margin-top: -30px;
   margin-bottom: 20px;
   display: inline-block;
 }

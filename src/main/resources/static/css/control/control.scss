@@ -1,3 +1,7 @@
+html {
+  height: 100%;
+}
+
 body {
   height: 100%;
   margin: 0;
@@ -14,17 +18,24 @@ body {
   float: left;
 }
 
+.main {
+  height: calc(100% - 45px);
+}
+
 .center_section {
+  position : relative;
   width: 100%;
+  height: calc(100% - 50px);
   float: left;
 }
 
 .aside {
+  position : absolute;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
-  float: left;
   border-right: 1px solid #d0d0d0;
   height: 100%;
   width: 370px;
+  background-color: #FFFFFF;
 
   div {
     border-bottom: 1px solid #d0d0d0;
@@ -40,31 +51,33 @@ body {
 }
 
 .right {
-  width: calc(100% - 371px);
+  width: 100%;
+  height: 100%;
   float: left;
 }
 
 .map {
   width: 100%;
-  height: 300px;
+  height: calc(100% - 90px);
   float: left;
   background-color: #d0d0d0;
 }
 
 .map_down {
   width: 100%;
+  height: 90px;
   float: left;
   clear: both;
 }
 
 .footer {
-  position: fixed;
-  bottom: 0;
   box-shadow: 0 -2px 4px 0 rgba(77, 77, 77, 0.21);
   border: 1px solid #d0d0d0;
-  width: 100%;
+  width: calc(100% - 2px);
+  height : 50px;
   float: left;
   clear: both;
+  background-color: #FFFFFF;
 }
 
 .option_rider {
