@@ -12,6 +12,7 @@ class ShopController {
     @Autowired
     private lateinit var shopService: ShopService
 
+    /* result -> {resultCode: 0, shops: {id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping
     fun searchShops(@RequestParam(value = "branch-id") branchId: Long,
                     @RequestParam data: MutableMap<String, Any>): Any {
@@ -26,6 +27,7 @@ class ShopController {
         }
     }
 
+    /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping
     fun getShopList(@RequestParam id: Long,
                     @RequestParam group: Int): MutableList<Map<String, Any?>>? {

@@ -13,9 +13,17 @@ class BranchController {
     private lateinit var branchService: BranchService
 
     @GetMapping
-    fun getBranchList(@RequestParam id: Long,
-                      @RequestParam group: Int): MutableList<Map<String, Any?>>? {
-        val branches = branchService.getBranches(id, group) ?: mutableListOf()
+    fun getBranchList(@RequestParam(required = false) id: Long?,
+                      @RequestParam(required = false) group: Int?): MutableList<Map<String, Any?>>? {
+        val branches: MutableList<Map<String, Any?>>?
+
+        if(id == null || group == null) {
+            val authInfo = getAuthInfo()!!
+            branches = branchService.getBranches(authInfo.id, authInfo.group) ?: mutableListOf()
+        } else {
+            branches = branchService.getBranches(id, group) ?: mutableListOf()
+        }
+
         if (branches.size != 1) {
             branches.add(0, mapOf("id" to -1, "name" to "--"))
         }
@@ -23,7 +31,7 @@ class BranchController {
     }
 
     @GetMapping(value = ["{branch-id}/settings"])
-    fun getBranchSettings(request: HttpServletRequest, @PathVariable(value = "branch-id") id: String): Any {
+    fun getBranchSettings(@PathVariable(value = "branch-id") id: String): Any {
         return try {
             val authInfo = getAuthInfo()!!
             val value = branchService.getBranchSettings(authInfo.authKey, id)

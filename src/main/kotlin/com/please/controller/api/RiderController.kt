@@ -25,6 +25,7 @@ class RiderController {
         }
     }
 
+    /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping
     fun getRiderList(@RequestParam id: Long,
                     @RequestParam group: Int): MutableList<Map<String, Any?>>? {

@@ -41,10 +41,12 @@ data class OrderReceiptInfo(
         val deliveryCostPaymentType: Int,
         @JsonProperty("memo")
         val memo: String?,
-        @JsonProperty("is-shared")
-        val isSuspend: Boolean?,        //지연됐을 경우만 true, 지연되지 않았을 경우 false(x) -> null
+        @JsonProperty("is-suspend")
+        val isSuspend: Boolean?,        //접수대기 버튼 누를경우: true, 배송요청 누를 경우: false(x) -> null
         @JsonProperty("point")
         val point: Long?,
-        @JsonProperty("is-suspend")
-        val isShared: Boolean?
+        @JsonProperty("is-shared")
+        val isShared: Boolean?,
+        @JsonProperty("is-point")
+        val isPoint: Boolean?
 )

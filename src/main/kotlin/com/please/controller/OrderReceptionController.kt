@@ -24,9 +24,6 @@ class OrderReceptionController {
             3 -> {
                 return "order_reception/reception_shop"
             }
-            2 -> {
-                return "order_reception/reception_rider"
-            }
         }
         return "login"
     }

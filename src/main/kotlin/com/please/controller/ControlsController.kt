@@ -25,9 +25,6 @@ class ControlsController {
             3 -> {
                 return "controls/shop_control_shop"
             }
-            2 -> {
-                return "controls/shop_control_rider"
-            }
         }
         return "login"
     }
@@ -47,9 +44,6 @@ class ControlsController {
             }
             3 -> {
                 return "controls/rider_control_shop"
-            }
-            2 -> {
-                return "controls/rider_control_rider"
             }
         }
         return "login"

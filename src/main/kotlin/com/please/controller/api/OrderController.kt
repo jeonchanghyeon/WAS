@@ -4,6 +4,7 @@ import com.please.persistence.getAuthInfo
 import com.please.service.OrderService
 import com.please.value.Condition
 import com.please.value.OrderReceiptInfo
+import com.please.value.OrderStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -36,6 +37,32 @@ class OrderController {
         } catch (e: Exception) {
             e.printStackTrace()
             mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
+        }
+    }
+
+    @GetMapping("/orders/{id}")
+    fun getOrder(@PathVariable id: Int): Any {
+        return try {
+            val authInfo = getAuthInfo()!!
+            val value = orderService.getOrder(authInfo.authKey, id)
+            println(value)
+            value!!.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            mapOf("resultCode" to 777)
+        }
+    }
+
+    @RequestMapping("/orders/{id}", method = [RequestMethod.PATCH])
+    fun setOrderStatus(@PathVariable id: Int, @RequestBody orderStatus: OrderStatus): Any {
+        return try {
+            val authInfo = getAuthInfo()!!
+            val value = orderService.setOrderStatus(authInfo.authKey, orderStatus)
+            println(value)
+            value!!.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            mapOf("resultCode" to 777)
         }
     }
 }
