@@ -128,7 +128,7 @@
 }
 .table thead td, .table thead th {
   border-bottom: 1px solid #eaeaea;
-  padding: 3px 40px 3px 10px;
+  padding: 3px 10px 3px 10px;
 }
 .table tbody {
   font-size: 14px;
@@ -137,7 +137,7 @@
 }
 .table tbody td, .table tbody th {
   border-bottom: 1px solid #eaeaea;
-  padding: 5px 40px 5px 10px;
+  padding: 5px 10px 5px 10px;
 }
 
 .btn-unselected {

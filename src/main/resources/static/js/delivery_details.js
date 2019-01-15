@@ -28,13 +28,15 @@ const btnPrepay = document.getElementById("prepay");
 const textExtraCharge = document.getElementById("extraCharge");
 const textAddCost = document.getElementById("addCost");
 const textSum = document.getElementById("sum");
-
+const tableLog = document.getElementById("log-table");
 
 export const loadDetail = (id, riderId) => {
     try {
-        const url = "/api/orders/" + id;
 
-        ajax(url, "GET", (obj) => {
+        ajax(
+            "/api/orders/" + id,
+            "GET",
+            (obj) => {
                 const order = obj["order"];
 
                 riderId = order["riderId"];
@@ -178,9 +180,43 @@ export const loadDetail = (id, riderId) => {
                     buttons[i].onsubmit = () => false;
                 }
 
+            }
+        );
+
+        ajax(
+            "/api/orders/" + id + "/logs",
+            "GET",
+            (obj) => {
+                const logs = obj["logs"];
+
+                tableLog.innerHTML = "";
+
+                const arr = [
+                    "createDate",
+                    "logType",
+                    "name",
+                    "oldValue",
+                    "newValue"];
+
+
+                for (let i = 0; i < logs.length; i++) {
+                    const row = document.createElement("tr");
+
+                    const col = document.createElement("td");
+                    col.innerText = (i + 1).toString();
+                    row.appendChild(col);
+
+                    for (let j = 0; j < arr.length; j++) {
+                        const col = document.createElement("td");
+                        col.innerText = logs[i][arr[j]];
+                        row.appendChild(col);
+                    }
+                    tableLog.appendChild(row);
+                }
+
                 windowModal.style.visibility = "visible";
             }
-        )
+        );
     } catch (error) {
         console.log(error.message);
     }
