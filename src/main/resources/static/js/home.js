@@ -113,13 +113,15 @@ function createTable(resultList, orders) {
 
         const shopName = order["shopName"];
 
-        let parsingOrderStatus = null;
+        let orderStatusId = null;
 
         if (order["orderStatusId"] === 1 && order["branchId"] !== parseInt(getCurrentBranchId())) {
-            parsingOrderStatus = "공유";
+            orderStatusId = 7;
         } else {
-            parsingOrderStatus = statusStr[order["orderStatusId"] - 1];
+            orderStatusId = order["orderStatusId"];
         }
+
+        const parsingOrderStatus = statusStr[orderStatusId - 1];
 
         const createTime = createDate.HHMM();
         const allocateTime = allocateDate.HHMM();
@@ -127,13 +129,13 @@ function createTable(resultList, orders) {
         const completeTime = completeDate.HHMM();
         const cancelTime = cancelDate.HHMM();
         const deliveryCost = order["deliveryCost"].toString().numberWithCommas();
-        let sumOfadditionalCost = 0;
+        let sumOfAdditionalCost = 0;
         const riderName = order["riderName"];
         const parsingPaymentType = paymentTypeStr[order["paymentType"] - 1];
         const memo = order["memo"];
 
         for (let i = 0; i < order["additionalCost"].length; i++) {
-            sumOfadditionalCost += order["additionalCost"][i]["cost"];
+            sumOfAdditionalCost += order["additionalCost"][i]["cost"];
         }
 
         const text = [
@@ -147,13 +149,13 @@ function createTable(resultList, orders) {
             completeTime,
             cancelTime,
             deliveryCost,
-            sumOfadditionalCost,
+            sumOfAdditionalCost,
             riderName,
             parsingPaymentType,
             memo,
         ];
 
-        const row = createRow(text, order["orderStatusId"]);
+        const row = createRow(text, orderStatusId);
 
         resultList.appendChild(row)
     }
@@ -189,7 +191,7 @@ const changeToStyleWarning = (element) => {
     element.style.color = "red";
 };
 
-const statusStr = ["접수", "배차", "픽업", "완료", "취소", "대기", "상점확인전", "상점거절", "예약"];
+const statusStr = ["접수", "배차", "픽업", "완료", "취소", "대기", "공유"];
 const paymentTypeStr = ["카드", "현금", "선결제"];
 const statusStyleName = ["status1", "status2", "status3", "status4", "status5", "status6", "status7"];
 
