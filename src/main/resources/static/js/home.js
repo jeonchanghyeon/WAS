@@ -1,6 +1,16 @@
 import {ajax, withGetMethod, withPostMethod} from './ajax.js'
 import {loadDetail} from './delivery_details.js'
 import {getMeta} from './meta.js'
+import {calendarListener} from './calendar.js'
+
+const Group = {
+    GUEST: 1,
+    RIDER: 2,
+    SHOP: 3,
+    BRANCH: 5,
+    DISTRIB: 6,
+    HEAD: 7,
+};
 
 Date.prototype.mmdd = function () {
     const mm = (this.getMonth() + 1).toString();
@@ -78,15 +88,15 @@ const createRow = (text, orderStatusId) => {
     row.onclick = function () {
         if (selectedRow != null) {
             // 스타일 복구
-            selectedRow = selectedRowClassName;
+            selectedRow.className = selectedRowClassName;
         }
 
-        // 선택 스타일 지정
-        selectedRow = 'selected_row';
-
         // 스타일 저장
-        selectedRow = row;
+        selectedRow = this;
         selectedRowClassName = statusStyleName[orderStatusId - 1];
+
+        // 선택 스타일 지정
+        this.className = 'selected-row';
     };
 
     row.ondblclick = function () {
@@ -108,16 +118,19 @@ function createTable(resultList, orders) {
         const cancelDate = new Date(order["cancelDate"]);
 
         const id = order["id"].toString().fillZero();
-        const createDay = createDate.mmdd() + "-" + createDate.mmdd();
+        const createDay = createDate.mmdd() + "-" + createDate.HHMM();
+
         const shopName = order["shopName"];
 
-        let parsingOrderStatus = null;
+        let orderStatusId = null;
 
         if (order["orderStatusId"] === 1 && order["branchId"] !== parseInt(getCurrentBranchId())) {
-            parsingOrderStatus = "공유";
+            orderStatusId = 7;
         } else {
-            parsingOrderStatus = statusStr[order["orderStatusId"] - 1];
+            orderStatusId = order["orderStatusId"];
         }
+
+        const parsingOrderStatus = statusStr[orderStatusId - 1];
 
         const createTime = createDate.HHMM();
         const allocateTime = allocateDate.HHMM();
@@ -125,13 +138,13 @@ function createTable(resultList, orders) {
         const completeTime = completeDate.HHMM();
         const cancelTime = cancelDate.HHMM();
         const deliveryCost = order["deliveryCost"].toString().numberWithCommas();
-        let sumOfadditionalCost = 0;
+        let sumOfAdditionalCost = 0;
         const riderName = order["riderName"];
         const parsingPaymentType = paymentTypeStr[order["paymentType"] - 1];
         const memo = order["memo"];
 
         for (let i = 0; i < order["additionalCost"].length; i++) {
-            sumOfadditionalCost += order["additionalCost"][i]["cost"];
+            sumOfAdditionalCost += order["additionalCost"][i]["cost"];
         }
 
         const text = [
@@ -145,13 +158,13 @@ function createTable(resultList, orders) {
             completeTime,
             cancelTime,
             deliveryCost,
-            sumOfadditionalCost,
+            sumOfAdditionalCost,
             riderName,
             parsingPaymentType,
             memo,
         ];
 
-        const row = createRow(text, order["orderStatusId"]);
+        const row = createRow(text, orderStatusId);
 
         resultList.appendChild(row)
     }
@@ -170,6 +183,9 @@ function displayError(error) {
 }
 
 const getCurrentBranchId = () => {
+    if (branchSelect === null) {
+        return branchValue.value;
+    }
     return branchSelect.options[branchSelect.selectedIndex].value;
 };
 
@@ -187,7 +203,7 @@ const changeToStyleWarning = (element) => {
     element.style.color = "red";
 };
 
-const statusStr = ["접수", "배차", "픽업", "완료", "취소", "대기", "상점확인전", "상점거절", "예약"];
+const statusStr = ["접수", "배차", "픽업", "완료", "취소", "대기", "공유"];
 const paymentTypeStr = ["카드", "현금", "선결제"];
 const statusStyleName = ["status1", "status2", "status3", "status4", "status5", "status6", "status7"];
 
@@ -217,6 +233,13 @@ const container = document.getElementById("window-parent");
 const resultList = document.getElementById("result_list");
 const distributorSelect = document.getElementById("select_distributor");
 const branchSelect = document.getElementById("select_branch");
+
+const distributorText = document.getElementById("text_distrib");
+const branchText = document.getElementById("text_branch");
+const shopText = document.getElementById("text_shop");
+const riderText = document.getElementById("text_rider");
+const branchValue = document.getElementById("value_branch");
+
 
 const checkbox = [];
 for (let i = 0; i < checkboxIds.length; i++) {
@@ -335,68 +358,165 @@ for (let i = 1; i < checkbox.length; i++) {
     };
 }
 
-distributorSelect.onchange = () => {
-    const selectValue = distributorSelect.options[distributorSelect.selectedIndex].value;
+function appendOptions(element, size, texts, values) {
+    element.innerHTML = "";
 
-    if (distributorSelect.selectedIndex !== 0) {
-        const url = "status/distributors?distributorId=" + selectValue;
-        ajax(url, "get",
-            (obj) => {
-                let option = document.createElement('option');
+    let option = document.createElement('option');
+    option.defaultSelected;
+    option.value = "-1";
+    option.text = "--";
+    element.appendChild(option);
 
-                branchSelect.innerHTML = "";
-                option.defaultSelected;
-                option.value = "";
-                option.text = "--";
-                branchSelect.appendChild(option);
-
-                for (let i = 0; i < obj.length; i++) {
-                    option = document.createElement('option');
-                    option.value = obj[i];
-                    option.text = obj[i];
-                    branchSelect.appendChild(option);
-                }
-            });
+    for (let i = 0; i < size; i++) {
+        option = document.createElement('option');
+        option.text = texts[i];
+        option.value = values[i];
+        element.appendChild(option);
     }
+    console.log(element);
+}
+
+const getRider = (branchId) => {
+    const url = "/api/riders/list?group=2&id=" + branchId;
+
+    ajax(
+        url,
+        "get",
+        (obj) => {
+
+            if (obj.length !== 1) {
+
+            } else {
+                riderText.value = obj[0]["name"];
+            }
+        }
+    );
 };
 
-branchSelect.onchange = () => {
-    const selectValue = branchSelect.options[branchSelect.selectedIndex].value;
+const getShop = (branchId) => {
+    const url = "/api/shops/list?group=3&id=" + branchId;
 
-    if (branchSelect.selectedIndex !== 0) {
-        const url = "status/branch-settings/" + selectValue;
-        ajax(url, "get", (obj) => {
-            try {
-                const branchSetting = obj["branchSettings"];
+    ajax(
+        url,
+        "get",
+        (obj) => {
 
-                const basicStartTime = branchSetting["basicStartTime"];
-                const basicStartTimeIndex = basicStartTime / 10;
-                selectDefaultStart.selectedIndex = basicStartTimeIndex;
+            if (obj.length !== 1) {
 
-                if (basicStartTimeIndex === 0) {
-                    changeToStyleSafe(selectDefaultStart);
-                } else {
-                    changeToStyleWarning(selectDefaultStart);
-                }
-
-                const delayTime = branchSetting["delayTime"];
-                const delayTimeIndex = delayTime / 10;
-                selectDelayTime.selectedIndex = delayTimeIndex;
-
-                if (delayTimeIndex === 0) {
-                    changeToStyleSafe(selectDelayTime);
-                } else {
-                    changeToStyleWarning(selectDelayTime);
-                }
-
-                costWon.value = branchSetting["extraCharge"];
-                costPercent.value = branchSetting["extraChargePercent"] * 100;
-
-            } catch (error) {
-                console.log(error.message)
+            } else {
+                shopText.value = obj[0]["name"];
             }
-        })
-    }
+        }
+    );
+};
+
+const getBranchList = (distribId) => {
+    const url = "/api/branches/list?group=6&id=" + distribId;
+
+    ajax(
+        url,
+        "get",
+        (obj) => {
+            const values = [];
+            const texts = [];
+
+            for (let i = 0; i < obj.length; i++) {
+                values[i] = obj[i]["id"];
+                texts[i] = obj[i]["name"];
+            }
+
+            appendOptions(branchSelect, obj.length, texts, values);
+        }
+    );
+};
+
+const getBranch = (distribId) => {
+    const url = "/api/branches/list?group=5&id=" + distribId;
+
+    ajax(
+        url,
+        "get",
+        (obj) => {
+
+            if (obj.length !== 1) {
+
+            } else {
+                branchValue.value = obj[0]["id"];
+                branchText.value = obj[0]["name"];
+            }
+        }
+    );
+};
+
+const getDistribList = (headId) => {
+    const url = "/api/distribs?id=" + headId;
+
+    ajax(
+        url,
+        "get",
+        (obj) => {
+            const values = [];
+            const texts = [];
+
+            for (let i = 0; i < obj.length; i++) {
+                values[i] = obj[i]["id"];
+                texts[i] = obj[i]["name"];
+            }
+
+            appendOptions(distributorSelect, obj.length, texts, values);
+        });
+};
+
+const getDistrib = (headId, group) => {
+    const url = "/api/distribs?group=" + group + "&id=" + headId;
+
+    ajax(
+        url,
+        "get",
+        (obj) => {
+
+            if (obj.length !== 1) {
+
+            } else {
+                distributorText.value = obj[0]["name"];
+            }
+        }
+    );
+};
+
+const getBranchSettings = (branchId) => {
+    const url = "/api/branches/" + branchId + "/settings";
+    ajax(url, "get", (obj) => {
+        try {
+            const branchSetting = obj["branchSettings"];
+
+            const basicStartTime = branchSetting["basicStartTime"];
+            const basicStartTimeIndex = basicStartTime / 10;
+            selectDefaultStart.selectedIndex = basicStartTimeIndex;
+
+            if (basicStartTimeIndex === 0) {
+                changeToStyleSafe(selectDefaultStart);
+            } else {
+                changeToStyleWarning(selectDefaultStart);
+            }
+
+            const delayTime = branchSetting["delayTime"];
+            const delayTimeIndex = delayTime / 10;
+            selectDelayTime.selectedIndex = delayTimeIndex;
+
+            if (delayTimeIndex === 0) {
+                changeToStyleSafe(selectDelayTime);
+            } else {
+                changeToStyleWarning(selectDelayTime);
+            }
+
+            costWon.value = branchSetting["extraCharge"];
+            costPercent.value = branchSetting["extraChargePercent"] * 100;
+
+        } catch (error) {
+            console.log(error.message)
+        }
+    })
 };
 
 formSearch.onsubmit = function () {
@@ -439,7 +559,7 @@ formDefaultStart.onsubmit
 
     const branchId = parseInt(getCurrentBranchId());
     if (branchId !== -1) {
-        const url = "status/branch-settings/" + branchId;
+        const url = "/api/branches/" + branchId + "/settings";
         const formData = new FormData(this);
         withPostMethod(
             url,
@@ -477,7 +597,7 @@ window.onscroll = function () {
 };
 
 function getOrders(formData, func) {
-    const url = "status/orders";
+    const url = "/api/orders";
 
     withGetMethod(
         url,
@@ -491,3 +611,68 @@ function getOrders(formData, func) {
             }
         });
 }
+
+
+document.body.onload = () => {
+    const id = document.getElementById("userId").value;
+    const group = document.getElementById("group").value;
+
+    switch (parseInt(group)) {
+        case Group.RIDER :
+            getRider(id);
+            getBranch(id);
+
+            break;
+
+        case Group.SHOP:
+            getShop(id);
+            getBranch(id);
+
+            break;
+
+        case Group.BRANCH:
+            getDistrib(id, parseInt(group));
+            getBranch(id);
+
+            break;
+
+        case Group.DISTRIB:
+            getDistrib(id, parseInt(group));
+
+            branchSelect.onchange = function () {
+                const branchId = this.options[this.selectedIndex].value;
+
+                if (this.selectedIndex !== 0) {
+                    getBranchSettings(branchId);
+                }
+            };
+
+            break;
+
+        case Group.HEAD:
+
+            getDistribList(id);
+
+            distributorSelect.onchange = function () {
+                const distribId = this.options[this.selectedIndex].value;
+
+                if (this.selectedIndex === 0) {
+                    appendOptions(branchSelect, 0)
+                } else {
+                    getBranchList(distribId)
+                }
+            };
+
+            branchSelect.onchange = function () {
+                const branchId = this.options[this.selectedIndex].value;
+
+                if (this.selectedIndex !== 0) {
+                    getBranchSettings(branchId);
+                }
+            };
+
+            break;
+    }
+
+    calendarListener();
+};

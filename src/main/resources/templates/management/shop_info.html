@@ -10,25 +10,25 @@
     <title>Please</title>
     <link rel="stylesheet" type="text/css" href="/css/main.css"/>
     <link rel="stylesheet" type="text/css" href="/css/header.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/shop_info.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/management/shop_info.css"/>
 </head>
 
 <body>
 <div class="container">
-    <div th:replace="header :: header"></div>
+    <div th:replace="/header/header_head :: header"></div>
 
     <section class="main">
         <!-- 매출정산, 공유콜 정산 -->
         <div class="menu">
             <ul>
                 <li>
-                    <button>지사</button>
+                    <button class="btn-menu">지사</button>
                 </li>
                 <li>
-                    <button>가맹점</button>
+                    <button class="btn-menu">가맹점</button>
                 </li>
                 <li>
-                    <button>기사</button>
+                    <button class="btn-menu">기사</button>
                 </li>
             </ul>
         </div>
@@ -40,21 +40,21 @@
                 <div class="title">
                     <span>똘똘이 족발 - 부산남구지사</span>
                 </div>
-                <br>
+                <br/>
 
                 <div class="menu_position">
                     <div class="menu">
                         <ul>
                             <li>
-                                <button>가맹점정보</button>
+                                <button class="btn-menu">가맹점정보</button>
                             </li>
                             <li>
-                                <button>가맹점설정</button>
+                                <button class="btn-menu">가맹점설정</button>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <br>
+                <br/>
                 <form>
                     <div class="center">
                         <div class="condition">
@@ -190,6 +190,7 @@
 
                     </div>
                 </form>
+
             </div>
         </div>
 

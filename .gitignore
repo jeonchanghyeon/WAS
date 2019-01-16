@@ -2,6 +2,7 @@
 /build/
 /bin/
 !gradle/wrapper/gradle-wrapper.jar
+*.css.map
 
 ### STS ###
 .apt_generated
