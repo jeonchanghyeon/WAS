@@ -10,8 +10,8 @@ class BranchService {
     @Autowired
     private lateinit var branchDAO: BranchDAO
 
-    fun getBranches(id: Long, group: Int): MutableList<Map<String, Any?>>? {
-        return branchDAO.getBranches(id, group)
+    fun getBranches(id: Long): MutableList<Map<String, Any?>>? {
+        return branchDAO.getBranches(id)
     }
 
     fun getBranchSettings(authKey: String, branchId: String): JSONObject? {

@@ -21,8 +21,8 @@ class ShopService {
         return shopDAO.searchShopList(branchId, info)
     }
 
-    fun getShops(id: Long, group: Int): MutableList<Map<String, Any?>>? {
-        return shopDAO.getShops(id, group)
+    fun getShops(id: Long): MutableList<Map<String, Any?>>? {
+        return shopDAO.getShops(id)
     }
 
 }

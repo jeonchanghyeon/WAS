@@ -21,32 +21,13 @@ class ShopDAO {
         }
         return null
     }
-    fun getShops(id: Long, group: Int): MutableList<Map<String, Any?>>? {
-        var returnVal: MutableList<Map<String, Any?>>? = null
-        val sql: String
 
+    fun getShops(id: Long): MutableList<Map<String, Any?>>? {
         try {
-            when (group) {
-                7 -> {
-                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 3 and getTopIdById(getTopIdById(getUId(topUserId))) = ?"
-                    returnVal = template.queryForList(sql, id)
-                }
-                6 -> {
-                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 3 and getTopIdById(getUId(topUserId)) = ?"
-                    returnVal = template.queryForList(sql, id)
-                }
-                in 4..5 -> {
-                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 3 and getUId(topUserId) = ?"
-                    returnVal = template.queryForList(sql, id)
-                }
-                3 -> {
-                    sql = "SELECT ? as id, getUserNameById(?) as name"
-                    returnVal = mutableListOf(template.queryForMap(sql, id, id))
-                }
-            }
+            return template.queryForList("CALL getShopListById(?)", id)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return returnVal
+        return null
     }
 }

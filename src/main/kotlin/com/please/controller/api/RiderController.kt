@@ -1,9 +1,11 @@
 package com.please.controller.api
 
-import com.please.persistence.getAuthInfo
 import com.please.service.RiderService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/riders")
@@ -29,12 +31,11 @@ class RiderController {
 
     /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping(value = ["list"])
-    fun getRiderList(@RequestParam id: Long,
-                     @RequestParam group: Int): MutableList<Map<String, Any?>>? {
-        val riders = riderService.getRiders(id, group) ?: mutableListOf()
-        if (riders.size != 1) {
-            riders.add(0, mapOf("id" to -1, "name" to "--"))
+    fun getRiderList(@RequestParam id: Long): Any {
+        return try {
+            riderService.getRiders(id)!!
+        } catch (e: Exception) {
+            mapOf("resultCode" to 777)
         }
-        return riders
     }
 }

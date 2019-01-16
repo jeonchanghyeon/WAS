@@ -15,31 +15,14 @@ class BranchDAO {
     private lateinit var template: JdbcTemplate
 
     //지사 id와 이름 목록 쿼리
-    fun getBranches(id: Long, group: Int): MutableList<Map<String, Any?>>? {
-        var returnVal: MutableList<Map<String, Any?>>? = null
-        val sql: String
-
+    fun getBranches(id: Long): MutableList<Map<String, Any?>>? {
         try {
-            when (group) {
-                7 -> {
-                    sql = "SELECT users.id, name FROM users INNER JOIN userInfos ON users.id = userInfos.id WHERE `group` = 5 and getTopIdById(getUId(topUserId)) = ?"
-                    returnVal = template.queryForList(sql, id)
-                }
-                6 -> {
-                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 5 AND topUserId = getUserIdById(?)"
-                    returnVal = template.queryForList(sql, id)
-                }
-                in 1..5 -> {
-                    sql = "SELECT getBranchUIdByUId(?) as id, getUserNameById(getBranchUIdByUId(?)) as name"
-                    returnVal = mutableListOf(template.queryForMap(sql, id, id))
-                }
-            }
+            return template.queryForList("CALL getBranchListById(?)", id)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return returnVal
+        return null
     }
-
 
     fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
         try {

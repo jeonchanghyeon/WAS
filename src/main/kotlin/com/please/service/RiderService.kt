@@ -23,7 +23,7 @@ class RiderService {
         return riderDAO.searchRiderList(branchId, info)
     }
 
-    fun getRiders(id: Long, group: Int): MutableList<Map<String, Any?>>? {
-        return riderDAO.getRiders(id, group)
+    fun getRiders(id: Long): MutableList<Map<String, Any?>>? {
+        return riderDAO.getRiders(id)
     }
 }

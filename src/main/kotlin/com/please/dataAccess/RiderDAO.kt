@@ -22,32 +22,12 @@ class RiderDAO {
         return null
     }
 
-    fun getRiders(id: Long, group: Int): MutableList<Map<String, Any?>>? {
-        var returnVal: MutableList<Map<String, Any?>>? = null
-        val sql: String
-
+    fun getRiders(id: Long): MutableList<Map<String, Any?>>? {
         try {
-            when (group) {
-                7 -> {
-                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 2 and getTopIdById(getTopIdById(getUId(topUserId))) = ?"
-                    returnVal = template.queryForList(sql, id)
-                }
-                6 -> {
-                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 2 and getTopIdById(getUId(topUserId)) = ?"
-                    returnVal = template.queryForList(sql, id)
-                }
-                5 -> {
-                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 2 and getUId(topUserId) = ?"
-                    returnVal = template.queryForList(sql, id)
-                }
-                2 -> {
-                    sql = "SELECT ? as id, getUserNameById(?) as name"
-                    returnVal = mutableListOf(template.queryForMap(sql, id, id))
-                }
-            }
+            return template.queryForList("CALL getRiderListById(?)", id)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return returnVal
+        return null
     }
 }

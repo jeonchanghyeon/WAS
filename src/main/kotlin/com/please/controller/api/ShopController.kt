@@ -1,10 +1,11 @@
 package com.please.controller.api
 
-import com.please.persistence.getAuthInfo
 import com.please.service.ShopService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/shops")
@@ -29,12 +30,11 @@ class ShopController {
 
     /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping(value = ["list"])
-    fun getShopList(@RequestParam id: Long,
-                    @RequestParam group: Int): MutableList<Map<String, Any?>>? {
-        val shops = shopService.getShops(id, group) ?: mutableListOf()
-        if (shops.size != 1) {
-            shops.add(0, mapOf("id" to -1, "name" to "--"))
+    fun getShopList(@RequestParam id: Long): Any {
+        return try {
+            shopService.getShops(id)!!
+        } catch (e: Exception) {
+            mapOf("resultCode" to 777)
         }
-        return shops
     }
 }
