@@ -67,11 +67,10 @@ class OrderController {
     }
 
     @GetMapping("{id}/logs")
-    fun getOrderLogs(@RequestParam(value = "shop-id") shopId: Long,
-                     @RequestParam(value = "page-index", required = false) pageIndex: Int?,
+    fun getOrderLogs(@RequestParam(value = "page-index", required = false) pageIndex: Int?,
                      @PathVariable(value = "id") orderId: Long): Any {
         return try {
-            val value = orderService.searchOrderLogs(orderId, shopId, pageIndex)
+            val value = orderService.searchOrderLogs(orderId, pageIndex)
             println(value)
             value!!.toString()
         } catch (e: Exception) {
