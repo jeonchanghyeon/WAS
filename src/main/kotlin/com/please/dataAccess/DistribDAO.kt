@@ -28,7 +28,7 @@ class DistribDAO {
                     returnVal = mutableListOf(template.queryForMap(sql, id))
                 }
                 in 1..5 -> {
-                    sql = "u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 6 AND u.id = getTopIdById(getBranchUIdByUId(?))"
+                    sql = "SELECT u.id, ui.name FROM users as u INNER JOIN userInfos as ui ON u.id = ui.id WHERE `group` = 6 AND u.id = getTopIdById(getBranchUIdByUId(?))"
                     returnVal = mutableListOf(template.queryForMap(sql, id))
                 }
             }
