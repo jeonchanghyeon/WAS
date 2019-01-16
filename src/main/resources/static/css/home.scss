@@ -121,10 +121,7 @@ body {
 
   > div {
     width: calc(100% - 20px);
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 3px 10px;
     float: left;
     clear: both;
 
@@ -136,11 +133,21 @@ body {
   .distrib-area {
     margin-right: 10px;
     width: calc(50% - 10px);
+
+    input[type="text"] {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 
   .branch-area {
     margin-left: 10px;
     width: calc(50% - 10px);
+
+    input[type="text"] {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 
   .select-start-date,

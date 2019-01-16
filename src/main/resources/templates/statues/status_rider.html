@@ -1,0 +1,148 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Please</title>
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/home.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/delivery_details.css"/>
+    <link rel="stylesheet" type="text/css" href="/codebase/fonts/font_roboto/roboto.css"/>
+    <link rel="stylesheet" type="text/css" href="/codebase/dhtmlx.css"/>
+    <script src="/codebase/dhtmlx.js"></script>
+</head>
+<body>
+
+<!-- 부모 창 -->
+<div class="window-parent" id="window-parent">
+
+    <!-- Navigation -->
+    <div th:replace="/header/header_rider :: header"></div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="top-area">
+            <!-- 검색 조건 -->
+            <form id="form_search" class="search-area">
+                <!-- 총판명, 지사명, 기간, 결제방법-->
+                <div class="search-condition-area">
+                    <div>
+                        <div class="item distrib-area">
+                            <span>기사명</span>
+                            <input type="text" id="text_rider" class="item-content" disabled="disabled"/>
+                        </div>
+                        <div class="item branch-area">
+                            <span>지사명</span>
+                            <input type="text" id="text_branch" class="item-content" disabled="disabled"/>
+                            <input type="hidden" name="branchId" id="value_branch"/>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <span>기간</span>
+                        <div class="item-content">
+                            <input type="text" name="startDate" class="select-start-date" id="select_start_date"
+                                   readonly="readonly" value="2018-01-01 / 09:00"/>
+                            <span> ~ </span>
+                            <input type="text" name="endDate" class="select-end-date" id="select_end_date"
+                                   readonly="readonly" value="2018-12-31 / 09:00"/>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <span>결제방법</span>
+                        <div class="item-content">
+                            <label>
+                                <input type="checkbox" name="paymentTypes[0]" value="1" checked="checked"/>
+                                카드 </label>
+                            <label>
+                                <input type="checkbox" name="paymentTypes[1]" value="2" checked="checked"/>
+                                현금 </label>
+                            <label>
+                                <input type="checkbox" name="paymentTypes[2]" value="3" checked="checked"/>
+                                선결제</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 검색 키워드 -->
+                <div class="keyword-area">
+                    <input type="hidden" name="id" id="searchById"/>
+                    <input type="hidden" name="shopName" id="searchByShopName"/>
+                    <input type="hidden" name="riderName" id="searchByRiderName"/>
+                    <select id="search_type">
+                        <option value="searchById">순번</option>
+                        <option value="searchByShopName">상점 이름</option>
+                        <option value="searchByRiderName">기사 이름</option>
+                    </select><input type="search" id="search_feature"/>
+                    <input type="submit" id="btn_feature" value="검색"/>
+                </div>
+            </form>
+
+            <!-- 추가기능-->
+            <div class="extension-area">
+                <form id="form_default_start" hidden="hidden"/>
+                <form id="form_delay_time" hidden="hidden"/>
+                <form id="form_additional_cost" hidden="hidden"/>
+                <table>
+                    <tr>
+                        <th>
+                            <label for="select_default_start">조리시간</label>
+                        </th>
+                        <td><select id="select_default_start" form="form_default_start" name="basicStartTime">
+                            <option th:each="n : ${#numbers.sequence(0,60,10)}" th:value="${n}" th:text="${n} + 분"/>
+                        </select>
+                            <label for="select_default_start">분</label>
+                        </td>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="select_delay_time">추가지연</label>
+                        </th>
+                        <td>
+                            <select id="select_delay_time" form="form_delay_time" name="delayTime">
+                                <option th:each="n : ${#numbers.sequence(0,60,10)}" th:value="${n}" th:text="${n} + 분"/>
+                            </select>
+                            <label for="select_delay_time">분</label>
+                        </td>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>할증</th>
+                        <td>
+                            <div>
+                                <input type="text" id="cost_won" form="form_additional_cost" name="extraCharge"/>
+                                <label for="cost_won">원</label>
+                            </div>
+                            <div class="inline">
+                                <input type="text" id="cost_percent" form="form_additional_cost"
+                                       name="extraChargePercent"/>
+                                <label for="cost_percent">원</label>
+                            </div>
+                        </td>
+                        <th></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 배송 상태 -->
+        <div th:replace="/statues/status_area :: status_area"></div>
+
+    </section>
+
+    <div th:replace="/statues/result_area :: result_area"></div>
+
+</div>
+
+<!-- 모달 창 -->
+<div th:replace="/statues/modal :: modal"></div>
+
+<script src="/js/home.js" type="module"></script>
+<script src="/js/delivery_details.js" type="module"></script>
+<!-- Main Container Ends -->
+</body>
+
+</html>
