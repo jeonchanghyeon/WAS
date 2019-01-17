@@ -10,6 +10,14 @@ class BranchService {
     @Autowired
     private lateinit var branchDAO: BranchDAO
 
+    fun searchList(authKey: String, branchName: String?, metro: String?, pageIndex: Int?): JSONObject? {
+        val info = JSONObject()
+        info.put("branchName", branchName)
+        info.put("metro", metro)
+        info.put("pageIndex", pageIndex)
+        return branchDAO.searchBranchList(authKey, info);
+    }
+
     fun getBranches(id: Long): MutableList<Map<String, Any?>>? {
         return branchDAO.getBranches(id)
     }

@@ -24,6 +24,15 @@ class BranchDAO {
         return null
     }
 
+    fun searchBranchList(authKey: String, condition: JSONObject): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL getSearchedBranchByName(?, ?)", authKey, condition.toString())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
     fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
         try {
             return template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, branchId)
