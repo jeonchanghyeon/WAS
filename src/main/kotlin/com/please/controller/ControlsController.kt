@@ -22,9 +22,6 @@ class ControlsController {
             in 4..5 -> {
                 return "controls/shop_control_branch"
             }
-            3 -> {
-                return "controls/shop_control_shop"
-            }
         }
         return "login"
     }
