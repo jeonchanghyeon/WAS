@@ -22,9 +22,6 @@ body {
   font-size: 12px;
   float: left;
 }
-.hero table {
-  text-align: left;
-}
 .hero table tr th {
   font-weight: normal;
 }
@@ -203,6 +200,7 @@ body {
 .extension-area table {
   color: #c1c1c1;
   width: 100%;
+  text-align: left;
 }
 .extension-area table tr {
   font-size: 12px;
@@ -212,6 +210,10 @@ body {
 }
 .extension-area table tr td {
   padding: 6px;
+}
+.extension-area table tr td label {
+  float: right;
+  line-height: 28px;
 }
 .extension-area .btn-small {
   width: 80px;

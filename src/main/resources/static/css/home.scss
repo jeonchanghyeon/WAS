@@ -24,12 +24,8 @@ body {
   font-size: 12px;
   float: left;
 
-  table {
-    text-align: left;
-
-    tr th {
-      font-weight: normal;
-    }
+  table tr th {
+    font-weight: normal;
   }
 
   input[type="text"],
@@ -232,6 +228,7 @@ body {
   table {
     color: #c1c1c1;
     width: 100%;
+    text-align: left;
 
     tr {
       font-size: 12px;
@@ -242,6 +239,11 @@ body {
 
       td {
         padding: 6px;
+
+        label {
+          float: right;
+          line-height: 28px;
+        }
       }
     }
   }
