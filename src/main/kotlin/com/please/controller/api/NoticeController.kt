@@ -15,14 +15,14 @@ class NoticeController {
     @GetMapping
     fun showNoticeList(@RequestParam(value = "view-type") viewType: Int,
                        @RequestParam(value = "writer-id", required = false) writerId: Long?,
-                       @RequestParam(value = "types") types: MutableList<Int>,
+                       @RequestParam(value = "view-groups") viewGroups: MutableList<Int>,
                        @RequestParam(value = "page-index", required = false) pageIndex: Int?): Any {
         /* view-type : 5 -> 지사 공지 확인, 6 -> 총판 공지 확인, 7 -> 본사 공지 확인
          * types : 1 -> 본사만, 2 -> 총판만, 3 -> 지사만, 4 -> 상점만, 5 -> 기사만
          *  */
         return try {
             val authInfo = getAuthInfo()!!
-            val value = noticeService.showNoticeList(authInfo.authKey, viewType, writerId, types, pageIndex)
+            val value = noticeService.showNoticeList(authInfo.authKey, viewType, writerId, viewGroups, pageIndex)
             println(value)
             value!!.toString()
         } catch (e: Exception) {
