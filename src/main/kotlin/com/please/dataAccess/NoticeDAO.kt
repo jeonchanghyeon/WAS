@@ -15,7 +15,7 @@ class NoticeDAO {
 
     fun getNoticeList(authKey: String, noticeInfo: JSONObject): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedNotices(?, ?)", authKey, noticeInfo.toString())
+            return template.queryForJSONObject("CALL getSearchedNotices2(?, ?)", authKey, noticeInfo.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }

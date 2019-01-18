@@ -12,12 +12,12 @@ class NoticeService {
     @Autowired
     private lateinit var noticeDAO: NoticeDAO
 
-    fun showNoticeList(authKey: String, types: MutableList<Int>, pageIndex: Int?): JSONObject? {
+    fun showNoticeList(authKey: String, viewType: Int, types: MutableList<Int>, pageIndex: Int?): JSONObject? {
         val info = JSONObject()
-        if (types.size == 1) info.put("type", types[0])
-        else info.put("types", types)
+        info.put("viewType", viewType)
+        info.put("types", types)
         info.put("pageIndex", pageIndex)
-        println("service : ${info}")
+
         return noticeDAO.getNoticeList(authKey, info)
     }
 
