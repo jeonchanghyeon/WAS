@@ -7,6 +7,6 @@ data class Notice(
         val title: String,
         @JsonProperty("content")
         val contents: String,
-        @JsonProperty("type")
-        val type: Int
+        @JsonProperty("types")
+        val types: MutableList<Int>
 )

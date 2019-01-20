@@ -18,7 +18,7 @@ class NoticeController {
                        @RequestParam(value = "view-groups") viewGroups: MutableList<Int>,
                        @RequestParam(value = "page-index", required = false) pageIndex: Int?): Any {
         /* view-type : 5 -> 지사 공지 확인, 6 -> 총판 공지 확인, 7 -> 본사 공지 확인
-         * types : 1 -> 본사만, 2 -> 총판만, 3 -> 지사만, 4 -> 상점만, 5 -> 기사만
+         * view-groups == user-group
          *  */
         return try {
             val authInfo = getAuthInfo()!!
@@ -32,7 +32,7 @@ class NoticeController {
     }
 
     @RequestMapping(method = [RequestMethod.PUT])
-    fun addNotice(@RequestBody notice: Notice): Any {
+    fun addNotice(notice: Notice): Any {
         return try {
             val authInfo = getAuthInfo()!!
             val value = noticeService.addNotice(authInfo.authKey, notice)
