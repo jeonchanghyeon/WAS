@@ -30,4 +30,13 @@ class RiderDAO {
         }
         return null
     }
+
+    fun getInfoInControl(authKey: String, riderInfo: JSONObject): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL getRiderInformationInControl(?, ?)", authKey, riderInfo.toString())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 }
