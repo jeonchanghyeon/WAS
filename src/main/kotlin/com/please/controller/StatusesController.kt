@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
-@RequestMapping("/statuses")
+@RequestMapping(value = ["/", "/statuses"])
 class StatusesController {
     @GetMapping
     fun status(model: Model): String {

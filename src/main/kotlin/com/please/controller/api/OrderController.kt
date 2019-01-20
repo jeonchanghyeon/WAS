@@ -40,7 +40,7 @@ class OrderController {
         }
     }
 
-    @GetMapping("{id}")
+    @GetMapping(value = ["{id}"])
     fun getOrder(@PathVariable id: Int): Any {
         return try {
             val authInfo = getAuthInfo()!!
@@ -53,7 +53,7 @@ class OrderController {
         }
     }
 
-    @RequestMapping("{id}", method = [RequestMethod.PATCH])
+    @RequestMapping(value = ["{id}"], method = [RequestMethod.PATCH])
     fun setOrderStatus(@PathVariable id: Int, @RequestBody orderStatus: OrderStatus): Any {
         return try {
             val authInfo = getAuthInfo()!!
@@ -66,7 +66,7 @@ class OrderController {
         }
     }
 
-    @GetMapping("{id}/logs")
+    @GetMapping(value = ["{id}/logs"])
     fun getOrderLogs(@RequestParam(value = "page-index", required = false) pageIndex: Int?,
                      @PathVariable(value = "id") orderId: Long): Any {
         return try {
@@ -76,6 +76,18 @@ class OrderController {
         } catch (e: Exception) {
             e.printStackTrace()
             mapOf("resultCode" to 777)
+        }
+    }
+
+    @GetMapping(value = ["statuses"])
+    fun getStatusesCount(@RequestParam(value = "branch-id") branchId: Long): Any {
+        return try {
+            val value = orderService.getStatuesCount(branchId.toString())
+            println(value)
+            value!!.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
         }
     }
 }

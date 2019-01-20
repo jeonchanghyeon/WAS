@@ -65,4 +65,8 @@ class OrderService {
 
         return orderDAO.getSearchLogOrders(logCondition.toString())
     }
+
+    fun getStatuesCount(branchId: String): JSONObject? {
+        return orderDAO.getOrderStatusCounts(branchId, null, null)
+    }
 }
