@@ -1,11 +1,9 @@
 package com.please.controller.api
 
+import com.please.persistence.getAuthInfo
 import com.please.service.RiderService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/riders")
@@ -34,6 +32,33 @@ class RiderController {
     fun getRiderList(@RequestParam id: Long): Any {
         return try {
             riderService.getRiders(id)!!
+        } catch (e: Exception) {
+            mapOf("resultCode" to 777)
+        }
+    }
+
+
+    /*
+        return ->
+            {"resultCode":, "description":,
+             "rider": {
+                        "id", "name", "tel", "allocateCount", "pickupCount",
+                        "orders": {
+                                    "id", "orderStatusId",
+                                    "startingLatitude", "startingLongitude",
+                                    "destinationLatitude", "destinationLongitude",
+                                    "shopName", "addressDetail"
+                                  }
+                       }
+            }
+     */
+    @GetMapping(value = ["{rider-id}"])
+    fun getRiderList(@PathVariable(value = "rider-id") id: Long,
+                     @RequestParam(value = "start-date", required = false) startDate: String?,
+                     @RequestParam(value = "end-date", required = false) endDate: String?): Any {
+        return try {
+            val authInfo = getAuthInfo()!!
+            riderService.getInfoInControl(authInfo.authKey, id, startDate, endDate)!!
         } catch (e: Exception) {
             mapOf("resultCode" to 777)
         }
