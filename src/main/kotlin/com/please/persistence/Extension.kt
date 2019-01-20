@@ -6,7 +6,7 @@ import org.json.JSONObject
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.core.context.SecurityContextHolder
 
-fun JdbcTemplate.queryForJSONObject(query: String, vararg args: Any): JSONObject? {
+fun JdbcTemplate.queryForJSONObject(query: String, vararg args: Any?): JSONObject? {
     try {
         val str = queryForObject(query, args, String::class.java)
         return JSONObject(str)

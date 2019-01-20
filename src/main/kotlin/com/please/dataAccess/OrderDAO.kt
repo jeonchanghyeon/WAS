@@ -53,7 +53,7 @@ class OrderDAO {
     }
 
     //검색 조건에 맞는 각각의 상태 개수 쿼리(검색 조건 중 날짜로만 필터)
-    fun getOrderStatusCounts(branchId: String, startTimestamp: Timestamp, endTimestamp: Timestamp): JSONObject? {
+    fun getOrderStatusCounts(branchId: String, startTimestamp: Timestamp?, endTimestamp: Timestamp?): JSONObject? {
         try {
             return template.queryForJSONObject("CALL getOrderInformationsByTimestamp(getUserAuthKeyById(?), ?, ?)", branchId, startTimestamp, endTimestamp)
         } catch (e: Exception) {
