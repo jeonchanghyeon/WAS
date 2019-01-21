@@ -12,6 +12,18 @@ class NoticeController {
     @Autowired
     private lateinit var noticeService: NoticeService
 
+    /*
+        return ->
+            {"resultCode":, "description":,
+             "notices": { [
+                                "id",
+                                "title",
+                                "content",
+                                "writerName",
+                                "createDate"
+                           ], [,,], ....}
+            }
+     */
     @GetMapping
     fun showNoticeList(@RequestParam(value = "view-type") viewType: Int,
                        @RequestParam(value = "writer-id", required = false) writerId: Long?,
