@@ -21,4 +21,13 @@ class UserDAO {
         }
         return null
     }
+
+    fun setInfo(authKey: String, userInfo: String): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL getUser(?, ?)", authKey, userInfo)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 }
