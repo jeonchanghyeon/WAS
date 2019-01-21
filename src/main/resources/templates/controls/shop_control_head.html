@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 
 <head>
     <meta charset="utf-8"/>
@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css"/>
     <link rel="stylesheet" type="text/css" href="/css/header.css"/>
     <link rel="stylesheet" type="text/css" href="/css/control/control.css"/>
+    <script type="text/javascript"
+            th:src="@{https://openapi.map.naver.com/openapi/v3/maps.js(clientId='ybfMlnV78p3JVHVxdEvl',submodules='geocoder')}"></script>
 </head>
 
 <body>
@@ -20,135 +22,231 @@
     <section class="main">
         <section class="center_section">
             <aside class="aside">
-                <div class="title_area">
-                    <span>기사관제</span>
-                    <button class="btn_x">X</button>
+                <div class="down-control-area" id="down-control-area">
+                    <div>
+                        <div class="title_area">
+                            <span id="branch-name"></span>
+                            <button id="btn-close">변경</button>
+                        </div>
+
+                        <!-- 기사관제, 상점관제 ,기상명보기-->
+                        <div>
+                            <button class="btn-control-selected" id="btn-rider-control">기사관제</button>
+                            <button class="btn-control-unselected" id="btn-shop-control">상점관제</button>
+                        </div>
+                    </div>
+
+                    <div class="rider-control-area" id="rider-control-area">
+                        <form id="form-rider-search" class="search_area">
+                            <div>
+                                <label for="text-rider-name" class="title"> 기사검색</label>
+                                <div class="keyword-area">
+
+                                    <input type="hidden" id="rider-branch-id" name="branch-id"/>
+                                    <input type="search" name="rider-name" id="text-rider-name"/>
+                                    <input type="submit" value="🔍"/>
+
+                                </div>
+                            </div>
+
+                            <div class="rider_numbers_area">
+                                <div class="rider-count-area">
+                                    <span class="title">근무자수</span>
+                                    <span class="contents" id="count-worker">12/20명</span>
+                                </div>
+
+                                <div class="rider-status-area">
+                                    <input type="hidden" id="rider-status-id" name="rider-status-id" value="0"/>
+
+                                    <input type="checkbox" checked="checked" id="work-on"/>
+                                    <label class="contents" for="work-on">출근</label>
+
+                                    <input type="checkbox" checked="checked" id="work-off"/>
+                                    <label class="contents" for="work-off">퇴근</label>
+                                </div>
+                            </div>
+                        </form>
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <td>상태</td>
+                                <td>기사명</td>
+                                <td>배차</td>
+                                <td>픽업</td>
+                                <td>완료</td>
+                                <td>전화번호</td>
+                            </tr>
+                            </thead>
+                            <tbody id="riders">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="shop-control-area" id="shop-control-area">
+                        <div class="search_area">
+                            <div>
+                                <label for="text-rider-name" class="title"> 상점검색</label>
+                                <div class="keyword-area">
+                                    <form id="form-shop-search">
+                                        <input type="hidden" id="shop-branch-id" name="branch-id"/>
+                                        <input type="search" name="shop-name" id="text-shop-name"/>
+                                        <input type="submit" value="🔍"/>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-status-area">
+                            <div>
+                                <span class="all">전체</span> <br/>
+                                <span id="count-all">1,000</span>
+                            </div>
+                            <div>
+                                <span class="accept">접수</span> <br/>
+                                <span id="count-accept">1,000</span>
+                            </div>
+                            <div>
+                                <span class="allocate">배차</span> <br/>
+                                <span id="count-allocate">1,000</span>
+                            </div>
+                            <div>
+                                <span class="pickup">픽업</span> <br/>
+                                <span id="count-pickup">1,000</span>
+                            </div>
+                            <div>
+                                <span class="complete">완료</span> <br/>
+                                <span id="count-complete">1,000</span>
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <td>상점명</td>
+                                <td>접수</td>
+                                <td>배차</td>
+                                <td>픽업</td>
+                                <td>완료</td>
+                                <td>연락처</td>
+                            </tr>
+                            </thead>
+                            <tbody id="shops">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="search_area">
-                    <label for="기사명" class="title"> 기사명</label>
-                    <input type="search" id="기사명"/>
-                    <input type="submit" value="검색"/>
+                <div class="branch-control-area" id="branch-control-area">
+                    <div class="name-branch-area">
+                        <span>지사 선택</span>
+                    </div>
+
+                    <div class="branch-search-area">
+
+                        <div class="city-area">
+                            <select id="metro">
+                                <option value="광주">광주광역시</option>
+                                <option value="대구">대구광역시</option>
+                                <option value="대전">대전광역시</option>
+                                <option value="부산">부산광역시</option>
+                                <option value="서울">서울특별시</option>
+                                <option value="울산">울산광역시</option>
+                                <option value="인천">인천광역시</option>
+                            </select>
+                        </div>
+
+                        <div class="keyword-area">
+                            <form id="form-branch-search">
+                                <input type="search" name="branch-name"/>
+                                <input type="submit" value="🔍"/>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>지사명</td>
+                            <td>운영기사</td>
+                            <td>운영 건수</td>
+                            <td></td>
+                        </tr>
+                        </thead>
+                        <tbody id="branches">
+                        </tbody>
+                    </table>
+
                 </div>
 
-                <div class="rider_numbers_area">
-                    <ul>
-                        <li>
-                            <span class="title">근무자수</span>
-                            <span class="contents">총 20명</span>
-                        </li>
-                        <li>
-                            <span class="title">운행자수</span>
-                            <span class="contents">총 12명</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="rider_status_area">
-                    <span class="title">기사상태</span>
-                    <ul>
-                        <li>
-
-                            <input type="checkbox" id="운행중"/>
-                            <label class="contents" for="운행중">운행중</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="대기중"/>
-                            <label class="contents" for="대기중">대기중</label>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="휴식중"/>
-                            <label class="contents" for="휴식중">휴식중</label>
-                        </li>
-                    </ul>
-                </div>
-
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <td>기사상태</td>
-                        <td>기사명</td>
-                        <td>배차</td>
-                        <td>픽업</td>
-                        <td>전화번호</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>운행</td>
-                        <td>홍길동</td>
-                        <td>01</td>
-                        <td>01</td>
-                        <td>010-1234-1234</td>
-                    </tr>
-                    <tr>
-                        <td>대기</td>
-                        <td>홍길동</td>
-                        <td>01</td>
-                        <td>01</td>
-                        <td>010-1234-1234</td>
-                    </tr>
-                    <tr>
-                        <td>휴식</td>
-                        <td>홍길동</td>
-                        <td>01</td>
-                        <td>01</td>
-                        <td>010-1234-1234</td>
-                    </tr>
-                    <tr>
-                        <td>운행</td>
-                        <td>홍길동</td>
-                        <td>01</td>
-                        <td>01</td>
-                        <td>010-1234-1234</td>
-                    </tr>
-                    <tr>
-                        <td>운행</td>
-                        <td>홍길동</td>
-                        <td>01</td>
-                        <td>01</td>
-                        <td>010-1234-1234</td>
-                    </tr>
-                    </tbody>
-                </table>
             </aside>
 
             <section class="right">
-                <section class="map">
+                <section class="map" id="map">
 
                 </section>
 
+                <div class="name-tag">
+                    <div>
+                        <input type="checkbox" id="afe"/>
+                        <label for="afe">이름 표시</label>
+                    </div>
+                </div>
+
                 <section class="map_down">
-                    <ul>
-                        <li>
-                            <button class="btn_pickup">픽업</button>
-                            <span>우리집통닭 > </span>
-                            <span>부산진역</span>
-                            <button class="btn_detail">주문상세보기</button>
-                        </li>
-                        <li>
-                            <button class="btn_allow">배차</button>
-                            <span>우리집통닭 > </span>
-                            <span>부산진역</span>
-                            <button class="btn_detail">주문상세보기</button>
-                        </li>
-                    </ul>
+                    <table>
+                        <thead>
+
+                        <tr>
+                            <td colspan="3">
+                                <span>기사명 :</span>
+                                <span>#</span>
+                                <span>전화번호 : 010-1010-1010</span>
+                                <span>#</span>
+                            </td>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr>
+                            <td>
+                                <button class="btn_pickup">픽업</button>
+                            </td>
+                            <td>
+                                <span>우리집통닭</span>
+                                <span> > </span>
+                                <span>부산진역</span>
+                            </td>
+                            <td>
+                                <button class="btn_detail">주문상세보기</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <button class="btn_allow">배차</button>
+                            </td>
+                            <td>
+                                <span>우리집통닭 </span>
+                                <span> > </span>
+                                <span>부산진역</span>
+                            </td>
+                            <td>
+                                <button class="btn_detail">주문상세보기</button>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
                 </section>
             </section>
         </section>
-
-        <!-- 기사관제, 상점관제 ,기상명보기-->
-        <section class="footer">
-            <button class="btn1">기사관제</button>
-            <button class="btn2">상점관제</button>
-
-            <div class="option_rider">
-                <input type="checkbox" id="기사명보기"/>
-                <label for="기사명보기">기사명보기</label>
-            </div>
-        </section>
     </section>
 </div>
+<script src="/js/control.js" type="module"></script>
 </body>
-
 </html>

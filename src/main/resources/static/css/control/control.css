@@ -25,19 +25,18 @@ body {
 .center_section {
   position: relative;
   width: 100%;
-  height: calc(100% - 50px);
+  height: 100%;
   float: left;
 }
 
 .aside {
-  position: absolute;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
-  border-right: 1px solid #d0d0d0;
+  border-right: 2px solid #d0d0d0;
   height: 100%;
-  width: 370px;
+  width: 360px;
   background-color: #FFFFFF;
+  float: left;
 }
-.aside div {
+.aside div > {
   border-bottom: 1px solid #d0d0d0;
 }
 .aside ul {
@@ -49,133 +48,247 @@ body {
 }
 
 .right {
+  width: calc(100% - 362px);
+  height: 100%;
+  float: left;
+}
+.right .map {
+  position: relative;
   width: 100%;
   height: 100%;
   float: left;
 }
-
-.map {
-  width: 100%;
-  height: calc(100% - 90px);
-  float: left;
-  background-color: #d0d0d0;
-}
-
-.map_down {
-  width: 100%;
-  height: 90px;
-  float: left;
-  clear: both;
-}
-
-.footer {
-  box-shadow: 0 -2px 4px 0 rgba(77, 77, 77, 0.21);
-  border: 1px solid #d0d0d0;
-  width: calc(100% - 2px);
+.right .name-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 140px;
   height: 50px;
+  opacity: 0.9;
+  background-color: #ffffff;
+}
+.right .name-tag div {
+  margin-top: 13px;
+  margin-left: 25px;
+  float: left;
+}
+.right .name-tag div input[type=checkbox] {
+  margin: 5px;
+  width: 15px;
+  height: 15px;
+  float: left;
+}
+.right .name-tag div label {
+  margin-top: 1px;
+  font-size: 14px;
+  color: #4a4a4a;
+  float: left;
+}
+.right .map_down {
+  width: 100%;
+  height: 210px;
   float: left;
   clear: both;
-  background-color: #FFFFFF;
+  display: none;
 }
-
-.option_rider {
-  border-left: 1px solid #c1c1c1;
-  padding: 14px 21px;
-  float: right;
+.right .map_down table {
+  width: 100%;
+  float: left;
+  clear: both;
+  border-collapse: collapse;
 }
-.option_rider span {
-  font-size: 14px;
-  font-weight: 500;
+.right .map_down table thead {
+  font-size: 16px;
+  font-weight: bold;
   color: #4a4a4a;
+  border-top: 2px solid #d0d0d0;
+  border-bottom: 2px solid #d0d0d0;
+}
+.right .map_down table thead td {
+  padding: 10px;
+}
+.right .map_down table tbody {
+  font-size: 14px;
+  color: #4a4a4a;
+}
+.right .map_down table tbody tr {
+  border: 1px solid #d0d0d0;
+}
+.right .map_down table tbody tr td {
+  padding: 10px;
 }
 
 .title_area {
-  padding-left: 10px;
-  padding-right: 10px;
-  width: calc(100% - 20px);
+  padding: 20px;
+  width: calc(100% - 40px);
+  height: 40px;
   float: left;
   clear: both;
+  background-color: #f0f0f0;
 }
 .title_area span {
-  margin-top: 9px;
-  margin-bottom: 9px;
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 500;
+  line-height: 40px;
   color: #4a4a4a;
   float: left;
 }
 .title_area button {
-  border: 0;
-  width: 20px;
-  height: 20px;
-  margin: 10px;
-  padding: 5px;
+  width: 55px;
+  height: 28px;
+  border-radius: 2px;
   float: right;
-  background-color: #9b9b9b;
+  background-color: #f0f0f0;
+  border: 1px solid #d0d0d0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #979797;
+}
+
+.down-control-area {
+  width: 100%;
+  float: left;
+  display: none;
+}
+
+.branch-control-area {
+  width: 100%;
+  float: left;
+}
+.branch-control-area > div {
+  border-bottom: 1px solid #d0d0d0;
+}
+.branch-control-area .name-branch-area {
+  padding: 20px;
+  width: calc(100% - 40px);
+  float: left;
+}
+.branch-control-area .name-branch-area span {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a4a4a;
+}
+.branch-control-area .branch-search-area {
+  padding: 20px;
+  width: calc(100% - 20px);
+  float: left;
+}
+.branch-control-area .branch-search-area > div {
+  margin-left: 3px;
+  margin-right: 3px;
+  float: left;
+}
+.branch-control-area .branch-search-area .city-area {
+  border: 1px solid #d0d0d0;
+}
+.branch-control-area .branch-search-area .city-area select {
+  border: 0;
+  width: 110px;
+  height: 35px;
+  padding-left: 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.branch-control-area .branch-search-area .city-area select::-ms-expand {
+  display: none;
+}
+
+.rider-control-area {
+  float: left;
+  width: 100%;
+}
+
+.shop-control-area {
+  display: none;
+  float: left;
+  width: 100%;
 }
 
 .search_area {
-  padding: 15px;
-  width: calc(100% - 30px);
+  padding: 10px 20px;
+  width: calc(100% - 40px);
   float: left;
   clear: both;
+  border-bottom: 1px solid #d0d0d0;
 }
-.search_area input[type=search] {
-  padding: 5px;
-  border: 1px solid #d0d0d0;
-  width: 220px;
-}
-.search_area input[type=submit] {
-  width: 66px;
-  height: 28px;
-  background-color: #ff9037;
-  border: 1px solid #ff9037;
-  color: #FFFFFF;
-}
-
-.title {
-  margin-right: 10px;
-  font-size: 12px;
-  font-weight: 300;
-  color: #9b9b9b;
+.search_area span {
   float: left;
 }
-
-.contents {
+.search_area > div {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  float: left;
+}
+.search_area .title {
+  margin-right: 10px;
+  font-size: 12px;
+  color: #979797;
+}
+.search_area .contents {
   font-size: 14px;
   font-weight: 500;
   color: #4a4a4a;
 }
-
-.rider_numbers_area {
-  padding: 15px;
-  width: calc(100% - 30px);
+.search_area .rider_numbers_area {
   float: left;
   clear: both;
 }
-.rider_numbers_area ul li {
-  margin-top: 9px;
-  margin-bottom: 9px;
-  padding-right: 30px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #ffffff;
+.search_area .rider_numbers_area .rider-count-area {
   float: left;
+}
+.search_area .rider_numbers_area .rider-status-area {
+  float: right;
 }
 
-.rider_status_area {
-  padding: 15px;
-  width: calc(100% - 30px);
+.keyword-area {
+  float: right;
+  border: 1px solid #d0d0d0;
+}
+.keyword-area input[type=search] {
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 0;
+  width: 160px;
+  height: 35px;
+}
+.keyword-area input[type=submit] {
+  background-color: rgba(0, 0, 0, 0);
+  width: 35px;
+  height: 35px;
+  border: 0;
+}
+
+.order-status-area {
+  width: 100%;
   float: left;
   clear: both;
-}
-.rider_status_area ul li {
-  padding-left: 6px;
-  padding-right: 6px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
   font-size: 14px;
   font-weight: 500;
-  color: #ffffff;
+  color: #4a4a4a;
+}
+.order-status-area > div {
   float: left;
+  width: 20%;
+}
+.order-status-area .all {
+  color: #4a4a4a;
+}
+.order-status-area .accept {
+  color: #ff9037;
+}
+.order-status-area .allocate {
+  color: #ff6987;
+}
+.order-status-area .pickup {
+  color: #c043ff;
+}
+.order-status-area .complete {
+  color: #51a0ff;
 }
 
 .table {
@@ -183,28 +296,34 @@ body {
   float: left;
   clear: both;
   border-collapse: collapse;
+  min-height: 100%;
 }
 .table thead td {
   background-color: #e3e3e3;
   font-size: 12px;
   font-weight: normal;
   color: #979797;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-left: 10px;
 }
 .table tbody td {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: #4a4a4a;
   padding-top: 10px;
   padding-bottom: 10px;
+  padding-left: 10px;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.result-area {
+  overflow-y: auto;
 }
 
 .btn_pickup {
   width: 48px;
   height: 24px;
   border-radius: 21px;
-  background-color: #9013fe;
+  background-color: #c043ff;
   font-size: 14px;
   font-weight: 500;
   color: #ffffff;
@@ -215,7 +334,7 @@ body {
   width: 48px;
   height: 24px;
   border-radius: 21px;
-  background-color: #d0021b;
+  background-color: #ff6987;
   font-size: 14px;
   font-weight: 500;
   color: #ffffff;
@@ -232,28 +351,37 @@ body {
   color: #4a4a4a;
 }
 
-.btn1 {
-  margin: 5px 3px;
-  width: 120px;
-  height: 36px;
+.btn-control-unselected:hover,
+.btn-control-selected {
+  width: 180px;
+  height: 60px;
   background-color: #ffffff;
-  border: 1px solid #ff7100;
-  font-size: 14px;
-  font-weight: 500;
-  color: #ff7100;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ff9037;
+  border: 1px solid #d0d0d0;
   float: left;
 }
 
-.btn2 {
-  margin: 5px 3px;
-  width: 120px;
-  height: 36px;
-  background-color: #ffffff;
-  border: 1px solid #bababa;
+.btn-control-unselected {
+  width: 180px;
+  height: 60px;
+  background-color: #f0f0f0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #979797;
+  border: 1px solid #d0d0d0;
+  float: left;
+}
+
+.btn-select {
+  width: 55px;
+  height: 28px;
+  border: 1px solid #ff9037;
   font-size: 14px;
   font-weight: 500;
-  color: #4a4a4a;
-  float: left;
+  color: #ff9037;
+  background-color: #FFFFFF;
 }
 
 /*# sourceMappingURL=control.css.map */
