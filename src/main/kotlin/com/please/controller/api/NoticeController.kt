@@ -44,6 +44,18 @@ class NoticeController {
         }
     }
 
+    /*
+        return ->
+            {"resultCode":, "description":,
+             "notice": {
+                            "id",
+                            "title",
+                            "content",
+                            "writerName",
+                            "createDate"
+                       }
+            }
+     */
     @GetMapping(value = ["{notice-id}"])
     fun showNotice(@PathVariable(value = "notice-id") noticeId: Int): Any {
         return try {
