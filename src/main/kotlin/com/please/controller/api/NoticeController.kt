@@ -86,7 +86,8 @@ class NoticeController {
                      notice: Notice): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = noticeService.updateNotice(authInfo.authKey, noticeId, notice)
+            notice.id = noticeId
+            val value = noticeService.updateNotice(authInfo.authKey, notice)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

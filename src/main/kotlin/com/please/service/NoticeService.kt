@@ -30,9 +30,7 @@ class NoticeService {
         return noticeDAO.getNotice(authKey, noticeId)
     }
 
-    fun updateNotice(authKey: String, noticeId: Long, notice: Notice): JSONObject? {
-        notice.id = noticeId
-
+    fun updateNotice(authKey: String, notice: Notice): JSONObject? {
         return noticeDAO.update(authKey, ObjectMapper().writeValueAsString(notice))
     }
     fun deleteNotice(authKey: String, noticeId: Long): JSONObject? {

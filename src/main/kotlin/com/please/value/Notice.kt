@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Notice(
         @JsonProperty("id")
-        var id: Long,
+        var id: Long? = null,
         @JsonProperty("title")
         val title: String,
         @JsonProperty("content")
-        val contents: String,
+        val content: String,
         @JsonProperty("types")
-        val types: MutableList<Int>?
+        val types: MutableList<Int>? = null
 )
