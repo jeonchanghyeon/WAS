@@ -6,7 +6,7 @@
     <nav>
         <ul>
             <li><a href="/statuses">현황</a></li>
-            <li><a href="#/controls/shop">관제</a></li>
+            <li><a href="/controls/shop">관제</a></li>
             <li><a href="#/managements">관리</a></li>
             <li><a href="#/statistics">통계</a></li>
             <li><a href="#/settings">설정</a></li>
@@ -15,12 +15,12 @@
     </nav>
 
     <input type="hidden" name="id" id="userId" th:value="${id}"/>
-    <input type="hidden" name="group" id="group" th:value="${group}"/>
+    <input type="hidden" name="group" id="group" value="5"/>
     <div class="header-right">
         <div class="point-area">
-            <span id="point" th:text="${point}">-1</span>
+            <span id="point">-1</span>
         </div>
-        <a href="order-reception">
+        <a href="#order-reception">
             <button class="button">접수하기</button>
         </a>
     </div>

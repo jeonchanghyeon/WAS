@@ -2,6 +2,7 @@ import {ajax, withGetMethod, withPostMethod} from './ajax.js'
 import {loadDetail} from './delivery_details.js'
 import {getMeta} from './meta.js'
 import {calendarListener} from './calendar.js'
+import {loadPoint} from "./point.js";
 
 const Group = {
     GUEST: 1,
@@ -270,6 +271,8 @@ let selectedRowClassName = null;
 let pageIndex = 1;
 let isEmpty = false;
 
+loadPoint();
+
 function setSearchType() {
     const selectSearchType = document.getElementById('search_type');
 
@@ -377,7 +380,7 @@ function appendOptions(element, size, texts, values) {
 }
 
 const getRider = (branchId) => {
-    const url = "/api/riders/list?group=2&id=" + branchId;
+    const url = "/api/riders/list?id=" + branchId;
 
     ajax(
         url,
@@ -394,7 +397,7 @@ const getRider = (branchId) => {
 };
 
 const getShop = (branchId) => {
-    const url = "/api/shops/list?group=3&id=" + branchId;
+    const url = "/api/shops/list?id=" + branchId;
 
     ajax(
         url,
@@ -411,7 +414,7 @@ const getShop = (branchId) => {
 };
 
 const getBranchList = (distribId) => {
-    const url = "/api/branches/list?group=6&id=" + distribId;
+    const url = "/api/branches/list?id=" + distribId;
 
     ajax(
         url,
@@ -431,7 +434,7 @@ const getBranchList = (distribId) => {
 };
 
 const getBranch = (distribId) => {
-    const url = "/api/branches/list?group=5&id=" + distribId;
+    const url = "/api/branches/list?id=" + distribId;
 
     ajax(
         url,
@@ -467,8 +470,8 @@ const getDistribList = (headId) => {
         });
 };
 
-const getDistrib = (headId, group) => {
-    const url = "/api/distribs?group=" + group + "&id=" + headId;
+const getDistrib = (headId) => {
+    const url = "/api/distribs?id=" + headId;
 
     ajax(
         url,
@@ -631,13 +634,13 @@ document.body.onload = () => {
             break;
 
         case Group.BRANCH:
-            getDistrib(id, parseInt(group));
+            getDistrib(id);
             getBranch(id);
 
             break;
 
         case Group.DISTRIB:
-            getDistrib(id, parseInt(group));
+            getDistrib(id);
 
             branchSelect.onchange = function () {
                 const branchId = this.options[this.selectedIndex].value;
