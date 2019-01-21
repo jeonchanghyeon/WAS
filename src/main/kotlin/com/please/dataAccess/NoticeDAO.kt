@@ -49,9 +49,9 @@ class NoticeDAO {
         return null
     }
 
-    fun delete(authKey: String, noticeId: Long): JSONObject? {
+    fun delete(authKey: String, deletedNotice: JSONObject): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL removeNotice(?, ?)", authKey, noticeId)
+            return template.queryForJSONObject("CALL removeNotice(?, ?)", authKey, deletedNotice.toString())
         } catch (e: Exception) {
             e.printStackTrace()
         }

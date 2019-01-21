@@ -34,6 +34,9 @@ class NoticeService {
         return noticeDAO.update(authKey, ObjectMapper().writeValueAsString(notice))
     }
     fun deleteNotice(authKey: String, noticeId: Long): JSONObject? {
-        return noticeDAO.delete(authKey, noticeId)
+        val info = JSONObject()
+        info.put("id", noticeId)
+
+        return noticeDAO.delete(authKey, info)
     }
 }

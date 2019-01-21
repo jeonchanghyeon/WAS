@@ -44,7 +44,7 @@ class NoticeController {
     }
 
     @RequestMapping(method = [RequestMethod.PUT])
-    fun addNotice(notice: Notice): Any {
+    fun addNotice(@RequestBody notice: Notice): Any {
         return try {
             val authInfo = getAuthInfo()!!
             val value = noticeService.addNotice(authInfo.authKey, notice)
@@ -52,6 +52,7 @@ class NoticeController {
             value!!.toString()
         } catch (e: Exception) {
             e.printStackTrace()
+            println("message: " + e.message)
             mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
         }
     }
