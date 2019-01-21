@@ -2,6 +2,7 @@ import {ajax, withGetMethod, withPostMethod} from './ajax.js'
 import {loadDetail} from './delivery_details.js'
 import {getMeta} from './meta.js'
 import {calendarListener} from './calendar.js'
+import {loadPoint} from "./point.js";
 
 const Group = {
     GUEST: 1,
@@ -269,6 +270,8 @@ let selectedRow = null;
 let selectedRowClassName = null;
 let pageIndex = 1;
 let isEmpty = false;
+
+loadPoint();
 
 function setSearchType() {
     const selectSearchType = document.getElementById('search_type');
