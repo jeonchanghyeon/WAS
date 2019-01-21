@@ -80,4 +80,31 @@ class NoticeController {
             mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
         }
     }
+
+    @RequestMapping(value = ["{notice-id}"], method = [RequestMethod.POST])
+    fun updateNotice(@PathVariable(value = "notice-id") noticeId: Long,
+                     notice: Notice): Any {
+        return try {
+            val authInfo = getAuthInfo()!!
+            val value = noticeService.updateNotice(authInfo.authKey, noticeId, notice)
+            println(value)
+            value!!.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
+        }
+    }
+
+    @RequestMapping(value = ["{notice-id}"], method = [RequestMethod.DELETE])
+    fun deleteNotice(@PathVariable(value = "notice-id") noticeId: Long): Any {
+        return try {
+            val authInfo = getAuthInfo()!!
+            val value = noticeService.deleteNotice(authInfo.authKey, noticeId)
+            println(value)
+            value!!.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
+        }
+    }
 }

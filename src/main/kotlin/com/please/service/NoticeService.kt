@@ -29,4 +29,13 @@ class NoticeService {
     fun showNoticeDetail(authKey: String, noticeId: Int): JSONObject? {
         return noticeDAO.getNotice(authKey, noticeId)
     }
+
+    fun updateNotice(authKey: String, noticeId: Long, notice: Notice): JSONObject? {
+        notice.id = noticeId
+
+        return noticeDAO.update(authKey, ObjectMapper().writeValueAsString(notice))
+    }
+    fun deleteNotice(authKey: String, noticeId: Long): JSONObject? {
+        return noticeDAO.delete(authKey, noticeId)
+    }
 }

@@ -22,14 +22,14 @@ class NoticeDAO {
         return null
     }
 
-//    fun update(authKey: String, ): JSONObject? {
-//        try {
-//            return template.queryForJSONObject("CALL setNotice(?, ?)", authKey, noticeInfo.toString())
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//        return null
-//    }
+    fun update(authKey: String, noticeInfo: String): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL setNotice(?, ?)", authKey, noticeInfo)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 
     fun getNotice(authKey: String, noticeId: Int): JSONObject? {
         try {
@@ -43,6 +43,15 @@ class NoticeDAO {
     fun insert(authKey: String, addedNotice: String): JSONObject? {
         try {
             return template.queryForJSONObject("CALL addNotice(?, ?)", authKey, addedNotice)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    fun delete(authKey: String, noticeId: Long): JSONObject? {
+        try {
+            return template.queryForJSONObject("CALL removeNotice(?, ?)", authKey, noticeId)
         } catch (e: Exception) {
             e.printStackTrace()
         }
