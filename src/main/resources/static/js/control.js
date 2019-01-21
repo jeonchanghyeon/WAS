@@ -1,4 +1,4 @@
-import {withGetMethod} from './ajax.js'
+import {ajax, withGetMethod} from './ajax.js'
 import {loadPoint} from "./point.js";
 
 const $ = (id) => document.getElementById(id);
@@ -480,5 +480,36 @@ function c() {
                 console.log(e)
             }
         }
-    )
+    );
+
+    ajax(
+        "/api/orders/statuses?branch-id=" + $("shop-branch-id").value,
+        "GET",
+        (obj) => {
+            const info = obj["info"];
+
+            const infoKey = [
+                "acceptCount",
+                "allocateCount",
+                "pickupCount",
+                "completeCount"
+            ];
+
+            const countId = [
+                "count-accept",
+                "count-allocate",
+                "count-pickup",
+                "count-complete"
+            ];
+
+            let sum = 0;
+
+            for (let i = 0; i < infoKey.length; i++) {
+                sum += info[infoKey[i]];
+                $(countId[i]).innerHTML = info[infoKey[i]];
+            }
+
+            $("count-all").innerHTML = sum;
+        }
+    );
 }
