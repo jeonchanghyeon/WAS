@@ -12,7 +12,7 @@ data class OrderReceiptInfo(
         @JsonProperty("road")
         val road: String,
         @JsonProperty("address-detail")
-        val addressDetail: String,
+        val addressDetail: String?,
         @JsonProperty("distance-factor")
         val distanceFactor: Double?,
         @JsonProperty("latitude")
@@ -32,7 +32,7 @@ data class OrderReceiptInfo(
         @JsonProperty("cook-time")
         val cookTime: Int,
         @JsonProperty("order-auto-cancel-time")
-        val orderAutoCancelTime: Int,
+        val orderAutoCancelTime: Int?,
         @JsonProperty("delivery-cost")
         val deliveryCost: Long,
         @JsonProperty("additional-cost")
@@ -47,4 +47,11 @@ data class OrderReceiptInfo(
         val point: Long,
         @JsonProperty("is-shared")
         val isShared: Boolean?
-)
+) {
+        constructor() : this(
+                0, null, "","", null, null,
+                null, null, null, "", 0, null, 0,
+                -1,null, -1,0,0,"",null,0,
+                null
+        )
+}

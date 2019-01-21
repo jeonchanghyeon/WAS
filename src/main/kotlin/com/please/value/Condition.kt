@@ -7,7 +7,7 @@ class Condition {
     lateinit var branchId: String
     var id: Long? = null
     var shopName: String? = null
-//    var riderName: String? = null
+    var riderName: String? = null
     var orderStatusIds: MutableList<Int> = mutableListOf()
     var paymentTypes: MutableList<Int> = mutableListOf()
     var isShared: Boolean = false

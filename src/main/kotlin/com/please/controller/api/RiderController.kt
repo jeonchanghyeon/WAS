@@ -53,7 +53,7 @@ class RiderController {
             }
      */
     @GetMapping(value = ["{rider-id}"])
-    fun getRiderList(@PathVariable(value = "rider-id") id: Long,
+    fun getRiderInfo(@PathVariable(value = "rider-id") id: Long,
                      @RequestParam(value = "start-date", required = false) startDate: String?,
                      @RequestParam(value = "end-date", required = false) endDate: String?): Any {
         return try {
