@@ -13,9 +13,9 @@ class NoticeDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun getNoticeList(authKey: String, noticeInfo: JSONObject): JSONObject? {
+    fun getNoticeList(authKey: String, noticeInfo: String): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getSearchedNotices2(?, ?)", authKey, noticeInfo.toString())
+            return template.queryForJSONObject("CALL getSearchedNotices2(?, ?)", authKey, noticeInfo)
         } catch (e: Exception) {
             e.printStackTrace()
         }

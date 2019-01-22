@@ -3,6 +3,7 @@ package com.please.controller.api
 import com.please.persistence.getAuthInfo
 import com.please.service.NoticeService
 import com.please.value.Notice
+import com.please.value.NoticeCondition
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -25,16 +26,13 @@ class NoticeController {
             }
      */
     @GetMapping
-    fun showNoticeList(@RequestParam(value = "view-type") viewType: Int,
-                       @RequestParam(value = "writer-id", required = false) writerId: Long?,
-                       @RequestParam(value = "view-groups") viewGroups: MutableList<Int>,
-                       @RequestParam(value = "page-index", required = false) pageIndex: Int?): Any {
+    fun showNoticeList(noticeCondition: NoticeCondition): Any {
         /* view-type : 5 -> 지사 공지 확인, 6 -> 총판 공지 확인, 7 -> 본사 공지 확인
          * view-groups == user-group
          *  */
         return try {
             val authInfo = getAuthInfo()!!
-            val value = noticeService.showNoticeList(authInfo.authKey, viewType, writerId, viewGroups, pageIndex)
+            val value = noticeService.showNoticeList(authInfo.authKey, noticeCondition)
             println(value)
             value!!.toString()
         } catch (e: Exception) {
@@ -52,7 +50,6 @@ class NoticeController {
             value!!.toString()
         } catch (e: Exception) {
             e.printStackTrace()
-            println("message: " + e.message)
             mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
         }
     }

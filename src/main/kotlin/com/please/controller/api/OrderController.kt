@@ -2,7 +2,7 @@ package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
 import com.please.service.OrderService
-import com.please.value.Condition
+import com.please.value.OrderCondition
 import com.please.value.OrderReceiptInfo
 import com.please.value.OrderStatus
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,10 +15,10 @@ class OrderController {
     private lateinit var orderService: OrderService
 
     @GetMapping
-    fun getCondition(condition: Condition): Any {
+    fun getCondition(orderCondition: OrderCondition): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            val value = orderService.searchOrdersInfo(authInfo, condition)
+            val value = orderService.searchOrdersInfo(authInfo, orderCondition)
             println(value)
             value!!.toString()
         } catch (e: Exception) {

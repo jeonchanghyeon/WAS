@@ -3,7 +3,7 @@ package com.please.value
 import com.fasterxml.jackson.annotation.JsonInclude
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class Condition {
+class OrderCondition {
     lateinit var branchId: String
     var id: Long? = null
     var shopName: String? = null

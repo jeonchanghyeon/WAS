@@ -3,7 +3,7 @@ package com.please.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.please.dataAccess.OrderDAO
 import com.please.value.AuthInfo
-import com.please.value.Condition
+import com.please.value.OrderCondition
 import com.please.value.OrderReceiptInfo
 import com.please.value.OrderStatus
 import org.json.JSONObject
@@ -30,7 +30,7 @@ class OrderService {
         return orderDAO.addOrder(authKey, ObjectMapper().writeValueAsString(orderReceiptInfo))
     }
 
-    fun searchOrdersInfo(authInfo: AuthInfo, condition: Condition): JSONObject? {
+    fun searchOrdersInfo(authInfo: AuthInfo, condition: OrderCondition): JSONObject? {
         val branchId = condition.branchId
 
         val ordersResult = orderDAO.searchOrders(branchId, ObjectMapper().writeValueAsString(condition).toString().replace("shared", "isShared"))
