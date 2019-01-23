@@ -7,8 +7,10 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Please</title>
-    <link rel="stylesheet" href="/css/recept_order.css"/>
-    <link rel="stylesheet" href="/css/popup_search_address.css"/>
+    <!--<link rel="stylesheet" href="/css/recept_order.css"/>-->
+    <!--<link rel="stylesheet" href="/css/popup_search_address.css"/>-->
+    <link rel="stylesheet" href="../../static/css/recept_order.css"/>
+    <link rel="stylesheet" href="../../static/css/popup_search_address.css"/>
 </head>
 
 <body>
@@ -27,9 +29,25 @@
             <section class="left_section">
                 <ul>
                     <li class="required">
+                        <span class="subsection_title">지사명</span>
+                        <div class="name_area">
+                            <input type="text" required="required" class="name" name="branch-name"
+                                   placeholder="지사명을 입력하세요."/>
+                            <button class="btn_search" id="btn_branch_name"> 검색</button>
+                        </div>
+                    </li>
+                    <li class="required">
+                        <span class="subsection_title">상점명</span>
+                        <div class="name_area">
+                            <input type="text" required="required" class="name" name="shop-name"
+                                   placeholder="상점명을 입력하세요."/>
+                            <button class="btn_search" id="btn_shop_name"> 검색</button>
+                        </div>
+                    </li>
+                    <li class="required">
                         <label class="subsection_title">고객전화번호</label>
                         <input type="tel" required="required" class="numbers" name="customer-tel"
-                               placeholder="고객전화번호를 입력하세요" id="1"/>
+                               placeholder="고객전화번호를 입력하세요."/>
                     </li>
                     <li class="required">
                         <span class="subsection_title">고객 주소</span>
@@ -54,41 +72,66 @@
                     </li>
 
                     <li>
-                        <span class="subsection_title">상품정보</span>
-                        <div class="item_info">
-                            <button class="btn_white">갯수추가</button>
-                            <button class="btn_black">메뉴(POS)</button>
+                        <div class="item_info_container">
+                            <span class="subsection_title" style="flex-grow:7">상품정보</span>
+                            <div>
+                                <button class="btn_black">메뉴(POS)</button>
+                                <button class="btn_white">갯수추가</button>
+                            </div>
                         </div>
-
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <td>순번</td>
-                                <td>상품명</td>
-                                <td>구분</td>
-                                <td>단간</td>
-                                <td>갯수</td>
-                                <td>판매가</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>17</td>
-                                <td>시간</td>
-                                <td>전화번호변경</td>
-                                <td>안상점</td>
-                            </tr>
-                            <tr>
-                                <td>17</td>
-                                <td>시간</td>
-                                <td>전화번호변경</td>
-                                <td>안상점</td>
-                            </tr>
-                            </tbody>
-                            <caption>
-                                더블클릭하면 상품이 삭제됩니다.
-                            </caption>
-                        </table>
+                        <div class="table_outer">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <td>순번</td>
+                                    <td>상품명</td>
+                                    <td>구분</td>
+                                    <td>단간</td>
+                                    <td>갯수</td>
+                                    <td>판매가</td>
+                                </tr>
+                                </thead>
+                            </table>
+                            <div class="table_scroll">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td><span>1</span></td>
+                                        <td><span>핫도그</span></td>
+                                        <td><span>0</span></td>
+                                        <td><span>15,000</span></td>
+                                        <td><span>3</span></td>
+                                        <td><span>45,000</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>2</span></td>
+                                        <td><span>미국산 A급 명품 마블링 가득 소고기 스테이크</span></td>
+                                        <td><span>0</span></td>
+                                        <td><span>500</span></td>
+                                        <td><span>1</span></td>
+                                        <td><span>500</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>3</span></td>
+                                        <td><span>붕어빵</span></td>
+                                        <td><span>0</span></td>
+                                        <td><span>10,230,000</span></td>
+                                        <td><span>4</span></td>
+                                        <td><span>40,920,000</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>4</span></td>
+                                        <td><span>아이스크림</span></td>
+                                        <td><span>0</span></td>
+                                        <td><span>100,000,000,000</span></td>
+                                        <td><span>120</span></td>
+                                        <td><span>12,000,000,000,000</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <span>더블클릭하면 상품이 삭제됩니다.</span>
+                        </div>
 
                         <input type="hidden" name="menu"/>
                     </li>
@@ -205,12 +248,11 @@
                 </article>
 
                 <div class="buttons">
-
+                    <button class="btn_request" type="submit">배송요청</button>
                     <input type="radio" hidden="hidden" id="wait" name="is-suspend" value="true"/>
                     <label for="wait" class="btn_wait">접수대기</label>
-
+                    <button class="btn_cancel" type="submit">취소</button>
                     <!--<button class="btn_wait" name="is-suspend" value="true" type="submit">접수대기</button>-->
-                    <button class="btn_request" type="submit">배송요청</button>
                 </div>
             </section>
 

@@ -104,7 +104,7 @@ article {
   font-size: 12px;
   font-weight: 500;
   color: #4a4a4a;
-  float: left;
+  float: right;
 }
 
 .btn_black {
@@ -119,7 +119,7 @@ article {
   font-size: 12px;
   font-weight: 500;
   color: #FFFFFF;
-  float: left;
+  float: right;
 }
 
 .btn_payment {
@@ -225,26 +225,27 @@ article {
 .btn_wait {
   text-align: center;
   margin-left: 5px;
-  margin-right: 5px;
+  margin-right: 19px;
   padding-top: 7px;
   padding-bottom: 7px;
-  width: 195px;
-  border: 1px solid #d0d0d0;
+  width: 123px;
+  height: 26px;
+  border: 1px solid #ff9037;
   background-color: #FFFFFF;
   border-radius: 21px;
   font-size: 16px;
   font-weight: bold;
-  color: #9b9b9b;
-  clear: both;
+  color: #ff9037;
   float: left;
 }
 
 .btn_request {
   margin-left: 5px;
-  margin-right: 5px;
+  margin-right: 4px;
   padding-top: 7px;
   padding-bottom: 7px;
-  width: 195px;
+  width: 125px;
+  height: 42px;
   border: 1px solid #ff9037;
   background-color: #ff9037;
   border-radius: 21px;
@@ -254,40 +255,60 @@ article {
   float: left;
 }
 
-.main_section {
-  margin-left: calc(50% - 525px);
-  margin-right: calc(50% - 525px);
-  margin-top: 50px;
+.btn_cancel {
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  width: 125px;
+  height: 42px;
+  border: 1px solid #9b9b9b;
+  background-color: #FFFFFF;
+  border-radius: 21px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #9b9b9b;
   float: left;
 }
 
-.table {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid #d0d0d0;
-  caption-side: bottom;
+.main_section {
+  margin: 10px calc(50% - 525px) 20px;
   float: left;
-  clear: both;
 }
-.table caption {
-  text-align: right;
+
+.table_outer {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #d9d9d9;
+}
+.table_outer span {
+  float: right;
   font-size: 12px;
   font-weight: normal;
-  color: #9b9b9b;
+}
+
+.table_scroll {
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 66px;
+}
+
+.table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
 }
 .table thead {
   background-color: #eaeaea;
   font-size: 12px;
   font-weight: normal;
   color: #4a4a4a;
-  border-top: 1px solid #eaeaea;
 }
 .table thead th, .table thead td {
-  border-bottom: 1px solid #eaeaea;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  height: 24px;
+  text-align: center;
+  vertical-align: middle;
 }
 .table tbody {
   font-size: 14px;
@@ -295,12 +316,43 @@ article {
   color: #1f1f1f;
 }
 .table tbody th, .table tbody td {
+  vertical-align: middle;
+  height: 33px;
   border-bottom: 1px solid #eaeaea;
-  padding: 5px 40px 5px 10px;
+}
+.table tbody th span, .table tbody td span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  float: left;
+  width: 100%;
+}
+.table td:nth-child(1), .table th:nth-child(1) {
+  width: 40px;
+  text-align: center;
+}
+.table td:nth-child(2), .table th:nth-child(2) {
+  width: 100px;
+  padding-left: 10px;
+}
+.table td:nth-child(3), .table th:nth-child(3) {
+  width: 40px;
+  text-align: center;
+}
+.table td:nth-child(4), .table th:nth-child(4) {
+  width: 80px;
+  padding-left: 10px;
+}
+.table td:nth-child(5), .table th:nth-child(5) {
+  width: 40px;
+  padding-left: 10px;
+}
+.table td:nth-child(6), .table th:nth-child(6) {
+  width: calc(100% - 300px);
+  padding-left: 10px;
 }
 
 .subsection_title {
-  padding-bottom: 10px;
   font-size: 14px;
   font-weight: bold;
   color: #323232;
@@ -311,6 +363,23 @@ article {
   padding: 30px;
   width: 460px;
   float: left;
+  border-right: 1px solid #d0d0d0;
+}
+
+.dot_line {
+  border-left: 1px dashed #000;
+  border-width: 392px;
+}
+
+.name {
+  width: calc(100% - 90px);
+  font-size: 12px;
+  float: left;
+}
+
+.name_area {
+  width: calc(100% - 115px);
+  float: right;
 }
 
 .numbers {
@@ -347,10 +416,13 @@ article {
   clear: both;
 }
 
-.item_info {
+.item_info_container {
   margin-top: 5px;
   margin-bottom: 5px;
-  float: right;
+  display: flex;
+  content: "";
+  clear: both;
+  *zoom: 1;
 }
 
 .item_cost {
@@ -421,8 +493,9 @@ article {
 }
 
 .buttons {
-  margin: 15px calc(50% - 210px);
+  margin: 15px;
   float: left;
+  padding-top: 70px;
 }
 
 .memo {
