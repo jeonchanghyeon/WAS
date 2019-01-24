@@ -33,41 +33,11 @@
         <section class="right">
             <!-- 본사 공지 -->
             <div class="head-notice-area" id="head-notice-area">
-                <div class="target-area">
-                    <form id="head-notice-form" hidden="hidden"/>
-                    <input type="hidden" name="viewType" value="7" form="head-notice-form"/>
+                <form id="head-notice-form" hidden="hidden">
+                    <input type="hidden" name="viewType" value="7"/>
+                    <input type="hidden" name="viewGroups[0]" value="6"/>
+                </form>
 
-                    <div>
-                        <span>대상</span>
-                        <div class="checkbox-area">
-                            <div>
-                                <input type="checkbox" id="checkbox-branch-head"
-                                       name="viewGroups[0]" value="5"
-                                       checked="checked" form="head-notice-form"/>
-                                <label for="checkbox-branch-head"><span></span>지사</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="checkbox-distrib-head"
-                                       name="viewGroups[1]" value="6"
-                                       checked="checked" form="head-notice-form"/>
-                                <label for="checkbox-distrib-head"><span></span>총판</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="checkbox-shop-head"
-                                       name="viewGroups[2]" value="3"
-                                       checked="checked" form="head-notice-form"/>
-                                <label for="checkbox-shop-head"><span></span>상점</label>
-                            </div>
-                            <div>
-                                <input type="checkbox" id="checkbox-rider-head"
-                                       name="viewGroups[3]" value="2"
-                                       checked="checked" form="head-notice-form"/>
-                                <label for="checkbox-rider-head"><span></span>기사</label>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
                 <div>
                     <table class="table">
                         <thead>
@@ -92,11 +62,6 @@
                 <div class="target-area">
                     <form id="distrib-notice-form" hidden="hidden"/>
                     <input type="hidden" name="viewType" value="6" form="distrib-notice-form"/>
-
-                    <div class="select-area">
-                        <select class="select" id="select-distrib-head" name="writerId" form="distrib-notice-form">
-                        </select>
-                    </div>
 
                     <div>
                         <span>대상</span>
@@ -251,10 +216,6 @@
                                     <label for="555"><span></span>지사</label>
                                 </div>
                                 <div>
-                                    <input type="checkbox" id="666" value="6" form="form-notice-post"/>
-                                    <label for="666"><span></span>총판</label>
-                                </div>
-                                <div>
                                     <input type="checkbox" id="333" value="3" form="form-notice-post"/>
                                     <label for="333"><span></span>상점</label>
                                 </div>
@@ -309,10 +270,6 @@
                                 <div>
                                     <input type="checkbox" id="5555" value="5" form="form-notice-modify"/>
                                     <label for="5555"><span></span>지사</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" id="6666" value="6" form="form-notice-modify"/>
-                                    <label for="6666"><span></span>총판</label>
                                 </div>
                                 <div>
                                     <input type="checkbox" id="3333" value="3" form="form-notice-modify"/>
