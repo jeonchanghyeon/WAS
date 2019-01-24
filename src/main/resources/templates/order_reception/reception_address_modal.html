@@ -1,0 +1,286 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="../../static/css/popup_search_address.css"/>
+</head>
+<body>
+<!--<div th:fragment="modal" class="detail" id="modal">-->
+<!-- 헤더 -->
+<div class="modal_container">
+    <header class="header">
+        <span>주소검색</span>
+        <button class="btn-close" id="btn_close">X</button>
+    </header>
+
+    <div class="body">
+        <!-- 사이드 바 -->
+        <aside class="aside">
+            <div class="title_block">
+                <span>배달가능 동 선택</span>
+            </div>
+            <div class="select_container">
+                <table class="consonant">
+                    <tr>
+                        <td>전체</td>
+                    </tr>
+                    <tr>
+                        <td>ㄱ</td>
+                    </tr>
+                    <tr>
+                        <td>ㄴ</td>
+                    </tr>
+                    <tr>
+                        <td>ㄷ</td>
+                    </tr>
+                    <tr>
+                        <td>ㄹ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅁ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅂ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅅ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅇ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅈ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅊ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅋ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅌ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅍ</td>
+                    </tr>
+                    <tr>
+                        <td>ㅎ</td>
+                    </tr>
+                </table>
+                <div class="enable_dong_scroll">
+                    <table class="enable_dong">
+                        <tr>
+                            <td>각화동</td>
+                        </tr>
+                        <tr>
+                            <td>계림동</td>
+                        </tr>
+                        <tr>
+                            <td>관산동</td>
+                        </tr>
+                        <tr>
+                            <td>구동</td>
+                        </tr>
+                        <tr>
+                            <td>궁동</td>
+                        </tr>
+                        <tr>
+                            <td>금남로1가</td>
+                        </tr>
+                        <tr>
+                            <td>금남로2가</td>
+                        </tr>
+                        <tr>
+                            <td>금남로3가</td>
+                        </tr>
+                        <tr>
+                            <td>금남로4가</td>
+                        </tr>
+                        <tr>
+                            <td>금남로5가</td>
+                        </tr>
+                        <tr>
+                            <td>금동</td>
+                        </tr>
+                        <tr>
+                            <td>남동</td>
+                        </tr>
+                        <tr>
+                            <td>내남동</td>
+                        </tr>
+                        <tr>
+                            <td>농성동</td>
+                        </tr>
+                        <tr>
+                            <td>온천동</td>
+                        </tr>
+                        <tr>
+                            <td>사직동</td>
+                        </tr>
+                        <tr>
+                            <td>부곡동</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </aside>
+
+        <section class="main_section">
+            <div class="upper_area">
+                <div class="select_tower">
+                    <button>전체</button>
+                    <button>아파트</button>
+                    <button>빌라/주택</button>
+                    <button>모텔/호텔</button>
+                    <button>학교</button>
+                    <button>당구장</button>
+                    <button>병원</button>
+                    <button>학원</button>
+                    <button>빌딩</button>
+                    <button>관공서</button>
+                </div>
+
+                <div class="search_area">
+                    <div class="search">
+                        <span>지번주소</span>
+                        <input type="text" placeholder="ex) 44-1, 용호로 38-17"/>
+                        <!--<button><img alt="logo" src="/img/logo_small.png" width="21px" height="23px"/>주소검색</button>-->
+                        <button><img alt="logo" src="../../static/img/search_white.png"/>주소검색</button>
+                    </div>
+                    <span class="caption">* 동을 제외하고 작성해주세요.</span>
+                    <div class="search">
+                        <span>명칭</span>
+                        <input type="text" placeholder="ex) 푸르지오 아파트"/>
+                        <!--<button><img alt="logo" src="/img/logo_small.png" width="21px" height="23px"/>주소검색</button>-->
+                        <button><img alt="logo" src="../../static/img/search_white.png"/>주소검색</button>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll_table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>즐겨찾기</th>
+                        <th>건물명</th>
+                        <th>지번주소</th>
+                        <th>도로명주소</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="address_list_scroll">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td class="star">★</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18 각화동 183-18 각화동 183-18 각화동 183-18 각화동 183-18 각화동 183-18 각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        <tr>
+                            <td class="star_empty">☆</td>
+                            <td>삼진여객</td>
+                            <td>각화동 183-18</td>
+                            <td>군왕로 194번길 13</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!--</div>-->
+</body>
+</html>
