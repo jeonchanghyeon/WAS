@@ -274,7 +274,8 @@ article {
 }
 
 .main_section {
-  margin: 10px calc(50% - 525px) 20px;
+  margin: 24px calc(50% - 525px) 44px;
+  height:658px;
   float: left;
 }
 
@@ -282,12 +283,13 @@ article {
   margin-top: 8px;
   margin-bottom: 8px;
   border: 1px solid #d9d9d9;
+}
 
-  span {
-    float: right;
-    font-size: 12px;
-    font-weight: normal;
-  }
+.table_caption {
+  font-size: 12px;
+  font-weight: normal;
+  text-align:right;
+  width:100%;
 }
 
 .table_scroll {
@@ -366,15 +368,17 @@ article {
 }
 
 .left_section {
-  padding: 30px;
+  padding: 15px 30px;
   width: 460px;
+  height: 100%;
   float: left;
-  border-right: 1px solid #d0d0d0
+  border-right: 1px solid #d0d0d0;
+  display: flex;
+  flex-direction: column;
 }
 
 .dot_line {
-  border-left: 1px dashed #000;
-  border-width: 392px;
+  border-left: 392px dashed #000;
 }
 
 .name {
@@ -429,12 +433,24 @@ article {
   content: '';
   clear: both;
   *zoom: 1;
+  .subsection_title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #323232;
+    flex-grow: 7;
+  }
+}
+
+.item_cost_container {
+  display:flex;
+  flex:1;
+  flex-direction: column;
+  justify-content:flex-end;
 }
 
 .item_cost {
   margin-right: 12px;
   width: calc(33% - 12px);
-  float: left;
 
   input[type="text"] {
     text-align: right;
@@ -451,6 +467,9 @@ article {
   padding: 15px 30px;
   width: 460px;
   float: left;
+  display:flex;
+  flex-direction:column;
+  height:100%;
 }
 
 .time_area {
@@ -503,9 +522,12 @@ article {
 }
 
 .buttons {
-  margin: 15px;
-  float: left;
-  padding-top: 70px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+  margin-bottom:5px;
+  flex:1;
 }
 
 .memo {

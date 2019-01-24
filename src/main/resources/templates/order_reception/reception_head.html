@@ -7,10 +7,10 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Please</title>
-    <!--<link rel="stylesheet" href="/css/recept_order.css"/>-->
-    <!--<link rel="stylesheet" href="/css/popup_search_address.css"/>-->
-    <link rel="stylesheet" href="../../static/css/recept_order.css"/>
-    <link rel="stylesheet" href="../../static/css/popup_search_address.css"/>
+    <link rel="stylesheet" href="/css/recept_order.css"/>
+    <link rel="stylesheet" href="/css/popup_search_address.css"/>
+    <!--<link rel="stylesheet" href="../../static/css/recept_order.css"/>-->
+    <!--<link rel="stylesheet" href="../../static/css/popup_search_address.css"/>-->
 </head>
 
 <body>
@@ -70,84 +70,84 @@
 
                         </div>
                     </li>
-
-                    <li>
-                        <div class="item_info_container">
-                            <span class="subsection_title" style="flex-grow:7">상품정보</span>
-                            <div>
-                                <button class="btn_black">메뉴(POS)</button>
-                                <button class="btn_white">갯수추가</button>
-                            </div>
-                        </div>
-                        <div class="table_outer">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <td>순번</td>
-                                    <td>상품명</td>
-                                    <td>구분</td>
-                                    <td>단간</td>
-                                    <td>갯수</td>
-                                    <td>판매가</td>
-                                </tr>
-                                </thead>
-                            </table>
-                            <div class="table_scroll">
-                                <table class="table">
-                                    <tbody>
-                                    <tr>
-                                        <td><span>1</span></td>
-                                        <td><span>핫도그</span></td>
-                                        <td><span>0</span></td>
-                                        <td><span>15,000</span></td>
-                                        <td><span>3</span></td>
-                                        <td><span>45,000</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span>2</span></td>
-                                        <td><span>미국산 A급 명품 마블링 가득 소고기 스테이크</span></td>
-                                        <td><span>0</span></td>
-                                        <td><span>500</span></td>
-                                        <td><span>1</span></td>
-                                        <td><span>500</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span>3</span></td>
-                                        <td><span>붕어빵</span></td>
-                                        <td><span>0</span></td>
-                                        <td><span>10,230,000</span></td>
-                                        <td><span>4</span></td>
-                                        <td><span>40,920,000</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span>4</span></td>
-                                        <td><span>아이스크림</span></td>
-                                        <td><span>0</span></td>
-                                        <td><span>100,000,000,000</span></td>
-                                        <td><span>120</span></td>
-                                        <td><span>12,000,000,000,000</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <span>더블클릭하면 상품이 삭제됩니다.</span>
-                        </div>
-
-                        <input type="hidden" name="menu"/>
-                    </li>
-                    <li class="item_cost required">
-                        <label class="subsection_title" for="menu-price">상품요금</label><br/>
-                        <input required="required" type="text" name="menu-price" id="menu-price"/>
-                    </li>
-                    <li class="item_cost">
-                        <label class="subsection_title" for="additional-menuPrice">상품추가요금</label><br/>
-                        <input type="text" name="additional-menuPrice" id="additional-menuPrice"/>
-                    </li>
-                    <li class="item_cost">
-                        <label class="subsection_title" for="sum">고객요금 합계</label><br/>
-                        <input type="text" id="sum" disabled="disabled" value="0원"/>
-                    </li>
                 </ul>
+                <div class="item_info_container">
+                    <span class="subsection_title">상품정보</span>
+                    <div>
+                        <button class="btn_black">메뉴(POS)</button>
+                        <button class="btn_white">갯수추가</button>
+                    </div>
+                </div>
+                <div class="table_outer">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>순번</td>
+                            <td>상품명</td>
+                            <td>구분</td>
+                            <td>단간</td>
+                            <td>갯수</td>
+                            <td>판매가</td>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="table_scroll">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td><span>1</span></td>
+                                <td><span>핫도그</span></td>
+                                <td><span>0</span></td>
+                                <td><span>15,000</span></td>
+                                <td><span>3</span></td>
+                                <td><span>45,000</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>2</span></td>
+                                <td><span>미국산 A급 명품 마블링 가득 소고기 스테이크</span></td>
+                                <td><span>0</span></td>
+                                <td><span>500</span></td>
+                                <td><span>1</span></td>
+                                <td><span>500</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>3</span></td>
+                                <td><span>붕어빵</span></td>
+                                <td><span>0</span></td>
+                                <td><span>10,230,000</span></td>
+                                <td><span>4</span></td>
+                                <td><span>40,920,000</span></td>
+                            </tr>
+                            <tr>
+                                <td><span>4</span></td>
+                                <td><span>아이스크림</span></td>
+                                <td><span>0</span></td>
+                                <td><span>100,000,000,000</span></td>
+                                <td><span>120</span></td>
+                                <td><span>12,000,000,000,000</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <span class="table_caption">더블클릭하면 상품이 삭제됩니다.</span>
+                <input type="hidden" name="menu"/>
+                <div class="item_cost_container">
+                    <ul>
+                        <li class="item_cost required">
+                            <label class="subsection_title" for="menu-price">상품요금</label><br/>
+                            <input required="required" type="text" name="menu-price" id="menu-price"/>
+                        </li>
+                        <li class="item_cost">
+                            <label class="subsection_title" for="additional-menuPrice">상품추가요금</label><br/>
+                            <input type="text" name="additional-menuPrice" id="additional-menuPrice"/>
+                        </li>
+                        <li class="item_cost">
+                            <label class="subsection_title" for="sum">고객요금 합계</label><br/>
+                            <input type="text" id="sum" disabled="disabled" value="0원"/>
+                        </li>
+                    </ul>
+                </div>
             </section>
 
             <!-- 오른쪽 부분-->
@@ -248,11 +248,13 @@
                 </article>
 
                 <div class="buttons">
-                    <button class="btn_request" type="submit">배송요청</button>
-                    <input type="radio" hidden="hidden" id="wait" name="is-suspend" value="true"/>
-                    <label for="wait" class="btn_wait">접수대기</label>
-                    <button class="btn_cancel" type="submit">취소</button>
-                    <!--<button class="btn_wait" name="is-suspend" value="true" type="submit">접수대기</button>-->
+                    <div>
+                        <button class="btn_request" type="submit">배송요청</button>
+                        <input type="radio" hidden="hidden" id="wait" name="is-suspend" value="true"/>
+                        <label for="wait" class="btn_wait">접수대기</label>
+                        <button class="btn_cancel" type="submit">취소</button>
+                        <!--<button class="btn_wait" name="is-suspend" value="true" type="submit">접수대기</button>-->
+                    </div>
                 </div>
             </section>
 
