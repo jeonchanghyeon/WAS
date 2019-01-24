@@ -5,7 +5,7 @@ import {fillZero} from "./format.js"
 import {getMeta} from "./meta.js";
 
 const distribSelect = $("select-distrib-branch");
-const id = 1;
+const userId = $("userId").value;
 
 const displayDiv = (num) => {
     const ids = [
@@ -19,10 +19,31 @@ const displayDiv = (num) => {
 
     for (let i = 0; i < ids.length; i++) {
         const div = $(ids[i]);
-        if (num === i) {
-            div.style.display = "initial";
-        } else {
-            div.style.display = "none";
+        if (div !== null) {
+            if (num === i) {
+                div.style.display = "initial";
+            } else {
+                div.style.display = "none";
+            }
+        }
+    }
+};
+
+const changeButton = (num) => {
+    const ids = [
+        "btn-head-notice",
+        "btn-distrib-notice",
+        "btn-branch-notice"
+    ];
+
+    for (let i = 0; i < ids.length; i++) {
+        const button = $(ids[i]);
+        if (button !== null) {
+            if (num === i) {
+                button.className = "btn-notice-confirm-selected";
+            } else {
+                button.className = "btn-notice-confirm";
+            }
         }
     }
 };
@@ -139,45 +160,40 @@ const createNoticeList = (tbody, notices) => {
 
 const loadHeadNotice = () => {
     submitHeadForm();
-
-    $("btn-head-notice").className = "btn-notice-confirm-selected";
-    $("btn-distrib-notice").className = "btn-notice-confirm";
-    $("btn-branch-notice").className = "btn-notice-confirm";
-
+    changeButton(0);
     displayDiv(0);
-
 };
 
 const loadDistribNotice = () => {
     submitDistribForm();
-
-    $("btn-head-notice").className = "btn-notice-confirm";
-    $("btn-distrib-notice").className = "btn-notice-confirm-selected";
-    $("btn-branch-notice").className = "btn-notice-confirm";
-
+    changeButton(1);
     displayDiv(1);
 };
 
 const loadBranchNotice = () => {
     submitBranchForm();
-
-    $("btn-head-notice").className = "btn-notice-confirm";
-    $("btn-distrib-notice").className = "btn-notice-confirm";
-    $("btn-branch-notice").className = "btn-notice-confirm-selected";
-
+    changeButton(2);
     displayDiv(2);
 };
 
-$("btn-head-notice").onclick = loadHeadNotice;
+if ($("btn-head-notice") !== null) {
+    $("btn-head-notice").onclick = loadHeadNotice;
+}
 
-$("btn-distrib-notice").onclick = loadDistribNotice;
+if ($("btn-distrib-notice") !== null) {
+    $("btn-distrib-notice").onclick = loadDistribNotice;
+}
 
-$("btn-branch-notice").onclick = loadBranchNotice;
+if ($("btn-branch-notice") !== null) {
+    $("btn-branch-notice").onclick = loadBranchNotice;
+}
 
-$("btn-new-notice").onclick = () => {
+if ($("btn-new-notice") !== null) {
+    $("btn-new-notice").onclick = () => {
 
-    displayDiv(3);
-};
+        displayDiv(3);
+    };
+}
 
 const getDistribList = (headId, element) => {
     const url = "/api/distribs?id=" + headId;
@@ -205,26 +221,6 @@ const getDistribList = (headId, element) => {
         });
 };
 
-distribSelect.onchange = function () {
-    const distribId = this.options[this.selectedIndex].value;
-    const branchSelect = $("select-branch");
-
-    console.log(this.selectedIndex);
-    if (this.selectedIndex === 0) {
-        appendOptions(branchSelect, [{text: "지사 선택", value: "-1"}]);
-    } else {
-        getBranchList(distribId, branchSelect);
-    }
-};
-
-$("select-distrib-head").onchange = () => {
-    submitDistribForm();
-};
-
-$("select-branch").onchange = () => {
-    submitBranchForm();
-};
-
 const getBranchList = (distribId, element) => {
     const url = "/api/branches/list?id=" + distribId;
 
@@ -250,120 +246,171 @@ const getBranchList = (distribId, element) => {
         });
 };
 
-getDistribList(id, distribSelect);
-appendOptions($("select-branch"), [{text: "지사 선택", value: "-1"}]);
+getDistribList(userId, distribSelect);
+if ($("select-branch") !== null) {
+    appendOptions($("select-branch"), [{text: "지사 선택", value: "-1"}]);
+}
 
-getDistribList(id, $("select-distrib-head"));
+getDistribList(userId, $("select-distrib-head"));
 loadPoint();
 
-$("branch-notice-form").onsubmit = () => {
-    submitBranchForm();
+if (distribSelect !== null) {
+    distribSelect.onchange = function () {
+        const distribId = this.options[this.selectedIndex].value;
+        const branchSelect = $("select-branch");
 
-    return false;
-};
-$("distrib-notice-form").onsubmit = () => {
-    submitDistribForm();
-
-    return false;
-};
-$("head-notice-form").onsubmit = () => {
-    submitHeadForm();
-
-    return false;
-};
-
-$("checkbox-shop-branch").onclick
-    = $("checkbox-rider-branch").onclick
-    = () => {
-    submitBranchForm();
-};
-
-
-$("checkbox-branch-distrib").onclick = () => {
-    submitDistribForm();
-};
-
-$("checkbox-branch-head").onclick
-    = $("checkbox-distrib-head").onclick
-    = $("checkbox-shop-head").onclick
-    = $("checkbox-rider-head").onclick
-    = () => {
-    submitHeadForm();
-};
-
-$("form-notice-post").onsubmit = () => {
-    const url = "/api/notices";
-    const formData = new FormData($("form-notice-post"));
-
-    let jsonObject = {};
-
-    for (const [key, value] of formData.entries()) {
-        jsonObject[key] = value;
-    }
-
-    const checkboxIds = ["555", "333", "444"];
-
-    let arr = [];
-
-    for (let i = 0; i < checkboxIds.length; i++) {
-        const checkbox = $(checkboxIds[i]);
-
-        if (checkbox.checked === true) {
-            arr.push(checkbox.value);
+        console.log(this.selectedIndex);
+        if (this.selectedIndex === 0) {
+            appendOptions(branchSelect, [{text: "지사 선택", value: "-1"}]);
+        } else {
+            getBranchList(distribId, branchSelect);
         }
+    };
+}
+
+if ($("select-distrib-head") !== null) {
+    $("select-distrib-head").onchange = () => {
+        submitDistribForm();
+    };
+}
+
+if ($("select-branch") !== null) {
+    $("select-branch").onchange = () => {
+        submitBranchForm();
+    };
+}
+
+if ($("branch-notice-form") !== null) {
+    $("branch-notice-form").onsubmit = () => {
+        submitBranchForm();
+
+        return false;
+    };
+}
+
+if ($("distrib-notice-form") !== null) {
+    $("distrib-notice-form").onsubmit = () => {
+        submitDistribForm();
+
+        return false;
+    };
+}
+
+if ($("head-notice-form") !== null) {
+    $("head-notice-form").onsubmit = () => {
+        submitHeadForm();
+
+        return false;
+    };
+}
+
+if ($("checkbox-shop-branch") !== null) {
+    $("checkbox-shop-branch").onclick
+        = $("checkbox-rider-branch").onclick
+        = () => {
+        submitBranchForm();
+    };
+}
+
+
+if ($("checkbox-branch-distrib") !== null) {
+    $("checkbox-branch-distrib").onclick = () => {
+        submitDistribForm();
+    };
+}
+
+const checkboxIds = [
+    "checkbox-branch-head",
+    "checkbox-distrib-head",
+    "checkbox-shop-head",
+    "checkbox-rider-head"
+];
+
+for (let i = 0; i < checkboxIds.length; i++) {
+    const checkbox = $(checkboxIds[i]);
+
+    if (checkbox !== null) {
+        checkbox.onclick = submitHeadForm;
     }
+}
 
-    jsonObject["types"] = arr;
+if ($("form-notice-post") !== null) {
+    $("form-notice-post").onsubmit = () => {
+        const url = "/api/notices";
+        const formData = new FormData($("form-notice-post"));
 
-    ajax(url,
-        "PUT",
-        () => {
+        let jsonObject = {};
 
-        },
-        JSON.stringify(jsonObject),
-        getMeta("_csrf_header"),
-        getMeta("_csrf")
-    );
-
-    return false;
-};
-
-$("form-notice-modify").onsubmit = () => {
-    const id = $("modify-notice-write-id").value
-    const url = "/api/notices/" + id;
-    const formData = new FormData($("form-notice-modify"));
-
-    let jsonObject = {};
-
-    for (const [key, value] of formData.entries()) {
-        jsonObject[key] = value;
-    }
-
-    const checkboxIds = ["5555", "3333", "4444", "6666"];
-
-    let arr = [];
-
-    for (let i = 0; i < checkboxIds.length; i++) {
-        const checkbox = $(checkboxIds[i]);
-
-        if (checkbox.checked === true) {
-            arr.push(checkbox.value);
+        for (const [key, value] of formData.entries()) {
+            jsonObject[key] = value;
         }
-    }
 
-    jsonObject["types"] = arr;
+        const checkboxIds = ["555", "333", "444"];
 
-    ajax(url,
-        "POST",
-        () => {
-        },
-        JSON.stringify(jsonObject),
-        getMeta("_csrf_header"),
-        getMeta("_csrf")
-    );
+        let arr = [];
 
-    return false;
-};
+        for (let i = 0; i < checkboxIds.length; i++) {
+            const checkbox = $(checkboxIds[i]);
+
+            if (checkbox.checked === true) {
+                arr.push(checkbox.value);
+            }
+        }
+
+        jsonObject["types"] = arr;
+
+        ajax(url,
+            "PUT",
+            () => {
+
+            },
+            JSON.stringify(jsonObject),
+            getMeta("_csrf_header"),
+            getMeta("_csrf")
+        );
+
+        return false;
+    };
+}
+
+if ($("form-notice-modify") !== null) {
+    $("form-notice-modify").onsubmit = () => {
+        const id = $("modify-notice-write-id").value;
+        const url = "/api/notices/" + id;
+        const formData = new FormData($("form-notice-modify"));
+
+        let jsonObject = {};
+
+        for (const [key, value] of formData.entries()) {
+            jsonObject[key] = value;
+        }
+
+        const checkboxIds = ["5555", "3333", "4444", "6666"];
+
+        let arr = [];
+
+        for (let i = 0; i < checkboxIds.length; i++) {
+            const checkbox = $(checkboxIds[i]);
+
+            if (checkbox.checked === true) {
+                arr.push(checkbox.value);
+            }
+        }
+
+        jsonObject["types"] = arr;
+
+        ajax(url,
+            "POST",
+            () => {
+            },
+            JSON.stringify(jsonObject),
+            getMeta("_csrf_header"),
+            getMeta("_csrf")
+        );
+
+        return false;
+    };
+}
 
 $("btn-modify").onclick = () => {
     const noticeId = $("detail-notice-id").value;

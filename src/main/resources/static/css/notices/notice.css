@@ -42,7 +42,9 @@ aside .btn-notice-confirm {
   color: #4a4a4a;
   background-color: #f0f0f0;
 }
-aside .btn-notice-confirm:hover,
+aside .btn-notice-confirm:hover {
+  color: #ff9037;
+}
 aside .btn-notice-confirm-selected {
   width: 100%;
   height: 55px;
@@ -53,7 +55,7 @@ aside .btn-notice-confirm-selected {
   font-size: 16px;
   font-weight: bold;
   color: #ff9037;
-  background-color: #f0f0f0;
+  background-color: #FFFFFF;
 }
 aside .new-notice-btn-area {
   margin: 15px;

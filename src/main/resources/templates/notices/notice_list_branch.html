@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Please</title>
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/notices/notice.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="header/header_head :: header"></div>
+
+    <section class="main">
+
+        <!-- 사이드 바-->
+        <aside>
+            <button class="btn-notice-confirm" id="btn-head-notice">본사공지 확인</button>
+            <button class="btn-notice-confirm" id="btn-distrib-notice">총판공지 확인</button>
+            <button class="btn-notice-confirm" id="btn-branch-notice">지사공지 확인</button>
+            <div class="new-notice-btn-area">
+                <button id="btn-new-notice">+ 지사 새 공지 작성</button>
+            </div>
+        </aside>
+
+        <!-- 오른쪽 -->
+        <section class="right">
+            <!-- 본사 공지 -->
+            <div class="head-notice-area" id="head-notice-area">
+                <form id="head-notice-form" hidden="hidden">
+                    <input type="hidden" name="viewType" value="7"/>
+                    <input type="checkbox" name="viewGroups[0]" value="5"/>
+                </form>
+
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>순번</td>
+                            <td>날짜</td>
+                            <td>대상</td>
+                            <td>제목</td>
+                        </tr>
+                        </thead>
+
+                        <tbody id="result-head-notice">
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- 총판 공지 -->
+            <div class="distrib-notice-area" id="distrib-notice-area">
+                <form id="distrib-notice-form" hidden="hidden">
+                    <input type="hidden" name="viewType" value="6"/>
+                    <input type="checkbox" name="viewGroups[0]" value="3"/>
+                </form>
+
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>순번</td>
+                            <td>날짜</td>
+                            <td>대상</td>
+                            <td>제목</td>
+                        </tr>
+                        </thead>
+
+                        <tbody id="result-distrib-notice">
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <!-- 지사 공지 -->
+            <div class="branch-notice-area" id="branch-notice-area">
+                <div class="target-area">
+                    <form id="branch-notice-form" hidden="hidden"/>
+                    <input type="hidden" name="viewType" value="5" form="branch-notice-form"/>
+                    <div>
+                        <span>대상</span>
+                        <div class="checkbox-area">
+                            <div>
+                                <input type="checkbox" id="checkbox-shop-branch"
+                                       name="viewGroups[0]" value="3"
+                                       checked="checked" form="branch-notice-form"/>
+                                <label for="checkbox-shop-branch"><span></span>상점</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="checkbox-rider-branch"
+                                       name="viewGroups[1]" value="2"
+                                       checked="checked" form="branch-notice-form"/>
+                                <label for="checkbox-rider-branch"><span></span>기사</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>순번</td>
+                            <td>날짜</td>
+                            <td>대상</td>
+                            <td>제목</td>
+                        </tr>
+                        </thead>
+
+                        <tbody id="result-branch-notice"></tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <!-- 공지 글상세 -->
+            <div class="notice-wrapper-area" id="notice-detail-area">
+                <input type="hidden" id="detail-notice-id"/>
+                <table class="notice-content">
+                    <thead>
+                    <tr>
+                        <th>대상</th>
+                        <td id="detail-types"></td>
+                        <th>작성</th>
+                        <td id="detail-writer-name"></td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td colspan="3">
+                            <span id="detail-title"></span>
+                            <span id="detail-createDate"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>첨부</th>
+                        <td colspan="3"></td>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td colspan="4" id="detail-content"></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="4">
+                            <div class="btn-notice-control">
+                                <button id="btn-modify">수정</button>
+                                <button id="btn-remove">삭제</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="page-control-area">
+                    <button class="btn-pre">이전 글</button>
+                    <button class="btn-post">다음 글</button>
+                </div>
+
+            </div>
+
+            <!-- 공지 작성-->
+            <div class="notice-wrapper-area" id="notice-post-area">
+                <form id="form-notice-post" hidden="hidden"/>
+                <input type="hidden" id="notice-write-id" name="id"/>
+                <table class="notice-content">
+                    <thead>
+                    <tr>
+                        <th>대상</th>
+                        <td colspan="3">
+                            <div class="checkbox-area">
+                                <div>
+                                    <input type="checkbox" id="333" value="3" form="form-notice-post"/>
+                                    <label for="333"><span></span>상점</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="444" value="2" form="form-notice-post"/>
+                                    <label for="444"><span></span>기사</label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>첨부</th>
+                        <td colspan="3">
+                            <input type="file"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td colspan="3">
+                            <input type="text" id="post-title" name="title" form="form-notice-post"/>
+                        </td>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td colspan="4">
+                            <textarea cols="30" rows="10" id="post-content" name="content"
+                                      form="form-notice-post"></textarea>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="page-control-area">
+                    <button class="btn-confirm" id="btn-confirm" form="form-notice-post">확인</button>
+                </div>
+
+            </div>
+
+            <!-- 공지 수정-->
+            <div class="notice-wrapper-area" id="notice-modify-area">
+                <form id="form-notice-modify" hidden="hidden"/>
+                <input type="hidden" id="modify-notice-write-id" name="id"/>
+                <table class=" notice-content">
+                    <thead>
+                    <tr>
+                        <th>대상</th>
+                        <td colspan="3">
+                            <div class="checkbox-area">
+                                <div>
+                                    <input type="checkbox" id="3333" value="3" form="form-notice-modify"/>
+                                    <label for="3333"><span></span>상점</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="4444" value="2" form="form-notice-modify"/>
+                                    <label for="4444"><span></span>기사</label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>첨부</th>
+                        <td colspan="3">
+                            <input type="file"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td colspan="3">
+                            <input type="text" id="modify-title" name="title" form="form-notice-modify"/>
+                        </td>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td colspan="4">
+                            <textarea cols="30" rows="10" id="modify-content" name="content"
+                                      form="form-notice-modify"></textarea>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="page-control-area">
+                    <button class="btn-confirm" id="btn-modify-confirm" form="form-notice-modify">확인</button>
+                </div>
+
+            </div>
+
+        </section>
+
+    </section>
+</div>
+<script src="/js/notice.js" type="module"></script>
+</body>
+
+</html>
