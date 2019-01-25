@@ -47,12 +47,29 @@ body {
   }
 
   input[type="checkbox"] {
-    width: 15px;
-    height: 15px;
-    border-radius: 1px;
+    display: none;
+    float: left;
 
-    &:checked {
-      background-color: #ff7100;
+    + label {
+      float: left;
+      margin-right : 5px;
+
+      span {
+        margin-top: 4px;
+        margin-right: 5px;
+        float: left;
+        width: 14px;
+        height: 14px;
+        border-radius: 1px;
+        border: 1px solid #515151;
+        background-color: #373737;
+      }
+    }
+
+    &:checked + label span {
+      border: 1px solid #ff7100;
+      background: url("/img/checkbox.png") no-repeat;
+      background-size: 14px;
     }
   }
 
@@ -66,6 +83,7 @@ body {
     appearance: none;
     padding-right: 28px;
     background: #373737 url(../img/select_btn.png) no-repeat 100% 50%;
+    background-size: 30px;
 
     &::-ms-expand {
       display: none;
@@ -149,10 +167,11 @@ body {
   .select-start-date,
   .select-end-date {
     width: calc(50% - 35px);
-    height: 28px;
+    height: 30px;
     padding-right: 30px;
     padding-left: 10px;
     background: url(../img/select_btn.png) no-repeat 100% 50%;
+    background-size: 30px;
     float: left;
   }
 
@@ -164,7 +183,6 @@ body {
       float: right;
 
       span {
-        width: 35px;
         text-align: center;
       }
     }
@@ -274,8 +292,8 @@ body {
 
   div {
     float: left;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 
   label {
