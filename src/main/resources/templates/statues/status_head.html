@@ -45,7 +45,7 @@
                         <div class="item-content">
                             <input type="text" name="startDate" class="select-start-date" id="select_start_date"
                                    readonly="readonly" value="2018-01-01 / 09:00"/>
-                            <span> ~ </span>
+                            <span>&nbsp; ~ &nbsp;</span>
                             <input type="text" name="endDate" class="select-end-date" id="select_end_date"
                                    readonly="readonly" value="2018-12-31 / 09:00"/>
                         </div>
@@ -53,15 +53,18 @@
                     <div class="item">
                         <span>결제방법</span>
                         <div class="item-content">
-                            <label>
-                                <input type="checkbox" name="paymentTypes[0]" value="1" checked="checked"/>
-                                카드 </label>
-                            <label>
-                                <input type="checkbox" name="paymentTypes[1]" value="2" checked="checked"/>
-                                현금 </label>
-                            <label>
-                                <input type="checkbox" name="paymentTypes[2]" value="3" checked="checked"/>
-                                선결제</label>
+
+                            <input type="checkbox" name="paymentTypes[0]" value="1" id="paymentTypes[0]"
+                                   checked="checked"/>
+                            <label for="paymentTypes[0]"><span></span>카드</label>
+
+                            <input type="checkbox" name="paymentTypes[1]" value="2" id="paymentTypes[1]"
+                                   checked="checked"/>
+                            <label for="paymentTypes[1]"><span></span>현금 </label>
+
+                            <input type="checkbox" name="paymentTypes[2]" value="3" id="paymentTypes[2]"
+                                   checked="checked"/>
+                            <label for="paymentTypes[2]"><span></span>선결제</label>
                         </div>
                     </div>
                 </div>
