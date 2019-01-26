@@ -23,6 +23,10 @@
         <section class="center_section">
             <aside class="aside">
                 <div class="down-control-area" id="down-control-area">
+
+                    <input type="hidden" id="branch-latitude"/>
+                    <input type="hidden" id="branch-longitude"/>
+
                     <div>
                         <div class="title_area">
                             <span id="branch-name"></span>
@@ -52,17 +56,17 @@
                             <div class="rider_numbers_area">
                                 <div class="rider-count-area">
                                     <span class="title">근무자수</span>
-                                    <span class="contents" id="count-worker">12/20명</span>
+                                    <span class="contents" id="count-worker"></span>
                                 </div>
 
                                 <div class="rider-status-area">
                                     <input type="hidden" id="rider-status-id" name="rider-status-id" value="0"/>
 
                                     <input type="checkbox" checked="checked" id="work-on"/>
-                                    <label class="contents" for="work-on">출근</label>
+                                    <label class="contents" for="work-on"><span></span>출근</label>
 
                                     <input type="checkbox" checked="checked" id="work-off"/>
-                                    <label class="contents" for="work-off">퇴근</label>
+                                    <label class="contents" for="work-off"><span></span>퇴근</label>
                                 </div>
                             </div>
                         </form>
@@ -143,24 +147,32 @@
                     </div>
 
                     <div class="branch-search-area">
+                        <form id="form-branch-search"/>
 
                         <div class="city-area">
-                            <select id="metro">
+                            <select name="metro" form="form-branch-search">
+                                <option value="">지역</option>
                                 <option value="광주">광주광역시</option>
                                 <option value="대구">대구광역시</option>
                                 <option value="대전">대전광역시</option>
                                 <option value="부산">부산광역시</option>
                                 <option value="서울">서울특별시</option>
                                 <option value="울산">울산광역시</option>
-                                <option value="인천">인천광역시</option>
+                                <option value="경상남도">경상남도</option>
+                                <option value="경상북도">경상북도</option>
+                                <option value="경기도">경기도</option>
+                                <option value="강원도">강원도</option>
+                                <option value="충청남도">충청남도</option>
+                                <option value="충청북도">충청북도</option>
+                                <option value="전라북도">전라북도</option>
+                                <option value="전라남도">전라남도</option>
+                                <option value="제주도">제주도</option>
                             </select>
                         </div>
 
                         <div class="keyword-area">
-                            <form id="form-branch-search">
-                                <input type="search" name="branch-name"/>
-                                <input type="submit" value="🔍"/>
-                            </form>
+                            <input type="search" name="branch-name" form="form-branch-search"/>
+                            <input type="submit" value="🔍" form="form-branch-search"/>
                         </div>
 
                     </div>
@@ -189,21 +201,21 @@
 
                 <div class="name-tag">
                     <div>
-                        <input type="checkbox" id="afe"/>
-                        <label for="afe">이름 표시</label>
+                        <input type="checkbox" id="afe" checked="checked"/>
+                        <label for="afe"><span></span>이름 표시</label>
                     </div>
                 </div>
 
-                <section class="map_down">
+                <section class="map_down" id="map-down">
                     <table>
                         <thead>
 
                         <tr>
                             <td colspan="3">
                                 <span>기사명 :</span>
-                                <span>#</span>
-                                <span>전화번호 : 010-1010-1010</span>
-                                <span>#</span>
+                                <span id="rider-name"></span>
+                                <span>전화번호 :</span>
+                                <span id="rider-tel"></span>
                             </td>
                         </tr>
 
