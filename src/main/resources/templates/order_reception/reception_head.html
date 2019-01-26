@@ -7,10 +7,8 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Please</title>
-    <link rel="stylesheet" href="/css/recept_order.css"/>
     <link rel="stylesheet" href="/css/popup_search_address.css"/>
-    <!--<link rel="stylesheet" href="../../static/css/recept_order.css"/>-->
-    <!--<link rel="stylesheet" href="../../static/css/popup_search_address.css"/>-->
+    <link rel="stylesheet" href="/css/recept_order.css"/>
 </head>
 
 <body>
@@ -262,96 +260,9 @@
     </form>
 
 </div>
-
-<div class="setting_area" id="modal">
-    <div class="setting_title_area">
-        <span>주소검색</span>
-        <button id="btn_close">X</button>
-    </div>
-
-    <div class="setting_content_area">
-        <form id="form_enable_area" hidden="hidden">
-            <input name="shop-id" type="hidden" value="1414"/>
-        </form>
-
-        <!-- 검색 키워드 구간-->
-        <form id="form_address" class="a">
-            <input type="search" name="address" id=""/>
-            <input type="submit" value="검색"/>
-        </form>
-
-        <div class="b">
-            <!-- 왼쪽 (동)-->
-            <div class="c">
-                <!-- 배달 가능동-->
-                <div class="available_dong_area">
-                    <span>배달 가능 동</span>
-                </div>
-                <!-- ..etc -->
-                <div class="e" id="enableArea">
-                    <div><span>전체동</span></div>
-                    <div><span>수정동</span></div>
-                    <div><span>아무동</span></div>
-                </div>
-            </div>
-
-            <!-- 오른쪽 -->
-            <div class="d">
-                <!-- 건물 유형-->
-                <div class="f">
-                    <button form="form_address" class="btn_business" id="label_category1"> 전체</button>
-                    <button form="form_address" class="btn_business" id="label_category2">아파트</button>
-                    <button form="form_address" class="btn_business" id="label_category3">빌라</button>
-                    <button form="form_address" class="btn_business" id="label_category4">모텔</button>
-                    <button form="form_address" class="btn_business" id="label_category5"> 학교</button>
-                    <button form="form_address" class="btn_business" id="label_category6">당구장</button>
-                    <button form="form_address" class="btn_business" id="label_category7"> 병원</button>
-                    <button form="form_address" class="btn_business" id="label_category8"> 학원</button>
-                    <button form="form_address" class="btn_business" id="label_category9"> 은행</button>
-                    <button form="form_address" class="btn_business" id="label_category10">주유소</button>
-                    <button form="form_address" class="btn_business" id="label_category11">기타</button>
-                </div>
-
-                <div>
-                    <table class=" table3">
-                        <thead>
-                        <tr>
-                            <td>도로명</td>
-                            <td>지번주소</td>
-                            <td>건물명</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </thead>
-                        <tbody id="address">
-                        <tr>
-                            <th>감만2동</th>
-                            <th>국제아파트</th>
-                            <th>A동 10002호</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td>감만2동</td>
-                            <td>국제아파트</td>
-                            <td>A동 10002호</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div th:replace="order_reception/reception_address_modal :: modal"></div>
 </body>
+
 <script src="/js/recept_order.js" type="module"></script>
 <script src="/js/popup_search_address.js" type="module"></script>
 </html>

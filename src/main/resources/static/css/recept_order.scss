@@ -275,8 +275,8 @@ article {
 
 .main_section {
   margin: 24px calc(50% - 525px) 44px;
-  height:658px;
-  float: left;
+  height: 658px;
+  display: block;
 }
 
 .table_outer {
@@ -288,8 +288,8 @@ article {
 .table_caption {
   font-size: 12px;
   font-weight: normal;
-  text-align:right;
-  width:100%;
+  text-align: right;
+  width: 100%;
 }
 
 .table_scroll {
@@ -364,7 +364,7 @@ article {
   font-size: 14px;
   font-weight: bold;
   color: #323232;
-  float:left;
+  float: left;
 }
 
 .left_section {
@@ -375,6 +375,8 @@ article {
   border-right: 1px solid #d0d0d0;
   display: flex;
   flex-direction: column;
+  clear: both;
+  content: '';
 }
 
 .dot_line {
@@ -442,10 +444,10 @@ article {
 }
 
 .item_cost_container {
-  display:flex;
-  flex:1;
+  display: flex;
+  flex: 1;
   flex-direction: column;
-  justify-content:flex-end;
+  justify-content: flex-end;
 }
 
 .item_cost {
@@ -466,10 +468,10 @@ article {
 .right_section {
   padding: 15px 30px;
   width: 460px;
-  float: left;
-  display:flex;
-  flex-direction:column;
-  height:100%;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .time_area {
@@ -522,12 +524,12 @@ article {
 }
 
 .buttons {
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  align-items:center;
-  margin-bottom:5px;
-  flex:1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 5px;
+  flex: 1;
 }
 
 .memo {
@@ -551,6 +553,10 @@ article {
 
   .left_section {
     width: calc(100% - 62px);
+    &::after {
+      clear: both;
+      content: '';
+    }
   }
 
   .right_section {

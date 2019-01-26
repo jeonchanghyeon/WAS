@@ -4,28 +4,37 @@
   visibility: hidden;
 }
 
+.modal_background {
+  width: 100%;
+  height: 100%;
+  background: rgba(180, 180, 180, 0.7);
+  padding: 25px calc(50% - 480px);
+}
+
 .modal_container {
   width: 960px;
-  height: 700px;
+  height: 620px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  margin-right: auto;
   background-color: #ffffff;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
 }
-
-.header {
+.modal_container .address_modal_header {
   width: 100%;
   height: 50px;
   background-color: #1f1f1f;
   display: flex;
   align-items: center;
 }
-.header span {
+.modal_container .address_modal_header span {
   font-family: NotoSansCJKkr;
   font-size: 16px;
   font-weight: 500;
   font-style: normal;
   font-stretch: normal;
+  height: 50px;
   line-height: normal;
   letter-spacing: normal;
   color: #ffffff;
@@ -34,38 +43,34 @@
   justify-content: center;
   align-items: center;
 }
-
-.body {
+.modal_container .body {
   display: flex;
-  flex: 1;
+  height: calc(100% - 50px);
 }
-
-.aside {
+.modal_container .body .aside {
   width: 177px;
-  height: calc(100% - 50px);
-  display: flex;
-  flex-direction: column;
+  height: 100%;
 }
-.aside .select_container {
+.modal_container .body .aside .select_container {
   width: 100%;
-  height: 570px;
+  height: 100%;
   display: flex;
+  overflow: hidden;
 }
-
-.main_section {
+.modal_container .body .modal_main_section {
   flex: 1;
-  height: calc(100% - 50px);
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
-.main_section .upper_area {
+.modal_container .body .modal_main_section .upper_area {
   margin: 11px 16px 11px 16px;
 }
-.main_section .upper_area .search_area {
+.modal_container .body .modal_main_section .upper_area .search_area {
   display: flex;
   flex-direction: column;
 }
-.main_section .scroll_table {
+.modal_container .body .modal_main_section .scroll_table {
   width: 100%;
   height: calc(100% - 192px);
 }
@@ -73,6 +78,7 @@
 .scroll_table {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 .scroll_table .address_list_scroll {
   overflow: auto;
@@ -170,7 +176,7 @@
 
 .title_block {
   width: 100%;
-  flex: 1;
+  height: 50px;
   background-color: #302c2c;
   display: flex;
   justify-content: center;
@@ -189,9 +195,10 @@
 
 .consonant {
   width: 39px;
-  height: 100%;
+  height: 520px;
   background-color: #1f1f1f;
   border-right: 1px solid #434343;
+  table-layout: fixed;
 }
 .consonant td {
   font-family: NotoSansCJKkr;
@@ -199,9 +206,14 @@
   font-weight: bold;
   font-style: normal;
   font-stretch: normal;
+  height: 6.6666666667%;
+  overflow-y: hidden;
   color: #ffffff;
   border-bottom: 1px solid #434343;
   text-align: center;
+}
+.consonant td:nth-last-child(1) {
+  height: auto;
 }
 
 .enable_dong_scroll {
@@ -211,7 +223,7 @@
   /*스크롤 감추기*/
   /*크롬전용 커스톰 스크롤*/
   width: calc(100% - 39px);
-  height: 100%;
+  height: 520px;
   background-color: #302c2c;
 }
 .enable_dong_scroll::-webkit-scrollbar {
@@ -231,12 +243,12 @@
   background-color: #302c2c;
 }
 .enable_dong td {
-  height: 35.67px;
   font-family: NotoSansCJKkr;
   font-size: 14px;
   font-weight: bold;
   font-style: normal;
   font-stretch: normal;
+  height: 34.6666666667px;
   color: #ffffff;
   border-bottom: 1px solid #434343;
   text-align: center;
@@ -281,7 +293,7 @@
   text-align: center;
   color: #323232;
 }
-.search input[type=text] {
+.search .search_edit {
   width: 565.5px;
   height: 40px;
   background-color: #ffffff;
@@ -293,6 +305,7 @@
   line-height: normal;
   letter-spacing: normal;
   color: #000000;
+  border: 1px solid #434343;
   padding-left: 13px;
   margin-right: 7.5px;
 }

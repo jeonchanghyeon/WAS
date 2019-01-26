@@ -274,7 +274,7 @@ article {
 .main_section {
   margin: 24px calc(50% - 525px) 44px;
   height: 658px;
-  float: left;
+  display: block;
 }
 
 .table_outer {
@@ -370,6 +370,8 @@ article {
   border-right: 1px solid #d0d0d0;
   display: flex;
   flex-direction: column;
+  clear: both;
+  content: "";
 }
 
 .dot_line {
@@ -460,7 +462,7 @@ article {
 .right_section {
   padding: 15px 30px;
   width: 460px;
-  float: left;
+  float: right;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -542,6 +544,10 @@ article {
 
   .left_section {
     width: calc(100% - 62px);
+  }
+  .left_section::after {
+    clear: both;
+    content: "";
   }
 
   .right_section {

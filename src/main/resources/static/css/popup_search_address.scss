@@ -1,3 +1,6 @@
+$modal_width: 960px;
+$modal_height: 620px;
+
 @mixin hide_scroll {
   overflow: auto;
   overflow-x: hidden;
@@ -27,84 +30,86 @@
   visibility: hidden;
 }
 
+.modal_background {
+  width: 100%;
+  height: 100%;
+  background: rgba(180, 180, 180, 0.7);
+  padding: 25px calc(50% - #{$modal_width / 2});
+}
+
 .modal_container {
-  width: 960px;
-  height: 700px;
+  width: $modal_width;
+  height: $modal_height;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  //margin-right: auto;
-  //top: 50%;
-  //left: 50%;
-  //margin-left: -620px;
-  //margin-top: -400px;
+  margin-right: auto;
   background-color: #ffffff;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
-}
-
-.header {
-  width: 100%;
-  height: 50px;
-  background-color: #1f1f1f;
-  display: flex;
-  align-items: center;
-  span {
-    font: {
-      family: NotoSansCJKkr;
-      size: 16px;
-      weight: 500;
-      style: normal;
-      stretch: normal;
-    }
-    line-height: normal;
-    letter-spacing: normal;
-    color: #ffffff;
-    flex-grow: 8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
-.body {
-  display: flex;
-  flex: 1;
-}
-
-.aside {
-  width: 177px;
-  height: calc(100% - 50px);
-  display: flex;
-  flex-direction: column;
-
-  .select_container {
+  .address_modal_header {
     width: 100%;
-    height: 570px;
+    height: 50px;
+    background-color: #1f1f1f;
     display: flex;
+    align-items: center;
+    span {
+      font: {
+        family: NotoSansCJKkr;
+        size: 16px;
+        weight: 500;
+        style: normal;
+        stretch: normal;
+      }
+      height: 50px;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #ffffff;
+      flex-grow: 8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
-}
 
-.main_section {
-  flex: 1;
-  height: calc(100% - 50px);
-  display: flex;
-  flex-direction: column;
-  .upper_area {
-    margin: 11px 16px 11px 16px;
+  .body {
+    display: flex;
+    height: calc(100% - 50px);
+    .aside {
+      width: 177px;
+      height: 100%;
 
-    .search_area {
+      .select_container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        overflow: hidden;
+      }
+    }
+    .modal_main_section {
+      flex: 1;
+      height: 100%;
       display: flex;
       flex-direction: column;
+      .upper_area {
+        margin: 11px 16px 11px 16px;
+
+        .search_area {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+      .scroll_table {
+        width: 100%;
+        height: calc(100% - 192px);
+      }
     }
-  }
-  .scroll_table {
-    width: 100%;
-    height: calc(100% - 192px);
   }
 }
 
 .scroll_table {
   width: 100%;
   height: 100%;
+  overflow: hidden;
   .address_list_scroll {
     @include hide_scroll;
     width: 100%;
@@ -191,7 +196,7 @@
 
 .title_block {
   width: 100%;
-  flex: 1;
+  height: 50px;
   background-color: #302c2c;
   display: flex;
   justify-content: center;
@@ -212,9 +217,11 @@
 
 .consonant {
   width: 39px;
-  height: 100%;
+  height: 520px;
   background-color: #1f1f1f;
   border-right: 1px solid #434343;
+  table-layout: fixed;
+
   td {
     font: {
       family: NotoSansCJKkr;
@@ -223,17 +230,21 @@
       style: normal;
       stretch: normal;
     }
+    height: (100% / 15);
+    overflow-y: hidden;
     color: #ffffff;
     border-bottom: 1px solid #434343;
     text-align: center;
-
+  }
+  td:nth-last-child(1) {
+    height: auto;
   }
 }
 
 .enable_dong_scroll {
   @include hide_scroll;
   width: calc(100% - 39px);
-  height: 100%;
+  height: 520px;
   background-color: #302c2c;
 }
 
@@ -241,7 +252,6 @@
   width: 100%;
   background-color: #302c2c;
   td {
-    height: 35.67px;
     font: {
       family: NotoSansCJKkr;
       size: 14px;
@@ -249,6 +259,7 @@
       style: normal;
       stretch: normal;
     }
+    height: (520px / 15);
     color: #ffffff;
     border-bottom: 1px solid #434343;
     text-align: center;
@@ -299,7 +310,7 @@
     text-align: center;
     color: #323232;
   }
-  input[type="text"] {
+  .search_edit {
     width: 565.5px;
     height: 40px;
     background-color: #ffffff;
@@ -313,6 +324,7 @@
     line-height: normal;
     letter-spacing: normal;
     color: #000000;
+    border: 1px solid #434343;
     padding-left: 13px;
     margin-right: 7.5px;
   }
