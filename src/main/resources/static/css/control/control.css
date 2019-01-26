@@ -28,6 +28,29 @@ body {
   height: 100%;
   float: left;
 }
+.center_section input[type=checkbox] {
+  display: none;
+  float: left;
+}
+.center_section input[type=checkbox] + label {
+  float: left;
+  margin-right: 5px;
+}
+.center_section input[type=checkbox] + label span {
+  margin-top: 4px;
+  margin-right: 5px;
+  float: left;
+  width: 14px;
+  height: 14px;
+  border-radius: 1px;
+  border: 1px solid #d0d0d0;
+  background-color: #FFFFFF;
+}
+.center_section input[type=checkbox]:checked + label span {
+  border: 1px solid #ff7100;
+  background: url("/img/checkbox.png") no-repeat;
+  background-size: 14px;
+}
 
 .aside {
   border-right: 2px solid #d0d0d0;
@@ -189,6 +212,8 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  background: url(/img/select_btn_bright.png) no-repeat 100% 50%;
+  background-size: 30px;
 }
 .branch-control-area .branch-search-area .city-area select::-ms-expand {
   display: none;
