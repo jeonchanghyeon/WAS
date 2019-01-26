@@ -121,6 +121,8 @@ aside .new-notice-btn-area button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  background: url(/img/select_btn_bright.png) no-repeat 100% 50%;
+  background-size: 30px;
 }
 .select::-ms-expand {
   display: none;

@@ -133,6 +133,9 @@ aside {
   -moz-appearance: none;
   appearance: none;
 
+  background: url(/img/select_btn_bright.png) no-repeat 100% 50%;
+  background-size: 30px;
+
   &::-ms-expand {
     display: none;
   }
