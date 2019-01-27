@@ -31,7 +31,9 @@ class RiderController {
     @GetMapping(value = ["list"])
     fun getRiderList(@RequestParam id: Long): Any {
         return try {
-            riderService.getRiders(id)!!
+            val value = riderService.getRiders(id)
+            println(value)
+            value!!.toString()
         } catch (e: Exception) {
             mapOf("resultCode" to 777)
         }
@@ -58,7 +60,9 @@ class RiderController {
                      @RequestParam(value = "end-date", required = false) endDate: String?): Any {
         return try {
             val authInfo = getAuthInfo()!!
-            riderService.getInfoInControl(authInfo.authKey, id, startDate, endDate)!!
+            val value = riderService.getInfoInControl(authInfo.authKey, id, startDate, endDate)
+            println(value)
+            value!!.toString()
         } catch (e: Exception) {
             mapOf("resultCode" to 777)
         }

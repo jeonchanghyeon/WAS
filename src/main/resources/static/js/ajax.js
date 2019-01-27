@@ -11,7 +11,6 @@ export function ajax(url, method, func, content = null, csrfHeader, csrfToken) {
             if (this.status === 200) {
                 try {
                     const obj = JSON.parse(this.responseText);
-                    console.log(obj);
                     func(obj);
                 } catch (error) {
                 }

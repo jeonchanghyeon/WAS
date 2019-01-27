@@ -27,6 +27,33 @@ body {
   width: 100%;
   height: 100%;
   float: left;
+
+  input[type="checkbox"] {
+    display: none;
+    float: left;
+
+    + label {
+      float: left;
+      margin-right: 5px;
+
+      span {
+        margin-top: 4px;
+        margin-right: 5px;
+        float: left;
+        width: 14px;
+        height: 14px;
+        border-radius: 1px;
+        border: 1px solid #d0d0d0;
+        background-color: #FFFFFF;
+      }
+    }
+
+    &:checked + label span {
+      border: 1px solid #ff7100;
+      background: url("/img/checkbox.png") no-repeat;
+      background-size: 14px;
+    }
+  }
 }
 
 .aside {
@@ -210,6 +237,9 @@ body {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
+
+        background: url(/img/select_btn_bright.png) no-repeat 100% 50%;
+        background-size: 30px;
 
         &::-ms-expand {
           display: none;

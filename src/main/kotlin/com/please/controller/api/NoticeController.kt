@@ -81,7 +81,7 @@ class NoticeController {
 
     @RequestMapping(value = ["{notice-id}"], method = [RequestMethod.POST])
     fun updateNotice(@PathVariable(value = "notice-id") noticeId: Long,
-                     notice: Notice): Any {
+                     @RequestBody notice: Notice): Any {
         return try {
             val authInfo = getAuthInfo()!!
             notice.id = noticeId

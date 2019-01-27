@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletRequest
 @RequestMapping("/notices")
 class NoticesController {
     @GetMapping
-    fun showList(): String {
+    fun showList(model: Model): String {
         val authInfo = getAuthInfo()!!
+
+        model.addAttribute("id", authInfo.id)
+
         when (authInfo.group) {
             7 -> {
                 return "notices/notice_list_head"
