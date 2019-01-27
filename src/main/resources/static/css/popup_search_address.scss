@@ -27,7 +27,7 @@ $modal_height: 620px;
 
 #modal {
   position: fixed;
-  visibility: hidden;
+  display: none;
 }
 
 .modal_background {
@@ -46,19 +46,18 @@ $modal_height: 620px;
   margin-right: auto;
   background-color: #ffffff;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+
   .address_modal_header {
     width: 100%;
     height: 50px;
     background-color: #1f1f1f;
     display: flex;
     align-items: center;
+
     span {
       font: {
-        family: NotoSansCJKkr;
         size: 16px;
         weight: 500;
-        style: normal;
-        stretch: normal;
       }
       height: 50px;
       line-height: normal;
@@ -74,6 +73,7 @@ $modal_height: 620px;
   .body {
     display: flex;
     height: calc(100% - 50px);
+
     .aside {
       width: 177px;
       height: 100%;
@@ -85,11 +85,13 @@ $modal_height: 620px;
         overflow: hidden;
       }
     }
+
     .modal_main_section {
       flex: 1;
       height: 100%;
       display: flex;
       flex-direction: column;
+
       .upper_area {
         margin: 11px 16px 11px 16px;
 
@@ -98,6 +100,7 @@ $modal_height: 620px;
           flex-direction: column;
         }
       }
+
       .scroll_table {
         width: 100%;
         height: calc(100% - 192px);
@@ -110,71 +113,78 @@ $modal_height: 620px;
   width: 100%;
   height: 100%;
   overflow: hidden;
+
   .address_list_scroll {
     @include hide_scroll;
     width: 100%;
     height: calc(100% - 28px);
     background-color: #ffffff;
+
     &::-webkit-scrollbar-thumb {
       background: #302c2c;
       opacity: .4;
     }
+
     &::-webkit-scrollbar-track {
       background: #f8f7fb;
     }
   }
+
   table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
+
     thead {
       tr {
         height: 28px;
       }
+
       background-color: #e3e3e3;
       font: {
-        family: NotoSansCJKkr;
         size: 12px;
         weight: normal;
-        style: normal;
-        stretch: normal;
       }
       line-height: normal;
       letter-spacing: normal;
       text-align: center;
       color: #707070;
     }
+
     tbody {
       tr {
         height: 48px;
       }
+
       td, th {
         border-bottom: 1px solid #e3e3e3;
       }
+
       background-color: #ffffff;
       font: {
-        family: NotoSansCJKkr;
         size: 14px;
         weight: normal;
-        style: normal;
-        stretch: normal;
       }
       line-height: normal;
       letter-spacing: normal;
       color: #323232;
     }
+
     td:nth-child(1), th:nth-child(1) {
       width: 10%;
       text-align: center;
     }
+
     td:nth-child(2), th:nth-child(2) {
       width: 20%;
       text-align: center;
     }
+
     td:nth-child(3), th:nth-child(3) {
       width: 35%;
       padding-left: 10px;
     }
+
     td:nth-child(4), th:nth-child(6) {
       width: 35%;
       padding-left: 10px;
@@ -201,13 +211,11 @@ $modal_height: 620px;
   display: flex;
   justify-content: center;
   align-items: center;
+
   span {
     font: {
-      family: NotoSansCJKkr;
       size: 14px;
       weight: bold;
-      style: normal;
-      stretch: normal;
     }
     line-height: normal;
     letter-spacing: normal;
@@ -216,28 +224,27 @@ $modal_height: 620px;
 }
 
 .consonant {
-  width: 39px;
-  height: 520px;
+  width: 40px;
   background-color: #1f1f1f;
   border-right: 1px solid #434343;
-  table-layout: fixed;
 
-  td {
+  button {
     font: {
-      family: NotoSansCJKkr;
       size: 14px;
-      weight: bold;
-      style: normal;
-      stretch: normal;
+      weight: 500;
     }
-    height: (100% / 15);
+    width: 40px;
+    height: 34px;
     overflow-y: hidden;
     color: #ffffff;
+    border: 0;
     border-bottom: 1px solid #434343;
     text-align: center;
-  }
-  td:nth-last-child(1) {
-    height: auto;
+    background-color: #1f1f1f;
+
+    &:hover {
+      background-color: #ff9037;
+    }
   }
 }
 
@@ -251,18 +258,27 @@ $modal_height: 620px;
 .enable_dong {
   width: 100%;
   background-color: #302c2c;
-  td {
+
+  button {
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    border: 0;
+    border-bottom: 1px solid #434343;
+    background: #302c2c;
+
     font: {
-      family: NotoSansCJKkr;
       size: 14px;
       weight: bold;
-      style: normal;
-      stretch: normal;
     }
+
+    &:hover {
+      color: #ff9037;
+    }
+  }
+
+  td {
     height: (520px / 15);
-    color: #ffffff;
-    border-bottom: 1px solid #434343;
-    text-align: center;
   }
 }
 
@@ -278,10 +294,7 @@ $modal_height: 620px;
     background-color: #ffffff;
     border: 0.5px solid #aeaeaeae;
     font: {
-      family: NotoSansCJKkr;
       weight: 500;
-      style: normal;
-      stretch: normal;
     }
     size: 14px;
     color: #4a4a4a;
@@ -299,11 +312,8 @@ $modal_height: 620px;
   span {
     flex: 1;
     font: {
-      family: NotoSansCJKkr;
       size: 12px;
       weight: normal;
-      style: normal;
-      stretch: normal;
     }
     margin-right: 10px;
     line-height: normal;
@@ -311,16 +321,14 @@ $modal_height: 620px;
     text-align: center;
     color: #323232;
   }
+
   .search_edit {
     width: 565.5px;
     height: 40px;
     background-color: #ffffff;
     font: {
-      family: NotoSansCJKkr;
       size: 12px;
       weight: normal;
-      style: normal;
-      stretch: normal;
     }
     line-height: normal;
     letter-spacing: normal;
@@ -329,25 +337,25 @@ $modal_height: 620px;
     padding-left: 13px;
     margin-right: 7.5px;
   }
+
   button {
-    border:0;
+    border: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+
     img {
       width: 15.9px;
       height: 15.9px;
       margin-right: 0.1px;
     }
+
     width: 108.6px;
     height: 40px;
     background-color: #ff9037;
     font: {
-      family: NotoSansCJKkr;
       size: 14px;
       weight: 500;
-      style: normal;
-      stretch: normal;
     }
     text-align: center;
     line-height: normal;
@@ -358,11 +366,8 @@ $modal_height: 620px;
 
 .caption {
   font: {
-    family: NotoSansCJKkr;
     size: 12px;
     weight: normal;
-    style: normal;
-    stretch: normal;
   }
   line-height: normal;
   letter-spacing: normal;

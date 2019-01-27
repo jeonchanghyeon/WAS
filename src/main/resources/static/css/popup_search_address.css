@@ -1,7 +1,7 @@
 @charset "UTF-8";
 #modal {
   position: fixed;
-  visibility: hidden;
+  display: none;
 }
 
 .modal_background {
@@ -29,11 +29,8 @@
   align-items: center;
 }
 .modal_container .address_modal_header span {
-  font-family: NotoSansCJKkr;
   font-size: 16px;
   font-weight: 500;
-  font-style: normal;
-  font-stretch: normal;
   height: 50px;
   line-height: normal;
   letter-spacing: normal;
@@ -115,11 +112,8 @@
 }
 .scroll_table table thead {
   background-color: #e3e3e3;
-  font-family: NotoSansCJKkr;
   font-size: 12px;
   font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
   text-align: center;
@@ -130,11 +124,8 @@
 }
 .scroll_table table tbody {
   background-color: #ffffff;
-  font-family: NotoSansCJKkr;
   font-size: 14px;
   font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
   color: #323232;
@@ -183,37 +174,32 @@
   align-items: center;
 }
 .title_block span {
-  font-family: NotoSansCJKkr;
   font-size: 14px;
   font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
   color: #ff9037;
 }
 
 .consonant {
-  width: 39px;
-  height: 520px;
+  width: 40px;
   background-color: #1f1f1f;
   border-right: 1px solid #434343;
-  table-layout: fixed;
 }
-.consonant td {
-  font-family: NotoSansCJKkr;
+.consonant button {
   font-size: 14px;
-  font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
-  height: 6.6666666667%;
+  font-weight: 500;
+  width: 40px;
+  height: 34px;
   overflow-y: hidden;
   color: #ffffff;
+  border: 0;
   border-bottom: 1px solid #434343;
   text-align: center;
+  background-color: #1f1f1f;
 }
-.consonant td:nth-last-child(1) {
-  height: auto;
+.consonant button:hover {
+  background-color: #ff9037;
 }
 
 .enable_dong_scroll {
@@ -242,16 +228,21 @@
   width: 100%;
   background-color: #302c2c;
 }
-.enable_dong td {
-  font-family: NotoSansCJKkr;
+.enable_dong button {
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+  border: 0;
+  border-bottom: 1px solid #434343;
+  background: #302c2c;
   font-size: 14px;
   font-weight: bold;
-  font-style: normal;
-  font-stretch: normal;
+}
+.enable_dong button:hover {
+  color: #ff9037;
+}
+.enable_dong td {
   height: 34.6666666667px;
-  color: #ffffff;
-  border-bottom: 1px solid #434343;
-  text-align: center;
 }
 
 .select_tower {
@@ -265,10 +256,7 @@
   height: 46px;
   background-color: #ffffff;
   border: 0.5px solid #aeaeaeae;
-  font-family: NotoSansCJKkr;
   font-weight: 500;
-  font-style: normal;
-  font-stretch: normal;
   size: 14px;
   color: #4a4a4a;
   text-align: center;
@@ -283,11 +271,8 @@
 }
 .search span {
   flex: 1;
-  font-family: NotoSansCJKkr;
   font-size: 12px;
   font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
   margin-right: 10px;
   line-height: normal;
   letter-spacing: normal;
@@ -298,11 +283,8 @@
   width: 565.5px;
   height: 40px;
   background-color: #ffffff;
-  font-family: NotoSansCJKkr;
   font-size: 12px;
   font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
   color: #000000;
@@ -318,11 +300,8 @@
   width: 108.6px;
   height: 40px;
   background-color: #ff9037;
-  font-family: NotoSansCJKkr;
   font-size: 14px;
   font-weight: 500;
-  font-style: normal;
-  font-stretch: normal;
   text-align: center;
   line-height: normal;
   letter-spacing: normal;
@@ -335,11 +314,8 @@
 }
 
 .caption {
-  font-family: NotoSansCJKkr;
   font-size: 12px;
   font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
   color: #d0021b;

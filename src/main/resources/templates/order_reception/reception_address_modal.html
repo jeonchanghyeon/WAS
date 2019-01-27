@@ -15,60 +15,32 @@
                 </div>
                 <div class="select_container">
                     <!-- 자음 선택 테이블 -->
-                    <table class="consonant">
-                        <tr>
-                            <td>전체</td>
-                        </tr>
-                        <tr>
-                            <td>ㄱ</td>
-                        </tr>
-                        <tr>
-                            <td>ㄴ</td>
-                        </tr>
-                        <tr>
-                            <td>ㄷ</td>
-                        </tr>
-                        <tr>
-                            <td>ㄹ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅁ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅂ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅅ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅇ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅈ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅊ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅋ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅌ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅍ</td>
-                        </tr>
-                        <tr>
-                            <td>ㅎ</td>
-                        </tr>
-                    </table>
+                    <div class="consonant" id="consonant-area">
+                        <button value="0">전체</button>
+                        <button value="1">ㄱ</button>
+                        <button value="2">ㄴ</button>
+                        <button value="3">ㄷ</button>
+                        <button value="4">ㄹ</button>
+                        <button value="5">ㅁ</button>
+                        <button value="6">ㅂ</button>
+                        <button value="7">ㅅ</button>
+                        <button value="8">ㅇ</button>
+                        <button value="9">ㅈ</button>
+                        <button value="10">ㅊ</button>
+                        <button value="11">ㅋ</button>
+                        <button value="12">ㅌ</button>
+                        <button value="13">ㅍ</button>
+                        <button value="14">ㅎ</button>
+                    </div>
+
+                    <form id="form_enable_area" hidden="hidden">
+                        <input type="hidden" name="id" id="modal-shop-id"/>
+                        <input type="hidden" name="consonant" id="consonant" value="0"/>
+                    </form>
+
                     <!-- 동 선택 테이블 -->
                     <div class="enable_dong_scroll">
-                        <table class="enable_dong">
-                            <tr>
-                                <td>각화동</td>
-                            </tr>
-                        </table>
+                        <table class="enable_dong" id="enable_dong"></table>
                     </div>
                 </div>
             </aside>
@@ -92,15 +64,30 @@
 
                     <div class="search_area">
                         <div class="search">
+                            <form id="form-jibun" hidden="hidden">
+                                <input type="hidden" id="jibun"/>
+                            </form>
+
                             <span>지번주소</span>
-                            <input type="text" placeholder="ex) 44-1, 용호로 38-17" class="search_edit"/>
-                            <button><img alt="logo" src="/img/search_white.png"/>주소검색</button>
+                            <input type="text" placeholder="ex) 44-1, 용호로 38-17" class="search_edit" id="jibun-detail"/>
+                            <button type="submit" form="form-jibun">
+                                <img alt="logo" src="/img/search_white.png"/>
+                                주소검색
+                            </button>
                         </div>
                         <span class="caption">* 동을 제외하고 작성해주세요.</span>
                         <div class="search">
+                            <form hidden="hidden">
+                                <input type="hidden"/>
+                            </form>
+
                             <span>명칭</span>
+
                             <input type="text" placeholder="ex) 푸르지오 아파트" class="search_edit"/>
-                            <button><img alt="logo" src="/img/search_white.png"/>주소검색</button>
+                            <button type="submit">
+                                <img alt="logo" src="/img/search_white.png"/>
+                                주소검색
+                            </button>
                         </div>
                     </div>
                 </div>
