@@ -12,8 +12,20 @@ import {
     showInfo
 } from "./naver.js"
 
+const Group = {
+    GUEST: 1,
+    RIDER: 2,
+    SHOP: 3,
+    BRANCH: 5,
+    DISTRIB: 6,
+    HEAD: 7,
+};
+
 const markers = [];
 const infos = [];
+
+const group = $("group").value;
+const id = $("userId").value;
 
 const riders = $("rider-control-area");
 const shops = $("shop-control-area");
@@ -21,11 +33,21 @@ const downs = $("down-control-area");
 const branches = $("branch-control-area");
 
 const displayRiderControl = () => {
-    branches.style.display = "none";
-    shops.style.display = "none";
+    if (branches !== null) {
+        branches.style.display = "none";
+    }
 
-    downs.style.display = "initial";
-    riders.style.display = "initial";
+    if (shops !== null) {
+        shops.style.display = "none";
+    }
+
+    if (downs !== null) {
+        downs.style.display = "initial";
+    }
+
+    if (riders !== null) {
+        riders.style.display = "initial";
+    }
 
     $("map-down").style.display = "none";
     $("map").style.height = "100%";
@@ -36,11 +58,19 @@ const displayRiderControl = () => {
 };
 
 const displayShopControl = () => {
-    branches.style.display = "none";
-    riders.style.display = "none";
+    if (branches !== null) {
+        branches.style.display = "none";
+    }
+    if (riders !== null) {
+        riders.style.display = "none";
+    }
 
-    downs.style.display = "initial";
-    shops.style.display = "initial";
+    if (downs !== null) {
+        downs.style.display = "initial";
+    }
+    if (shops !== null) {
+        shops.style.display = "initial";
+    }
 
     $("map-down").style.display = "none";
     $("map").style.height = "100%";
@@ -50,8 +80,12 @@ const displayShopControl = () => {
 };
 
 const displayBranchControl = () => {
-    downs.style.display = "none";
-    branches.style.display = "initial";
+    if (downs !== null) {
+        downs.style.display = "none";
+    }
+    if (branches !== null) {
+        branches.style.display = "initial";
+    }
 
     $("map-down").style.display = "none";
     $("map").style.height = "100%";
@@ -66,83 +100,84 @@ const a = () => {
     const formBranchSearch = $("form-branch-search");
     const formData = new FormData(formBranchSearch);
 
-    withGetMethod(
-        url,
-        formData,
-        (obj) => {
-            try {
-                const branches = obj["branches"];
+    if (formBranchSearch !== null) {
+        withGetMethod(
+            url,
+            formData,
+            (obj) => {
+                try {
+                    const branches = obj["branches"];
 
-                const tableBranches = $("branches");
-                tableBranches.innerHTML = "";
+                    const tableBranches = $("branches");
+                    tableBranches.innerHTML = "";
 
-                removeMarkers(markers);
-                removeInfo(infos);
+                    removeMarkers(markers);
+                    removeInfo(infos);
 
-                for (let i = 0; i < branches.length; i++) {
-                    const branch = branches[i];
+                    for (let i = 0; i < branches.length; i++) {
+                        const branch = branches[i];
 
-                    const latitude = branch["latitude"];
-                    const riderTotal = branch["riderTotal"];
-                    const name = branch["name"];
-                    const id = branch["id"];
-                    const riderWorkOn = branch["riderWorkOn"];
-                    const shareCallNum = branch["shareCallNum"];
-                    const longitude = branch["longitude"];
+                        const latitude = branch["latitude"];
+                        const riderTotal = branch["riderTotal"];
+                        const name = branch["name"];
+                        const id = branch["id"];
+                        const riderWorkOn = branch["riderWorkOn"];
+                        const shareCallNum = branch["shareCallNum"];
+                        const longitude = branch["longitude"];
 
-                    const text = [
-                        name,
-                        riderWorkOn + "명/" + riderTotal + "명",
-                        shareCallNum,
-                    ];
+                        const text = [
+                            name,
+                            riderWorkOn + "명/" + riderTotal + "명",
+                            shareCallNum,
+                        ];
 
-                    const row = createRow(text, (row) => {
+                        const row = createRow(text, (row) => {
 
-                        const col = createCol('<button class="btn-select">선택</button>', (col) => {
-                            col.onclick = () => {
+                            const col = createCol('<button class="btn-select">선택</button>', (col) => {
+                                col.onclick = () => {
 
-                                $("branch-name").innerText = name;
-                                $("rider-branch-id").value = id;
-                                $("shop-branch-id").value = id;
-                                $("count-worker").innerText = riderWorkOn + "/" + riderTotal;
+                                    $("branch-name").innerText = name;
+                                    $("rider-branch-id").value = id;
+                                    $("shop-branch-id").value = id;
+                                    $("count-worker").innerText = riderWorkOn + "/" + riderTotal;
 
-                                $("branch-latitude").value = latitude;
-                                $("branch-longitude").value = longitude;
+                                    $("branch-latitude").value = latitude;
+                                    $("branch-longitude").value = longitude;
 
-                                b();
+                                    b();
+                                }
+                            });
 
-                            }
+                            row.appendChild(col);
                         });
 
-                        row.appendChild(col);
-                    });
+                        tableBranches.appendChild(row);
 
-                    tableBranches.appendChild(row);
+                        const marker = createMarker(map, latitude, longitude, '/img/marker-branch.png');
+                        markers.push(marker);
 
-                    const marker = createMarker(map, latitude, longitude, '/img/marker-branch.png');
-                    markers.push(marker);
+                        const info = createInfoWindow({
+                            map: map,
+                            latitude: latitude,
+                            longitude: longitude,
+                            name: name,
+                            icon: "/img/bubble-blue.png",
+                            textColor: "#FFFFFF"
+                        });
 
-                    const info = createInfoWindow({
-                        map: map,
-                        latitude: latitude,
-                        longitude: longitude,
-                        name: name,
-                        icon: "/img/bubble-blue.png",
-                        textColor: "#FFFFFF"
-                    });
+                        infos.push(info);
 
-                    infos.push(info);
+                    }
 
+                    setMarkerCenter(map, markers);
+                    displayBranchControl();
+
+                } catch (e) {
+                    console.log(e)
                 }
-
-                setMarkerCenter(map, markers);
-                displayBranchControl();
-
-            } catch (e) {
-                console.log(e)
             }
-        }
-    )
+        )
+    }
 };
 
 const b = () => {
@@ -389,21 +424,44 @@ const c = () => {
     );
 };
 
-a();
+switch (parseInt(group)) {
+    case Group.HEAD:
+    case Group.DISTRIB:
+        a();
+        break;
+    case Group.BRANCH:
+
+        $("rider-branch-id").value = id;
+        $("shop-branch-id").value = id;
+
+        b();
+        break;
+    case Group.SHOP:
+
+        $("shop-branch-id").value = id;
+
+        b();
+        break;
+}
 
 const formBranchSearch = $("form-branch-search");
 const formRiderSearch = $("form-rider-search");
 const formShopSearch = $("form-shop-search");
 
-formBranchSearch.onsubmit = () => {
-    a();
-    return false;
-};
+if (formBranchSearch !== null) {
+    formBranchSearch.onsubmit = () => {
+        a();
+        return false;
+    };
+}
 
-formRiderSearch.onsubmit = () => {
-    b();
-    return false;
-};
+if (formBranchSearch !== null) {
+    formRiderSearch.onsubmit = () => {
+        b();
+        return false;
+    };
+}
+
 formShopSearch.onsubmit = () => {
     c();
     return false;
@@ -419,4 +477,4 @@ $("afe").onclick = function () {
     } else {
         hideInfo(infos);
     }
-}
+};

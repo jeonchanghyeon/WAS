@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Please</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/control/control.css"/>
+    <script type="text/javascript"
+            th:src="@{https://openapi.map.naver.com/openapi/v3/maps.js(clientId='ybfMlnV78p3JVHVxdEvl',submodules='geocoder')}"></script>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="header/header_shop :: header"></div>
+
+    <section class="main">
+        <section class="center_section">
+            <aside class="aside">
+                <div class="down-control-area" id="down-control-area">
+
+                    <input type="hidden" id="branch-latitude"/>
+                    <input type="hidden" id="branch-longitude"/>
+
+                    <div>
+                        <div class="title_area">
+                            <span id="branch-name"></span>
+                        </div>
+                    </div>
+
+                    <div class="shop-control-area" id="shop-control-area">
+                        <div class="search_area">
+                            <div>
+                                <label for="text-shop-name" class="title"> 상점검색</label>
+                                <div class="keyword-area">
+                                    <form id="form-shop-search">
+                                        <input type="hidden" id="shop-branch-id" name="branch-id"/>
+                                        <input type="search" name="shop-name" id="text-shop-name"/>
+                                        <input type="submit" value="🔍"/>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-status-area">
+                            <div>
+                                <span class="all">전체</span> <br/>
+                                <span id="count-all"></span>
+                            </div>
+                            <div>
+                                <span class="accept">접수</span> <br/>
+                                <span id="count-accept"></span>
+                            </div>
+                            <div>
+                                <span class="allocate">배차</span> <br/>
+                                <span id="count-allocate"></span>
+                            </div>
+                            <div>
+                                <span class="pickup">픽업</span> <br/>
+                                <span id="count-pickup"></span>
+                            </div>
+                            <div>
+                                <span class="complete">완료</span> <br/>
+                                <span id="count-complete"></span>
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <td>상점명</td>
+                                <td>접수</td>
+                                <td>배차</td>
+                                <td>픽업</td>
+                                <td>완료</td>
+                                <td>연락처</td>
+                            </tr>
+                            </thead>
+                            <tbody id="shops">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </aside>
+
+            <section class="right">
+                <section class="map" id="map">
+
+                </section>
+
+                <div class="name-tag">
+                    <div>
+                        <input type="checkbox" id="afe" checked="checked"/>
+                        <label for="afe"><span></span>이름 표시</label>
+                    </div>
+                </div>
+
+                <section class="map_down" id="map-down">
+                    <table>
+                        <thead>
+
+                        <tr>
+                            <td colspan="3">
+                                <span>기사명 :</span>
+                                <span id="rider-name"></span>
+                                <span>전화번호 :</span>
+                                <span id="rider-tel"></span>
+                            </td>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr>
+                            <td>
+                                <button class="btn_pickup">픽업</button>
+                            </td>
+                            <td>
+                                <span>우리집통닭</span>
+                                <span> > </span>
+                                <span>부산진역</span>
+                            </td>
+                            <td>
+                                <button class="btn_detail">주문상세보기</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <button class="btn_allow">배차</button>
+                            </td>
+                            <td>
+                                <span>우리집통닭 </span>
+                                <span> > </span>
+                                <span>부산진역</span>
+                            </td>
+                            <td>
+                                <button class="btn_detail">주문상세보기</button>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </section>
+            </section>
+        </section>
+    </section>
+</div>
+<script src="/js/control.js" type="module"></script>
+</body>
+</html>
