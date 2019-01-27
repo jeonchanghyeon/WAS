@@ -8,30 +8,33 @@ body {
   letter-spacing: normal;
 }
 
-ul {
+.required::before {
+  color: #ff9037;
+}
+
+.main {
+  float: left;
+  width: 100%;
+}
+.main ul {
   margin: 0;
   padding: 0;
   width: 100%;
   list-style-type: none;
   float: left;
 }
-ul li {
+.main ul li {
   margin-top: 5px;
   margin-bottom: 5px;
   width: 100%;
   float: left;
 }
-ul li::before {
+.main ul li::before {
   color: rgba(0, 0, 0, 0);
   content: "▪ ";
   float: left;
 }
-
-.required::before {
-  color: #ff9037;
-}
-
-input[type=text], input[type=tel] {
+.main input[type=text], .main input[type=tel] {
   height: 32px;
   margin-top: 3px;
   margin-bottom: 3px;
@@ -42,8 +45,7 @@ input[type=text], input[type=tel] {
   background-color: #f1f1f1;
   color: #4a4a4a;
 }
-
-article {
+.main article {
   padding-top: 15px;
   padding-bottom: 15px;
   width: 100%;
@@ -55,13 +57,12 @@ article {
 .container {
   margin-left: auto;
   margin-right: auto;
-  padding-top: 20px;
   width: 100%;
   float: left;
   clear: both;
 }
 
-.header {
+.big-title {
   background-color: #4a4a4a;
   padding: 17px 23px;
   width: calc(100% - 46px);
@@ -71,11 +72,11 @@ article {
   float: left;
   clear: both;
 }
-.header span {
+.big-title span {
   font-size: 12px;
   color: #ff9037;
 }
-.header span > span {
+.big-title span > span {
   color: #FFFFFF;
 }
 
