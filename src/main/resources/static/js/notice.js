@@ -110,8 +110,33 @@ const parseTypes = (types) => {
     return parsedTypes;
 };
 
+const noticeIds = [];
+
+const getPrevId = (noticeIds, currentId) => {
+
+    for (let i = 1; i < noticeIds.length; i++) {
+        if (currentId == noticeIds[i]) {
+            return noticeIds[i - 1];
+        }
+    }
+
+    return -1;
+};
+
+const getNextId = (noticeIds, currentId) => {
+
+    for (let i = 0; i < noticeIds.length - 1; i++) {
+        if (currentId == noticeIds[i]) {
+            return noticeIds[i + 1];
+        }
+    }
+
+    return -1;
+};
+
 const createNoticeList = (tbody, notices) => {
     tbody.innerHTML = '';
+    noticeIds.length = 0;
 
     for (let i = 0; i < notices.length; i++) {
         const line = [];
@@ -123,9 +148,12 @@ const createNoticeList = (tbody, notices) => {
         line.push(parseTypes(notices[i]["types"]));
         line.push(notices[i]["title"]);
 
+        const noticeId = notices[i]["id"];
+
+        noticeIds.push(noticeId);
+
         const row = createRow(line, (row) => {
             row.ondblclick = () => {
-                const noticeId = notices[i]["id"];
                 const url = "/api/notices/" + noticeId;
 
                 ajax(
@@ -464,4 +492,73 @@ $("btn-remove").onclick = () => {
         getMeta("_csrf_header"),
         getMeta("_csrf")
     );
+};
+
+
+$("btn-pre").onclick = () => {
+
+    const noticeId = $("detail-notice-id").value;
+    const prevId = getPrevId(noticeIds, noticeId);
+
+    if (prevId !== -1) {
+        const url = "/api/notices/" + prevId;
+
+        ajax(
+            url,
+            "GET",
+            (obj) => {
+                const notice = obj["notice"];
+
+                const id = notice["id"];
+                const title = notice["title"];
+                const content = notice["content"];
+                const writerName = notice["writerName"];
+                const createDate = notice["createDate"];
+                const types = notice["types"];
+
+                $("detail-types").innerHTML = parseTypes(types);
+                $("detail-notice-id").value = id;
+                $("detail-writer-name").innerHTML = writerName;
+                $("detail-title").innerHTML = title;
+                $("detail-content").innerHTML = content;
+                $("detail-createDate").innerHTML = createDate;
+
+                displayDiv(4);
+            }
+        );
+    }
+};
+
+$("btn-post").onclick = () => {
+
+    const noticeId = $("detail-notice-id").value;
+    const nextId = getNextId(noticeIds, noticeId);
+
+    if (nextId !== -1) {
+        const url = "/api/notices/" + nextId;
+
+        ajax(
+            url,
+            "GET",
+            (obj) => {
+                const notice = obj["notice"];
+
+                const id = notice["id"];
+                const title = notice["title"];
+                const content = notice["content"];
+                const writerName = notice["writerName"];
+                const createDate = notice["createDate"];
+                const types = notice["types"];
+
+                $("detail-types").innerHTML = parseTypes(types);
+                $("detail-notice-id").value = id;
+                $("detail-writer-name").innerHTML = writerName;
+                $("detail-title").innerHTML = title;
+                $("detail-content").innerHTML = content;
+                $("detail-createDate").innerHTML = createDate;
+
+                displayDiv(4);
+            }
+        );
+    }
 };
