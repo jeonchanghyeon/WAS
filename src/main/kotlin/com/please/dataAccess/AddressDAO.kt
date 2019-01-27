@@ -22,9 +22,9 @@ class AddressDAO {
         return null
     }
 
-    fun getEnableDong(authKey: String, shopId: Long): JSONObject? {
+    fun getEnableDong(authKey: String, info: String): JSONObject? {
         try {
-            return template.queryForJSONObject("CALL getEnableDong(?, ?)", authKey, shopId)
+            return template.queryForJSONObject("CALL getEnableDongByConsonant(?, ?)", authKey, info)
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -10,9 +10,11 @@ class AddressService {
     @Autowired
     private lateinit var addressDAO: AddressDAO
 
-    fun getEnableArea(authKey: String, data: MutableMap<String, Any>): JSONObject? {
-        val shopId = data["shop-id"] as Long
-        return addressDAO.getEnableDong(authKey, shopId)
+    fun getEnableArea(authKey: String, id: Long, consonant: Int): JSONObject? {
+        val info = JSONObject()
+        info.put("id", id)
+        info.put("consonant", consonant)
+        return addressDAO.getEnableDong(authKey, info.toString())
     }
 
     fun searchAddress(data: MutableMap<String, Any>): JSONObject? {
