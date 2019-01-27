@@ -7,8 +7,8 @@
 .modal_background {
   width: 100%;
   height: 100%;
-  background: rgba(180, 180, 180, 0.7);
-  padding: 25px calc(50% - 480px);
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 30px calc(50% - 480px);
 }
 
 .modal_container {
@@ -264,6 +264,7 @@
   width: 72px;
   height: 46px;
   background-color: #ffffff;
+  border: 0.5px solid #aeaeaeae;
   font-family: NotoSansCJKkr;
   font-weight: 500;
   font-style: normal;
@@ -305,11 +306,12 @@
   line-height: normal;
   letter-spacing: normal;
   color: #000000;
-  border: 1px solid #434343;
+  border: 0.5px solid #aeaeaeae;
   padding-left: 13px;
   margin-right: 7.5px;
 }
 .search button {
+  border: 0;
   display: flex;
   align-items: center;
   justify-content: center;
