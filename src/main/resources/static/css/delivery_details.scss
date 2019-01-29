@@ -8,7 +8,7 @@ $modal_height: 768px;
 
 /* TODO mixin 정의 */
 /* 스크롤 뷰 */
-@mixin hide-scroll($track-color: #f8f7fb, $thumb-color: #302c2c) {
+@mixin hide-scroll($track_color: #f8f7fb, $thumb_color: #302c2c) {
   overflow: auto;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -24,11 +24,11 @@ $modal_height: 768px;
     background: none;
   }
   &::-webkit-scrollbar-thumb {
-    background: $thumb-color;
+    background: $thumb_color;
     opacity: .4;
   }
   &::-webkit-scrollbar-track {
-    background: $track-color;
+    background: $track_color;
   }
 }
 
@@ -48,7 +48,7 @@ $modal_height: 768px;
 
 /* 컨테이너 분할선 */
 @mixin under-bar {
-  border-bottom: 1px solid #a9a9a9a9;
+  border-bottom: 1px solid #a9a9a9;
 }
 
 /* 모달 투명 배경 */

@@ -1,0 +1,254 @@
+@charset "UTF-8";
+#modal {
+  position: fixed;
+  visibility: hidden;
+}
+
+/* TODO mixin 정의 */
+/* 스크롤 뷰 */
+/* 커스톰 폰트 */
+/* 모달 투명 배경 */
+/* 컨테이너 분할선 */
+/* TODO 컨테이너 관련 css */
+.search-modal-background {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 121px calc(50% - 170px);
+}
+
+.search-modal-container {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  width: 340px;
+  height: 545px;
+  overflow: hidden;
+  box-shadow: 0 0 2.5px 0 rgba(0, 0, 0, 0.12), 0 0 8px 0 rgba(0, 0, 0, 0.38);
+}
+
+.search-modal-header {
+  border-bottom: 1px solid #a9a9a9;
+  width: calc(100% - 15px - 15px);
+  height: 47px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.search-modal-header .search-title {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.search-section {
+  border-bottom: 1px solid #a9a9a9;
+  width: calc(100% - 15px - 15px);
+  height: 64px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-section {
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  /*스크롤 감추기*/
+  /*크롬전용 커스톰 스크롤*/
+  width: 100%;
+  height: 336px;
+}
+.result-section::-webkit-scrollbar {
+  width: 3px;
+  background: none;
+}
+.result-section::-webkit-scrollbar-thumb {
+  background: #302c2c;
+  opacity: 0.4;
+}
+.result-section::-webkit-scrollbar-track {
+  background: #f8f7fb;
+}
+
+.submit-section {
+  padding: 23px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* TODO 요소 관련 css */
+.search-title {
+  font-family: NotoSansCJKkr;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 16px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.close-button {
+  color: #4a4a4a;
+  background-color: rgba(0, 0, 0, 0);
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+  border: none;
+  padding: 0;
+}
+
+.ok-button {
+  font-family: NotoSansCJKkr;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 16px;
+  color: #ffffff;
+  line-height: normal;
+  letter-spacing: normal;
+  width: 300px;
+  height: 46px;
+  border-radius: 23px;
+  border: none;
+  background-color: #ff9037;
+}
+
+.area-selector {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  width: 120px;
+  height: 40px;
+  border: 1px solid #cecece;
+  background: #ffffff url("/img/select_btn_bright.png") no-repeat right center;
+  background-size: 40px 40px;
+  -webkit-appearance: none;
+  /* 화살표 없애기 for chrome*/
+  -moz-appearance: none;
+  /* 화살표 없애기 for firefox*/
+  appearance: none;
+  /* 화살표 없애기 공통*/
+  padding-left: 12px;
+}
+.area-selector::-ms-expand {
+  display: none;
+  /* 화살표 없애기 for IE10, 11*/
+}
+.area-selector > option {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+}
+.search-branch-name {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  width: 183px;
+  height: 40px;
+  padding-left: 13px;
+  padding-right: 13px;
+  border: 1px solid #cecece;
+  background: #ffffff url("/img/search_orange.png") no-repeat 95% center;
+  background-size: 15px 15px;
+}
+.search-branch-name::placeholder {
+  color: #979797;
+}
+
+.search-shop-name {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  width: 100%;
+  height: 40px;
+  padding-left: 13px;
+  padding-right: 13px;
+  border: 1px solid #cecece;
+  background: #ffffff url("/img/search_orange.png") no-repeat 95% center;
+  background-size: 15px 15px;
+}
+.search-shop-name::placeholder {
+  color: #979797;
+}
+
+.list-items {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  border-bottom: 1px solid #a9a9a9;
+  width: calc(100% - 34px);
+  height: 40px;
+  padding-left: 17px;
+  padding-right: 17px;
+  display: flex;
+  align-items: center;
+  /* 라디오 버튼 덮힐 경우 */
+}
+.list-items input[type=radio] {
+  margin: 0;
+  -webkit-appearance: none;
+  /* 라디오 버튼 없애기 for chrome*/
+  -moz-appearance: none;
+  /* 라디오 버튼 없애기 for firefox*/
+  appearance: none;
+  /* 라디오 버튼 없애기 공통*/
+  display: none;
+  /* 라디오 버튼 없애기 for IE10, 11*/
+  /* 라디오 버튼 선택된 경우 */
+}
+.list-items input[type=radio]:checked ~ .check-marker {
+  background: url("/img/radio_on.png") no-repeat;
+  background-size: 20px;
+}
+.list-items:hover input[type=radio] ~ .check-marker {
+  background: url("/img/radio_hover.png") no-repeat;
+  background-size: 20px;
+}
+
+/* 라디오 버튼 선택X */
+.check-marker {
+  width: 20px;
+  height: 20px;
+  margin-right: 18px;
+  background: url("/img/radio_off.png") no-repeat;
+  background-size: 20px;
+}
+
+/*# sourceMappingURL=search_modal.css.map */

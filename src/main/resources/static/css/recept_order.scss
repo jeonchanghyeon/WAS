@@ -1,10 +1,10 @@
 $contents_width: 900px;
 $contents_height: 728px;
-$center-padding: 40px;
+$center_padding: 40px;
 
 /* TODO mixin 정의 */
 /* 스크롤 뷰 */
-@mixin hide-scroll($track-color: #f8f7fb, $thumb-color: #302c2c) {
+@mixin hide-scroll($track_color: #f8f7fb, $thumb_color: #302c2c) {
   overflow: auto;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -20,11 +20,11 @@ $center-padding: 40px;
     background: none;
   }
   &::-webkit-scrollbar-thumb {
-    background: $thumb-color;
+    background: $thumb_color;
     opacity: .4;
   }
   &::-webkit-scrollbar-track {
-    background: $track-color;
+    background: $track_color;
   }
 }
 
@@ -44,7 +44,7 @@ $center-padding: 40px;
 
 /* 컨테이너 분할선 */
 @mixin under-bar {
-  border-bottom: 1px solid #a9a9a9a9;
+  border-bottom: 1px solid #a9a9a9;
 }
 
 /* 라운드형 결과 버튼 */
@@ -73,15 +73,15 @@ $center-padding: 40px;
 }
 
 .left-section {
-  width: $contents_width / 2 - $center-padding;
-  padding-right: $center-padding - 1px;
+  width: $contents_width / 2 - $center_padding;
+  padding-right: $center_padding - 1px;
   height: 100%;
   border-right: 1px solid #d0d0d0;
 }
 
 .right-section {
-  width: $contents_width / 2 - $center-padding;
-  padding-left: $center-padding;
+  width: $contents_width / 2 - $center_padding;
+  padding-left: $center_padding;
   height: 100%;
 }
 
@@ -98,7 +98,7 @@ $center-padding: 40px;
       width: 120px;
       height: 100%;
     }
-    input[type="text"], input[type="tel"] {
+    .edit-text {
       flex: 1;
     }
     &:nth-child(5) {
@@ -171,7 +171,7 @@ $center-padding: 40px;
   .label {
     margin-right: 10px;
   }
-  input[type="text"] {
+  .edit-text {
     width: 68px;
     margin-right: 10px;
   }
@@ -208,7 +208,7 @@ $center-padding: 40px;
   .subsection-title {
     margin-right: 31px;
   }
-  input[type="text"] {
+  .edit-text {
     width: 230px;
   }
 }
@@ -225,7 +225,7 @@ $center-padding: 40px;
   .subsection-title, .required {
     margin-bottom: 8px;
   }
-  input[type="text"] {
+  .edit-text {
     text-align: right;
     width: 100%;
   }
@@ -247,7 +247,7 @@ $center-padding: 40px;
   @include custom-font($color: #323232, $weight: bold);
 }
 
-input[type="text"], input[type="tel"] {
+.edit-text {
   @include custom-font($size: 12px, $weight: 500);
   height: 32px;
   padding-left: 10px;
@@ -388,7 +388,7 @@ input[type="text"], input[type="tel"] {
 }
 
 .table_scroll {
-  @include hide-scroll($thumb-color: #aeaeaeae);
+  @include hide-scroll($thumb_color: #aeaeaeae);
   height: 66px;
   width: 100%;
 }

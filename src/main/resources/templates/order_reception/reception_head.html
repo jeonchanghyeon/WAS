@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/css/header.css"/>
     <link rel="stylesheet" href="/css/popup_search_address.css"/>
     <link rel="stylesheet" href="/css/recept_order.css"/>
+    <link rel="stylesheet" href="/css/search_modal.css"/>
 </head>
 
 <body>
@@ -32,30 +33,30 @@
                     <div class="info-container">
                         <div class="info-row">
                             <div class="required">지사명</div>
-                            <input type="text" required="required" name="branch-name"
+                            <input type="text" class="edit-text" required="required" name="branch-name"
                                    placeholder="지사명을 입력하세요."/>
                             <button class="btn-search" id="btn_branch_name"> 검색</button>
                         </div>
                         <div class="info-row">
                             <div class="required">상점명</div>
-                            <input type="text" required="required" name="shop-name"
+                            <input type="text" class="edit-text" required="required" name="shop-name"
                                    placeholder="상점명을 입력하세요."/>
                             <button class="btn-search" id="btn_shop_name"> 검색</button>
                         </div>
                         <div class="info-row">
                             <div class="required">고객전화번호</div>
-                            <input type="tel" required="required" name="customer-tel"
+                            <input type="tel" class="edit-text" required="required" name="customer-tel"
                                    placeholder="고객전화번호를 입력하세요."/>
                         </div>
                         <div class="info-row">
                             <div class="required">고객 주소</div>
-                            <input type="text" required="required" class="address" name="address"
+                            <input type="text" required="required" class="edit-text" name="address"
                                    placeholder="배송할 주소를 검색해주세요."/>
                             <button class="btn-search" id="btn_address"> 검색</button>
                         </div>
                         <div class="info-row">
                             <div></div>
-                            <input type="text" class="address_detail" name="address-detail"
+                            <input type="text" class="edit-text" name="address-detail"
                                    placeholder="상세 주소를 검색해주세요."/>
                         </div>
                         <input type="hidden" name="jibun"/>
@@ -130,15 +131,15 @@
                     <div class="item-cost-container">
                         <div class="item-cost">
                             <div class="required" for="menu-price">상품요금</div>
-                            <input type="text" required="required" name="menu-price" id="menu-price"/>
+                            <input type="text" class="edit-text" required="required" name="menu-price" id="menu-price"/>
                         </div>
                         <div class="item-cost">
                             <div class="subsection-title" for="additional-menuPrice">상품추가요금</div>
-                            <input type="text" name="additional-menuPrice" id="additional-menuPrice"/>
+                            <input type="text" class="edit-text" name="additional-menuPrice" id="additional-menuPrice"/>
                         </div>
                         <div class="item-cost">
                             <div class="subsection-title" for="sum">고객요금 합계</div>
-                            <input type="text" id="sum" disabled="disabled" value="0원"/>
+                            <input type="text" class="edit-text" id="sum" disabled="disabled" value="0원"/>
                         </div>
                     </div>
                 </section>
@@ -183,29 +184,31 @@
                             <div class="subsection-title">배송대행료 설정</div>
                             <input type="radio" class="radio" id="setting_distance"/>
                             <label class="label" for="setting_distance">거리별</label>
-                            <input type="text" id="distance"/>
+                            <input type="text" class="edit-text" id="distance"/>
                             <input type="radio" class="radio" id="setting_dong"/>
                             <label class="label" for="setting_dong">동별</label>
-                            <input type="text" id="dong"/>
+                            <input type="text" class="edit-text" id="dong"/>
                         </div>
                         <div class="cost_setting_etc_area">
                             <div class="item-cost">
                                 <label for="delivery-cost" class="required"> 배송대행료</label>
-                                <input required="required" type="text" name="delivery-cost" id="delivery-cost"/>
+                                <input required="required" type="text" class="edit-text" name="delivery-cost"
+                                       id="delivery-cost"/>
                             </div>
                             <div class="item-cost">
                                 <label for="add-cost" class="subsection-title"> 배송추가요금</label> <br/>
-                                <input type="text" id="add-cost"/>
+                                <input type="text" class="edit-text" id="add-cost"/>
                             </div>
                         </div>
                         <div class="cost_setting_etc_area">
                             <div class="item-cost">
                                 <label for="extra-charge" class="subsection-title"> 할증</label><br/>
-                                <input type="text" id="extra-charge" disabled="disabled" value="0원"/>
+                                <input type="text" class="edit-text" id="extra-charge" disabled="disabled" value="0원"/>
                             </div>
                             <div class="item-cost">
                                 <label for="additional-cost" class="subsection-title"> 배송대행료합계</label><br/>
-                                <input type="text" name="additional-cost" id="additional-cost" readonly="readonly"
+                                <input type="text" class="edit-text" name="additional-cost" id="additional-cost"
+                                       readonly="readonly"
                                        disabled="disabled" value="0원"/>
                             </div>
                         </div>
@@ -222,7 +225,7 @@
                     <div class="request-memo-container">
                         <div class="subsection-title">요청사항</div>
                         <div class="memo_area">
-                            <input type="text" name="memo" placeholder="요청사항을 입력해주세요"/>
+                            <input type="text" class="edit-text" name="memo" placeholder="요청사항을 입력해주세요"/>
                             <button class="btn-search">상용문구</button>
                         </div>
                     </div>

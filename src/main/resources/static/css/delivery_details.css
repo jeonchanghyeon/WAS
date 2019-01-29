@@ -37,7 +37,7 @@
 }
 
 .detail-header {
-  border-bottom: 1px solid #a9a9a9a9;
+  border-bottom: 1px solid #a9a9a9;
   width: calc(100% - 58px);
   height: 70px;
   padding-left: 29px;
@@ -73,7 +73,7 @@
 }
 
 .status-container {
-  border-bottom: 1px solid #a9a9a9a9;
+  border-bottom: 1px solid #a9a9a9;
   height: 69px;
   padding-left: 26px;
   display: flex;
@@ -140,7 +140,7 @@
 }
 
 .delivery-info-container {
-  border-bottom: 1px solid #a9a9a9a9;
+  border-bottom: 1px solid #a9a9a9;
   height: 181px;
   display: flex;
   flex-direction: column;
@@ -163,7 +163,7 @@
 }
 
 .others-info-container {
-  border-bottom: 1px solid #a9a9a9a9;
+  border-bottom: 1px solid #a9a9a9;
   height: 81px;
   display: flex;
   padding: 14px 25px;

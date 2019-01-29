@@ -50,7 +50,7 @@
   width: 120px;
   height: 100%;
 }
-.info-container .info-row input[type=text], .info-container .info-row input[type=tel] {
+.info-container .info-row .edit-text {
   flex: 1;
 }
 .info-container .info-row:nth-child(5) div {
@@ -82,7 +82,7 @@
 }
 
 .cook-time-container {
-  border-bottom: 1px solid #a9a9a9a9;
+  border-bottom: 1px solid #a9a9a9;
   width: 100%;
   margin-bottom: 20px;
 }
@@ -103,7 +103,7 @@
 }
 
 .cost-setting-container {
-  border-bottom: 1px solid #a9a9a9a9;
+  border-bottom: 1px solid #a9a9a9;
   width: 100%;
   margin-bottom: 18px;
 }
@@ -120,7 +120,7 @@
 .dist-setting-container .label {
   margin-right: 10px;
 }
-.dist-setting-container input[type=text] {
+.dist-setting-container .edit-text {
   width: 68px;
   margin-right: 10px;
 }
@@ -156,7 +156,7 @@
 .request-memo-container .subsection-title {
   margin-right: 31px;
 }
-.request-memo-container input[type=text] {
+.request-memo-container .edit-text {
   width: 230px;
 }
 
@@ -173,7 +173,7 @@
 .item-cost .subsection-title, .item-cost .required {
   margin-bottom: 8px;
 }
-.item-cost input[type=text] {
+.item-cost .edit-text {
   text-align: right;
   width: 100%;
 }
@@ -208,7 +208,7 @@
   letter-spacing: normal;
 }
 
-input[type=text], input[type=tel] {
+.edit-text {
   font-family: NotoSansCJKkr;
   font-weight: 500;
   font-style: normal;
