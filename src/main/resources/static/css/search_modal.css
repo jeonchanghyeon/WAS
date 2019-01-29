@@ -33,7 +33,7 @@
 }
 
 .search-modal-header {
-  border-bottom: 1px solid #a9a9a9;
+  border-bottom: 1px solid #aaaaaa;
   width: calc(100% - 15px - 15px);
   height: 47px;
   padding-left: 15px;
@@ -49,7 +49,7 @@
 }
 
 .search-section {
-  border-bottom: 1px solid #a9a9a9;
+  border-bottom: 1px solid #aaaaaa;
   width: calc(100% - 15px - 15px);
   height: 64px;
   padding-left: 15px;
@@ -73,7 +73,7 @@
   background: none;
 }
 .result-section::-webkit-scrollbar-thumb {
-  background: #302c2c;
+  background: #aaaaaa;
   opacity: 0.4;
 }
 .result-section::-webkit-scrollbar-track {
@@ -85,6 +85,42 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.search-branch-name {
+  width: 181px;
+  height: 38px;
+  border: 1px solid #cecece;
+  background-color: #ffffff;
+  display: flex;
+}
+.search-branch-name button {
+  min-width: 40px;
+  height: 100%;
+  background: #ffffff url("/img/search_orange.png") no-repeat center center;
+  background-size: 15px 15px;
+  border: none;
+}
+.search-branch-name .search-name {
+  width: calc(100% - 40px);
+}
+
+.search-shop-name {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #cecece;
+  background-color: #ffffff;
+  display: flex;
+}
+.search-shop-name button {
+  min-width: 40px;
+  height: 100%;
+  background: #ffffff url("/img/search_orange.png") no-repeat center center;
+  background-size: 15px 15px;
+  border: none;
+}
+.search-shop-name .search-name {
+  width: calc(100% - 40px);
 }
 
 /* TODO 요소 관련 css */
@@ -161,7 +197,7 @@
   line-height: normal;
   letter-spacing: normal;
 }
-.search-branch-name {
+.search-name {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -170,36 +206,13 @@
   color: #4a4a4a;
   line-height: normal;
   letter-spacing: normal;
-  width: 183px;
-  height: 40px;
+  height: 100%;
   padding-left: 13px;
   padding-right: 13px;
-  border: 1px solid #cecece;
-  background: #ffffff url("/img/search_orange.png") no-repeat 95% center;
-  background-size: 15px 15px;
+  border: none;
+  background-color: #ffffff;
 }
-.search-branch-name::placeholder {
-  color: #979797;
-}
-
-.search-shop-name {
-  font-family: NotoSansCJKkr;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 14px;
-  color: #4a4a4a;
-  line-height: normal;
-  letter-spacing: normal;
-  width: 100%;
-  height: 40px;
-  padding-left: 13px;
-  padding-right: 13px;
-  border: 1px solid #cecece;
-  background: #ffffff url("/img/search_orange.png") no-repeat 95% center;
-  background-size: 15px 15px;
-}
-.search-shop-name::placeholder {
+.search-name::placeholder {
   color: #979797;
 }
 
@@ -212,7 +225,7 @@
   color: #4a4a4a;
   line-height: normal;
   letter-spacing: normal;
-  border-bottom: 1px solid #a9a9a9;
+  border-bottom: 1px solid #aaaaaa;
   width: calc(100% - 34px);
   height: 40px;
   padding-left: 17px;
@@ -220,6 +233,10 @@
   display: flex;
   align-items: center;
   /* 라디오 버튼 덮힐 경우 */
+}
+.list-items:hover input[type=radio] ~ .check-marker {
+  background: url("/img/radio_hover.png") no-repeat;
+  background-size: 20px;
 }
 .list-items input[type=radio] {
   margin: 0;
@@ -235,10 +252,6 @@
 }
 .list-items input[type=radio]:checked ~ .check-marker {
   background: url("/img/radio_on.png") no-repeat;
-  background-size: 20px;
-}
-.list-items:hover input[type=radio] ~ .check-marker {
-  background: url("/img/radio_hover.png") no-repeat;
   background-size: 20px;
 }
 
