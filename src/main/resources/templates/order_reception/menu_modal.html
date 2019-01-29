@@ -1,0 +1,94 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<div th:fragment="menu_modal" id="menu_modal" class="menu-modal-background">
+    <div class="menu-modal-container">
+        <!-- 헤더 -->
+        <header class="menu-modal-header">
+            <div class="menu-title">메뉴(POS)</div>
+            <button class="menu-close-button" id="menu-close-button">x</button>
+        </header>
+        <!-- 바디 -->
+        <section class="menu-main-section">
+            <!--전체메뉴 리스트(왼쪽)-->
+            <div class="left-container">
+                <div class="table-title">전체 메뉴</div>
+                <div class="menu-table-container">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>상품명</td>
+                            <td>가격</td>
+                            <td></td>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll-container">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td>짬뽕</td>
+                                <td>7,000</td>
+                                <td>
+                                    <button class="select-button">선택</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- 가운데 화살표 -->
+            <div class="right-arrow"></div>
+            <!--선택된 메뉴 리스트(오른쪽)-->
+            <div class="right-container">
+                <div class="table-title">선택된 메뉴</div>
+                <div class="menu-table-container">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>순번</td>
+                            <td>상품명</td>
+                            <td>개수</td>
+                            <td>가격</td>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll-container">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td>2</td>
+                                <td>짬뽕</td>
+                                <td>
+                                    <div class="num-count">
+                                        <input class="minus-disable" type="button">
+                                        <div name="value">0</div>
+                                        <input class="plus-enable" type="button">
+                                    </div>
+                                </td>
+                                <td>7,000</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>짬뽕</td>
+                                <td>
+                                    <div class="num-count">
+                                        <input class="minus-enable" type="button">
+                                        <div name="value">1</div>
+                                        <input class="plus-enable" type="button">
+                                    </div>
+                                </td>
+                                <td>7,000</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 푸터(확인 버튼) -->
+        <section class="menu-submit-section">
+            <button class="menu-ok-button">확인</button>
+        </section>
+    </div>
+</div>
+</html>
