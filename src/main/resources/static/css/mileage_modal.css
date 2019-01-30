@@ -122,7 +122,7 @@
   border-bottom: 5px solid #ff9037;
 }
 
-.mileage-result-section {
+.mileage-result-container {
   width: 100%;
   height: calc(100% - 218px - 92px);
   display: flex;
@@ -154,7 +154,7 @@
   margin-bottom: 9px;
 }
 
-.mileage-submit-section {
+.mileage-submit-container {
   flex: 1;
   min-height: 96px;
   display: flex;
@@ -170,6 +170,84 @@
   display: flex;
   flex-direction: column;
   align-content: space-between;
+}
+
+.area-selector {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  width: 100px;
+  height: 40px;
+  border: 1px solid #cecece;
+  background: #ffffff url("../../static/img/select_btn_bright.png") no-repeat 95% center;
+  background-size: 20px 20px;
+  -webkit-appearance: none;
+  /* 화살표 없애기 for chrome*/
+  -moz-appearance: none;
+  /* 화살표 없애기 for firefox*/
+  appearance: none;
+  /* 화살표 없애기 공통*/
+  padding-left: 15px;
+}
+.area-selector::-ms-expand {
+  display: none;
+  /* 화살표 없애기 for IE10, 11*/
+}
+.area-selector > option {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+}
+.mileage-search-container {
+  width: calc(100% - 60px);
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mileage-search-name {
+  width: 190px;
+  height: 38px;
+  border: 1px solid #cecece;
+  background-color: #ffffff;
+  display: flex;
+}
+.mileage-search-name button {
+  min-width: 40px;
+  height: 100%;
+  background: #ffffff url("../../static/img/search_orange.png") no-repeat center center;
+  background-size: 15px 15px;
+  border: none;
+}
+.mileage-search-name .search-name {
+  width: calc(100% - 40px);
+}
+
+.search-name {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  height: 100%;
+  padding-left: 13px;
+  padding-right: 13px;
+  border: none;
+  background-color: #ffffff;
 }
 
 /* TODO 요소 관련 css */
@@ -201,11 +279,11 @@
   letter-spacing: normal;
   line-height: 1.29;
 }
-.result-row .input-output-box {
+.result-row .input-output-box, .result-row .point-subtract {
   width: 204px;
   height: 100%;
 }
-.result-row:nth-child(3) .input-output-box {
+.result-row .point-subtract {
   color: #d0021b;
 }
 .result-row:last-child {
@@ -223,6 +301,7 @@
 .withdraw-input-container .input-output-box {
   width: calc(100% - 72px);
   height: 100%;
+  border-right: 0;
 }
 
 /* 라디오 버튼에서 선택되지 않을 시(기본 버튼 정의) */
@@ -278,7 +357,7 @@
   border: none;
 }
 
-.input-output-box {
+.input-output-box, .point-subtract {
   font-family: NotoSansCJKkr;
   font-weight: 500;
   font-style: normal;

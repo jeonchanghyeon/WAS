@@ -8,8 +8,10 @@ $mileage_modal_height: 640px;
 
 $base_url_images: "../../static/img/";
 $url_close_white: $base_url_images + "close_white.png";
+$url_select_btn_bright: $base_url_images + "select_btn_bright.png";
+$url_search_orange: $base_url_images + "search_orange.png";
 
-/* TODO mixin 정의 */
+  /* TODO mixin 정의 */
 /* 스크롤 뷰 */
 @mixin hide-scroll($track-color: #f8f7fb, $thumb-color: #302c2c) {
   overflow: auto;
@@ -152,7 +154,7 @@ $url_close_white: $base_url_images + "close_white.png";
   }
 }
 
-.mileage-result-section {
+.mileage-result-container {
   width: 100%;
   height: calc(100% - 218px - 92px); //main-section과 submit-section의 높이 제외
   display: flex;
@@ -177,7 +179,7 @@ $url_close_white: $base_url_images + "close_white.png";
   }
 }
 
-.mileage-submit-section {
+.mileage-submit-container {
   flex: 1;
   min-height:96px;
   display:flex;
@@ -192,6 +194,64 @@ $url_close_white: $base_url_images + "close_white.png";
   display:flex;
   flex-direction: column;
   align-content: space-between;
+}
+
+.area-selector {
+  @include custom-font;
+  width: 100px;
+  height: 40px;
+  border: 1px solid #cecece;
+  background: #ffffff url($url_select_btn_bright) no-repeat 95% center;
+  background-size: 20px 20px;
+  -webkit-appearance: none; /* 화살표 없애기 for chrome*/
+  -moz-appearance: none; /* 화살표 없애기 for firefox*/
+  appearance: none; /* 화살표 없애기 공통*/
+  &::-ms-expand {
+    display: none; /* 화살표 없애기 for IE10, 11*/
+  }
+  padding-left: 15px;
+
+  > option {
+    @include custom-font;
+    &:first-child {
+    }
+  }
+}
+
+.mileage-search-container {
+  width: calc(100% - 60px);
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mileage-search-name {
+  width: 190px;
+  height: 38px;
+  border: 1px solid #cecece;
+  background-color: #ffffff;
+  display: flex;
+
+  button {
+    min-width: 40px;
+    height: 100%;
+    background: #ffffff url($url_search_orange) no-repeat center center;
+    background-size: 15px 15px;
+    border: none;
+  }
+  .search-name {
+    width: calc(100% - 40px);
+  }
+}
+
+.search-name {
+  @include custom-font;
+  height: 100%;
+  padding-left: 13px;
+  padding-right: 13px;
+  border: none;
+  background-color: #ffffff;
 }
 
 /* TODO 요소 관련 css */
@@ -210,20 +270,20 @@ $url_close_white: $base_url_images + "close_white.png";
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 14px;
+
   > div:nth-child(1) {
     @include custom-font;
     line-height: 1.29;
   }
-  .input-output-box {
+  .input-output-box, .point-subtract {
     width: 204px;
     height:100%;
   }
-  margin-bottom: 14px;
-  &:nth-child(3) {
-    .input-output-box {
-      color: #d0021b;
-    }
+  .point-subtract {
+    color: #d0021b;
   }
+
   &:last-child {
     .input-output-box {
       text-align: left;
@@ -239,6 +299,7 @@ $url_close_white: $base_url_images + "close_white.png";
   .input-output-box {
     width: calc(100% - 72px);
     height: 100%;
+    border-right:0;
   }
 }
 
@@ -273,7 +334,7 @@ $url_close_white: $base_url_images + "close_white.png";
   border:none;
 }
 
-.input-output-box {
+.input-output-box, .point-subtract {
   @include custom-font(16px, #4a4a4a, 500);
   background-color: #ffffff;
   border:1px solid #aaaaaa;
