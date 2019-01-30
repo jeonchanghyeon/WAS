@@ -16,7 +16,14 @@
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
-  padding: 64px calc(50% - 180px);
+  padding: 64px calc(50% - 180px) 64px;
+}
+
+.transfer-modal-background {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 150px calc(50% - 170px) 71px;
 }
 
 .mileage-modal-container {
@@ -34,6 +41,22 @@
   box-shadow: 0 0 2.5px 0 rgba(0, 0, 0, 0.12), 0 0 8px 0 rgba(0, 0, 0, 0.38);
 }
 
+.transfer-modal-container {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  width: 340px;
+  height: 545px;
+  overflow: hidden;
+  box-shadow: 0 0 2.5px 0 rgba(0, 0, 0, 0.12), 0 0 8px 0 rgba(0, 0, 0, 0.38);
+  background-color: #ffffff;
+}
+
 .mileage-modal-header {
   width: calc(100% - 15px);
   height: 32px;
@@ -42,6 +65,17 @@
   justify-content: flex-end;
   align-items: center;
   background-color: #1f1f1f;
+}
+
+.transfer-modal-header {
+  border-bottom: 1px solid #aaaaaa;
+  width: calc(100% - 19px - 18px);
+  height: 47px;
+  padding-right: 19px;
+  padding-left: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .mileage-main-section {
@@ -184,7 +218,7 @@
   width: 100px;
   height: 40px;
   border: 1px solid #cecece;
-  background: #ffffff url("../../static/img/select_btn_bright.png") no-repeat 95% center;
+  background: #ffffff url("/img/select_btn_bright.png") no-repeat 95% center;
   background-size: 20px 20px;
   -webkit-appearance: none;
   /* 화살표 없애기 for chrome*/
@@ -216,6 +250,16 @@
   justify-content: space-between;
 }
 
+.transfer-search-container {
+  border-bottom: 1px solid #aaaaaa;
+  width: calc(100% - 30px);
+  height: 64px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
 .mileage-search-name {
   width: 190px;
   height: 38px;
@@ -226,11 +270,29 @@
 .mileage-search-name button {
   min-width: 40px;
   height: 100%;
-  background: #ffffff url("../../static/img/search_orange.png") no-repeat center center;
+  background: #ffffff url("/img/search_orange.png") no-repeat center center;
   background-size: 15px 15px;
   border: none;
 }
 .mileage-search-name .search-name {
+  width: calc(100% - 40px);
+}
+
+.transfer-search-name {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #cecece;
+  background-color: #ffffff;
+  display: flex;
+}
+.transfer-search-name button {
+  min-width: 40px;
+  height: 100%;
+  background: #ffffff url("/img/search_orange.png") no-repeat center center;
+  background-size: 15px 15px;
+  border: none;
+}
+.transfer-search-name .search-name {
   width: calc(100% - 40px);
 }
 
@@ -249,6 +311,30 @@
   border: none;
   background-color: #ffffff;
 }
+.search-name::placeholder {
+  color: #979797;
+}
+
+.transfer-result-container {
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  /*스크롤 감추기*/
+  /*크롬전용 커스톰 스크롤*/
+  width: 100%;
+  height: calc(100% - 114px - 96px);
+}
+.transfer-result-container::-webkit-scrollbar {
+  width: 3px;
+  background: none;
+}
+.transfer-result-container::-webkit-scrollbar-thumb {
+  background: #aaaaaa;
+  opacity: 0.4;
+}
+.transfer-result-container::-webkit-scrollbar-track {
+  background: #f8f7fb;
+}
 
 /* TODO 요소 관련 css */
 .mileage-close-button {
@@ -256,8 +342,28 @@
   height: 14px;
   padding: 0;
   border: none;
-  background: rgba(0, 0, 0, 0) url("../../static/img/close_white.png") no-repeat center center;
+  background: rgba(0, 0, 0, 0) url("/img/close_white.png") no-repeat center center;
   background-size: 14px;
+}
+
+.transfer-close-button {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0) url("/img/close_black.png") no-repeat center center;
+  background-size: 14px;
+}
+
+.transfer-modal-title {
+  font-family: NotoSansCJKkr;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 16px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
 }
 
 .result-row {
@@ -390,6 +496,54 @@
   height: 34px;
   border: 1px solid #ff9037;
   background-color: #ffffff;
+}
+
+.list-items {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  border-bottom: 1px solid #aaaaaa;
+  width: calc(100% - 34px);
+  height: 40px;
+  padding-left: 17px;
+  padding-right: 17px;
+  display: flex;
+  align-items: center;
+  /* 라디오 버튼 덮힐 경우 */
+}
+.list-items:hover input[type=radio] ~ .check-marker {
+  background: url("/img/radio_hover.png") no-repeat;
+  background-size: 20px;
+}
+.list-items input[type=radio] {
+  margin: 0;
+  -webkit-appearance: none;
+  /* 라디오 버튼 없애기 for chrome*/
+  -moz-appearance: none;
+  /* 라디오 버튼 없애기 for firefox*/
+  appearance: none;
+  /* 라디오 버튼 없애기 공통*/
+  display: none;
+  /* 라디오 버튼 없애기 for IE10, 11*/
+  /* 라디오 버튼 선택된 경우 */
+}
+.list-items input[type=radio]:checked ~ .check-marker {
+  background: url("/img/radio_on.png") no-repeat;
+  background-size: 20px;
+}
+
+/* 라디오 버튼 선택X */
+.check-marker {
+  width: 20px;
+  height: 20px;
+  margin-right: 18px;
+  background: url("/img/radio_off.png") no-repeat;
+  background-size: 20px;
 }
 
 /*# sourceMappingURL=mileage_modal.css.map */
