@@ -1,19 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<div th:fragment="modal" id="modal" class="modal_background">
-    <div class="modal_container">
+<div th:fragment="modal" id="modal" class="address-modal">
+    <div class="modal-container">
         <!-- 헤더 -->
-        <div class="address_modal_header">
+        <header class="modal-header">
             <span>주소검색</span>
-            <button class="btn-close" id="btn_close">X</button>
-        </div>
+            <button class="close-button-white" id="btn_close"></button>
+        </header>
 
         <div class="body">
             <!-- 사이드 바 -->
             <aside class="aside">
-                <div class="title_block">
+                <div class="title-block">
                     <span>배달가능 동 선택</span>
                 </div>
-                <div class="select_container">
+                <div class="select-container">
                     <!-- 자음 선택 테이블 -->
                     <div class="consonant" id="consonant-area">
                         <button value="0">전체</button>
@@ -39,8 +39,7 @@
                     </form>
 
                     <!-- 동 선택 테이블 -->
-                    <div class="enable_dong_scroll">
-                        <table class="enable_dong" id="enable_dong"></table>
+                    <div class="enable-dong-scroll" id="enable_dong">
                     </div>
                 </div>
             </aside>
@@ -49,50 +48,45 @@
             <section class="modal_main_section">
                 <!-- 검색 -->
                 <div class="upper_area">
-                    <div class="select_tower">
-                        <button>전체</button>
-                        <button>아파트</button>
-                        <button>빌라/주택</button>
-                        <button>모텔/호텔</button>
-                        <button>학교</button>
-                        <button>당구장</button>
-                        <button>병원</button>
-                        <button>학원</button>
-                        <button>빌딩</button>
-                        <button>관공서</button>
+                    <div class="select-tower">
+                        <button class="rect-empty-white">전체</button>
+                        <button class="rect-empty-white">아파트</button>
+                        <button class="rect-empty-white">빌라/주택</button>
+                        <button class="rect-empty-white">모텔/호텔</button>
+                        <button class="rect-empty-white">학교</button>
+                        <button class="rect-empty-white">당구장</button>
+                        <button class="rect-empty-white">병원</button>
+                        <button class="rect-empty-white">학원</button>
+                        <button class="rect-empty-white">빌딩</button>
+                        <button class="rect-empty-white">관공서</button>
                     </div>
 
                     <div class="search_area">
-                        <div class="search">
+                        <div class="search-container">
                             <form id="form-jibun" hidden="hidden">
                                 <input type="hidden" id="jibun"/>
                             </form>
 
                             <span>지번주소</span>
-                            <input type="text" placeholder="ex) 44-1, 용호로 38-17" class="search_edit" id="jibun-detail"/>
-                            <button type="submit" form="form-jibun">
-                                <img alt="logo" src="/img/search_white.png"/>
-                                주소검색
-                            </button>
+                            <input type="text" placeholder="ex) 44-1, 용호로 38-17" class="rect-empty-white"
+                                   id="jibun-detail"/>
+                            <button type="submit" class="rect-fill-orange" form="form-jibun">주소검색</button>
                         </div>
                         <span class="caption">* 동을 제외하고 작성해주세요.</span>
-                        <div class="search">
+                        <div class="search-container">
                             <form hidden="hidden">
                                 <input type="hidden"/>
                             </form>
 
                             <span>명칭</span>
 
-                            <input type="text" placeholder="ex) 푸르지오 아파트" class="search_edit"/>
-                            <button type="submit">
-                                <img alt="logo" src="/img/search_white.png"/>
-                                주소검색
-                            </button>
+                            <input type="text" placeholder="ex) 푸르지오 아파트" class="rect-empty-white"/>
+                            <button type="submit" class="rect-fill-orange">주소검색</button>
                         </div>
                     </div>
                 </div>
                 <!-- 결과 목록 -->
-                <div class="scroll_table">
+                <div class="scroll-table">
                     <table>
                         <thead>
                         <tr>
@@ -103,17 +97,17 @@
                         </tr>
                         </thead>
                     </table>
-                    <div class="address_list_scroll">
+                    <div class="address-list-scroll">
                         <table>
                             <tbody>
                             <tr>
-                                <td class="star">★</td>
+                                <td class="star"></td>
                                 <td>삼진여객</td>
                                 <td>각화동 183-18</td>
                                 <td>군왕로 194번길 13</td>
                             </tr>
                             <tr>
-                                <td class="star_empty">☆</td>
+                                <td class="star_empty"></td>
                                 <td>삼진여객</td>
                                 <td>각화동 183-18</td>
                                 <td>군왕로 194번길 13</td>

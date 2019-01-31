@@ -1,0 +1,133 @@
+/* TODO 사용자 정의 변수 */
+/* 컬러 */
+$color_gray: #f1f1f1;
+$color_white: #ffffff;
+$color_orange: #ff9037;
+$color_gray_border: #aaaaaa;
+$color_gray_table: #eaeaea;
+$color_gray_font: #4a4a4a;
+$color_wood: #302c2c;
+$color-placeholder: #979797;
+
+/* 이미지 */
+$base_url_images: "/img/";
+$url_close_white: $base_url_images + "close_white.png";
+$url_close_black: $base_url_images + "close_black.png";
+$url_select_btn_bright: $base_url_images + "select_btn_bright.png";
+$url_search_orange: $base_url_images + "search_orange.png";
+$url_search_white: $base_url_images + "search_white.png";
+$url_radio_on: $base_url_images + "radio_on.png";
+$url_radio_off: $base_url_images + "radio_off.png";
+$url_orange_star: $base_url_images + "orange_star.png";
+$url_empty_star: $base_url_images + "empty_star.png";
+
+/* TODO mixin 정의 */
+/* 스크롤 뷰 */
+@mixin scroll-view($track-color: #f8f7fb, $thumb-color: #302c2c, $scroll-display: true) {
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  @if ($scroll-display) {
+    /*크롬전용 커스톰 스크롤*/
+    &::-webkit-scrollbar {
+      width: 3px;
+      background: none;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $thumb-color;
+      opacity: .4;
+    }
+    &::-webkit-scrollbar-track {
+      background: $track-color;
+    }
+  } @else {
+    /*스크롤 감추기*/
+    -ms-overflow-style: none; // IE
+    &::-webkit-scrollbar {
+      display: none !important; // 윈도우 크롬 등
+    }
+  }
+}
+
+/* 커스톰 폰트 */
+@mixin custom-font($size: 14px, $color: $color_gray_font, $weight: normal) {
+  font: {
+    family: NotoSansCJKkr;
+    weight: $weight;
+    style: normal;
+    stretch: normal;
+    size: $size;
+  }
+  color: $color;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+/* 모달 투명 배경 */
+@mixin bg-modal($width, $top_padding, $bottom_padding) {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: $top_padding calc(50% - #{$width / 2}) $bottom_padding;
+}
+
+/* 모달 컨테이너 */
+@mixin modal-attribute($width, $height) {
+  width: $width;
+  height: $height;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: $color_white;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* 컨테이너 분할선 */
+@mixin underline {
+  border-bottom: 1px solid $color_gray_border;
+}
+
+/* 버튼 기본 모양 정의 */
+@mixin rect-shape($fill-color, $border-color, $radius) {
+  background-color: $fill-color;
+  border: 1px solid $border-color;
+  border-radius: $radius;
+  padding: 0;
+}
+
+/* TODO Component 정의 */
+.rect-fill-orange {
+  @include rect-shape($color-orange, $color-orange, 0);
+}
+
+.round-rect-fill {
+  @include rect-shape($color-orange, $color-orange, 21px);
+}
+
+.rect-empty-orange {
+  @include rect-shape($color-white, $color-orange, 0);
+}
+
+.rect-empty-white {
+  @include rect-shape($color-white, $color_gray_border, 0);
+}
+
+.round-rect-empty-white {
+  @include rect-shape($color-white, $color_gray_border, 21px);
+}
+
+.close-button-white {
+  background: rgba(0, 0, 0, 0) url($url_close_white) no-repeat center center;
+  background-size: 100%;
+  border: none;
+  padding: 0;
+}
+
+.close-button-black {
+  background: rgba(0, 0, 0, 0) url($url_close_black) no-repeat center center;
+  background-size: 100%;
+  border: none;
+  padding: 0;
+}
+
