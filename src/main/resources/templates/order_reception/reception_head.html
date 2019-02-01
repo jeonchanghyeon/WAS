@@ -15,231 +15,261 @@
 </head>
 
 <body>
-<div class="container">
-    <!-- Navigation -->
+<div class="reception-container">
     <div th:replace="header/header_head :: header"></div>
-    <div class="main-container">
+    <section class="main-section">
         <!-- 헤더 -->
-        <div class="big-title">
+        <div class="header">
             주문접수
             <div class="required">입력필수값</div>
         </div>
-
-        <form id="recept_form">
+        <form id="recept_form" class="body">
             <input type="hidden" name="shop-id" id="shop_id" value="1121"/>
             <input type="hidden" name="point" id="point"/>
-            <section class="main-section">
-                <!-- 왼쪽 부분-->
-                <section class="left-section">
-                    <div class="info-container">
-                        <div class="info-row">
-                            <div class="required">지사명</div>
-                            <input type="text" class="edit-text" required="required" name="branch-name"
-                                   placeholder="지사명을 입력하세요."/>
-                            <button class="btn-search" id="btn_branch_name"> 검색</button>
-                        </div>
-                        <div class="info-row">
-                            <div class="required">상점명</div>
-                            <input type="text" class="edit-text" required="required" name="shop-name"
-                                   placeholder="상점명을 입력하세요."/>
-                            <button class="btn-search" id="btn_shop_name"> 검색</button>
-                        </div>
-                        <div class="info-row">
-                            <div class="required">고객전화번호</div>
-                            <input type="tel" class="edit-text" required="required" name="customer-tel"
-                                   placeholder="고객전화번호를 입력하세요."/>
-                        </div>
-                        <div class="info-row">
-                            <div class="required">고객 주소</div>
-                            <input type="text" required="required" class="edit-text" name="address"
-                                   placeholder="배송할 주소를 검색해주세요."/>
-                            <button class="btn-search" id="btn_address"> 검색</button>
-                        </div>
-                        <div class="info-row">
-                            <div></div>
-                            <input type="text" class="edit-text" name="address-detail"
-                                   placeholder="상세 주소를 검색해주세요."/>
-                        </div>
-                        <input type="hidden" name="jibun"/>
-                        <input type="hidden" name="road"/>
-                        <input type="hidden" name="latitude"/>
-                        <input type="hidden" name="longitude"/>
-                        <input type="hidden" name="distance"/>
-                        <input type="hidden" name="distanceFactor"/>
+
+            <!-- 왼쪽 부분-->
+            <section class="left-section">
+                <div class="info-container">
+                    <div class="info-row">
+                        <div class="required">지사명</div>
+                        <input type="text" class="edit-box" required="required" name="branch-name"
+                               placeholder="지사명을 입력하세요."/>
+                        <button class="search-button" id="btn_branch_name"> 검색</button>
                     </div>
-                    <div class="map"></div>
-                    <div class="item_info_container">
-                        <span class="subsection-title">상품정보</span>
-                        <div>
-                            <button class="btn_white">갯수추가</button>
-                            <button class="btn_black">메뉴(POS)</button>
-                        </div>
+                    <div class="info-row">
+                        <div class="required">상점명</div>
+                        <input type="text" class="edit-box" required="required" name="shop-name"
+                               placeholder="상점명을 입력하세요."/>
+                        <button class="search-button" id="btn_shop_name"> 검색</button>
                     </div>
-                    <div class="table_outer">
-                        <table class="table">
-                            <thead>
+                    <div class="info-row">
+                        <div class="required">고객전화번호</div>
+                        <input type="tel" class="edit-box" required="required" name="customer-tel"
+                               placeholder="고객전화번호를 입력하세요."/>
+                    </div>
+                    <div class="info-row">
+                        <div class="required">고객 주소</div>
+                        <input type="text" required="required" class="edit-box" name="address"
+                               placeholder="배송할 주소를 검색해주세요."/>
+                        <button class="search-button" id="btn_address"> 검색</button>
+                    </div>
+                    <div class="info-row">
+                        <div></div>
+                        <input type="text" class="edit-box" name="address-detail"
+                               placeholder="상세 주소를 검색해주세요."/>
+                    </div>
+                    <input type="hidden" name="jibun"/>
+                    <input type="hidden" name="road"/>
+                    <input type="hidden" name="latitude"/>
+                    <input type="hidden" name="longitude"/>
+                    <input type="hidden" name="distance"/>
+                    <input type="hidden" name="distanceFactor"/>
+                </div>
+                <div class="map"></div>
+                <div class="item-info-container">
+                    <span class="subsection-title">상품정보</span>
+                    <div>
+                        <button class="rect-white">갯수추가</button>
+                        <button class="rect-black">메뉴(POS)</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>순번</td>
+                            <td>상품명</td>
+                            <td>구분</td>
+                            <td>단간</td>
+                            <td>갯수</td>
+                            <td>판매가</td>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="table-scroll">
+                        <table>
+                            <tbody>
                             <tr>
-                                <td>순번</td>
-                                <td>상품명</td>
-                                <td>구분</td>
-                                <td>단간</td>
-                                <td>갯수</td>
-                                <td>판매가</td>
+                                <td>1</td>
+                                <td>핫도그</td>
+                                <td>0</td>
+                                <td>15,000</td>
+                                <td>3</td>
+                                <td>45,000</td>
                             </tr>
-                            </thead>
+                            <tr>
+                                <td>2</td>
+                                <td>미국산 A급 명품 마블링 가득 소고기 스테이크</td>
+                                <td>0</td>
+                                <td>500</td>
+                                <td>1</td>
+                                <td>500</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>붕어빵</td>
+                                <td>0</td>
+                                <td>10,230,000</td>
+                                <td>4</td>
+                                <td>40,920,000</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>아이스크림</td>
+                                <td>0</td>
+                                <td>100,000,000,000</td>
+                                <td>120</td>
+                                <td>12,000,000,000,000</td>
+                            </tr>
+                            </tbody>
                         </table>
-                        <div class="table_scroll">
-                            <table class="table">
-                                <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>핫도그</td>
-                                    <td>0</td>
-                                    <td>15,000</td>
-                                    <td>3</td>
-                                    <td>45,000</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>미국산 A급 명품 마블링 가득 소고기 스테이크</td>
-                                    <td>0</td>
-                                    <td>500</td>
-                                    <td>1</td>
-                                    <td>500</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>붕어빵</td>
-                                    <td>0</td>
-                                    <td>10,230,000</td>
-                                    <td>4</td>
-                                    <td>40,920,000</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>아이스크림</td>
-                                    <td>0</td>
-                                    <td>100,000,000,000</td>
-                                    <td>120</td>
-                                    <td>12,000,000,000,000</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
-                    <div class="table_caption">더블클릭하면 상품이 삭제됩니다.</div>
-                    <input type="hidden" name="menu"/>
-                    <div class="item-cost-container">
+                </div>
+                <div class="table_caption">더블클릭하면 상품이 삭제됩니다.</div>
+                <input type="hidden" name="menu"/>
+                <div class="item-cost-container">
+                    <div class="item-cost">
+                        <div class="required" for="menu-price">상품요금</div>
+                        <input type="text" class="edit-box" required="required" name="menu-price" id="menu-price"/>
+                    </div>
+                    <div class="item-cost">
+                        <div class="subsection-title" for="additional-menuPrice">상품추가요금</div>
+                        <input type="text" class="edit-box" name="additional-menuPrice" id="additional-menuPrice"/>
+                    </div>
+                    <div class="item-cost">
+                        <div class="subsection-title" for="sum">고객요금 합계</div>
+                        <input type="text" class="edit-box" id="sum" disabled="disabled" value="0원"/>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 오른쪽 부분-->
+            <section class="right-section">
+                <div class="payment-type-container">
+                    <div class="required">결제방법</div>
+                    <label class="radio-items">
+                        <input required="required" type="radio" id="cash" name="payment-type"
+                               value="1" checked="checked"/>
+                        <span class="check-marker">현금</span>
+                    </label>
+                    <label class="radio-items">
+                        <input required="required" type="radio" id="card" name="payment-type"
+                               value="2"/>
+                        <span class="check-marker">카드</span>
+                    </label>
+                    <label class="radio-items">
+                        <input required="required" type="radio" id="prepay" name="payment-type"
+                               value="3"/>
+                        <span class="check-marker">선결제</span>
+                    </label>
+                </div>
+                <div class="cook-time-container">
+                    <div class="cook-time-row">
+                        <div class="subsection-title">조리시간</div>
+                        <label class="radio-items">
+                            <input required="required" type="radio" id="cook_m15" name="cook-time"
+                                   checked="checked"/>
+                            <span class="check-marker">15분후</span>
+                        </label>
+                        <label class="radio-items">
+                            <input required="required" type="radio" id="cook_m20" name="cook-time"/>
+                            <span class="check-marker">20분후</span>
+                        </label>
+                        <label class="radio-items">
+                            <input required="required" type="radio" id="cook_m25" name="cook-time"/>
+                            <span class="check-marker">25분후</span>
+                        </label>
+                        <label class="radio-items">
+                            <input required="required" type="radio" id="cook_m30" name="cook-time"/>
+                            <span class="check-marker">30분후</span>
+                        </label>
+                    </div>
+                    <div class="cook-time-row">
+                        <label class="radio-items">
+                            <input required="required" type="radio" id="cook_m35" name="cook-time"/>
+                            <span class="check-marker">35분후</span>
+                        </label>
+                        <label class="radio-items">
+                            <input required="required" type="radio" id="cook_m40" name="cook-time"/>
+                            <span class="check-marker">40분후</span>
+                        </label>
+                        <label class="radio-items">
+                            <input required="required" type="radio" id="cook_m50" name="cook-time"/>
+                            <span class="check-marker">50분후</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="cost-setting-container">
+                    <div class="dist-setting-container">
+                        <div class="subsection-title">배송대행료 설정</div>
+                        <label class="basic-label">
+                            <input required="required" type="radio" id="setting_distance" name="dist-type"
+                                   checked="checked"/>
+                            거리별
+                        </label>
+                        <input type="text" class="edit-box" id="distance"/>
+                        <label class="basic-label">
+                            <input required="required" type="radio" id="setting_dong" name="dist-type"/>
+                            동별
+                        </label>
+                    </div>
+                    <div class="cost-setting-etc-container">
                         <div class="item-cost">
-                            <div class="required" for="menu-price">상품요금</div>
-                            <input type="text" class="edit-text" required="required" name="menu-price" id="menu-price"/>
+                            <label for="delivery-cost" class="required"> 배송대행료</label>
+                            <input required="required" type="text" class="edit-box" name="delivery-cost"
+                                   id="delivery-cost"/>
                         </div>
                         <div class="item-cost">
-                            <div class="subsection-title" for="additional-menuPrice">상품추가요금</div>
-                            <input type="text" class="edit-text" name="additional-menuPrice" id="additional-menuPrice"/>
+                            <label for="add-cost" class="subsection-title"> 배송추가요금</label>
+                            <input type="text" class="edit-box" id="add-cost"/>
+                        </div>
+                    </div>
+                    <div class="cost-setting-etc-container">
+                        <div class="item-cost">
+                            <label for="extra-charge" class="subsection-title"> 할증</label>
+                            <input type="text" class="edit-box" id="extra-charge" disabled="disabled" value="0원"/>
                         </div>
                         <div class="item-cost">
-                            <div class="subsection-title" for="sum">고객요금 합계</div>
-                            <input type="text" class="edit-text" id="sum" disabled="disabled" value="0원"/>
+                            <label for="additional-cost" class="subsection-title"> 배송대행료합계</label>
+                            <input type="text" class="edit-box" name="additional-cost" id="additional-cost"
+                                   readonly="readonly"
+                                   disabled="disabled" value="0원"/>
                         </div>
                     </div>
-                </section>
-
-                <!-- 오른쪽 부분-->
-                <section class="right-section">
-                    <div class="payment-type-container">
-                        <div class="required">결제방법</div>
-                        <input required="required"
-                               type="radio" hidden="hidden" id="cash" name="payment-type" value="1"/>
-                        <input type="radio" hidden="hidden" id="card" name="payment-type" value="2"/>
-                        <input type="radio" hidden="hidden" id="prepay" name="payment-type" value="3"/>
-
-                        <div class="btn-payment"><label for="cash" id="label_cash">현금</label></div>
-                        <div class="btn-payment"><label for="card" id="label_card">카드</label></div>
-                        <div class="btn-payment"><label for="prepay" id="label_prepay">선결제</label></div>
-                    </div>
-                    <div class="cook-time-container">
-                        <div class="cook-time-row">
-                            <div class="subsection-title">조리시간</div>
-                            <input type="radio" hidden="hidden" id="cook_m15" name="cook-time"/>
-                            <input type="radio" hidden="hidden" id="cook_m20" name="cook-time"/>
-                            <input type="radio" hidden="hidden" id="cook_m25" name="cook-time"/>
-                            <input type="radio" hidden="hidden" id="cook_m30" name="cook-time"/>
-                            <div class="btn-time"><label for="cook_m15" id="label_cook_m15">15분후</label></div>
-                            <div class="btn-time"><label for="cook_m20" id="label_cook_m20">20분후</label></div>
-                            <div class="btn-time"><label for="cook_m25" id="label_cook_m25">25분후</label></div>
-                            <div class="btn-time"><label for="cook_m30" id="label_cook_m30">30분후</label></div>
-                        </div>
-                        <div class="cook-time-row">
-                            <input type="radio" hidden="hidden" id="cook_m35" name="cook-time"/>
-                            <input type="radio" hidden="hidden" id="cook_m40" name="cook-time"/>
-                            <input type="radio" hidden="hidden" id="cook_m50" name="cook-time"/>
-                            <div class="btn-time"><label for="cook_m35" id="label_cook_m35">35분후</label></div>
-                            <div class="btn-time"><label for="cook_m40" id="label_cook_m40">40분후</label></div>
-                            <div class="btn-time"><label for="cook_m50" id="label_cook_m50">50분후</label></div>
+                    <div class="cost-type-container">
+                        <span class="subsection-title">대행료 지불방법</span>
+                        <div class="buttons">
+                            <label class="radio-items">
+                                <input required="required" type="radio" id="pt" name="delivery-cost-payment-type"
+                                       checked="checked"/>
+                                <span class="check-marker">포인트</span>
+                            </label>
+                            <label class="radio-items">
+                                <input required="required" type="radio" id="money"
+                                       name="delivery-cost-payment-type"/>
+                                <span class="check-marker">현금</span>
+                            </label>
                         </div>
                     </div>
-
-                    <div class="cost-setting-container">
-                        <div class="dist-setting-container">
-                            <div class="subsection-title">배송대행료 설정</div>
-                            <input type="radio" class="radio" id="setting_distance"/>
-                            <label class="label" for="setting_distance">거리별</label>
-                            <input type="text" class="edit-text" id="distance"/>
-                            <input type="radio" class="radio" id="setting_dong"/>
-                            <label class="label" for="setting_dong">동별</label>
-                            <input type="text" class="edit-text" id="dong"/>
-                        </div>
-                        <div class="cost_setting_etc_area">
-                            <div class="item-cost">
-                                <label for="delivery-cost" class="required"> 배송대행료</label>
-                                <input required="required" type="text" class="edit-text" name="delivery-cost"
-                                       id="delivery-cost"/>
-                            </div>
-                            <div class="item-cost">
-                                <label for="add-cost" class="subsection-title"> 배송추가요금</label> <br/>
-                                <input type="text" class="edit-text" id="add-cost"/>
-                            </div>
-                        </div>
-                        <div class="cost_setting_etc_area">
-                            <div class="item-cost">
-                                <label for="extra-charge" class="subsection-title"> 할증</label><br/>
-                                <input type="text" class="edit-text" id="extra-charge" disabled="disabled" value="0원"/>
-                            </div>
-                            <div class="item-cost">
-                                <label for="additional-cost" class="subsection-title"> 배송대행료합계</label><br/>
-                                <input type="text" class="edit-text" name="additional-cost" id="additional-cost"
-                                       readonly="readonly"
-                                       disabled="disabled" value="0원"/>
-                            </div>
-                        </div>
-                        <div class="cost-type-container">
-                            <span class="subsection-title">대행료 지불방법</span>
-                            <div>
-                                <input type="radio" hidden="hidden" id="p" name="delivery-cost-payment-type"/>
-                                <input type="radio" hidden="hidden" id="c" name="delivery-cost-payment-type"/>
-                                <button class="btn-cost">포인트</button>
-                                <button class="btn-cost">현금</button>
-                            </div>
-                        </div>
+                </div>
+                <div class="request-memo-container">
+                    <div class="subsection-title">요청사항</div>
+                    <div>
+                        <input type="text" class="edit-box" name="memo" placeholder="요청사항을 입력해주세요"/>
+                        <button class="search-button">상용문구</button>
                     </div>
-                    <div class="request-memo-container">
-                        <div class="subsection-title">요청사항</div>
-                        <div class="memo_area">
-                            <input type="text" class="edit-text" name="memo" placeholder="요청사항을 입력해주세요"/>
-                            <button class="btn-search">상용문구</button>
-                        </div>
-                    </div>
-
-                    <div class="result-button-container">
-                        <button class="btn-request" type="submit">배송요청</button>
-                        <button class="btn-wait" name="is-suspend" value="true" id="wait" type="submit">접수대기</button>
-                        <button class="btn-cancel" type="submit">취소</button>
-                    </div>
-                </section>
+                </div>
+                <div class="result-button-container">
+                    <button class="round-rect-fill-orange" type="submit">배송요청</button>
+                    <button class="round-rect-empty-orange" name="is-suspend" value="true" id="wait" type="submit">
+                        접수대기
+                    </button>
+                    <button class="round-rect-empty-white" type="submit">취소</button>
+                </div>
             </section>
         </form>
-    </div>
+    </section>
 </div>
 <div th:replace="order_reception/reception_address_modal :: modal"></div>
 </body>

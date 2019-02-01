@@ -7,20 +7,13 @@
 /* 커스톰 폰트 */
 /* 모달 투명 배경 */
 /* 모달 컨테이너 */
-/* 컨테이너 분할선 */
+/* 분할선 */
 /* 버튼 기본 모양 정의 */
 /* TODO Component 정의 */
 .rect-fill-orange {
   background-color: #ff9037;
   border: 1px solid #ff9037;
   border-radius: 0;
-  padding: 0;
-}
-
-.round-rect-fill {
-  background-color: #ff9037;
-  border: 1px solid #ff9037;
-  border-radius: 21px;
   padding: 0;
 }
 
@@ -33,15 +26,50 @@
 
 .rect-empty-white {
   background-color: #ffffff;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #d0d0d0;
   border-radius: 0;
+  padding: 0;
+}
+
+.round-rect-fill-orange {
+  background-color: #ff9037;
+  border: 1px solid #ff9037;
+  border-radius: 21px;
+  padding: 0;
+}
+
+.round-rect-empty-orange {
+  background-color: #ffffff;
+  border: 1px solid #ff9037;
+  border-radius: 21px;
   padding: 0;
 }
 
 .round-rect-empty-white {
   background-color: #ffffff;
-  border: 1px solid #aaaaaa;
+  border: 1px solid #d0d0d0;
   border-radius: 21px;
+  padding: 0;
+}
+
+.rect-white {
+  background-color: #ffffff;
+  border: 1px solid #4a4a4a;
+  border-radius: 0;
+  padding: 0;
+}
+
+.rect-black {
+  background-color: #4a4a4a;
+  border: 1px solid #4a4a4a;
+  border-radius: 0;
+  padding: 0;
+}
+
+.edit-box {
+  background-color: #f1f1f1;
+  border: 1px solid #f1f1f1;
+  border-radius: 0;
   padding: 0;
 }
 
@@ -57,6 +85,27 @@
   background-size: 100%;
   border: none;
   padding: 0;
+}
+
+.radio-items:hover input[type=radio] ~ .check-marker {
+  /* 라디오 버튼 덮힐 경우 */
+}
+.radio-items input[type=radio] {
+  margin: 0;
+  -webkit-appearance: none;
+  /* 라디오 버튼 없애기 for chrome*/
+  -moz-appearance: none;
+  /* 라디오 버튼 없애기 for firefox*/
+  appearance: none;
+  /* 라디오 버튼 없애기 공통*/
+  display: none;
+  /* 라디오 버튼 없애기 for IE10, 11*/
+}
+.radio-items input[type=radio]:checked ~ .check-marker {
+  /* 라디오 버튼 선택된 경우 */
+}
+.radio-items .check-marker {
+  /* 라디오 버튼 기본 모양 */
 }
 
 #modal {
@@ -137,20 +186,20 @@
   display: flex;
   overflow: hidden;
 }
-.address-modal .modal-container .body .modal_main_section {
+.address-modal .modal-container .body .modal-main-section {
   flex: 1;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
-.address-modal .modal-container .body .modal_main_section .upper_area {
+.address-modal .modal-container .body .modal-main-section .upper-area {
   margin: 11px 16px 11px 16px;
 }
-.address-modal .modal-container .body .modal_main_section .upper_area .search_area {
+.address-modal .modal-container .body .modal-main-section .upper-area .search-area {
   display: flex;
   flex-direction: column;
 }
-.address-modal .modal-container .body .modal_main_section .scroll-table {
+.address-modal .modal-container .body .modal-main-section .scroll-table {
   width: 100%;
   height: calc(100% - 192px);
 }
@@ -211,7 +260,7 @@
   letter-spacing: normal;
 }
 .address-modal .scroll-table table > tbody tr {
-  border-bottom: 1px solid #aaaaaa;
+  border-bottom: 1px solid #d0d0d0;
   height: 48px;
 }
 .address-modal .scroll-table table td:nth-child(1), .address-modal .scroll-table table th:nth-child(1) {
@@ -303,7 +352,7 @@
   font-style: normal;
   font-stretch: normal;
   font-size: 14px;
-  color: #4a4a4a;
+  color: #323232;
   line-height: normal;
   letter-spacing: normal;
   width: 72px;
@@ -315,14 +364,17 @@
   justify-content: flex-end;
 }
 .address-modal .search-container > span {
-  flex: 1;
-  font-size: 12px;
+  font-family: NotoSansCJKkr;
   font-weight: normal;
-  margin-right: 10px;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 12px;
+  color: #323232;
   line-height: normal;
   letter-spacing: normal;
+  flex: 1;
+  margin-right: 10px;
   text-align: center;
-  color: #323232;
 }
 .address-modal .search-container .rect-empty-white {
   font-family: NotoSansCJKkr;
@@ -375,7 +427,7 @@
   background: url("/img/orange_star.png") no-repeat center center;
   background-size: 15px;
 }
-.address-modal .star_empty {
+.address-modal .star-empty {
   width: 15px;
   height: 15px;
   background: url("/img/empty_star.png") no-repeat center center;

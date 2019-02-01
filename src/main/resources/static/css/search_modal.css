@@ -15,9 +15,9 @@
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
   padding: 121px calc(50% - 170px);
+  /* TODO 요소 관련 css */
 }
-
-.search-modal-container {
+.search-modal-background .search-modal-container {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -31,8 +31,7 @@
   overflow: hidden;
   box-shadow: 0 0 2.5px 0 rgba(0, 0, 0, 0.12), 0 0 8px 0 rgba(0, 0, 0, 0.38);
 }
-
-.search-modal-header {
+.search-modal-background .search-modal-header {
   border-bottom: 1px solid #aaaaaa;
   width: calc(100% - 15px - 15px);
   height: 47px;
@@ -42,13 +41,12 @@
   justify-content: space-between;
   align-items: center;
 }
-.search-modal-header .search-title {
+.search-modal-background .search-modal-header .search-title {
   height: 100%;
   display: flex;
   align-items: center;
 }
-
-.search-section {
+.search-modal-background .search-section {
   border-bottom: 1px solid #aaaaaa;
   width: calc(100% - 15px - 15px);
   height: 64px;
@@ -58,8 +56,7 @@
   justify-content: space-between;
   align-items: center;
 }
-
-.result-section {
+.search-modal-background .result-section {
   overflow: auto;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -68,63 +65,58 @@
   width: 100%;
   height: 336px;
 }
-.result-section::-webkit-scrollbar {
+.search-modal-background .result-section::-webkit-scrollbar {
   width: 3px;
   background: none;
 }
-.result-section::-webkit-scrollbar-thumb {
+.search-modal-background .result-section::-webkit-scrollbar-thumb {
   background: #aaaaaa;
   opacity: 0.4;
 }
-.result-section::-webkit-scrollbar-track {
+.search-modal-background .result-section::-webkit-scrollbar-track {
   background: #f8f7fb;
 }
-
-.submit-section {
+.search-modal-background .submit-section {
   padding: 23px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-.search-branch-name {
+.search-modal-background .search-branch-name {
   width: 181px;
   height: 38px;
   border: 1px solid #cecece;
   background-color: #ffffff;
   display: flex;
 }
-.search-branch-name button {
+.search-modal-background .search-branch-name button {
   min-width: 40px;
   height: 100%;
   background: #ffffff url("/img/search_orange.png") no-repeat center center;
   background-size: 15px 15px;
   border: none;
 }
-.search-branch-name .search-name {
+.search-modal-background .search-branch-name .search-name {
   width: calc(100% - 40px);
 }
-
-.search-shop-name {
+.search-modal-background .search-shop-name {
   width: 100%;
   height: 38px;
   border: 1px solid #cecece;
   background-color: #ffffff;
   display: flex;
 }
-.search-shop-name button {
+.search-modal-background .search-shop-name button {
   min-width: 40px;
   height: 100%;
   background: #ffffff url("/img/search_orange.png") no-repeat center center;
   background-size: 15px 15px;
   border: none;
 }
-.search-shop-name .search-name {
+.search-modal-background .search-shop-name .search-name {
   width: calc(100% - 40px);
 }
-
-/* TODO 요소 관련 css */
-.search-title {
+.search-modal-background .search-title {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -134,8 +126,7 @@
   line-height: normal;
   letter-spacing: normal;
 }
-
-.close-button {
+.search-modal-background .close-button {
   color: #4a4a4a;
   background-color: rgba(0, 0, 0, 0);
   text-align: center;
@@ -144,8 +135,7 @@
   border: none;
   padding: 0;
 }
-
-.ok-button {
+.search-modal-background .ok-button {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -160,8 +150,7 @@
   border: none;
   background-color: #ff9037;
 }
-
-.area-selector {
+.search-modal-background .area-selector {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -183,11 +172,11 @@
   /* 화살표 없애기 공통*/
   padding-left: 12px;
 }
-.area-selector::-ms-expand {
+.search-modal-background .area-selector::-ms-expand {
   display: none;
   /* 화살표 없애기 for IE10, 11*/
 }
-.area-selector > option {
+.search-modal-background .area-selector > option {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -197,7 +186,7 @@
   line-height: normal;
   letter-spacing: normal;
 }
-.search-name {
+.search-modal-background .search-name {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -212,11 +201,10 @@
   border: none;
   background-color: #ffffff;
 }
-.search-name::placeholder {
+.search-modal-background .search-name::placeholder {
   color: #979797;
 }
-
-.list-items {
+.search-modal-background .list-items {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -233,12 +221,13 @@
   display: flex;
   align-items: center;
   /* 라디오 버튼 덮힐 경우 */
+  /* 라디오 버튼 선택X */
 }
-.list-items:hover input[type=radio] ~ .check-marker {
+.search-modal-background .list-items:hover input[type=radio] ~ .check-marker {
   background: url("/img/radio_hover.png") no-repeat;
   background-size: 20px;
 }
-.list-items input[type=radio] {
+.search-modal-background .list-items input[type=radio] {
   margin: 0;
   -webkit-appearance: none;
   /* 라디오 버튼 없애기 for chrome*/
@@ -250,13 +239,11 @@
   /* 라디오 버튼 없애기 for IE10, 11*/
   /* 라디오 버튼 선택된 경우 */
 }
-.list-items input[type=radio]:checked ~ .check-marker {
+.search-modal-background .list-items input[type=radio]:checked ~ .check-marker {
   background: url("/img/radio_on.png") no-repeat;
   background-size: 20px;
 }
-
-/* 라디오 버튼 선택X */
-.check-marker {
+.search-modal-background .list-items .check-marker {
   width: 20px;
   height: 20px;
   margin-right: 18px;

@@ -63,16 +63,16 @@
         }
       }
 
-      .modal_main_section {
+      .modal-main-section {
         flex: 1;
         height: 100%;
         display: flex;
         flex-direction: column;
 
-        .upper_area {
+        .upper-area {
           margin: 11px 16px 11px 16px;
 
-          .search_area {
+          .search-area {
             display: flex;
             flex-direction: column;
           }
@@ -194,7 +194,7 @@
     justify-content: space-between;
 
     .rect-empty-white {
-      @include custom-font(14px, #4a4a4a, 500);
+      @include custom-font(14px, #323232, 500);
       width: 72px;
       height: 46px;
     }
@@ -206,16 +206,10 @@
     justify-content: flex-end;
 
     > span {
+      @include custom-font(12px, #323232, normal);
       flex: 1;
-      font: {
-        size: 12px;
-        weight: normal;
-      }
       margin-right: 10px;
-      line-height: normal;
-      letter-spacing: normal;
       text-align: center;
-      color: #323232;
     }
 
     .rect-empty-white {
@@ -253,7 +247,7 @@
     background-size: 15px;
   }
 
-  .star_empty {
+  .star-empty {
     width: 15px;
     height: 15px;
     background: url($url_empty_star) no-repeat center center;

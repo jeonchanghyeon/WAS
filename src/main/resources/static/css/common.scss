@@ -3,7 +3,7 @@
 $color_gray: #f1f1f1;
 $color_white: #ffffff;
 $color_orange: #ff9037;
-$color_gray_border: #aaaaaa;
+$color_gray_border: #d0d0d0;
 $color_gray_table: #eaeaea;
 $color_gray_font: #4a4a4a;
 $color_wood: #302c2c;
@@ -23,7 +23,7 @@ $url_empty_star: $base_url_images + "empty_star.png";
 
 /* TODO mixin 정의 */
 /* 스크롤 뷰 */
-@mixin scroll-view($track-color: #f8f7fb, $thumb-color: #302c2c, $scroll-display: true) {
+@mixin scroll-view($track-color: #f8f7fb, $thumb-color: #aeaeaea, $scroll-display: true) {
   overflow: auto;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -83,7 +83,7 @@ $url_empty_star: $base_url_images + "empty_star.png";
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
 }
 
-/* 컨테이너 분할선 */
+/* 분할선 */
 @mixin underline {
   border-bottom: 1px solid $color_gray_border;
 }
@@ -101,10 +101,6 @@ $url_empty_star: $base_url_images + "empty_star.png";
   @include rect-shape($color-orange, $color-orange, 0);
 }
 
-.round-rect-fill {
-  @include rect-shape($color-orange, $color-orange, 21px);
-}
-
 .rect-empty-orange {
   @include rect-shape($color-white, $color-orange, 0);
 }
@@ -113,8 +109,28 @@ $url_empty_star: $base_url_images + "empty_star.png";
   @include rect-shape($color-white, $color_gray_border, 0);
 }
 
+.round-rect-fill-orange {
+  @include rect-shape($color-orange, $color-orange, 21px);
+}
+
+.round-rect-empty-orange {
+  @include rect-shape($color-white, $color-orange, 21px);
+}
+
 .round-rect-empty-white {
   @include rect-shape($color-white, $color_gray_border, 21px);
+}
+
+.rect-white {
+  @include rect-shape($color-white, $color_gray_font, 0);
+}
+
+.rect-black {
+  @include rect-shape($color_gray_font, $color_gray_font, 0);
+}
+
+.edit-box {
+  @include rect-shape($color_gray, $color_gray, 0);
 }
 
 .close-button-white {
@@ -131,3 +147,21 @@ $url_empty_star: $base_url_images + "empty_star.png";
   padding: 0;
 }
 
+.radio-items {
+  &:hover input[type="radio"] ~ .check-marker {
+    /* 라디오 버튼 덮힐 경우 */
+  }
+  input[type="radio"] {
+    margin: 0;
+    -webkit-appearance: none; /* 라디오 버튼 없애기 for chrome*/
+    -moz-appearance: none; /* 라디오 버튼 없애기 for firefox*/
+    appearance: none; /* 라디오 버튼 없애기 공통*/
+    display: none; /* 라디오 버튼 없애기 for IE10, 11*/
+    &:checked ~ .check-marker {
+      /* 라디오 버튼 선택된 경우 */
+    }
+  }
+  .check-marker {
+    /* 라디오 버튼 기본 모양 */
+  }
+}

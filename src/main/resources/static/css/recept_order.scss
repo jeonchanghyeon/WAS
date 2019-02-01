@@ -1,531 +1,426 @@
-$contents_width: 900px;
-$contents_height: 728px;
-$center_padding: 40px;
+@import "common";
 
-/* TODO mixin 정의 */
-/* 스크롤 뷰 */
-@mixin hide-scroll($track_color: #f8f7fb, $thumb_color: #302c2c) {
-  overflow: auto;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  /*스크롤 감추기*/
-  //-ms-overflow-style: none; // IE
-  //&::-webkit-scrollbar {
-  //  display: none !important; // 윈도우 크롬 등
-  //}
-
-  /*크롬전용 커스톰 스크롤*/
-  &::-webkit-scrollbar {
-    width: 3px;
-    background: none;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $thumb_color;
-    opacity: .4;
-  }
-  &::-webkit-scrollbar-track {
-    background: $track_color;
-  }
-}
-
-/* 커스톰 폰트 */
-@mixin custom-font($size: 14px, $color: #4a4a4a, $weight: normal) {
-  font: {
-    family: NotoSansCJKkr;
-    weight: $weight;
-    style: normal;
-    stretch: normal;
-    size: $size;
-  }
-  color: $color;
-  line-height: normal;
-  letter-spacing: normal;
-}
-
-/* 컨테이너 분할선 */
-@mixin under-bar {
-  border-bottom: 1px solid #a9a9a9;
-}
-
-/* 라운드형 결과 버튼 */
-@mixin result-button {
-  width: 125px;
-  height: 42px;
-  border-radius: 21px;
-}
-
-/* TODO 컨테이너 CSS */
-.container {
+.reception-container {
+  $contents_width: 900px;
+  $contents_height: 728px;
+  $center_padding: 40px;
   width: 100%;
   height: 100%;
-}
 
-.main-container {
-  width: 100%;
-  height: $contents_height;
-}
-
-.main-section {
-  margin: 30px calc(50% - #{$contents_width / 2}) 44px;
-  height: calc(100% - 70px - 74px);
-  min-width: $contents_width;
-  display: flex;
-}
-
-.left-section {
-  width: $contents_width / 2 - $center_padding;
-  padding-right: $center_padding - 1px;
-  height: 100%;
-  border-right: 1px solid #d0d0d0;
-}
-
-.right-section {
-  width: $contents_width / 2 - $center_padding;
-  padding-left: $center_padding;
-  height: 100%;
-}
-
-.info-container {
-  margin-bottom: 9px;
-  .info-row {
+  /* TODO 컨테이너 CSS */
+  .main-section {
+    width: 100%;
+    height: $contents_height;
     display: flex;
-    height: 32px;
-    margin-bottom: 10px;
-    .btn-search {
-      margin-left: 3px;
+    flex-direction: column;
+
+    .header {
+      @include custom-font(24px, $color_white, 300);
+      $left_padding: calc(50% - #{$contents_width / 2});
+      width: calc(50% + #{$contents_width / 2});
+      height: 70px;
+      background-color: $color_gray_font;
+      padding-left: $left_padding;
+      display: flex;
+      align-items: center;
+      .required {
+        color: $color_white;
+        margin-left: 14px;
+        font-weight: normal;
+        font-size: 12px;
+      }
     }
-    .required {
-      width: 120px;
-      height: 100%;
-    }
-    .edit-text {
-      flex: 1;
-    }
-    &:nth-child(5) {
-      div {
-        width: 120px;
+
+    .body {
+      margin: 30px calc(50% - #{$contents_width / 2}) 44px;
+      height: calc(100% - 70px - 74px); //상하 마진, 헤더
+      min-width: $contents_width;
+      display: flex;
+
+      .left-section {
+        width: $contents_width / 2 - $center_padding;
+        padding-right: $center_padding - 1px; //보더
+        height: 100%;
+        border-right: 1px solid $color_gray_border;
+      }
+
+      .right-section {
+        width: $contents_width / 2 - $center_padding;
+        padding-left: $center_padding;
         height: 100%;
       }
     }
   }
-}
 
-.item_info_container {
-  width: 100%;
-  height: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-  .btn_white {
-    margin-right: 5px;
-  }
-}
+  .info-container {
+    margin-bottom: 9px;
 
-.payment-type-container {
-  display: flex;
-  margin-bottom: 16px;
-  .required {
-    margin-right: 19px;
-  }
-  .btn-payment {
-    margin-right: 7px;
-  }
-}
+    .info-row {
+      display: flex;
+      height: 32px;
+      margin-bottom: 10px;
 
-.cook-time-container {
-  @include under-bar;
-  width: 100%;
-  margin-bottom: 20px;
-  .cook-time-row {
-    display: flex;
+      .required {
+        width: 120px;
+        height: 100%;
+      }
+
+      .edit-box {
+        flex: 1;
+      }
+
+      .search-button {
+        width: 80px;
+        height: 32px;
+        background: url($url_search_orange) no-repeat 16px center;
+        background-size: 13px;
+        padding-left: 16px;
+        margin-left: 3px;
+      }
+
+      &:nth-child(5) {
+        .edit-box {
+          margin-left: 120px;
+        }
+      }
+    }
+  }
+
+  .item-info-container {
     width: 100%;
-    margin-bottom: 10px;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    .rect-white {
+      @include custom-font(12px, $color_gray_font, bold);
+      width: 98px;
+      height: 100%;
+      margin-right: 5px;
+    }
+    .rect-black {
+      @include custom-font(12px, $color_white, bold);
+      width: 98px;
+      height: 100%;
+    }
+  }
+
+  .payment-type-container {
+    display: flex;
+    margin-bottom: 16px;
+    .required {
+      margin-right: 19px;
+    }
+    .radio-items {
+      width: 74px;
+      height: 33px;
+      margin-right: 7px;
+    }
+  }
+
+  .cook-time-container {
+    @include underline;
+    width: 100%;
+    margin-bottom: 20px;
+    .cook-time-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 10px;
+      .subsection-title {
+        margin-right: 30px;
+      }
+      &:nth-child(2) {
+        padding-left: 86px;
+        margin-bottom: 20px;
+      }
+      .radio-items {
+        width: 74px;
+        height: 30px;
+        margin-right: 7px;
+      }
+    }
+  }
+
+  .cost-setting-container {
+    @include underline;
+    width: 100%;
+    margin-bottom: 18px;
+  }
+
+  .dist-setting-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
     .subsection-title {
-      margin-right: 30px;
+      letter-spacing: 0.2px;
+      margin-right: 10px;
     }
-    .btn-time {
-      margin-right: 6px;
+    .basic-label {
+      @include custom-font(14px, #9b9b9b, 500);
+      margin-right: 10px;
     }
-    &:nth-child(2) {
-      padding-left: 86px;
-      margin-bottom: 20px;
+    .edit-box {
+      width: 68px;
+      margin-right: 38px;
     }
   }
-}
 
-.cost-setting-container {
-  @include under-bar;
-  width: 100%;
-  margin-bottom: 18px;
-}
+  .cost-setting-etc-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 
-.dist-setting-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 18px;
-  .subsection-title {
-    letter-spacing: 0.2px;
-    margin-right: 10px;
+    .item-cost {
+      width: 180px;
+      .subsection-title, .required {
+        display: block;
+        margin-bottom: 6px;
+      }
+    }
+    &:nth-child(3) {
+      margin-top: 17px;
+      margin-bottom: 25px;
+    }
   }
-  .label {
-    margin-right: 10px;
-  }
-  .edit-text {
-    width: 68px;
-    margin-right: 10px;
-  }
-}
 
-.cost_setting_etc_area {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+  .cost-type-container {
+    width: 100%;
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+
+    .buttons {
+      width: 200px;
+      display: flex;
+      justify-content: space-between;
+
+      .radio-items {
+        width: 97px;
+        height: 32px;
+      }
+    }
+  }
+
+  .request-memo-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 60px;
+
+    .edit-box {
+      width: 230px;
+      margin-right: 3px;
+    }
+    .search-button {
+      width: 80px;
+      height: 32px;
+    }
+  }
+
+  .item-cost-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
 
   .item-cost {
-    width: 180px;
+    width: 30%;
     .subsection-title, .required {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+    }
+    .edit-box {
+      text-align: right;
+      width: 100%;
     }
   }
-  &:nth-child(3) {
-    margin-top: 17px;
-    margin-bottom: 25px;
+
+  /* TODO 요소 CSS */
+  .required {
+    @include custom-font(14px, #323232, bold);
+    &::before {
+      width: 5px;
+      height: 5px;
+      font-size: 20px;
+      content: "▪";
+      color: $color_orange !important;
+    }
   }
-}
 
-.cost-type-container {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
+  .search-button {
+    @include rect-shape($color-white, $color_gray_border, 0);
+    @include custom-font(14px, $color_orange, 500);
+    letter-spacing: 0.5px;
+  }
 
-.request-memo-container {
-  display: flex;
-  align-items: center;
   .subsection-title {
-    margin-right: 31px;
+    @include custom-font(14px, #323232, bold);
   }
-  .edit-text {
-    width: 230px;
-  }
-}
 
-.item-cost-container {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.item-cost {
-  width: 30%;
-  .subsection-title, .required {
-    margin-bottom: 8px;
+  .edit-box {
+    @include custom-font($size: 12px, $weight: 500);
+    height: 32px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 2px;
+    border: none;
+    background-color: #f1f1f1;
   }
-  .edit-text {
+
+  .map {
+    margin-bottom: 18px;
+    width: 100%;
+    height: 135px;
+    border: 1px solid #aeaeae;
+  }
+
+  .radio-items {
+    /* 라디오 버튼 선택된 경우 */
+    input[type="radio"]:checked ~ .check-marker {
+      @include custom-font(14px, $color_orange, $weight: 500);
+      @include rect-shape($color_white, $color_orange, 0);
+      letter-spacing: 0.5px;
+    }
+
+    /* 라디오 버튼 기본 모양 */
+    .check-marker {
+      @include custom-font(14px, #9b9b9b, 500);
+      @include rect-shape($color_white, $color_gray_border, 0);
+      letter-spacing: 0.5px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .label {
+    @include custom-font(14px, #9b9b9b, bold);
+  }
+
+  .table-container {
+    border: 1px solid $color_gray_table;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      thead {
+        @include custom-font(12px, $color_gray_font, normal);
+        background-color: $color_gray_table;
+        th, td {
+          height: 24px;
+          text-align: center;
+          vertical-align: middle;
+        }
+      }
+      tbody {
+        @include custom-font(14px, #1f1f1f, normal);
+        th, td {
+          @include underline;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          vertical-align: middle;
+          height: 33px;
+        }
+        td, th {
+          &:nth-child(1) {
+            text-align: center;
+          }
+          &:nth-child(2) {
+            padding-left: 10px;
+          }
+          &:nth-child(3) {
+            text-align: center;
+          }
+          &:nth-child(4) {
+            padding-left: 10px;
+          }
+          &:nth-child(5) {
+            text-align: center;
+          }
+          &:nth-child(6) {
+            padding-left: 10px;
+          }
+        }
+      }
+      td, th {
+        &:nth-child(1) {
+          width: 10%;
+        }
+        &:nth-child(2) {
+          width: 30%;
+        }
+        &:nth-child(3) {
+          width: 15%;
+        }
+        &:nth-child(4) {
+          width: 15%;
+        }
+        &:nth-child(5) {
+          width: 10%;
+        }
+      }
+    }
+    .table-scroll {
+      @include scroll-view;
+      height: 66px;
+      width: 100%;
+    }
+  }
+
+  .table_caption {
+    @include custom-font(12px, #9b9b9b, normal);
     text-align: right;
     width: 100%;
+    margin-bottom: 10px;
   }
-}
 
-/* TODO 요소 CSS */
-.required {
-  @include custom-font($color: #323232, $weight: bold);
-  &::before {
-    width: 5px;
-    height: 5px;
-    font-size: 20px;
-    content: "▪";
-    color: #ff9037 !important;
-  }
-}
-
-.subsection-title {
-  @include custom-font($color: #323232, $weight: bold);
-}
-
-.edit-text {
-  @include custom-font($size: 12px, $weight: 500);
-  height: 32px;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 2px;
-  border: none;
-  background-color: #f1f1f1;
-}
-
-.big-title {
-  @include custom-font($size: 24px, $color: #ffffff, $weight: 300);
-  width: (50% + #{$contents_width / 2});
-  height: 70px;
-  background-color: #4a4a4a;
-  padding-left: calc(50% - #{$contents_width / 2});
-  display: flex;
-  align-items: center;
-  .required {
-    color: #ffffff;
-    margin-left: 14px;
-    font-weight: normal;
-    font-size: 12px;
-  }
-}
-
-.btn-search {
-  @include custom-font($color: #ff9037, $weight: bold);
-  width: 80px;
-  height: 32px;
-  background-color: #FFFFFF;
-  border: 1px solid #dcdcdc;
-  border-radius: 2px;
-}
-
-.btn_white {
-  @include custom-font(12px, #4a4a4a, bold);
-  width: 98px;
-  height: 100%;
-  border: 1px solid #9b9b9b;
-  background-color: #FFFFFF;
-  border-radius: 2px;
-}
-
-.btn_black {
-  @include custom-font(12px, #FFFFFF, bold);
-  width: 98px;
-  height: 100%;
-  border: 1px solid #4a4a4a;
-  background-color: #4a4a4a;
-  border-radius: 2px;
-}
-
-.map {
-  margin-bottom: 18px;
-  width: 100%;
-  height: 135px;
-  border: 1px solid #aeaeaeae;
-}
-
-.btn-payment {
-  @include custom-font($size: 14px, $color: #9b9b9b, $weight: bold);
-  width: 73px;
-  height: 33px;
-  border: 1px solid #d0d0d0;
-  background-color: #FFFFFF;
-  border-radius: 2px;
-  display: table;
-  label {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-  }
-}
-
-.btn-payment:hover,
-#cash:checked ~ #label_cash,
-#card:checked ~ #label_card,
-#prepay:checked ~ #label_prepay {
-  border: 1px solid #ff9037;
-  color: #ff9037;
-}
-
-.btn-time {
-  @include custom-font($color: #9b9b9b, $weight: bold);
-  width: 73px;
-  height: 30px;
-  border: 1px solid #d0d0d0;
-  background-color: #FFFFFF;
-  border-radius: 2px;
-  display: table;
-  letter-spacing: 0.5px;
-  label {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-  }
-}
-
-.btn-time:hover,
-#cook_m15:checked ~ #label_cook_m15,
-#cook_m20:checked ~ #label_cook_m20,
-#cook_m25:checked ~ #label_cook_m25,
-#cook_m30:checked ~ #label_cook_m30,
-#cook_m35:checked ~ #label_cook_m35,
-#cook_m40:checked ~ #label_cook_m40,
-#cook_m50:checked ~ #label_cook_m50,
-#cancel_m15:checked ~ #label_cancel_m15,
-#cancel_m20:checked ~ #label_cancel_m20,
-#cancel_m25:checked ~ #label_cancel_m25,
-#cancel_m30:checked ~ #label_cancel_m30,
-#cancel_m35:checked ~ #label_cancel_m35,
-#cancel_m40:checked ~ #label_cancel_m40,
-#cancel_m50:checked ~ #label_cancel_m50 {
-  border: 1px solid #ff9037;
-  background-color: #FFFFFF;
-  color: #ff9037;
-}
-
-.radio {
-  width: 16px;
-  height: 16px;
-  background-color: #f1f1f1;
-}
-
-.label {
-  @include custom-font(14px, #9b9b9b, bold);
-}
-
-.table_outer {
-  border: 1px solid #d9d9d9;
-}
-
-.table_caption {
-  @include custom-font($size: 12px, $color: #9b9b9b);
-  text-align: right;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.table_scroll {
-  @include hide-scroll($thumb_color: #aeaeaeae);
-  height: 66px;
-  width: 100%;
-}
-
-.table {
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 100%;
-  thead {
-    @include custom-font(12px, #4a4a4a, normal);
-    background-color: #eaeaea;
-    th, td {
-      height: 24px;
-      text-align: center;
-      vertical-align: middle;
+  .result-button-container {
+    .round-rect-fill-orange {
+      @include custom-font(16px, $color_white, bold);
+      width: 125px;
+      height: 42px;
+      margin-right: 4px;
     }
-    td, th {
-      &:nth-child(1) {
-        width: 10%;
-      }
-      &:nth-child(2) {
-        width: 30%;
-      }
-      &:nth-child(3) {
-        width: 15%;
-      }
-      &:nth-child(4) {
-        width: 15%;
-      }
-      &:nth-child(5) {
-        width: 10%;
-      }
+    .round-rect-empty-orange {
+      @include custom-font(16px, $color_orange, bold);
+      width: 125px;
+      height: 42px;
+      margin-right: 19px;
+    }
+    .round-rect-empty-white {
+      @include custom-font(16px, #9b9b9b, bold);
+      width: 125px;
+      height: 42px;
     }
   }
-  tbody {
-    @include custom-font(14px, #1f1f1f, normal);
-    th, td {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      vertical-align: middle;
-      height: 33px;
-      border-bottom: 1px solid #eaeaea;
-    }
-    td, th {
-      &:nth-child(1) {
-        width: 10%;
-        text-align: center;
-      }
-      &:nth-child(2) {
-        width: 30%;
-        padding-left: 10px;
-      }
-      &:nth-child(3) {
-        width: 15%;
-        text-align: center;
-      }
-      &:nth-child(4) {
-        width: 15%;
-        padding-left: 10px;
-      }
-      &:nth-child(5) {
-        width: 10%;
-        text-align: center;
-      }
-      &:nth-child(6) {
-        padding-left: 10px;
+
+  @media (max-width: $contents_width + 200px) {
+    .main-section {
+      .body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin: 30px 5px 44px;
+        .left-section {
+          width: $contents_width / 2;
+          padding: 0 0 40px 0;
+          border-right: 0;
+        }
+        .right-section {
+          width: $contents_width / 2;
+          padding: 40px 0 0 0;
+          border-top: 1px solid #aeaeae;
+        }
       }
     }
   }
 }
-
-.btn-cost {
-  margin-left: 3px;
-  margin-right: 3px;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  width: 97px;
-  border: 1px solid #d0d0d0;
-  background-color: #FFFFFF;
-  border-radius: 2px;
-  font-size: 14px;
-  color: #9b9b9b;
-}
-
-.btn-wait {
-  @include result-button;
-  @include custom-font(16px, #ff9037, bold);
-  border: 1px solid #ff9037;
-  background-color: #FFFFFF;
-}
-
-.btn-request {
-  @include result-button;
-  @include custom-font(16px, #FFFFFF, bold);
-  border: 1px solid #ff9037;
-  background-color: #ff9037;
-}
-
-.btn-cancel {
-  @include result-button;
-  @include custom-font(16px, #9b9b9b, bold);
-  border: 1px solid #9b9b9b;
-  background-color: #FFFFFF;
-}
-
-.result-button-container {
-  height: 110px;
-  display: flex;
-  align-items: flex-end;
-  .btn-request {
-    margin-right: 4px;
-  }
-  .btn-wait {
-    margin-right: 19px;
-  }
-}
-
-@media (max-width: $contents_width + 200px) {
-  .main-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin: 30px 5px 44px;
-  }
-
-  .left-section {
-    width: $contents_width / 2;
-    padding: 0 0 40px 0;
-    border-right: 0;
-  }
-
-  .right-section {
-    width: $contents_width / 2;
-    padding: 40px 0 0 0;
-    border-top: 1px solid #aeaeaeae;
-  }
-}
-
