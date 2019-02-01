@@ -1,18 +1,18 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <div th:fragment="menu_modal" id="menu_modal" class="menu-modal-background">
-    <div class="menu-modal-container">
+    <div class="modal-container">
         <!-- 헤더 -->
-        <header class="menu-modal-header">
-            <div class="menu-title">메뉴(POS)</div>
-            <button class="menu-close-button" id="menu-close-button">x</button>
+        <header class="modal-header">
+            <div class="title">메뉴(POS)</div>
+            <button class="close-button-black" id="menu-close-button"></button>
         </header>
         <!-- 바디 -->
-        <section class="menu-main-section">
+        <section class="main-section">
             <!--전체메뉴 리스트(왼쪽)-->
             <div class="left-container">
                 <div class="table-title">전체 메뉴</div>
-                <div class="menu-table-container">
-                    <table class="table">
+                <div class="table-container">
+                    <table>
                         <thead>
                         <tr>
                             <td>상품명</td>
@@ -22,13 +22,13 @@
                         </thead>
                     </table>
                     <div class="scroll-container">
-                        <table class="table">
+                        <table>
                             <tbody>
                             <tr>
                                 <td>짬뽕</td>
                                 <td>7,000</td>
                                 <td>
-                                    <button class="select-button">선택</button>
+                                    <button class="rect-empty-orange">선택</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -41,7 +41,7 @@
             <!--선택된 메뉴 리스트(오른쪽)-->
             <div class="right-container">
                 <div class="table-title">선택된 메뉴</div>
-                <div class="menu-table-container">
+                <div class="table-container">
                     <table class="table">
                         <thead>
                         <tr>
@@ -59,7 +59,7 @@
                                 <td>2</td>
                                 <td>짬뽕</td>
                                 <td>
-                                    <div class="num-count">
+                                    <div class="num-count-container">
                                         <input class="minus-disable" type="button">
                                         <div name="value">0</div>
                                         <input class="plus-enable" type="button">
@@ -71,7 +71,7 @@
                                 <td>1</td>
                                 <td>짬뽕</td>
                                 <td>
-                                    <div class="num-count">
+                                    <div class="num-count-container">
                                         <input class="minus-enable" type="button">
                                         <div name="value">1</div>
                                         <input class="plus-enable" type="button">
@@ -86,8 +86,8 @@
             </div>
         </section>
         <!-- 푸터(확인 버튼) -->
-        <section class="menu-submit-section">
-            <button class="menu-ok-button">확인</button>
+        <section class="submit-section">
+            <button class="round-rect-fill-orange">확인</button>
         </section>
     </div>
 </div>

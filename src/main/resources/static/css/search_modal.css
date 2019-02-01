@@ -1,23 +1,148 @@
 @charset "UTF-8";
+/* TODO 사용자 정의 변수 */
+/* 컬러 */
+/* 이미지 */
+/* TODO mixin 정의 */
+/* 스크롤 뷰 */
+/* 커스톰 폰트 */
+/* 모달 투명 배경 */
+/* 모달 컨테이너 */
+/* 분할선 */
+/* 버튼 기본 모양 정의 */
+/* TODO Component 정의 */
+.rect-fill-orange {
+  background-color: #ff9037;
+  border: 1px solid #ff9037;
+  border-radius: 0;
+  padding: 0;
+}
+
+.rect-empty-orange {
+  background-color: #ffffff;
+  border: 1px solid #ff9037;
+  border-radius: 0;
+  padding: 0;
+}
+
+.rect-empty-white {
+  background-color: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 0;
+  padding: 0;
+}
+
+.round-rect-fill-orange {
+  background-color: #ff9037;
+  border: 1px solid #ff9037;
+  border-radius: 21px;
+  padding: 0;
+}
+
+.round-rect-empty-orange {
+  background-color: #ffffff;
+  border: 1px solid #ff9037;
+  border-radius: 21px;
+  padding: 0;
+}
+
+.round-rect-empty-white {
+  background-color: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 21px;
+  padding: 0;
+}
+
+.rect-white {
+  background-color: #ffffff;
+  border: 1px solid #4a4a4a;
+  border-radius: 0;
+  padding: 0;
+}
+
+.rect-black {
+  background-color: #4a4a4a;
+  border: 1px solid #4a4a4a;
+  border-radius: 0;
+  padding: 0;
+}
+
+.edit-box {
+  background-color: #f1f1f1;
+  border: 1px solid #f1f1f1;
+  border-radius: 0;
+  padding: 0;
+}
+
+.search-box {
+  background-color: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+}
+.search-box > input {
+  height: 100%;
+  border: none;
+  padding-left: 16px;
+}
+.search-box > input::placeholder {
+  color: #979797;
+}
+.search-box > button {
+  height: 100%;
+  background: #ffffff url("/img/search_orange.png") no-repeat center center;
+  border: none;
+}
+
+.close-button-white {
+  background: rgba(0, 0, 0, 0) url("/img/close_white.png") no-repeat center center;
+  background-size: 100%;
+  border: none;
+  padding: 0;
+}
+
+.close-button-black {
+  background: rgba(0, 0, 0, 0) url("/img/close_black.png") no-repeat center center;
+  background-size: 100%;
+  border: none;
+  padding: 0;
+}
+
+.radio-items:hover input[type=radio] ~ .check-marker {
+  /* 라디오 버튼 덮힐 경우 */
+}
+.radio-items input[type=radio] {
+  margin: 0;
+  -webkit-appearance: none;
+  /* 라디오 버튼 없애기 for chrome*/
+  -moz-appearance: none;
+  /* 라디오 버튼 없애기 for firefox*/
+  appearance: none;
+  /* 라디오 버튼 없애기 공통*/
+  display: none;
+  /* 라디오 버튼 없애기 for IE10, 11*/
+}
+.radio-items input[type=radio]:checked ~ .check-marker {
+  /* 라디오 버튼 선택된 경우 */
+}
+.radio-items .check-marker {
+  /* 라디오 버튼 기본 모양 */
+}
+
 #modal {
   position: fixed;
   visibility: hidden;
 }
 
-/* TODO mixin 정의 */
-/* 스크롤 뷰 */
-/* 커스톰 폰트 */
-/* 모달 투명 배경 */
-/* 컨테이너 분할선 */
-/* TODO 컨테이너 관련 css */
 .search-modal-background {
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
-  padding: 121px calc(50% - 170px);
+  padding: 121px calc(50% - 170px) 121px;
+  /* TODO 컨테이너 관련 css */
   /* TODO 요소 관련 css */
 }
-.search-modal-background .search-modal-container {
+.search-modal-background .modal-container {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -29,10 +154,13 @@
   width: 340px;
   height: 545px;
   overflow: hidden;
-  box-shadow: 0 0 2.5px 0 rgba(0, 0, 0, 0.12), 0 0 8px 0 rgba(0, 0, 0, 0.38);
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
 }
-.search-modal-background .search-modal-header {
-  border-bottom: 1px solid #aaaaaa;
+.search-modal-background .modal-container .modal-header {
+  border-bottom: 1px solid #d0d0d0;
   width: calc(100% - 15px - 15px);
   height: 47px;
   padding-left: 15px;
@@ -41,82 +169,7 @@
   justify-content: space-between;
   align-items: center;
 }
-.search-modal-background .search-modal-header .search-title {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-.search-modal-background .search-section {
-  border-bottom: 1px solid #aaaaaa;
-  width: calc(100% - 15px - 15px);
-  height: 64px;
-  padding-left: 15px;
-  padding-right: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.search-modal-background .result-section {
-  overflow: auto;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  /*스크롤 감추기*/
-  /*크롬전용 커스톰 스크롤*/
-  width: 100%;
-  height: 336px;
-}
-.search-modal-background .result-section::-webkit-scrollbar {
-  width: 3px;
-  background: none;
-}
-.search-modal-background .result-section::-webkit-scrollbar-thumb {
-  background: #aaaaaa;
-  opacity: 0.4;
-}
-.search-modal-background .result-section::-webkit-scrollbar-track {
-  background: #f8f7fb;
-}
-.search-modal-background .submit-section {
-  padding: 23px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.search-modal-background .search-branch-name {
-  width: 181px;
-  height: 38px;
-  border: 1px solid #cecece;
-  background-color: #ffffff;
-  display: flex;
-}
-.search-modal-background .search-branch-name button {
-  min-width: 40px;
-  height: 100%;
-  background: #ffffff url("/img/search_orange.png") no-repeat center center;
-  background-size: 15px 15px;
-  border: none;
-}
-.search-modal-background .search-branch-name .search-name {
-  width: calc(100% - 40px);
-}
-.search-modal-background .search-shop-name {
-  width: 100%;
-  height: 38px;
-  border: 1px solid #cecece;
-  background-color: #ffffff;
-  display: flex;
-}
-.search-modal-background .search-shop-name button {
-  min-width: 40px;
-  height: 100%;
-  background: #ffffff url("/img/search_orange.png") no-repeat center center;
-  background-size: 15px 15px;
-  border: none;
-}
-.search-modal-background .search-shop-name .search-name {
-  width: calc(100% - 40px);
-}
-.search-modal-background .search-title {
+.search-modal-background .modal-container .modal-header .title {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -125,17 +178,65 @@
   color: #4a4a4a;
   line-height: normal;
   letter-spacing: normal;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
-.search-modal-background .close-button {
-  color: #4a4a4a;
-  background-color: rgba(0, 0, 0, 0);
-  text-align: center;
-  font-weight: bold;
-  font-size: 25px;
-  border: none;
-  padding: 0;
+.search-modal-background .modal-container .modal-header .close-button-black {
+  width: 14px;
+  height: 14px;
 }
-.search-modal-background .ok-button {
+.search-modal-background .modal-container .branch-search-section {
+  border-bottom: 1px solid #d0d0d0;
+  width: calc(100% - 15px - 15px);
+  height: 64px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.search-modal-background .modal-container .branch-search-section .search-box {
+  width: 181px;
+}
+.search-modal-background .modal-container .shop-search-section {
+  border-bottom: 1px solid #d0d0d0;
+  width: calc(100% - 15px - 15px);
+  height: 64px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+}
+.search-modal-background .modal-container .shop-search-section .search-box {
+  width: 100%;
+}
+.search-modal-background .modal-container .result-section {
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  /*크롬전용 커스톰 스크롤*/
+  width: 100%;
+  height: 336px;
+}
+.search-modal-background .modal-container .result-section::-webkit-scrollbar {
+  width: 3px;
+  background: none;
+}
+.search-modal-background .modal-container .result-section::-webkit-scrollbar-thumb {
+  background: #aeaeae;
+  opacity: 0.4;
+}
+.search-modal-background .modal-container .result-section::-webkit-scrollbar-track {
+  background: #f8f7fb;
+}
+.search-modal-background .modal-container .submit-section {
+  padding: 23px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.search-modal-background .modal-container .submit-section .round-rect-fill-orange {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -146,11 +247,27 @@
   letter-spacing: normal;
   width: 300px;
   height: 46px;
-  border-radius: 23px;
-  border: none;
-  background-color: #ff9037;
 }
-.search-modal-background .area-selector {
+.search-modal-background .search-box {
+  width: 100%;
+  height: 38px;
+}
+.search-modal-background .search-box > input {
+  font-family: NotoSansCJKkr;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  font-size: 14px;
+  color: #4a4a4a;
+  line-height: normal;
+  letter-spacing: normal;
+  width: calc(100% - 40px);
+}
+.search-modal-background .search-box > button {
+  min-width: 40px;
+  background-size: 15px 15px;
+}
+.search-modal-background .selector {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -161,22 +278,22 @@
   letter-spacing: normal;
   width: 120px;
   height: 40px;
-  border: 1px solid #cecece;
+  border: 1px solid #d0d0d0;
   background: #ffffff url("/img/select_btn_bright.png") no-repeat right center;
   background-size: 40px 40px;
+  padding-left: 12px;
   -webkit-appearance: none;
   /* 화살표 없애기 for chrome*/
   -moz-appearance: none;
   /* 화살표 없애기 for firefox*/
   appearance: none;
   /* 화살표 없애기 공통*/
-  padding-left: 12px;
 }
-.search-modal-background .area-selector::-ms-expand {
+.search-modal-background .selector::-ms-expand {
   display: none;
   /* 화살표 없애기 for IE10, 11*/
 }
-.search-modal-background .area-selector > option {
+.search-modal-background .radio-items {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -185,35 +302,7 @@
   color: #4a4a4a;
   line-height: normal;
   letter-spacing: normal;
-}
-.search-modal-background .search-name {
-  font-family: NotoSansCJKkr;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 14px;
-  color: #4a4a4a;
-  line-height: normal;
-  letter-spacing: normal;
-  height: 100%;
-  padding-left: 13px;
-  padding-right: 13px;
-  border: none;
-  background-color: #ffffff;
-}
-.search-modal-background .search-name::placeholder {
-  color: #979797;
-}
-.search-modal-background .list-items {
-  font-family: NotoSansCJKkr;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  font-size: 14px;
-  color: #4a4a4a;
-  line-height: normal;
-  letter-spacing: normal;
-  border-bottom: 1px solid #aaaaaa;
+  border-bottom: 1px solid #d0d0d0;
   width: calc(100% - 34px);
   height: 40px;
   padding-left: 17px;
@@ -223,27 +312,18 @@
   /* 라디오 버튼 덮힐 경우 */
   /* 라디오 버튼 선택X */
 }
-.search-modal-background .list-items:hover input[type=radio] ~ .check-marker {
+.search-modal-background .radio-items:hover input[type=radio] ~ .check-marker {
   background: url("/img/radio_hover.png") no-repeat;
   background-size: 20px;
 }
-.search-modal-background .list-items input[type=radio] {
-  margin: 0;
-  -webkit-appearance: none;
-  /* 라디오 버튼 없애기 for chrome*/
-  -moz-appearance: none;
-  /* 라디오 버튼 없애기 for firefox*/
-  appearance: none;
-  /* 라디오 버튼 없애기 공통*/
-  display: none;
-  /* 라디오 버튼 없애기 for IE10, 11*/
+.search-modal-background .radio-items input[type=radio] {
   /* 라디오 버튼 선택된 경우 */
 }
-.search-modal-background .list-items input[type=radio]:checked ~ .check-marker {
+.search-modal-background .radio-items input[type=radio]:checked ~ .check-marker {
   background: url("/img/radio_on.png") no-repeat;
   background-size: 20px;
 }
-.search-modal-background .list-items .check-marker {
+.search-modal-background .radio-items .check-marker {
   width: 20px;
   height: 20px;
   margin-right: 18px;

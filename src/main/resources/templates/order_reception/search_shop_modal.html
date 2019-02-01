@@ -1,28 +1,29 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <div th:fragment="shop_search_modal" id="shop_search_modal" class="search-modal-background">
-    <div class="search-modal-container">
+    <div class="modal-container">
         <!-- 헤더 -->
-        <header class="search-modal-header">
-            <div class="search-title">상점 검색</div>
-            <button class="close-button" id="close-button">x</button>
+        <header class="modal-header">
+            <div class="title">상점 검색</div>
+            <button class="close-button-black" id="close-button"></button>
         </header>
         <!-- 검색 -->
-        <section class="search-section">
-            <div class="search-shop-name">
-                <input type="text" placeholder="상점명 검색" class="search-name"/>
+        <section class="shop-search-section">
+            <div class="search-box">
+                <input type="text" placeholder="상점명 검색"/>
                 <button></button>
             </div>
         </section>
         <!-- 결과 리스트 -->
         <section class="result-section">
-            <label class="list-items"><input type="radio" name="options" checked><span class="check-marker"></span>롯데리아
+            <label class="radio-items"><input type="radio" name="options" checked="checked"/><span
+                    class="check-marker"></span>롯데리아
                 부산남구점</label>
-            <label class="list-items"><input type="radio" name="options"><span class="check-marker"></span>롯데리아
+            <label class="radio-items"><input type="radio" name="options"/><span class="check-marker"></span>롯데리아
                 부산남구점</label>
         </section>
         <!-- 확인 버튼 영역 -->
         <section class="submit-section">
-            <button class="ok-button">확인</button>
+            <button class="round-rect-fill-orange">확인</button>
         </section>
     </div>
 </div>

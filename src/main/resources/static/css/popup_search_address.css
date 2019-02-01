@@ -73,6 +73,27 @@
   padding: 0;
 }
 
+.search-box {
+  background-color: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+}
+.search-box > input {
+  height: 100%;
+  border: none;
+  padding-left: 16px;
+}
+.search-box > input::placeholder {
+  color: #979797;
+}
+.search-box > button {
+  height: 100%;
+  background: #ffffff url("/img/search_orange.png") no-repeat center center;
+  border: none;
+}
+
 .close-button-white {
   background: rgba(0, 0, 0, 0) url("/img/close_white.png") no-repeat center center;
   background-size: 100%;

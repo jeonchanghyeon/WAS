@@ -18,12 +18,17 @@ $url_search_orange: $base_url_images + "search_orange.png";
 $url_search_white: $base_url_images + "search_white.png";
 $url_radio_on: $base_url_images + "radio_on.png";
 $url_radio_off: $base_url_images + "radio_off.png";
+$url_radio_hover: $base_url_images + "radio_hover.png";
 $url_orange_star: $base_url_images + "orange_star.png";
 $url_empty_star: $base_url_images + "empty_star.png";
+$url_arrow_to_right: $base_url_images + "arrow_to_right.png";
+$url_minus_enable: $base_url_images + "minus_enable.png";
+$url_minus_disable: $base_url_images + "minus_disable.png";
+$url_plus_enable: $base_url_images + "plus_enable.png";
 
 /* TODO mixin 정의 */
 /* 스크롤 뷰 */
-@mixin scroll-view($track-color: #f8f7fb, $thumb-color: #aeaeaea, $scroll-display: true) {
+@mixin scroll-view($track-color: #f8f7fb, $thumb-color: #aeaeae, $scroll-display: true) {
   overflow: auto;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -131,6 +136,25 @@ $url_empty_star: $base_url_images + "empty_star.png";
 
 .edit-box {
   @include rect-shape($color_gray, $color_gray, 0);
+}
+
+.search-box {
+  @include rect-shape($color-white, $color_gray_border, 0);
+  display: flex;
+  > input {
+    height: 100%;
+    border: none;
+    padding-left: 16px;
+
+    &::placeholder {
+      color: $color_placeholder;
+    }
+  }
+  > button {
+    height: 100%;
+    background: #ffffff url($url_search_orange) no-repeat center center;
+    border: none;
+  }
 }
 
 .close-button-white {

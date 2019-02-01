@@ -1,258 +1,186 @@
+@import "common";
+
 #modal {
   position: fixed;
   visibility: hidden;
 }
 
-$menu_modal_width: 680px;
-$menu_modal_height: 545px;
-
-$base_url_images: "/img/";
-$url_arrow_to_right: $base_url_images + "arrow_to_right.png";
-$url_minus_enable: $base_url_images + "minus_enable.png";
-$url_minus_disable: $base_url_images + "minus_disable.png";
-$url_plus_enable: $base_url_images + "plus_enable.png";
-
-/* TODO mixin 정의 */
-/* 스크롤 뷰 */
-@mixin hide-scroll($track-color: #f8f7fb, $thumb-color: #302c2c) {
-  overflow: auto;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  /*스크롤 감추기*/
-  //-ms-overflow-style: none; // IE
-  //&::-webkit-scrollbar {
-  //  display: none !important; // 윈도우 크롬 등
-  //}
-
-  /*크롬전용 커스톰 스크롤*/
-  &::-webkit-scrollbar {
-    width: 3px;
-    background: none;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $thumb-color;
-    opacity: .4;
-  }
-  &::-webkit-scrollbar-track {
-    background: $track-color;
-  }
-}
-
-/* 커스톰 폰트 */
-@mixin custom-font($size: 14px, $color: #4a4a4a, $weight: normal) {
-  font: {
-    family: NotoSansCJKkr;
-    weight: $weight;
-    style: normal;
-    stretch: normal;
-    size: $size;
-  }
-  color: $color;
-  line-height: normal;
-  letter-spacing: normal;
-}
-
-/* 모달 투명 배경 */
-@mixin bg-menu-modal {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 112px calc(50% - #{$menu_modal_width / 2});
-}
-
-
-/* TODO 컨테이너 관련 css */
 .menu-modal-background {
-  @include bg-menu-modal;
-}
+  $modal_width: 680px;
+  $modal_height: 545px;
+  @include bg-modal($modal_width, 112px, 112px);
 
-.menu-modal-container {
-  @include custom-font;
-  width: $menu_modal_width;
-  height: $menu_modal_height;
-  overflow: hidden;
-  box-shadow: 0 0 2.5px 0 rgba(0, 0, 0, 0.12), 0 0 8px 0 rgba(0, 0, 0, 0.38);
-  display: flex;
-  flex-direction: column;
-}
+  /* TODO 컨테이너 관련 css */
+  .modal-container {
+    @include custom-font;
+    @include modal-attribute($modal_width, $modal_height);
 
-.menu-modal-header {
-  width: calc(100% - 16px - 15px);
-  height: 47px;
-  padding-left: 16px;
-  padding-right: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #aaaaaa;
-  .menu-title {
-    height: 100%;
+    .modal-header {
+      @include underline;
+      width: calc(100% - 15px - 15px);
+      height: 47px;
+      padding-left: 15px;
+      padding-right: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .title {
+        @include custom-font(16px, #4a4a4a, 500);
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      .close-button-black {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  .main-section {
+    width: calc(100% - 30px - 30px);
+    height: 412px;
+    padding-left: 30px;
+    padding-right: 30px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .left-container {
+      width: 250px;
+      height: 100%;
+
+      .rect-empty-orange {
+        @include custom-font(12px, $color_orange, normal);
+        width: 48px;
+        height: 25px;
+      }
+    }
+
+    .right-container {
+      width: 320px;
+      height: 100%;
+      .table-title {
+        @include custom-font(14px, $color_orange, bold);
+      }
+      .table-container {
+        td, th {
+          &:nth-child(1) {
+            width: 15%;
+          }
+          &:nth-child(2) {
+            width: 30%;
+          }
+          &:nth-child(3) {
+            width: 25%;
+          }
+        }
+      }
+    }
+  }
+
+  .submit-section {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .round-rect-fill-orange {
+      @include custom-font($size: 16px, $color: #ffffff, $weight: bold);
+      width: 300px;
+      height: 46px;
+    }
+  }
+
+  .num-count-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
   }
-}
 
-.menu-main-section {
-  width: calc(100% - 27px - 40px);
-  height: 412px;
-  padding-left: 27px;
-  padding-right: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .left-container {
-    width: 250px;
-    height: 100%;
+  /* TODO 요소 관련 css */
+  .right-arrow {
+    margin-top: 40px;
+    width: 20px;
+    height: 25px;
+    background: url($url_arrow_to_right) no-repeat center center;
+    background-size: 20px 25px;
   }
-  .right-container {
-    width: 320px;
-    height: 100%;
-    .table-title {
-      @include custom-font($color: #ff9037, $weight: bold);
-    }
-    .menu-table-container {
-      td, th {
+
+  .table-title {
+    @include custom-font($weight: bold);
+    height: 52px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .table-container {
+    width: 100%;
+    height: calc(100% - 52px - 1px);
+    border: 1px solid $color_gray_border;
+
+    table {
+      @include custom-font;
+      text-align: center;
+      border-collapse: collapse;
+      width: 100%;
+      thead {
+        background-color: $color_gray_table;
+        color: $color_placeholder;
+        font-size: 12px;
+        th, td {
+          height: 24px;
+        }
+      }
+      tbody {
+        color: #1f1f1f;
+        tr {
+          @include underline;
+        }
+        th, td {
+          height: 32px;
+        }
+      }
+      th, td {
+        height: 32px;
         &:nth-child(1) {
-          width: 15%;
+          width: 40%;
         }
         &:nth-child(2) {
           width: 30%;
         }
-        &:nth-child(3) {
-          width: 25%;
-        }
       }
+    }
+    .scroll-container {
+      @include scroll-view;
+      height: calc(100% - 24px);
     }
   }
-}
 
-.menu-submit-section {
-  flex: 1 1 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.num-count {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* TODO 요소 관련 css */
-.menu-title {
-  @include custom-font($size: 16px, $weight: bold);
-}
-
-.menu-close-button {
-  color: #4a4a4a;
-  background-color: rgba(0, 0, 0, 0);
-  text-align: center;
-  font-weight: bold;
-  font-size: 25px;
-  border: none;
-  padding: 0;
-}
-
-.menu-ok-button {
-  @include custom-font($size: 16px, $color: #ffffff, $weight: bold);
-  width: 300px;
-  height: 46px;
-  border-radius: 23px;
-  border: none;
-  background-color: #ff9037;
-}
-
-.right-arrow {
-  margin-top:40px;
-  width: 20px;
-  height: 25px;
-  background: url($url_arrow_to_right) no-repeat center center;
-  background-size: 20px 25px;
-}
-
-.select-button {
-  @include custom-font(12px, #ff9037, normal);
-  width: 48px;
-  height: 25px;
-  border: 1px solid #ff9037;
-  background-color: #ffffff;
-}
-
-.table-title {
-  @include custom-font($weight: bold);
-  height: 52px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.menu-table-container {
-  width: 100%;
-  height: calc(100% - 52px - 1px);
-  border: 1px solid #aaaaaa;
-
-  .table {
-    @include custom-font;
-    text-align: center;
-    border-collapse: collapse;
-    width: 100%;
-    thead {
-      font-size: 12px;
-      color: #979797;
-      background-color: #eaeaea;
-      th, td {
-        height: 24px;
-      }
-    }
-    tbody {
-      color: #1f1f1f;
-      tr {
-        border-bottom: 1px solid #aaaaaa;
-      }
-      th, td {
-        height: 32px;
-      }
-    }
-    th, td {
-      height: 32px;
-      &:nth-child(1) {
-        width: 40%;
-      }
-      &:nth-child(2) {
-        width: 30%;
-      }
-    }
+  .plus-enable {
+    width: 19px;
+    height: 19px;
+    background: url($url_plus_enable) no-repeat center center;
+    background-size: 19px;
+    border: none;
   }
-  .scroll-container {
-    @include hide-scroll($thumb-color: #aaaaaa);
-    height: calc(100% - 24px);
+  .minus-enable {
+    width: 19px;
+    height: 19px;
+    background: url($url_minus_enable) no-repeat center center;
+    background-size: 19px;
+    border: none;
+  }
+  .minus-disable {
+    width: 19px;
+    height: 19px;
+    background: url($url_minus_disable) no-repeat center center;
+    background-size: 19px;
+    border: none;
   }
 }
-
-
-.plus-enable {
-  width: 19px;
-  height: 19px;
-  background: url($url_plus_enable) no-repeat center center;
-  background-size: 19px;
-  border:none;
-}
-.minus-enable {
-  width: 19px;
-  height: 19px;
-  background: url($url_minus_enable) no-repeat center center;
-  background-size: 19px;
-  border:none;
-}
-.minus-disable {
-  width: 19px;
-  height: 19px;
-  background: url($url_minus_disable) no-repeat center center;
-  background-size: 19px;
-  border:none;
-}
-

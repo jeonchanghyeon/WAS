@@ -1,223 +1,127 @@
+@import "common";
+
 #modal {
   position: fixed;
   visibility: hidden;
 }
 
-$search_modal_width: 340px;
-$search_modal_height: 545px;
-
-$base_url_images: "/img/";
-$url_select_btn_bright: $base_url_images + "select_btn_bright.png";
-$url_search_orange: $base_url_images + "search_orange.png";
-$url_radio_on: $base_url_images + "radio_on.png";
-$url_radio_off: $base_url_images + "radio_off.png";
-$url_radio_hover: $base_url_images + "radio_hover.png";
-
-/* TODO mixin 정의 */
-/* 스크롤 뷰 */
-@mixin hide-scroll($track-color: #f8f7fb, $thumb-color: #302c2c) {
-  overflow: auto;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  /*스크롤 감추기*/
-  //-ms-overflow-style: none; // IE
-  //&::-webkit-scrollbar {
-  //  display: none !important; // 윈도우 크롬 등
-  //}
-
-  /*크롬전용 커스톰 스크롤*/
-  &::-webkit-scrollbar {
-    width: 3px;
-    background: none;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $thumb-color;
-    opacity: .4;
-  }
-  &::-webkit-scrollbar-track {
-    background: $track-color;
-  }
-}
-
-/* 커스톰 폰트 */
-@mixin custom-font($size: 14px, $color: #4a4a4a, $weight: normal) {
-  font: {
-    family: NotoSansCJKkr;
-    weight: $weight;
-    style: normal;
-    stretch: normal;
-    size: $size;
-  }
-  color: $color;
-  line-height: normal;
-  letter-spacing: normal;
-}
-
-/* 모달 투명 배경 */
-@mixin bg-search-modal {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 121px calc(50% - #{$search_modal_width / 2});
-}
-
-/* 컨테이너 분할선 */
-@mixin under-bar {
-  border-bottom: 1px solid #aaaaaa;
-}
-
-/* TODO 컨테이너 관련 css */
 .search-modal-background {
-  @include bg-search-modal;
+  $modal_width: 340px;
+  $modal_height: 545px;
+  @include bg-modal($modal_width, 121px, 121px);
 
-  .search-modal-container {
+  /* TODO 컨테이너 관련 css */
+  .modal-container {
     @include custom-font;
-    width: $search_modal_width;
-    height: $search_modal_height;
-    overflow: hidden;
-    box-shadow: 0 0 2.5px 0 rgba(0, 0, 0, 0.12), 0 0 8px 0 rgba(0, 0, 0, 0.38);
-  }
+    @include modal-attribute($modal_width, $modal_height);
 
-  .search-modal-header {
-    @include under-bar;
-    width: calc(100% - 15px - 15px);
-    height: 47px;
-    padding-left: 15px;
-    padding-right: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .search-title {
-      height: 100%;
+    .modal-header {
+      @include underline;
+      width: calc(100% - 15px - 15px);
+      height: 47px;
+      padding-left: 15px;
+      padding-right: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .title {
+        @include custom-font($size: 16px, $weight: bold);
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      .close-button-black {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    .branch-search-section {
+      @include underline;
+      width: calc(100% - 15px - 15px);
+      height: 64px;
+      padding-left: 15px;
+      padding-right: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .search-box {
+        width: 181px;
+      }
+    }
+
+    .shop-search-section {
+      @include underline;
+      width: calc(100% - 15px - 15px);
+      height: 64px;
+      padding-left: 15px;
+      padding-right: 15px;
       display: flex;
       align-items: center;
+      .search-box {
+        width: 100%;
+      }
     }
-  }
 
-  .search-section {
-    @include under-bar;
-    width: calc(100% - 15px - 15px);
-    height: 64px;
-    padding-left: 15px;
-    padding-right: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .result-section {
-    @include hide-scroll($thumb-color: #aaaaaa);
-    width: 100%;
-    height: 359px - 23px;
-  }
-
-  .submit-section {
-    padding: 23px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .search-branch-name {
-    width: 181px;
-    height: 38px;
-    border: 1px solid #cecece;
-    background-color: #ffffff;
-    display: flex;
-
-    button {
-      min-width: 40px;
-      height: 100%;
-      background: #ffffff url($url_search_orange) no-repeat center center;
-      background-size: 15px 15px;
-      border: none;
+    .result-section {
+      @include scroll-view;
+      width: 100%;
+      height: 359px - 23px;
     }
-    .search-name {
-      width: calc(100% - 40px);
-    }
-  }
 
-  .search-shop-name {
-    width: 100%;
-    height: 38px;
-    border: 1px solid #cecece;
-    background-color: #ffffff;
-    display: flex;
+    .submit-section {
+      padding: 23px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-    button {
-      min-width: 40px;
-      height: 100%;
-      background: #ffffff url($url_search_orange) no-repeat center center;
-      background-size: 15px 15px;
-      border: none;
-    }
-    .search-name {
-      width: calc(100% - 40px);
+      .round-rect-fill-orange {
+        @include custom-font($size: 16px, $color: #ffffff, $weight: bold);
+        width: 300px;
+        height: 46px;
+      }
     }
   }
 
   /* TODO 요소 관련 css */
-  .search-title {
-    @include custom-font($size: 16px, $weight: bold);
+  .search-box {
+    width: 100%;
+    height: 38px;
+
+    > input {
+      @include custom-font;
+      width: calc(100% - 40px);
+    }
+
+    > button {
+      min-width: 40px;
+      background-size: 15px 15px;
+    }
   }
 
-  .close-button {
-    color: #4a4a4a;
-    background-color: rgba(0, 0, 0, 0);
-    text-align: center;
-    font-weight: bold;
-    font-size: 25px;
-    border: none;
-    padding: 0;
-  }
-
-  .ok-button {
-    @include custom-font($size: 16px, $color: #ffffff, $weight: bold);
-    width: 300px;
-    height: 46px;
-    border-radius: 23px;
-    border: none;
-    background-color: #ff9037;
-  }
-
-  .area-selector {
+  .selector {
     @include custom-font;
     width: 120px;
     height: 40px;
-    border: 1px solid #cecece;
+    border: 1px solid $color_gray_border;
     background: #ffffff url($url_select_btn_bright) no-repeat right center;
     background-size: 40px 40px;
+    padding-left: 12px;
+
     -webkit-appearance: none; /* 화살표 없애기 for chrome*/
     -moz-appearance: none; /* 화살표 없애기 for firefox*/
     appearance: none; /* 화살표 없애기 공통*/
     &::-ms-expand {
       display: none; /* 화살표 없애기 for IE10, 11*/
     }
-    padding-left: 12px;
-
-    > option {
-      @include custom-font;
-      &:first-child {
-      }
-    }
   }
 
-  .search-name {
+  .radio-items {
     @include custom-font;
-    height: 100%;
-    padding-left: 13px;
-    padding-right: 13px;
-    border: none;
-    background-color: #ffffff;
-
-    &::placeholder {
-      color: #979797;
-    }
-  }
-
-  .list-items {
-    @include custom-font;
-    @include under-bar;
+    @include underline;
     width: calc(100% - 34px);
     height: 40px;
     padding-left: 17px;
@@ -231,19 +135,12 @@ $url_radio_hover: $base_url_images + "radio_hover.png";
       background-size: 20px;
     }
     input[type="radio"] {
-      margin: 0;
-      -webkit-appearance: none; /* 라디오 버튼 없애기 for chrome*/
-      -moz-appearance: none; /* 라디오 버튼 없애기 for firefox*/
-      appearance: none; /* 라디오 버튼 없애기 공통*/
-      display: none; /* 라디오 버튼 없애기 for IE10, 11*/
-
       /* 라디오 버튼 선택된 경우 */
       &:checked ~ .check-marker {
         background: url($url_radio_on) no-repeat;
         background-size: 20px;
       }
     }
-
     /* 라디오 버튼 선택X */
     .check-marker {
       width: 20px;

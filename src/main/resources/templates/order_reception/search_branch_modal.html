@@ -1,31 +1,33 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <div th:fragment="branch_search_modal" id="branch_search_modal" class="search-modal-background">
-    <div class="search-modal-container">
+    <div class="modal-container">
         <!-- 헤더 -->
-        <header class="search-modal-header">
-            <div class="search-title">지사 검색</div>
-            <button class="close-button" id="close-button">x</button>
+        <header class="modal-header">
+            <div class="title">지사 검색</div>
+            <button class="close-button-black" id="close-button"></button>
         </header>
         <!-- 검색 -->
-        <section class="search-section">
-            <select class="area-selector">
-                <option value="" disabled selected>지역 선택</option>
+        <section class="branch-search-section">
+            <select class="selector">
+                <option value="" selected>지역 선택</option>
+                <option value="">부산</option>
+                <option value="">서울</option>
             </select>
-            <div class="search-branch-name">
-                <input type="text" placeholder="지사명 검색" class="search-name"/>
+            <div class="search-box">
+                <input type="text" placeholder="지사명 검색"/>
                 <button></button>
             </div>
         </section>
         <!-- 결과 리스트 -->
         <section class="result-section">
-            <label class="list-items"><input type="radio" name="options" checked>
+            <label class="radio-items"><input type="radio" name="options" checked="checked"/>
                 <span class="check-marker"></span>부산남구지사</label>
-            <label class="list-items"><input type="radio" name="options">
+            <label class="radio-items"><input type="radio" name="options"/>
                 <span class="check-marker"></span>부산남구지사</label>
         </section>
         <!-- 확인 버튼 영역 -->
         <section class="submit-section">
-            <button class="ok-button">확인</button>
+            <button class="round-rect-fill-orange">확인</button>
         </section>
     </div>
 </div>
