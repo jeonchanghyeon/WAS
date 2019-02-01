@@ -1,0 +1,24 @@
+{
+  "name": "please_web_app",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "sass src/main/resources/static/css:src/main/resources/static/css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeonchanghyeon/WAS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeonchanghyeon/WAS/issues"
+  },
+  "homepage": "https://github.com/jeonchanghyeon/WAS#readme",
+  "devDependencies": {
+    "sass": "^1.16.1"
+  },
+  "dependencies": {}
+}
