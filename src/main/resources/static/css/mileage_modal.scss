@@ -1,473 +1,365 @@
+@import "common";
+
 #modal {
   position: fixed;
   visibility: hidden;
 }
 
-$mileage_modal_width: 360px;
-$mileage_modal_height: 640px;
-$transfer_modal_width: 340px;
-$transfer_modal_height: 545px;
+/* 마일리지 모달, 송금대상 모달 공통 컴포넌트 */
+.mileage-modal-background, .transfer-modal-background {
+  /* TODO 컨테이너 관련 css */
+  .main-section {
+    width: 100%;
+    height: 186px;
+    display: flex;
+    flex-direction: column;
+  }
 
-$base_url_images: "/img/";
-$url_close_white: $base_url_images + "close_white.png";
-$url_close_black: $base_url_images + "close_black.png";
-$url_select_btn_bright: $base_url_images + "select_btn_bright.png";
-$url_search_orange: $base_url_images + "search_orange.png";
-$url_radio_on: $base_url_images + "radio_on.png";
-$url_radio_off: $base_url_images + "radio_off.png";
-$url_radio_hover: $base_url_images + "radio_hover.png";
+  .submit-section {
+    flex: 1;
+    min-height: 96px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .input-output-container {
+    width: calc(100% - 60px);
+    height: calc(100% - 100px);
+    padding-left: 30px;
+    padding-right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+  }
+
+  /* TODO 요소 관련 css */
+  .round-rect-fill-orange {
+    @include custom-font(16px, $color_white, 500);
+    width: 300px;
+    height: 46px;
+  }
+
+  .search-box {
+    height: 40px - 2px;
+    > input {
+      width: calc(100% - 40px);
+    }
+    > button {
+      min-width: 40px;
+      background-size: 15px 15px;
+    }
+  }
+}
+
+/* 마일리지 모달 컴포넌트 */
+.mileage-modal-background {
+  $modal_width: 360px;
+  $modal_height: 640px;
+  @include bg-modal($modal_width, 64px, 64px);
 
   /* TODO mixin 정의 */
-/* 스크롤 뷰 */
-@mixin hide-scroll($track-color: #f8f7fb, $thumb-color: #302c2c) {
-  overflow: auto;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  /*스크롤 감추기*/
-  //-ms-overflow-style: none; // IE
-  //&::-webkit-scrollbar {
-  //  display: none !important; // 윈도우 크롬 등
-  //}
-
-  /*크롬전용 커스톰 스크롤*/
-  &::-webkit-scrollbar {
-    width: 3px;
-    background: none;
+  /* 라디오 버튼 선택 시 버튼 뷰 */
+  @mixin selected-mileage-button {
+    @include custom-font(16px, $color_orange, 500);
+    line-height: 1.13;
+    border-bottom: 5px solid $color_orange;
   }
-  &::-webkit-scrollbar-thumb {
-    background: $thumb-color;
-    opacity: .4;
+
+  /* 라디오 버튼 선택되지 않을 시 버튼 뷰 */
+  @mixin unselected-mileage-button {
+    @include custom-font(16px, $color_gray_font, 500);
+    line-height: 1.13;
+    border-bottom: 5px solid $color_white;
   }
-  &::-webkit-scrollbar-track {
-    background: $track-color;
-  }
-}
 
-/* 커스톰 폰트 */
-@mixin custom-font($size: 14px, $color: #4a4a4a, $weight: normal) {
-  font: {
-    family: NotoSansCJKkr;
-    weight: $weight;
-    style: normal;
-    stretch: normal;
-    size: $size;
-  }
-  color: $color;
-  line-height: normal;
-  letter-spacing: normal;
-}
+  /* TODO 컨테이너 관련 css */
+  .modal-container {
+    @include custom-font;
+    @include modal-attribute($modal_width, $modal_height);
 
-/* 모달 투명 배경 */
-@mixin bg-mileage-modal($width, $top_padding, $bottom_padding) {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: $top_padding calc(50% - #{$width / 2}) $bottom_padding;
-}
+    .modal-header {
+      width: calc(100% - 15px);
+      height: 32px;
+      padding-right: 15px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      background-color: #1f1f1f;
 
-/* 컨테이너 분할선 */
-@mixin under-bar {
-  border-bottom: 1px solid #aaaaaa;
-}
-
-/* 라디오 버튼 선택 시 버튼 뷰 */
-@mixin selected-mileage-button {
-  @include custom-font(16px, #ff9037, 500);
-  line-height: 1.13;
-  border-bottom: 5px solid #ff9037;
-}
-
-/* 라디오 버튼 선택되지 않을 시 버튼 뷰 */
-@mixin unselected-mileage-button {
-  @include custom-font(16px, #4a4a4a, 500);
-  line-height: 1.13;
-  border-bottom: 5px solid #ffffff;
-}
-
-/* TODO 컨테이너 관련 css */
-.mileage-modal-background {
-  @include bg-mileage-modal($mileage_modal_width, 64px, 64px);
-}
-
-.transfer-modal-background {
-  @include bg-mileage-modal($transfer_modal_width, 150px, 71px);
-}
-
-.mileage-modal-container {
-  @include custom-font;
-  width: $mileage_modal_width;
-  height: $mileage_modal_height;
-  overflow: hidden;
-  box-shadow: 0 0 2.5px 0 rgba(0, 0, 0, 0.12), 0 0 8px 0 rgba(0, 0, 0, 0.38);
-}
-
-.transfer-modal-container {
-  @include custom-font;
-  width: $transfer_modal_width;
-  height: $transfer_modal_height;
-  overflow: hidden;
-  box-shadow: 0 0 2.5px 0 rgba(0, 0, 0, 0.12), 0 0 8px 0 rgba(0, 0, 0, 0.38);
-  background-color: #ffffff;
-}
-
-.mileage-modal-header {
-  width: calc(100% - 15px);
-  height: 32px;
-  padding-right: 15px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: #1f1f1f;
-}
-.transfer-modal-header {
-  @include under-bar;
-  width: calc(100% - 19px - 18px);
-  height: 47px;
-  padding-right: 19px;
-  padding-left: 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-}
-
-.mileage-main-section {
-  width: 100%;
-  height: 186px;
-  display: flex;
-  flex-direction: column;
-}
-
-.mileage-status {
-  width: 100%;
-  min-height: 160px - 32px;
-  background-color: #302c2c;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  > .sub-title {
-    @include custom-font($color: #9b9b9b, $weight: 500);
-    font-family: AppleSDGothicNeo;
-    margin-bottom:4px;
-  }
-  > .cur-mileage {
-    @include custom-font(24px, #ff9037, bold);
-    font-family: Roboto;
-  }
-}
-
-.mileage-buttons {
-  width: 100%;
-  height: 53px;
-  display: flex;
-  flex:1;
-}
-
-.mileage-process-button {
-  width: 50%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-
-  input[type="radio"] {
-    margin: 0;
-    -webkit-appearance: none; /* 라디오 버튼 없애기 for chrome*/
-    -moz-appearance: none; /* 라디오 버튼 없애기 for firefox*/
-    appearance: none; /* 라디오 버튼 없애기 공통*/
-    display: none; /* 라디오 버튼 없애기 for IE10, 11*/
-
-    /* 라디오 버튼 선택된 경우 */
-    &:checked ~ .custom-radio-button {
-      @include selected-mileage-button;
+      .close-button-white {
+        width: 14px;
+        height: 14px;
+      }
     }
   }
-}
 
-.mileage-result-container {
-  width: 100%;
-  height: calc(100% - 218px - 92px); //main-section과 submit-section의 높이 제외
-  display: flex;
-  flex-direction: column;
-  justify-content:center;
-}
-
-.account-view-container {
-  width: 100%;
-  height: 100px - 2px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-top:1px solid #aaaaaa;
-  border-bottom:1px solid #aaaaaa;
-  background-color: #f0f0f0;
-  margin-bottom: 17px;
-  > div:nth-child(1) {
-    @include custom-font($color: #979797);
-    margin-bottom: 9px;
-  }
-}
-
-.mileage-submit-container {
-  flex: 1;
-  min-height:96px;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-}
-.result-container {
-  width: calc(100% - 60px);
-  height: calc(100% - 100px);
-  padding-left: 30px;
-  padding-right: 30px;
-  display:flex;
-  flex-direction: column;
-  align-content: space-between;
-}
-
-.area-selector {
-  @include custom-font;
-  width: 100px;
-  height: 40px;
-  border: 1px solid #cecece;
-  background: #ffffff url($url_select_btn_bright) no-repeat 95% center;
-  background-size: 20px 20px;
-  -webkit-appearance: none; /* 화살표 없애기 for chrome*/
-  -moz-appearance: none; /* 화살표 없애기 for firefox*/
-  appearance: none; /* 화살표 없애기 공통*/
-  &::-ms-expand {
-    display: none; /* 화살표 없애기 for IE10, 11*/
-  }
-  padding-left: 15px;
-
-  > option {
-    @include custom-font;
-    &:first-child {
+  .status-container {
+    width: 100%;
+    min-height: 160px - 32px;
+    background-color: $color_wood;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    > span {
+      @include custom-font(14px, #9b9b9b, 500);
+      display: block;
+      font-family: AppleSDGothicNeo;
+      margin-bottom: 4px;
+    }
+    > div {
+      @include custom-font(24px, $color_orange, bold);
+      font-family: Roboto;
     }
   }
-}
 
-.mileage-search-container {
-  width: calc(100% - 60px);
-  padding-left: 30px;
-  padding-right: 30px;
-  display: flex;
-  justify-content: space-between;
-}
-.transfer-search-container {
-  @include under-bar;
-  width: calc(100% - 30px);
-  height: 64px;
-  padding-left: 15px;
-  padding-right: 15px;
-  display: flex;
-  align-items: center;
-}
-
-.mileage-search-name {
-  width: 190px;
-  height: 38px;
-  border: 1px solid #cecece;
-  background-color: #ffffff;
-  display: flex;
-
-  button {
-    min-width: 40px;
-    height: 100%;
-    background: #ffffff url($url_search_orange) no-repeat center center;
-    background-size: 15px 15px;
-    border: none;
-  }
-  .search-name {
-    width: calc(100% - 40px);
-  }
-}
-
-.transfer-search-name {
-  width: 100%;
-  height: 38px;
-  border: 1px solid #cecece;
-  background-color: #ffffff;
-  display: flex;
-
-  button {
-    min-width: 40px;
-    height: 100%;
-    background: #ffffff url($url_search_orange) no-repeat center center;
-    background-size: 15px 15px;
-    border: none;
-  }
-  .search-name {
-    width: calc(100% - 40px);
-  }
-}
-
-.search-name {
-  @include custom-font;
-  height: 100%;
-  padding-left: 13px;
-  padding-right: 13px;
-  border: none;
-  background-color: #ffffff;
-
-  &::placeholder {
-    color: #979797;
-  }
-}
-.transfer-result-container {
-  @include hide-scroll($thumb-color: #aaaaaa);
-  width: 100%;
-  height: calc(100% - 114px - 96px);
-}
-
-/* TODO 요소 관련 css */
-.mileage-close-button {
-  width: 14px;
-  height: 14px;
-  padding: 0;
-  border: none;
-  background: rgba(0, 0, 0, 0) url($url_close_white) no-repeat center center;
-  background-size: 14px;
-}
-.transfer-close-button {
-  width: 14px;
-  height: 14px;
-  padding: 0;
-  border: none;
-  background: rgba(0, 0, 0, 0) url($url_close_black) no-repeat center center;
-  background-size: 14px;
-}
-.transfer-modal-title {
-  @include custom-font(16px, #4a4a4a, bold);
-}
-
-.result-row {
-  width: 100%;
-  height: 36px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-
-  > div:nth-child(1) {
-    @include custom-font;
-    line-height: 1.29;
-  }
-  .input-output-box, .point-subtract {
-    width: 204px;
-    height:100%;
-  }
-  .point-subtract {
-    color: #d0021b;
+  .process-button-container {
+    width: 100%;
+    height: 53px;
+    display: flex;
+    flex: 1;
   }
 
-  &:last-child {
-    .input-output-box {
+  .withdraw-section, .transfer-section {
+    width: 100%;
+    height: calc(100% - 218px - 92px); //main-section과 submit-section의 높이 제외
+    display: flex;
+    flex-direction: column;
+
+    .gray-container {
+      width: calc(100% - 60px);
+      height: 100px - 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid #aaaaaa;
+      border-bottom: 1px solid #aaaaaa;
+      padding-left: 30px;
+      padding-right: 30px;
+      background-color: #f0f0f0;
+      margin-bottom: 17px;
+    }
+
+    .input-output-container {
+      width: calc(100% - 60px);
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+
+  .withdraw-section {
+    .gray-container {
+      flex-direction: column;
+      > div:nth-child(1) {
+        @include custom-font($color: #979797);
+        margin-bottom: 9px;
+      }
+
+      .rect-empty-white {
+        @include custom-font(15px, $color_gray_font, 500);
+        width: 300px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .edit-button-container {
+      width: 206px - 2px;
+      height: 36px - 2px;
+      display: flex;
+      .rect-empty-white {
+        width: calc(100% - 74px);
+        padding-left: 15px;
+        text-align: left;
+        border-right: none;
+      }
+      .rect-empty-orange {
+        @include custom-font(14px, $color_orange, 500);
+        line-height: 1.43;
+        width: 74px - 2px;
+        height: 36px - 2px;
+      }
+    }
+  }
+
+  .transfer-section {
+    .gray-container {
+      flex-direction: column;
+      > div:nth-child(1) {
+        @include custom-font($color: #979797);
+        margin-bottom: 9px;
+      }
+
+      .search-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .search-box {
+          width: 190px;
+        }
+      }
+    }
+  }
+
+  .input-output-row {
+    width: 100%;
+    height: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+
+    > div:nth-child(1) {
+      @include custom-font;
+      line-height: 1.29;
+    }
+
+    .rect-empty-white {
+      width: 204px;
+      height: 100%;
+    }
+
+    &:nth-last-child(2) .rect-empty-white {
+      color: #d0021b;
+    }
+
+    &:last-child .rect-empty-white {
+      padding-left: 15px;
       text-align: left;
     }
-    margin-bottom: 0;
   }
-}
 
-.withdraw-input-container {
-  width: 206px - 2px;
-  height: 36px - 2px;
-  display: flex;
-  .input-output-box {
-    width: calc(100% - 72px);
+  /* TODO 요소 관련 css */
+  .radio-items {
+    width: 50%;
     height: 100%;
-    border-right:0;
+    display: flex;
+    align-items: center;
+
+    input[type="radio"]:checked ~ .check-marker {
+      /* 라디오 버튼 선택된 경우 */
+      @include selected-mileage-button;
+    }
+
+    /* 라디오 버튼에서 선택되지 않을 시(기본 버튼 정의) */
+    .check-marker {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      @include unselected-mileage-button;
+    }
+  }
+
+  .group-selector {
+    @include custom-font;
+    width: 100px;
+    height: 40px;
+    border: 1px solid $color_gray_border;
+    background: $color_white url($url_select_btn_bright) no-repeat 95% center;
+    background-size: 20px 20px;
+    -webkit-appearance: none; /* 화살표 없애기 for chrome*/
+    -moz-appearance: none; /* 화살표 없애기 for firefox*/
+    appearance: none; /* 화살표 없애기 공통*/
+    &::-ms-expand {
+      display: none; /* 화살표 없애기 for IE10, 11*/
+    }
+    padding-left: 15px;
+  }
+
+  .rect-empty-white {
+    @include custom-font(16px, $color_gray_font, 500);
+    padding-left: 6px;
+    padding-right: 6px;
+    text-align: right;
+    vertical-align: middle;
   }
 }
 
+/* 송금대상 모달 컴포넌트 */
+.transfer-modal-background {
+  $modal_width: 340px;
+  $modal_height: 545px;
+  @include bg-modal($modal_width, 150px, 71px);
 
-/* 라디오 버튼에서 선택되지 않을 시(기본 버튼 정의) */
-.custom-radio-button {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @include unselected-mileage-button;
-}
+  /* TODO 컨테이너 관련 css */
+  .modal-container {
+    @include custom-font;
+    @include modal-attribute($modal_width, $modal_height);
 
-.account-view {
-  @include custom-font($size: 15px, $weight: 500);
-  width: 300px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffffff;
-  border: 1px solid #aaaaaa;
-}
+    .modal-header {
+      @include underline;
+      width: calc(100% - 19px - 18px);
+      height: 47px;
+      padding-right: 19px;
+      padding-left: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-.mileage-ok-button {
-  @include custom-font(16px, #ffffff, 500);
-  width: 300px;
-  height: 46px;
-  border-radius: 23px;
-  background-color: #ff9037;
-  border:none;
-}
+      .title {
+        @include custom-font(16px, $color_gray_font, bold);
+      }
+      .close-button-black {
+        width: 14px;
+        height: 14px;
+      }
+    }
 
-.input-output-box, .point-subtract {
-  @include custom-font(16px, #4a4a4a, 500);
-  background-color: #ffffff;
-  border:1px solid #aaaaaa;
-  padding-left: 6px;
-  padding-right: 6px;
-  text-align: right;
-  vertical-align: middle;
-}
+    .search-container {
+      @include underline;
+      width: calc(100% - 30px);
+      height: 64px;
+      padding-left: 15px;
+      padding-right: 15px;
+      display: flex;
+      align-items: center;
 
-.all-withdraw-button {
-  @include custom-font(14px, #ff9037, 500);
-  line-height: 1.43;
-  min-width: 74px - 2px;
-  max-width: 74px - 2px;
-  width: 74px - 2px;
-  height: 36px - 2px;
-  border: 1px solid #ff9037;
-  background-color: #ffffff;
-}
+      .search-box {
+        width: 100%;
+      }
+    }
 
-.list-items {
-  @include custom-font;
-  @include under-bar;
-  width: calc(100% - 34px);
-  height: 40px;
-  padding-left: 17px;
-  padding-right: 17px;
-  display: flex;
-  align-items: center;
-
-  /* 라디오 버튼 덮힐 경우 */
-  &:hover input[type="radio"] ~ .check-marker {
-    background: url($url_radio_hover) no-repeat;
-    background-size: 20px;
+    .result-container {
+      @include scroll-view;
+      width: 100%;
+      height: calc(100% - 114px - 96px);
+    }
   }
-  input[type="radio"] {
-    margin: 0;
-    -webkit-appearance: none; /* 라디오 버튼 없애기 for chrome*/
-    -moz-appearance: none; /* 라디오 버튼 없애기 for firefox*/
-    appearance: none; /* 라디오 버튼 없애기 공통*/
-    display: none; /* 라디오 버튼 없애기 for IE10, 11*/
 
+  /* TODO 요소 관련 css */
+  .radio-items {
+    @include custom-font;
+    @include underline;
+    width: calc(100% - 34px);
+    height: 40px;
+    padding-left: 17px;
+    padding-right: 17px;
+    display: flex;
+    align-items: center;
+
+    /* 라디오 버튼 덮힐 경우 */
+    &:hover input[type="radio"] ~ .check-marker {
+      background: url($url_radio_hover) no-repeat;
+      background-size: 20px;
+    }
     /* 라디오 버튼 선택된 경우 */
-    &:checked ~ .check-marker {
+    input[type="radio"]:checked ~ .check-marker {
       background: url($url_radio_on) no-repeat;
       background-size: 20px;
     }
+    /* 라디오 버튼 선택X */
+    .check-marker {
+      width: 20px;
+      height: 20px;
+      margin-right: 18px;
+      background: url($url_radio_off) no-repeat;
+      background-size: 20px;
+    }
   }
-}
-
-/* 라디오 버튼 선택X */
-.check-marker {
-  width: 20px;
-  height: 20px;
-  margin-right: 18px;
-  background: url($url_radio_off) no-repeat;
-  background-size: 20px;
 }

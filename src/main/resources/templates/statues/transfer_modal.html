@@ -1,27 +1,27 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <div th:fragment=transfer_modal" id="transfer_modal" class="transfer-modal-background">
-    <div class="transfer-modal-container">
+    <div class="modal-container">
         <!-- 헤더 -->
-        <header class="transfer-modal-header">
-            <div class="transfer-modal-title">송금대상</div>
-            <button class="transfer-close-button" id="close-button"></button>
+        <header class="modal-header">
+            <div class="title">송금대상</div>
+            <button class="close-button-black" id="close-button"></button>
         </header>
 
-        <div class="transfer-search-container">
-            <div class="transfer-search-name">
-                <input type="text" placeholder="이름, 상호명 검색" class="search-name"/>
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" placeholder="이름, 상호명 검색"/>
                 <button></button>
             </div>
         </div>
-        <div class="transfer-result-container">
-            <label class="list-items"><input type="radio" name="options" checked>
+        <div class="result-container">
+            <label class="radio-items"><input type="radio" name="options" checked="checked"/>
                 <span class="check-marker"></span>부산남구지사</label>
-            <label class="list-items"><input type="radio" name="options">
+            <label class="radio-items"><input type="radio" name="options"/>
                 <span class="check-marker"></span>부산남구지사</label>
         </div>
-        <div class="mileage-submit-container">
-            <button class="mileage-ok-button">확인</button>
-        </div>
+        <section class="submit-section">
+            <button class="round-rect-fill-orange">확인</button>
+        </section>
     </div>
 </div>
 </html>

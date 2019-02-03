@@ -1,94 +1,95 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <div th:fragment="mileage_modal" id="mileage_modal" class="mileage-modal-background">
-    <div class="mileage-modal-container">
+    <div class="modal-container">
         <!-- 헤더 -->
-        <header class="mileage-modal-header">
-            <button class="mileage-close-button" id="close-button"></button>
+        <header class="modal-header">
+            <button class="close-button-white" id="close-button"></button>
         </header>
 
         <!--날짜, 마일리지총액, 출금, 송금버튼-->
-        <section class="mileage-main-section">
+        <section class="main-section">
             <!--날짜, 마일리지총액-->
-            <div class="mileage-status">
-                <div class="sub-title">2018-12-07 현재 마일리지</div>
-                <div class="cur-mileage">1,147,070원</div>
+            <div class="status-container">
+                <span>2018-12-07 현재 마일리지</span>
+                <div>1,147,070원</div>
             </div>
             <!--출금, 송금버튼-->
-            <div class="mileage-buttons">
-                <label class="mileage-process-button"><input type="radio" name="process" checked>
-                    <span class="custom-radio-button">마일리지 출금</span></label>
-                <label class="mileage-process-button"><input type="radio" name="process">
-                    <span class="custom-radio-button">마일리지 송금</span></label>
+            <div class="process-button-container">
+                <label class="radio-items"><input type="radio" name="process" checked="checked"/>
+                    <span class="check-marker">마일리지 출금</span></label>
+                <label class="radio-items"><input type="radio" name="process"/>
+                    <span class="check-marker">마일리지 송금</span></label>
             </div>
         </section>
 
         <!-- 출금 또는 송금을 위한 유동적 컨텐츠 -->
-        <section class="mileage-result-section">
-            <!--&lt;!&ndash; 마일리지 출금 &ndash;&gt;-->
-            <!--<div class="mileage-result-container">-->
-            <!--<div class="account-view-container">-->
-            <!--<div>출금계좌</div>-->
-            <!--<div class="account-view">광주총판 1003-929-091121 우리은행</div>-->
-            <!--</div>-->
-            <!--<div class="result-container">-->
-            <!--<div class="result-row">-->
-            <!--<div>출금금액</div>-->
-            <!--<div class="withdraw-input-container">-->
-            <!--<input type="text" class="input-output-box"/>-->
-            <!--<button class="all-withdraw-button">전액인출</button>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="result-row">-->
-            <!--<div>출금수수료</div>-->
-            <!--<input type="text" class="input-output-box" value="300원" readonly/>-->
-            <!--</div>-->
-            <!--<div class="result-row">-->
-            <!--<div>차감포인트</div>-->
-            <!--<input type="text" class="point-subtract" value="100,000,300원" readonly/>-->
-            <!--</div>-->
-            <!--<div class="result-row">-->
-            <!--<div>출금비밀번호</div>-->
-            <!--<input type="password" class="input-output-box"/>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="mileage-submit-container">-->
-            <!--<button class="mileage-ok-button">출금 신청</button>-->
-            <!--</div>-->
-
-            <!--마일리지 송금-->
-            <div class="mileage-result-container">
-                <div class="account-view-container">
-                    <div>송금대상</div>
-                    <div class="mileage-search-container">
-                        <select class="area-selector">
-                            선택
-                            <!--<option value="" disabled selected>선택</option>-->
-                        </select>
-                        <div class="mileage-search-name">
-                            <input type="text" class="search-name"/>
-                            <button></button>
-                        </div>
+        <!-- 마일리지 출금 -->
+        <section class="withdraw-section">
+            <div class="gray-container">
+                <div>출금계좌</div>
+                <div class="rect-empty-white">광주총판 1003-929-091121 우리은행</div>
+            </div>
+            <div class="input-output-container">
+                <div class="input-output-row">
+                    <div>출금금액</div>
+                    <div class="edit-button-container">
+                        <input type="text" class="rect-empty-white"/>
+                        <button class="rect-empty-orange">전액인출</button>
                     </div>
                 </div>
-                <div class="result-container">
-                    <div class="result-row">
-                        <div>출금금액</div>
-                        <input type="text" class="input-output-box" value="100,000,300원"/>
-                    </div>
-                    <div class="result-row">
-                        <div>차감포인트</div>
-                        <input type="text" class="point-subtract" value="100,000,300원" readonly/>
-                    </div>
-                    <div class="result-row">
-                        <div>출금비밀번호</div>
-                        <input type="password" class="input-output-box"/>
-                    </div>
+                <div class="input-output-row">
+                    <div>출금수수료</div>
+                    <input type="text" class="rect-empty-white" value="300원" readonly/>
+                </div>
+                <div class="input-output-row">
+                    <div>차감포인트</div>
+                    <input type="text" class="rect-empty-white" value="100,000,300원" readonly/>
+                </div>
+                <div class="input-output-row">
+                    <div>출금비밀번호</div>
+                    <input type="password" class="rect-empty-white"/>
                 </div>
             </div>
-            <div class="mileage-submit-container">
-                <button class="mileage-ok-button">송금</button>
-            </div>
+        </section>
+        <!--<section class="submit-section">-->
+            <!--<button class="round-rect-fill-orange">출금 신청</button>-->
+        <!--</section>-->
+        <!--&lt;!&ndash;마일리지 송금&ndash;&gt;-->
+        <!--<section class="transfer-section">-->
+            <!--<div class="gray-container">-->
+                <!--<div>송금대상</div>-->
+                <!--<div class="search-container">-->
+                    <!--<select class="group-selector">-->
+                        <!--<option value="" disabled selected hidden>선택</option>-->
+                        <!--<option value="7">본사</option>-->
+                        <!--<option value="6">총판</option>-->
+                        <!--<option value="5">지사</option>-->
+                        <!--<option value="3">상점</option>-->
+                        <!--<option value="2">기사</option>-->
+                    <!--</select>-->
+                    <!--<div class="search-box">-->
+                        <!--<input type="text"/>-->
+                        <!--<button></button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="input-output-container">-->
+                <!--<div class="input-output-row">-->
+                    <!--<div>출금금액</div>-->
+                    <!--<input type="text" class="rect-empty-white" value="100,000,300원"/>-->
+                <!--</div>-->
+                <!--<div class="input-output-row">-->
+                    <!--<div>차감포인트</div>-->
+                    <!--<input type="text" class="rect-empty-white" value="100,000,300원" readonly/>-->
+                <!--</div>-->
+                <!--<div class="input-output-row">-->
+                    <!--<div>출금비밀번호</div>-->
+                    <!--<input type="password" class="rect-empty-white"/>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</section>-->
+        <section class="submit-section">
+            <button class="round-rect-fill-orange">송금</button>
         </section>
     </div>
 </div>
