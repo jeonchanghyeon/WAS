@@ -17,19 +17,19 @@ class StatusesController {
 
         when (authInfo.group) {
             7 -> {
-                return "statues/status_head"
+                return "statuses/status_head"
             }
             6 -> {
-                return "statues/status_distrib"
+                return "statuses/status_distrib"
             }
-            in 4..5 -> {
-                return "statues/status_branch"
+            5 -> {
+                return "statuses/status_branch"
             }
             3 -> {
-                return "statues/status_shop"
+                return "statuses/status_shop"
             }
             2 -> {
-                return "statues/status_rider"
+                return "statuses/status_rider"
             }
         }
         return "login"
