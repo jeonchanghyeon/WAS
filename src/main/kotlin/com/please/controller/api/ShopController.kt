@@ -18,23 +18,12 @@ class ShopController {
     fun searchShops(@RequestParam(value = "branch-id") branchId: Long,
                     @RequestParam data: MutableMap<String, Any>): Any {
         /* shop-name, page-index */
-        return try {
-            val value = shopService.searchList(branchId, data)
-            println(value)
-            value!!.toString()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
-        }
+        return shopService.searchList(branchId, data)
     }
 
     /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping(value = ["list"])
     fun getShopList(@RequestParam id: Long): Any {
-        return try {
-            shopService.getShops(id)!!
-        } catch (e: Exception) {
-            mapOf("resultCode" to 777)
-        }
+        return shopService.getShops(id)
     }
 }

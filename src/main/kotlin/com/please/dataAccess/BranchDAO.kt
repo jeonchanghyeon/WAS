@@ -1,5 +1,6 @@
 package com.please.dataAccess
 
+import com.please.exception.SqlAbnormalResultException
 import com.please.persistence.queryForJSONObject
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,39 +16,22 @@ class BranchDAO {
     private lateinit var template: JdbcTemplate
 
     //지사 id와 이름 목록 쿼리
-    fun getBranches(id: Long): MutableList<Map<String, Any?>>? {
-        try {
-            return template.queryForList("CALL getBranchListById(?)", id)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    fun getBranches(id: Long): MutableList<Map<String, Any?>> {
+        return template.queryForList("CALL getBranchListById(?)", id)
     }
 
-    fun searchBranchList(authKey: String, condition: JSONObject): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getSearchedBranchByName(?, ?)", authKey, condition.toString())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun searchBranchList(authKey: String, condition: String): String {
+        return template.queryForJSONObject("CALL getSearchedBranchByName(?, ?)", authKey, condition)
     }
 
-    fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, branchId)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun getBranchSettings(authKey: String, branchId: Long): String {
+        return template.queryForJSONObject("CALL getBranchSettings(?, ?)", authKey, branchId)
     }
 
-    fun setBranchSettings(branchId: String, jsonData: String): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL setBranchSettings(?, ?)", branchId, jsonData)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun setBranchSettings(authKey: String, jsonData: String): String {
+        return template.queryForJSONObject("CALL setBranchSettings(?, ?)", authKey, jsonData)
     }
 }

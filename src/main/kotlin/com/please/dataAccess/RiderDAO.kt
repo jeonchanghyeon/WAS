@@ -1,5 +1,6 @@
 package com.please.dataAccess
 
+import com.please.exception.SqlAbnormalResultException
 import com.please.persistence.queryForJSONObject
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,30 +14,17 @@ class RiderDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun searchRiderList(branchId: Long, riderInfo: JSONObject): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getSearchedRiders(getUserAuthKeyById(?), ?)", branchId, riderInfo.toString())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun searchRiderList(branchId: Long, riderInfo: String): String {
+        return template.queryForJSONObject("CALL getSearchedRiders(getUserAuthKeyById(?), ?)", branchId, riderInfo)
     }
 
-    fun getRiders(id: Long): MutableList<Map<String, Any?>>? {
-        try {
-            return template.queryForList("CALL getRiderListById(?)", id)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    fun getRiders(id: Long): MutableList<Map<String, Any?>> {
+        return template.queryForList("CALL getRiderListById(?)", id)
     }
 
-    fun getInfoInControl(authKey: String, riderInfo: JSONObject): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getRiderInformationInControl(?, ?)", authKey, riderInfo.toString())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun getInfoInControl(authKey: String, riderInfo: String): String {
+        return template.queryForJSONObject("CALL getRiderInformationInControl(?, ?)", authKey, riderInfo)
     }
 }

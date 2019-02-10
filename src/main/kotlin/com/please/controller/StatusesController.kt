@@ -1,6 +1,9 @@
 package com.please.controller
 
+import com.please.exception.GroupNotFoundException
 import com.please.persistence.getAuthInfo
+import com.please.value.AuthInfo
+import org.apache.commons.logging.LogFactory
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -11,27 +14,28 @@ import org.springframework.web.bind.annotation.RequestMapping
 class StatusesController {
     @GetMapping
     fun status(model: Model): String {
-        val authInfo = getAuthInfo()!!
-
+        val authInfo = getAuthInfo()
         model.addAttribute("id", authInfo.id)
 
-        when (authInfo.group) {
+        return when (authInfo.group) {
             7 -> {
-                return "statuses/status_head"
+                "statuses/status_head"
             }
             6 -> {
-                return "statuses/status_distrib"
+                "statuses/status_distrib"
             }
             5 -> {
-                return "statuses/status_branch"
+                "statuses/status_branch"
             }
             3 -> {
-                return "statuses/status_shop"
+                "statuses/status_shop"
             }
             2 -> {
-                return "statuses/status_rider"
+                "statuses/status_rider"
+            }
+            else -> {
+                throw GroupNotFoundException("Statuses page load failed. (group = ${authInfo.group})")
             }
         }
-        return "login"
     }
 }

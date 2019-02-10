@@ -10,9 +10,9 @@ class ShopService {
     @Autowired
     private lateinit var shopDAO: ShopDAO
 
-    fun searchList(branchId: Long, data: MutableMap<String, Any>): JSONObject? {
+    fun searchList(branchId: Long, data: MutableMap<String, Any>): String {
         val shopName: String? = data["shop-name"] as? String
-        val pageIndex: Long? = (data["page-index"] as? String)?.toLong()
+        val pageIndex: Int? = (data["page-index"] as? String)?.toInt()
 
         val info = JSONObject()
         info.put("shopName", shopName)
@@ -21,7 +21,7 @@ class ShopService {
         return shopDAO.searchShopList(branchId, info)
     }
 
-    fun getShops(id: Long): MutableList<Map<String, Any?>>? {
+    fun getShops(id: Long): MutableList<Map<String, Any?>> {
         return shopDAO.getShops(id)
     }
 

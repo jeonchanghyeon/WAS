@@ -1,6 +1,8 @@
 package com.please.controller
 
+import com.please.exception.GroupNotFoundException
 import com.please.persistence.getAuthInfo
+import com.please.value.AuthInfo
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -11,26 +13,27 @@ import org.springframework.web.bind.annotation.RequestMapping
 class ControlsController {
 
     @GetMapping
-    fun showShopsControl(model: Model): String {
-        val authInfo = getAuthInfo()!!
-
+    fun showControl(model: Model): String {
+        val authInfo = getAuthInfo()
         model.addAttribute("id", authInfo.id)
 
-        when (authInfo.group) {
+        return when (authInfo.group) {
             7 -> {
-                return "controls/control_head"
+                "controls/control_head"
             }
             6 -> {
-                return "controls/control_distrib"
+                "controls/control_distrib"
             }
-            in 4..5 -> {
-                return "controls/control_branch"
+            5 -> {
+                "controls/control_branch"
             }
             3 -> {
-                return "controls/control_shop"
+                "controls/control_shop"
+            }
+            else -> {
+                throw GroupNotFoundException("Control page load failed. (group = ${authInfo.group})")
             }
         }
-        return "login"
     }
 }
 

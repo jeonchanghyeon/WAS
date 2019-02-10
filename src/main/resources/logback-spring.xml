@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_DIRECTORY" value="logs"/>
+
+    <!-- 콘솔로 로그를 남김(강조X) -->
+    <appender name="defaultConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <!-- 로그 메시지 패턴 -->
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 콘솔로 로그를 남김 -->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <!-- 로그 메시지 패턴 -->
+            <Pattern>
+                %highlight(%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n)
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <!-- 파일로 에러 로그만 남김 -->
+    <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_DIRECTORY}/logback.log</file>
+        <encoder>
+            <!-- 로그 메시지 패턴 -->
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n
+            </Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_DIRECTORY}/%d{yyyy-MM-dd}/logback.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="org.springframework" level="OFF"/>
+    <!--<logger name="org.hibernate" level="INFO"/>-->
+
+    <logger name="com.please" level="DEBUG" additivity="false">
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="fileAppender"/>
+    </logger>
+
+    <logger name="queryForJSONObject" level="DEBUG" additivity="false">
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="fileAppender"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="defaultConsoleAppender"/>
+    </root>
+</configuration>
+

@@ -16,10 +16,6 @@ class DistribController {
     /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping
     fun getDistribList(@RequestParam id: Long): Any {
-        return try {
-            distribService.getDistributors(id)!!
-        } catch (e: Exception) {
-            mapOf("resultCode" to 777)
-        }
+        return distribService.getDistributors(id)
     }
 }

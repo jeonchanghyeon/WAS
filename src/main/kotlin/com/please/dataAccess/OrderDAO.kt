@@ -1,7 +1,7 @@
 package com.please.dataAccess
 
+import com.please.exception.SqlAbnormalResultException
 import com.please.persistence.queryForJSONObject
-import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
@@ -14,60 +14,35 @@ class OrderDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun getOrder(authKey: String, orderId: Int): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getOrder(?, ?)", authKey, orderId)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun getOrder(authKey: String, orderId: Int): String {
+        return template.queryForJSONObject("CALL getOrder(?, ?)", authKey, orderId)
     }
 
-    fun setOrderStatus(authKey: String, data: String): JSONObject? {
-        println(data)
-//        try {
-//            return template.queryForJSONObject("CALL setOrderStatus(?, ?)", authKey, jsonData)
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun setOrderStatus(authKey: String, data: String): String {
+        return template.queryForJSONObject("CALL setOrderStatus(?, ?)", authKey, data)
     }
 
-    fun addOrder(authKey: String, orderInfo: String): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL addOrder(?, ?)", authKey, orderInfo)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun addOrder(authKey: String, orderInfo: String): String {
+        return template.queryForJSONObject("CALL addOrder(?, ?)", authKey, orderInfo)
     }
 
     //검색 조건에 맞는 주문 목록 쿼리
-    fun searchOrders(branchId: String, conditionParseString: String): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getSearchedOrders(getUserAuthKeyById(?), ?)", branchId, conditionParseString)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun searchOrders(branchId: String, conditionParseString: String): String {
+        return template.queryForJSONObject("CALL getSearchedOrders(getUserAuthKeyById(?), ?)", branchId, conditionParseString)
     }
 
     //검색 조건에 맞는 각각의 상태 개수 쿼리(검색 조건 중 날짜로만 필터)
-    fun getOrderStatusCounts(branchId: String, startTimestamp: Timestamp?, endTimestamp: Timestamp?): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getOrderInformationsByTimestamp(getUserAuthKeyById(?), ?, ?)", branchId, startTimestamp, endTimestamp)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun getOrderStatusCounts(branchId: String, startTimestamp: Timestamp?, endTimestamp: Timestamp?): String {
+        return template.queryForJSONObject("CALL getOrderInformationsByTimestamp(getUserAuthKeyById(?), ?, ?)", branchId, startTimestamp, endTimestamp)
     }
 
-    fun getSearchLogOrders(logCondition: String): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getSearchedLogOrders2(?)", logCondition)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun getSearchLogOrders(logCondition: String): String {
+        return template.queryForJSONObject("CALL getSearchedLogOrders2(?)", logCondition)
     }
 }

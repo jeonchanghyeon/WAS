@@ -1,7 +1,9 @@
 package com.please.controller
 
+import com.please.exception.GroupNotFoundException
 import com.please.persistence.getAuthInfo
 import org.springframework.stereotype.Controller
+import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
@@ -9,22 +11,27 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/order-reception")
 class OrderReceptionController {
     @GetMapping
-    fun showAcceptOrder(): String {
-        val authInfo = getAuthInfo()!!
-        when (authInfo.group) {
+    fun showOrderReception(model: Model): String {
+        val authInfo = getAuthInfo()
+        model.addAttribute("id", authInfo.id)
+
+        return when (authInfo.group) {
             7 -> {
-                return "order_reception/reception_head"
+                "order_reception/reception_head"
             }
             6 -> {
-                return "order_reception/reception_distrib"
+                "order_reception/reception_distrib"
             }
-            in 4..5 -> {
-                return "order_reception/reception_branch"
+            5 -> {
+                "order_reception/reception_branch"
             }
             3 -> {
-                return "order_reception/reception_shop"
+                "order_reception/reception_shop"
             }
+            else -> {
+                throw GroupNotFoundException("Order reception page load failed. (group = ${authInfo.group})")
+            }
+
         }
-        return "login"
     }
 }

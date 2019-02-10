@@ -17,26 +17,13 @@ class RiderController {
         /* rider-name, rider-status-id, page-index
         * rider-status-id -> 출근만: 1, 퇴근만: 2, 출근,퇴근(x): -1, 출근,퇴근(o): 0 or null
         * */
-        return try {
-            val value = riderService.searchList(branchId, data)
-            println(value)
-            value!!.toString()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
-        }
+        return riderService.searchList(branchId, data)
     }
 
     /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping(value = ["list"])
-    fun getRiderList(@RequestParam id: Long): Any {
-        return try {
-            val value = riderService.getRiders(id)
-            println(value)
-            value!!.toString()
-        } catch (e: Exception) {
-            mapOf("resultCode" to 777)
-        }
+    fun getRiderList(@RequestParam id: Long): Any? {
+        return riderService.getRiders(id)
     }
 
 
@@ -58,13 +45,7 @@ class RiderController {
     fun getRiderInfo(@PathVariable(value = "rider-id") id: Long,
                      @RequestParam(value = "start-date", required = false) startDate: String?,
                      @RequestParam(value = "end-date", required = false) endDate: String?): Any {
-        return try {
-            val authInfo = getAuthInfo()!!
-            val value = riderService.getInfoInControl(authInfo.authKey, id, startDate, endDate)
-            println(value)
-            value!!.toString()
-        } catch (e: Exception) {
-            mapOf("resultCode" to 777)
-        }
+        val authInfo = getAuthInfo()
+        return riderService.getInfoInControl(authInfo.authKey, id, startDate, endDate)
     }
 }

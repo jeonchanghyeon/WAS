@@ -13,26 +13,25 @@ class NoticeService {
     @Autowired
     private lateinit var noticeDAO: NoticeDAO
 
-    fun showNoticeList(authKey: String, condition: NoticeCondition): JSONObject? {
+    fun showNoticeList(authKey: String, condition: NoticeCondition): String {
         return noticeDAO.getNoticeList(authKey, ObjectMapper().writeValueAsString(condition).toString())
     }
 
-    fun addNotice(authKey: String, notice: Notice): JSONObject? {
+    fun addNotice(authKey: String, notice: Notice): String {
         return noticeDAO.insert(authKey, ObjectMapper().writeValueAsString(notice))
     }
 
-    fun showNoticeDetail(authKey: String, noticeId: Int): JSONObject? {
+    fun showNoticeDetail(authKey: String, noticeId: Int): String {
         return noticeDAO.getNotice(authKey, noticeId)
     }
 
-    fun updateNotice(authKey: String, notice: Notice): JSONObject? {
+    fun updateNotice(authKey: String, notice: Notice): String {
         return noticeDAO.update(authKey, ObjectMapper().writeValueAsString(notice))
     }
 
-    fun deleteNotice(authKey: String, noticeId: Long): JSONObject? {
+    fun deleteNotice(authKey: String, noticeId: Long): String {
         val info = JSONObject()
         info.put("id", noticeId)
-
-        return noticeDAO.delete(authKey, info)
+        return noticeDAO.delete(authKey, info.toString())
     }
 }

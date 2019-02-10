@@ -1,7 +1,7 @@
 package com.please.dataAccess
 
+import com.please.exception.SqlAbnormalResultException
 import com.please.persistence.queryForJSONObject
-import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
@@ -13,48 +13,28 @@ class NoticeDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun getNoticeList(authKey: String, noticeInfo: String): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getSearchedNotices2(?, ?)", authKey, noticeInfo)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun getNoticeList(authKey: String, noticeInfo: String): String {
+        return template.queryForJSONObject("CALL getSearchedNotices2(?, ?)", authKey, noticeInfo)
     }
 
-    fun update(authKey: String, noticeInfo: String): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL setNotice(?, ?)", authKey, noticeInfo)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun update(authKey: String, noticeInfo: String): String {
+        return template.queryForJSONObject("CALL setNotice(?, ?)", authKey, noticeInfo)
     }
 
-    fun getNotice(authKey: String, noticeId: Int): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getNotice(?, ?)", authKey, noticeId)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun getNotice(authKey: String, noticeId: Int): String {
+        return template.queryForJSONObject("CALL getNotice(?, ?)", authKey, noticeId)
     }
 
-    fun insert(authKey: String, addedNotice: String): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL addNotice(?, ?)", authKey, addedNotice)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun insert(authKey: String, addedNotice: String): String {
+        return template.queryForJSONObject("CALL addNotice(?, ?)", authKey, addedNotice)
     }
 
-    fun delete(authKey: String, deletedNotice: JSONObject): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL removeNotice(?, ?)", authKey, deletedNotice.toString())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun delete(authKey: String, deletedNotice: String): String {
+        return template.queryForJSONObject("CALL removeNotice(?, ?)", authKey, deletedNotice)
     }
 }

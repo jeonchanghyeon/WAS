@@ -16,16 +16,8 @@ class AddressController {
 
     @GetMapping
     fun searchAddress(@RequestParam data: MutableMap<String, Any>): Any {
-        return try {
-            val value = addressService.searchAddress(data)
-            println(value)
-            value!!.toString()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
-        }
+        return addressService.searchAddress(data)
     }
-
 
     /*  result ->
         {   "resultCode", "description",
@@ -40,14 +32,7 @@ class AddressController {
         /*  id -> 상점 아이디
             consonant -> 0:전체, 1:ㄱ, 2:ㄴ ...... 14:ㅎ
         */
-        return try {
-            val authInfo = getAuthInfo()!!
-            val value = addressService.getEnableArea(authInfo.authKey, id, consonant)
-            println(value)
-            value!!.toString()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
-        }
+        val authInfo = getAuthInfo()
+        return addressService.getEnableArea(authInfo.authKey, id, consonant)
     }
 }

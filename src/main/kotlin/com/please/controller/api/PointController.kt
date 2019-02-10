@@ -13,14 +13,15 @@ class PointController {
     @Autowired
     private lateinit var pointService: PointService
 
+    /*
+        return -> {
+            "resultCode", "description",
+            "point": { "point" }
+        }
+     */
     @GetMapping
     fun showPoint(): Any {
-        return try {
-            val authInfo = getAuthInfo()!!
-            pointService.getPoint(authInfo.authKey)!!
-        } catch (e: Exception) {
-            e.printStackTrace()
-            mapOf("resultCode" to 777, "description" to "알 수 없는 에러입니다.")
-        }
+        val authInfo = getAuthInfo()
+        return pointService.getPoint(authInfo.id)
     }
 }

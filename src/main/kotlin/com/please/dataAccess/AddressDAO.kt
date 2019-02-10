@@ -1,7 +1,7 @@
 package com.please.dataAccess
 
+import com.please.exception.SqlAbnormalResultException
 import com.please.persistence.queryForJSONObject
-import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
@@ -13,21 +13,13 @@ class AddressDAO {
     @Qualifier("jdbcMain")
     private lateinit var template: JdbcTemplate
 
-    fun getAddressList(pageIndex: Int, address: String, category: Int): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getAddressList(?, ?, ?, ?)", pageIndex, "", address, category)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun getAddressList(pageIndex: Int?, address: String, category: Int): String {
+        return template.queryForJSONObject("CALL getAddressList(?, ?, ?, ?)", pageIndex, "", address, category)
     }
 
-    fun getEnableDong(authKey: String, info: String): JSONObject? {
-        try {
-            return template.queryForJSONObject("CALL getEnableDongByConsonant(?, ?)", authKey, info)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
+    @Throws(SqlAbnormalResultException::class)
+    fun getEnableDong(authKey: String, info: String): String {
+        return template.queryForJSONObject("CALL getEnableDongByConsonant(?, ?)", authKey, info)
     }
 }

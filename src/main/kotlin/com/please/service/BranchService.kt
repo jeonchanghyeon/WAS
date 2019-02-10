@@ -10,43 +10,33 @@ class BranchService {
     @Autowired
     private lateinit var branchDAO: BranchDAO
 
-    fun searchList(authKey: String, branchName: String?, metro: String?, pageIndex: Int?): JSONObject? {
+    fun searchList(authKey: String, branchName: String?, metro: String?, pageIndex: Int?): String {
         val info = JSONObject()
         info.put("branchName", branchName)
         info.put("metro", metro)
         info.put("pageIndex", pageIndex)
-        return branchDAO.searchBranchList(authKey, info);
+        return branchDAO.searchBranchList(authKey, info.toString())
     }
 
-    fun getBranches(id: Long): MutableList<Map<String, Any?>>? {
+    fun getBranches(id: Long): MutableList<Map<String, Any?>> {
         return branchDAO.getBranches(id)
     }
 
-    fun getBranchSettings(authKey: String, branchId: String): JSONObject? {
+    fun getBranchSettings(authKey: String, branchId: Long): String {
         return branchDAO.getBranchSettings(authKey, branchId)
     }
 
-    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: String): JSONObject? {
-        println(data)
+    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: Long): String {
         val settings = branchDAO.getBranchSettings(authKey, id)
 
-        println(settings.toString())
-        if (settings != null) {
-            val branchSetting = settings.get("branchSettings") as JSONObject
-            val newSettings = JSONObject()
+        val branchSetting = JSONObject(settings).get("branchSettings") as JSONObject
+        val newSettings = JSONObject()
+        val names = arrayOf("basicStartTime", "delayTime", "extraCharge", "extraChargePercent", "enableOrderAccept")
 
-            val names = arrayOf("basicStartTime", "delayTime", "extraCharge", "extraChargePercent", "enableOrderAccept")
-
-            newSettings.put("id", id)
-            for (name in names) {
-                newSettings.put(name, data[name] ?: branchSetting.get(name))
-            }
-
-            println(newSettings.toString())
-
-            return branchDAO.setBranchSettings(authKey, newSettings.toString())
+        newSettings.put("id", id)
+        for (name in names) {
+            newSettings.put(name, data[name] ?: branchSetting.get(name))
         }
-
-        return null
+        return branchDAO.setBranchSettings(authKey, newSettings.toString())
     }
 }

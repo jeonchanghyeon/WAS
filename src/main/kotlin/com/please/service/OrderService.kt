@@ -17,47 +17,35 @@ class OrderService {
     @Autowired
     private lateinit var orderDAO: OrderDAO
 
-    fun getOrder(authKey: String, orderId: Int): JSONObject? {
+    fun getOrder(authKey: String, orderId: Int): String {
         return orderDAO.getOrder(authKey, orderId)
     }
 
-    fun setOrderStatus(authKey: String, orderStatus: OrderStatus): JSONObject? {
+    fun setOrderStatus(authKey: String, orderStatus: OrderStatus): String {
         return orderDAO.setOrderStatus(authKey, ObjectMapper().writeValueAsString(orderStatus))
     }
 
     @Transactional
-    fun addOrder(authKey: String, orderReceiptInfo: OrderReceiptInfo): JSONObject? {
+    fun addOrder(authKey: String, orderReceiptInfo: OrderReceiptInfo): String {
         return orderDAO.addOrder(authKey, ObjectMapper().writeValueAsString(orderReceiptInfo))
     }
 
-    fun searchOrdersInfo(authInfo: AuthInfo, condition: OrderCondition): JSONObject? {
+    fun searchOrdersInfo(authInfo: AuthInfo, condition: OrderCondition): String {
         val branchId = condition.branchId
-
-        val ordersResult = orderDAO.searchOrders(branchId, ObjectMapper().writeValueAsString(condition).toString().replace("shared", "isShared"))
-
-        print("ordersResult")
-        println(ordersResult)
-        ordersResult ?: return null
-
         val startDate = Timestamp.valueOf(condition.startDate)
         val endDate = Timestamp.valueOf(condition.endDate)
 
+        val ordersResult = orderDAO.searchOrders(branchId, ObjectMapper().writeValueAsString(condition).toString().replace("shared", "isShared"))
         val countsResult = orderDAO.getOrderStatusCounts(branchId, startDate, endDate)
 
-        print("countsResult")
-        println(countsResult)
-
-        countsResult ?: return null
-
         val result = JSONObject()
+        result.put("orders", JSONObject(ordersResult)["orders"])
+        result.put("counts", JSONObject(countsResult)["info"])
 
-        result.put("orders", ordersResult["orders"])
-        result.put("counts", countsResult["info"])
-
-        return result
+        return result.toString()
     }
 
-    fun searchOrderLogs(orderId: Long, pageIndex: Int?): JSONObject? {
+    fun searchOrderLogs(orderId: Long, pageIndex: Int?): String {
         val logCondition = JSONObject()
 
         logCondition.put("oId", orderId)
@@ -66,7 +54,7 @@ class OrderService {
         return orderDAO.getSearchLogOrders(logCondition.toString())
     }
 
-    fun getStatuesCount(branchId: String): JSONObject? {
+    fun getStatuesCount(branchId: String): String {
         return orderDAO.getOrderStatusCounts(branchId, null, null)
     }
 }
