@@ -51,7 +51,13 @@
     <logger name="org.springframework" level="OFF"/>
     <!--<logger name="org.hibernate" level="INFO"/>-->
 
-    <logger name="com.please" level="ERROR" additivity="false">
+    <logger name="com.please" level="DEBUG" additivity="false">
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="fileAppender"/>
+    </logger>
+
+    <logger name="queryForJSONObject" level="DEBUG" additivity="false">
+        <appender-ref ref="consoleAppender"/>
         <appender-ref ref="fileAppender"/>
     </logger>
 
