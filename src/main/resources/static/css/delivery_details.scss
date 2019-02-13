@@ -1,62 +1,8 @@
+@import "common";
+
 #modal {
   position: fixed;
   visibility: hidden;
-}
-
-$modal_width: 1100px;
-$modal_height: 768px;
-
-/* TODO mixin 정의 */
-/* 스크롤 뷰 */
-@mixin hide-scroll($track_color: #f8f7fb, $thumb_color: #302c2c) {
-  overflow: auto;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  /*스크롤 감추기*/
-  //-ms-overflow-style: none; // IE
-  //&::-webkit-scrollbar {
-  //  display: none !important; // 윈도우 크롬 등
-  //}
-
-  /*크롬전용 커스톰 스크롤*/
-  &::-webkit-scrollbar {
-    width: 3px;
-    background: none;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $thumb_color;
-    opacity: .4;
-  }
-  &::-webkit-scrollbar-track {
-    background: $track_color;
-  }
-}
-
-/* 커스톰 폰트 */
-@mixin custom-font($size: 14px, $color: #4a4a4a, $weight: normal) {
-  font: {
-    family: NotoSansCJKkr;
-    weight: $weight;
-    style: normal;
-    stretch: normal;
-    size: $size;
-  }
-  color: $color;
-  line-height: normal;
-  letter-spacing: normal;
-}
-
-/* 컨테이너 분할선 */
-@mixin under-bar {
-  border-bottom: 1px solid #a9a9a9;
-}
-
-/* 모달 투명 배경 */
-@mixin bg-modal {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 30px calc(50% - #{$modal_width / 2});
 }
 
 /* 지불방법 선택 버튼 */
@@ -98,401 +44,402 @@ $modal_height: 768px;
 }
 
 /* TODO 컨테이너 관련 css */
-.modal-background {
-  @include bg-modal;
-}
+.order-detail-modal-background {
+  $modal_width: 1100px;
+  $modal_height: 768px;
+  @include bg-modal($modal_width, 30px, 30px);
 
-.detail-modal-container {
-  @include custom-font;
-  width: $modal_width;
-  height: $modal_height;
-  overflow: hidden;
-  background-color: #ffffff;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
-}
-
-.detail-header {
-  @include under-bar;
-  width: calc(100% - 58px);
-  height: 70px;
-  padding-left: 29px;
-  padding-right: 29px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .title_container {
-    height: 100%;
-    display: flex;
-    align-items: center;
+  .order-detail-modal-container {
+    @include custom-font;
+    width: $modal_width;
+    height: $modal_height;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   }
-}
 
-.body {
-  width: 100%;
-  height: calc(100% - 70px);
-  display: flex;
-  overflow: hidden;
-}
-
-.aside {
-  min-width: 220px - 26px;
-  height: calc(100% - 34px);
-  padding: 17px 13px;
-  background-color: #4a4a4a;
-}
-
-.main-section {
-  width: calc(100% - 220px);
-  height: 100%;
-  overflow: hidden;
-}
-
-.status-container {
-  @include under-bar;
-  height: 70px - 1px;
-  padding-left: 26px;
-  display: flex;
-  align-items: center;
-}
-
-.inform-container {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.delivery-pay-container {
-  width: 100%;
-  margin-bottom: 20px;
-  .delivery-pay-buttons {
+  .detail-header {
+    @include underline;
+    width: calc(100% - 58px);
+    height: 70px;
+    padding-left: 29px;
+    padding-right: 29px;
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-}
-
-.delivery-status-container {
-  width: calc(100% + 26px);
-  margin-left: -13px;
-  margin-right: -13px;
-  .aside-subsection-title {
-    margin-left: 13px;
-  }
-  .aside-status-container {
-    margin-top: 8px;
-    width: 100%;
-    height: 53px;
-    display: flex;
     align-items: center;
-    justify-content: flex-start;
-    background-color: #424242;
-    padding-left: 0;
-    .current-status-container {
-      width: calc(100% / 4);
+
+    .title-container {
+      height: 100%;
       display: flex;
       align-items: center;
-      justify-content: center;
-      &::before {
-        content: ">";
-        padding-right: 10px;
-        color: #6d6d6d;
-      }
-      &:first-child {
-        width: auto;
-        margin-left: 15px;
-        margin-right: 5px;
+    }
+
+    .close-button-black {
+      width:20px;
+      height:20px;
+    }
+  }
+
+  .body {
+    width: 100%;
+    height: calc(100% - 70px);
+    display: flex;
+    overflow: hidden;
+  }
+
+  .aside {
+    min-width: 220px - 26px;
+    height: calc(100% - 34px);
+    padding: 17px 13px;
+    background-color: #4a4a4a;
+  }
+
+  .main-section {
+    width: calc(100% - 220px);
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .status-container {
+    @include underline;
+    height: 70px - 1px;
+    padding-left: 26px;
+    display: flex;
+    align-items: center;
+  }
+
+  .inform-container {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .delivery-pay-container {
+    width: 100%;
+    margin-bottom: 20px;
+    .delivery-pay-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+
+  .delivery-status-container {
+    width: calc(100% + 26px);
+    margin-left: -13px;
+    margin-right: -13px;
+    .aside-subsection-title {
+      margin-left: 13px;
+    }
+    .aside-status-container {
+      margin-top: 8px;
+      width: 100%;
+      height: 53px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      background-color: #424242;
+      padding-left: 0;
+      .current-status-container {
+        width: calc(100% / 4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         &::before {
-          content: none;
+          content: ">";
+          padding-right: 10px;
+          color: #6d6d6d;
+        }
+        &:first-child {
+          width: auto;
+          margin-left: 15px;
+          margin-right: 5px;
+          &::before {
+            content: none;
+          }
+        }
+        &:last-child::after {
+          content: "";
+          padding-right: 10px;
         }
       }
-      &:last-child::after {
-        content: "";
-        padding-right: 10px;
+    }
+  }
+
+  .delivery-info-container {
+    @include underline;
+    height: 181px;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 25px;
+  }
+
+  .delivery-contents-container {
+    display: flex;
+    width: 100%;
+    margin-bottom: 11px;
+    &:nth-child(2) {
+      height: 180px;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .contents-sub-title {
+      width: 60px;
+    }
+  }
+
+  .others-info-container {
+    @include underline;
+    height: 81px;
+    display: flex;
+    padding: 14px 25px;
+    .left-container {
+      width: 200px;
+      margin-right: 150px;
+      display: flex;
+      flex-direction: column;
+    }
+    .right-container {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .left-others-contents {
+    width: 100%;
+    display: flex;
+    margin-bottom: 11px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .contents-sub-title {
+      flex: 1;
+    }
+  }
+
+  .right-others-contents {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 11px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .contents-sub-title {
+      width: 66px;
+    }
+  }
+
+  .list-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 25px;
+  }
+
+  .product-container {
+    .table-container {
+      min-width: 306px;
+    }
+    .contents-sub-title {
+      margin-bottom: 10px;
+    }
+    th, td {
+      &:nth-child(1) {
+        width: 15%;
+      }
+      &:nth-child(2) {
+        width: 40%;
+      }
+      &:nth-child(3) {
+        width: 20%;
       }
     }
   }
-}
 
-.delivery-info-container {
-  @include under-bar;
-  height: 181px;
-  display: flex;
-  flex-direction: column;
-  padding: 14px 25px;
-}
-
-.delivery-contents-container {
-  display: flex;
-  width: 100%;
-  margin-bottom: 11px;
-  &:nth-child(2) {
-    height: 180px;
-  }
-  &:last-child {
-    margin-bottom: 0;
-  }
-  .contents-sub-title {
-    width: 60px;
-  }
-}
-
-.others-info-container {
-  @include under-bar;
-  height: 81px;
-  display: flex;
-  padding: 14px 25px;
-  .left-container {
-    width: 200px;
-    margin-right: 150px;
-    display: flex;
-    flex-direction: column;
-  }
-  .right-container {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-.left-others-contents {
-  width: 100%;
-  display: flex;
-  margin-bottom: 11px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-  .contents-sub-title {
-    flex: 1;
-  }
-}
-
-.right-others-contents {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: 11px;
-  &:last-child {
-    margin-bottom: 0;
-  }
-  .contents-sub-title {
-    width: 66px;
-  }
-}
-
-.list-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 14px 25px;
-}
-
-.product-container {
-  .table-container {
-    min-width: 306px;
-  }
-  .contents-sub-title {
-    margin-bottom: 10px;
-  }
-  th, td {
-    &:nth-child(1) {
-      width: 15%;
+  .order-container {
+    .contents-sub-title {
+      margin-bottom: 10px;
     }
-    &:nth-child(2) {
-      width: 40%;
+    .table-container {
+      min-width: 498px;
     }
-    &:nth-child(3) {
-      width: 20%;
+    td, th {
+      &:nth-child(1) {
+        width: 10%;
+      }
+      &:nth-child(2) {
+        width: 10%;
+      }
+      &:nth-child(3) {
+        width: 30%;
+      }
+      &:nth-child(4) {
+        width: 20%;
+      }
+      &:nth-child(5) {
+        width: 15%;
+      }
     }
   }
-}
 
-.order-container {
-  .contents-sub-title {
-    margin-bottom: 10px;
-  }
-  .table-container {
-    min-width: 498px;
-  }
-  td, th {
-    &:nth-child(1) {
-      width: 10%;
-    }
-    &:nth-child(2) {
-      width: 10%;
-    }
-    &:nth-child(3) {
-      width: 30%;
-    }
-    &:nth-child(4) {
-      width: 20%;
-    }
-    &:nth-child(5) {
-      width: 15%;
-    }
-  }
-}
-
-/* TODO 요소 관련 css */
-.title {
-  @include custom-font($size: 24px, $weight: 300);
-  margin-right: 20px;
-}
-
-.belong {
-  @include custom-font(15px, #979797, bold);
-  &:nth-child(2)::before, &:first-child::before {
-    content: none;
-  }
-  &::before {
-    padding-left: 5px;
-    padding-right: 5px;
-    content: "|";
-  }
-}
-
-.btn-close {
-  background-color: #FFFFFF;
-  text-align: center;
-  font-size: 30px;
-  border: none;
-}
-
-.aside-subsection-title {
-  @include custom-font($color: #ffffff, $weight: bold);
-}
-
-.inform-table {
-  width: 100%;
-  margin-top: 5px;
-  th {
-    @include custom-font($color: #9b9b9b);
-    height: 15px;
-    letter-spacing: -0.7px;
-    text-align: left;
-    padding: 5px 0 5px 10px;
-  }
-  td {
-    @include custom-font($color: #ffffff);
-    height: 15px;
-    text-align: right;
-    padding: 5px 10px 5px 0;
-  }
-}
-
-.aside-btn-unselected {
-  @include payment-button;
-  @include custom-font(13px, #ffffff, bold);
-  border: 1px solid #9b9b9b;
-}
-
-.aside-btn-selected {
-  @include payment-button;
-  @include custom-font(13px, #ff9037, bold);
-  border: 1px solid #ff9037;
-}
-
-.fill-button {
-  @include status-button;
-  background-color: #ff9037;
-  border: 1px solid #ff9037;
-}
-
-.border-button {
-  @include status-button;
-  border: 1px solid #ff9037;
-  color: #ff9037;
-}
-
-.default-button {
-  @include status-button;
-  border: 1px solid #979797;
-  color: #979797;
-}
-
-.contents-sub-title {
-  @include custom-font($size: 13px, $color: #323232, $weight: bold);
-}
-
-.contents {
-  @include custom-font($size: 13px);
-  &:not(:nth-child(2))::before {
-    content: "";
+  /* TODO 요소 관련 css */
+  .title {
+    @include custom-font($size: 24px, $weight: 300);
     margin-right: 20px;
   }
-}
 
-.call_icon {
-  width: 11px;
-  height: 11px;
-  text-align:center;
-  margin-right:5px;
-}
-.current-status-default {
-  @include custom-font(12px, #ffffff, bold);
-  @include current-status;
-}
-
-.current-status-color {
-  @include custom-font(12px, #ff9037, bold);
-  @include current-status;
-}
-
-.contents-table {
-  margin-top: -5px;
-  th, td {
-    @include custom-font;
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-  th {
-    text-align: left;
-    font-size: 12px;
-    color: #9b9b9b;
-    padding-right: 10px;
-  }
-  td {
-    font-size: 13px;
-    color: #4a4a4a;
-  }
-}
-
-.pay-type-default-button {
-  @include custom-font($size: 13px, $weight: bold);
-  @include pay-type-button;
-  border: 1px solid #999999;
-}
-
-.pay-type-color-button {
-  @include custom-font($size: 13px, $color: #ff9037, $weight: bold);
-  @include pay-type-button;
-  border: 1px solid #ff9037;
-}
-
-.table-container {
-  height: 240px;
-  border: 1px solid #aaaaaa;
-  table {
-    min-width: 100%;
-    border-collapse: collapse;
-    td, th {
-      height: 24px;
-      text-align: center;
+  .belong {
+    @include custom-font(15px, #979797, bold);
+    &:nth-child(2)::before, &:first-child::before {
+      content: none;
     }
-    thead {
-      @include custom-font($size: 12px);
-      background-color: #eaeaea;
+    &::before {
+      padding-left: 5px;
+      padding-right: 5px;
+      content: "|";
     }
-    tbody {
-      @include custom-font($size: 12px, $color: #1f1f1f);
-      tr {
-        border-bottom: 0.5px solid #aaaaaa;
-        &:last-child {
-          border-bottom: 0;
+  }
+
+  .aside-subsection-title {
+    @include custom-font($color: #ffffff, $weight: bold);
+  }
+
+  .inform-table {
+    width: 100%;
+    margin-top: 5px;
+    th {
+      @include custom-font($color: #9b9b9b);
+      height: 15px;
+      letter-spacing: -0.7px;
+      text-align: left;
+      padding: 5px 0 5px 10px;
+    }
+    td {
+      @include custom-font($color: #ffffff);
+      height: 15px;
+      text-align: right;
+      padding: 5px 10px 5px 0;
+    }
+  }
+
+  .aside-btn-unselected {
+    @include payment-button;
+    @include custom-font(13px, #ffffff, bold);
+    border: 1px solid #9b9b9b;
+  }
+
+  .aside-btn-selected {
+    @include payment-button;
+    @include custom-font(13px, #ff9037, bold);
+    border: 1px solid #ff9037;
+  }
+
+  .fill-button {
+    @include status-button;
+    background-color: #ff9037;
+    border: 1px solid #ff9037;
+  }
+
+  .border-button {
+    @include status-button;
+    border: 1px solid #ff9037;
+    color: #ff9037;
+  }
+
+  .default-button {
+    @include status-button;
+    border: 1px solid #979797;
+    color: #979797;
+  }
+
+  .contents-sub-title {
+    @include custom-font($size: 13px, $color: #323232, $weight: bold);
+  }
+
+  .contents {
+    @include custom-font($size: 13px);
+    &:not(:nth-child(2))::before {
+      content: "";
+      margin-right: 20px;
+    }
+  }
+
+  .call_icon {
+    width: 11px;
+    height: 11px;
+    text-align: center;
+    margin-right: 5px;
+  }
+  .current-status-default {
+    @include custom-font(12px, #ffffff, bold);
+    @include current-status;
+  }
+
+  .current-status-color {
+    @include custom-font(12px, #ff9037, bold);
+    @include current-status;
+  }
+
+  .contents-table {
+    margin-top: -5px;
+    th, td {
+      @include custom-font;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    th {
+      text-align: left;
+      font-size: 12px;
+      color: #9b9b9b;
+      padding-right: 10px;
+    }
+    td {
+      font-size: 13px;
+      color: #4a4a4a;
+    }
+  }
+
+  .pay-type-default-button {
+    @include custom-font($size: 13px, $weight: bold);
+    @include pay-type-button;
+    border: 1px solid #999999;
+  }
+
+  .pay-type-color-button {
+    @include custom-font($size: 13px, $color: #ff9037, $weight: bold);
+    @include pay-type-button;
+    border: 1px solid #ff9037;
+  }
+
+  .table-container {
+    height: 240px;
+    border: 1px solid #aaaaaa;
+    table {
+      min-width: 100%;
+      border-collapse: collapse;
+      td, th {
+        height: 24px;
+        text-align: center;
+      }
+      thead {
+        @include custom-font($size: 12px);
+        background-color: #eaeaea;
+      }
+      tbody {
+        @include custom-font($size: 12px, $color: #1f1f1f);
+        tr {
+          border-bottom: 0.5px solid #aaaaaa;
+          &:last-child {
+            border-bottom: 0;
+          }
         }
       }
     }
-  }
-  .scroll-table {
-    height: 216px;
-    @include hide_scroll;
+    .scroll-table {
+      height: 216px;
+      @include scroll-view;
+    }
   }
 }
