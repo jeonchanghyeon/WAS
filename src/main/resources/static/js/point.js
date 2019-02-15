@@ -1,14 +1,10 @@
-import {ajax} from "./ajax.js";
+import {$} from "./element.js";
+import {getJSON} from "./ajax.js";
 
-export function loadPoint() {
-    const url = "/api/point";
-
-    ajax(
-        url,
-        "GET",
+export const loadPoint = () =>
+    getJSON("/api/point").then(
         (obj) => {
-            document.getElementById("point").innerText = obj
-            console.log(obj);
+            const point = obj["point"]["point"].toString();
+            $("point").innerText = point;
         }
     );
-}

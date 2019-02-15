@@ -1,4 +1,4 @@
-import {ajax, withGetMethod} from './ajax.js'
+import {formSerialize, getJSON} from './ajax.js'
 import {loadPoint} from "./point.js";
 import {$, createCol, createRow} from "./element.js"
 import {
@@ -101,82 +101,78 @@ const a = () => {
     const formData = new FormData(formBranchSearch);
 
     if (formBranchSearch !== null) {
-        withGetMethod(
-            url,
-            formData,
+
+        getJSON(url + '?' + formSerialize(formData)).then(
             (obj) => {
-                try {
-                    const branches = obj["branches"];
+                const branches = obj["branches"];
 
-                    const tableBranches = $("branches");
-                    tableBranches.innerHTML = "";
+                const tableBranches = $("branches");
+                tableBranches.innerHTML = "";
 
-                    removeMarkers(markers);
-                    removeInfo(infos);
+                removeMarkers(markers);
+                removeInfo(infos);
 
-                    for (let i = 0; i < branches.length; i++) {
-                        const branch = branches[i];
+                for (let i = 0; i < branches.length; i++) {
+                    const branch = branches[i];
 
-                        const latitude = branch["latitude"];
-                        const riderTotal = branch["riderTotal"];
-                        const name = branch["name"];
-                        const id = branch["id"];
-                        const riderWorkOn = branch["riderWorkOn"];
-                        const shareCallNum = branch["shareCallNum"];
-                        const longitude = branch["longitude"];
+                    const latitude = branch["latitude"];
+                    const riderTotal = branch["riderTotal"];
+                    const name = branch["name"];
+                    const id = branch["id"];
+                    const riderWorkOn = branch["riderWorkOn"];
+                    const shareCallNum = branch["shareCallNum"];
+                    const longitude = branch["longitude"];
 
-                        const text = [
-                            name,
-                            riderWorkOn + "명/" + riderTotal + "명",
-                            shareCallNum,
-                        ];
+                    const text = [
+                        name,
+                        riderWorkOn + "명/" + riderTotal + "명",
+                        shareCallNum,
+                    ];
 
-                        const row = createRow(text, (row) => {
+                    const row = createRow(text, (row) => {
 
-                            const col = createCol('<button class="btn-select">선택</button>', (col) => {
-                                col.onclick = () => {
+                        const col = createCol('<button class="btn-select">선택</button>', (col) => {
+                            col.onclick = () => {
 
-                                    $("branch-name").innerText = name;
-                                    $("rider-branch-id").value = id;
-                                    $("shop-branch-id").value = id;
-                                    $("count-worker").innerText = riderWorkOn + "/" + riderTotal;
+                                $("branch-name").innerText = name;
+                                $("rider-branch-id").value = id;
+                                $("shop-branch-id").value = id;
+                                $("count-worker").innerText = riderWorkOn + "/" + riderTotal;
 
-                                    $("branch-latitude").value = latitude;
-                                    $("branch-longitude").value = longitude;
+                                $("branch-latitude").value = latitude;
+                                $("branch-longitude").value = longitude;
 
-                                    b();
-                                }
-                            });
-
-                            row.appendChild(col);
+                                b();
+                            }
                         });
 
-                        tableBranches.appendChild(row);
+                        row.appendChild(col);
+                    });
 
-                        const marker = createMarker(map, latitude, longitude, '/img/marker-branch.png');
-                        markers.push(marker);
+                    tableBranches.appendChild(row);
 
-                        const info = createInfoWindow({
-                            map: map,
-                            latitude: latitude,
-                            longitude: longitude,
-                            name: name,
-                            icon: "/img/bubble-blue.png",
-                            textColor: "#FFFFFF"
-                        });
+                    const marker = createMarker(map, latitude, longitude, '/img/marker-branch.png');
+                    markers.push(marker);
 
-                        infos.push(info);
+                    const info = createInfoWindow({
+                        map: map,
+                        latitude: latitude,
+                        longitude: longitude,
+                        name: name,
+                        icon: "/img/bubble-blue.png",
+                        textColor: "#FFFFFF"
+                    });
 
-                    }
+                    infos.push(info);
 
-                    setMarkerCenter(map, markers);
-                    displayBranchControl();
-
-                } catch (e) {
-                    console.log(e)
                 }
+
+                setMarkerCenter(map, markers);
+                displayBranchControl();
             }
-        )
+        ).catch((e) => {
+            console.log(e);
+        });
     }
 };
 
@@ -218,95 +214,89 @@ const b = () => {
 
     infos.push(info);
 
-    withGetMethod(
-        url,
-        formData,
+    getJSON(url + '?' + formSerialize(formData)).then(
         (obj) => {
-            try {
-                const riders = obj["riders"];
+            const riders = obj["riders"];
 
-                const tableRiders = $("riders");
-                tableRiders.innerHTML = "";
+            const tableRiders = $("riders");
+            tableRiders.innerHTML = "";
 
-                for (let i = 0; i < riders.length; i++) {
-                    const rider = riders[i];
+            for (let i = 0; i < riders.length; i++) {
+                const rider = riders[i];
 
-                    const riderStatusId = rider["additional"]["riderStatusId"];
-                    const allocateCount = rider["allocateCount"];
-                    const completeCount = rider["completeCount"];
-                    const pickupCount = rider["pickupCount"];
-                    const tel = rider["tel"];
-                    const latitude = rider["latitude"];
-                    const longitude = rider["longitude"];
-                    const name = rider["name"];
-                    const id = rider["id"];
+                const riderStatusId = rider["additional"]["riderStatusId"];
+                const allocateCount = rider["allocateCount"];
+                const completeCount = rider["completeCount"];
+                const pickupCount = rider["pickupCount"];
+                const tel = rider["tel"];
+                const latitude = rider["latitude"];
+                const longitude = rider["longitude"];
+                const name = rider["name"];
+                const id = rider["id"];
 
-                    const text = [
-                        "",
-                        name,
-                        allocateCount,
-                        completeCount,
-                        pickupCount,
-                        tel,
-                    ];
+                const text = [
+                    "",
+                    name,
+                    allocateCount,
+                    completeCount,
+                    pickupCount,
+                    tel,
+                ];
 
-                    const row = createRow(text, (row) => {
-                        const marker = createMarker(map, latitude, longitude, '/img/marker-rider.png');
-                        markers.push(marker);
+                const row = createRow(text, (row) => {
+                    const marker = createMarker(map, latitude, longitude, '/img/marker-rider.png');
+                    markers.push(marker);
 
-                        const info = createInfoWindow({
-                            map: map,
-                            latitude: latitude,
-                            longitude: longitude,
-                            name: name,
-                            icon: "/img/bubble-white.png",
-                            textColor: "#4a4a4a"
-                        });
-
-                        infos.push(info);
-
-                        row.ondblclick = () => {
-
-                            ajax(
-                                "/api/riders/" + id,
-                                "GET",
-                                (obj) => {
-                                    const rider = obj["rider"];
-
-                                    const tel = rider["tel"];
-                                    const name = rider["name"];
-                                    const orders = rider["orders"];
-
-                                    $("rider-name").innerHTML = name;
-                                    $("rider-tel").innerHTML = tel;
-
-                                    // for (let i = 0; i < orders.length; i++) {
-                                    //     const order = orders[i];
-                                    // }
-
-                                    const mapDown = $("map-down");
-                                    mapDown.style.display = "initial";
-                                    const mapDownHeight = mapDown.offsetHeight;
-
-                                    $("map").style.height = "calc(100% - " + mapDownHeight + "px)";
-
-                                }
-                            );
-                        }
+                    const info = createInfoWindow({
+                        map: map,
+                        latitude: latitude,
+                        longitude: longitude,
+                        name: name,
+                        icon: "/img/bubble-white.png",
+                        textColor: "#4a4a4a"
                     });
 
-                    tableRiders.appendChild(row);
+                    infos.push(info);
 
-                }
+                    row.ondblclick = () => {
+                        getJSON("/api/riders/" + id).then(
+                            (obj) => {
+                                const rider = obj["rider"];
 
-                setMarkerCenter(map, markers);
-                displayRiderControl()
+                                const tel = rider["tel"];
+                                const name = rider["name"];
+                                const orders = rider["orders"];
 
-            } catch (e) {
-                console.log(e)
+                                $("rider-name").innerHTML = name;
+                                $("rider-tel").innerHTML = tel;
+
+                                // for (let i = 0; i < orders.length; i++) {
+                                //     const order = orders[i];
+                                // }
+
+                                const mapDown = $("map-down");
+                                mapDown.style.display = "initial";
+                                const mapDownHeight = mapDown.offsetHeight;
+
+                                $("map").style.height = "calc(100% - " + mapDownHeight + "px)";
+
+                            }
+                        );
+                    }
+                });
+
+                tableRiders.appendChild(row);
+
             }
+
+            setMarkerCenter(map, markers);
+            displayRiderControl()
+
+
         }
-    )
+    ).catch((e) => {
+        console.log(e);
+    })
 };
 
 const c = () => {
@@ -335,93 +325,88 @@ const c = () => {
 
     infos.push(info);
 
-    withGetMethod(
-        url,
-        formData,
+    getJSON(url + '?' + formSerialize(formData)).then(
         (obj) => {
-            try {
-                const shops = obj["shops"];
+            const shops = obj["shops"];
 
-                const tableShops = $("shops");
-                tableShops.innerHTML = "";
+            const tableShops = $("shops");
+            tableShops.innerHTML = "";
 
-                for (let i = 0; i < shops.length; i++) {
-                    const shop = shops[i];
+            for (let i = 0; i < shops.length; i++) {
+                const shop = shops[i];
 
-                    const allocateCount = shop["allocateCount"];
-                    const completeCount = shop["completeCount"];
-                    const pickupCount = shop["pickupCount"];
-                    const tel = shop["tel"];
-                    const latitude = shop["latitude"];
-                    const longitude = shop["longitude"];
-                    const name = shop["name"];
+                const allocateCount = shop["allocateCount"];
+                const completeCount = shop["completeCount"];
+                const pickupCount = shop["pickupCount"];
+                const tel = shop["tel"];
+                const latitude = shop["latitude"];
+                const longitude = shop["longitude"];
+                const name = shop["name"];
 
-                    const text = [
-                        name,
-                        "",
-                        allocateCount,
-                        completeCount,
-                        pickupCount,
-                        tel,
-                    ];
+                const text = [
+                    name,
+                    "",
+                    allocateCount,
+                    completeCount,
+                    pickupCount,
+                    tel,
+                ];
 
-                    const row = createRow(text, () => {
-                        const marker = createMarker(map, latitude, longitude, '/img/marker-shop.png');
-                        markers.push(marker);
+                const row = createRow(text, () => {
+                    const marker = createMarker(map, latitude, longitude, '/img/marker-shop.png');
+                    markers.push(marker);
 
-                        const info = createInfoWindow({
-                            map: map,
-                            latitude: latitude,
-                            longitude: longitude,
-                            name: name,
-                            icon: "/img/bubble-red.png",
-                            textColor: "#FFFFFF"
-                        });
-
-                        infos.push(info);
+                    const info = createInfoWindow({
+                        map: map,
+                        latitude: latitude,
+                        longitude: longitude,
+                        name: name,
+                        icon: "/img/bubble-red.png",
+                        textColor: "#FFFFFF"
                     });
 
-                    tableShops.appendChild(row);
-                }
+                    infos.push(info);
+                });
 
-                ajax(
-                    "/api/orders/statuses?branch-id=" + $("shop-branch-id").value,
-                    "GET",
-                    (obj) => {
-                        const info = obj["info"];
-
-                        const infoKey = [
-                            "acceptCount",
-                            "allocateCount",
-                            "pickupCount",
-                            "completeCount"
-                        ];
-
-                        const countId = [
-                            "count-accept",
-                            "count-allocate",
-                            "count-pickup",
-                            "count-complete"
-                        ];
-
-                        let sum = 0;
-
-                        for (let i = 0; i < infoKey.length; i++) {
-                            sum += info[infoKey[i]];
-                            $(countId[i]).innerHTML = info[infoKey[i]];
-                        }
-
-                        $("count-all").innerHTML = sum;
-
-                        setMarkerCenter(map, markers);
-                        displayShopControl()
-                    }
-                );
-            } catch (e) {
-                console.log(e)
+                tableShops.appendChild(row);
             }
+
+            getJSON("/api/orders/statuses?branch-id=" + $("shop-branch-id").value).then(
+                (obj) => {
+                    const info = obj["info"];
+
+                    const infoKey = [
+                        "acceptCount",
+                        "allocateCount",
+                        "pickupCount",
+                        "completeCount"
+                    ];
+
+                    const countId = [
+                        "count-accept",
+                        "count-allocate",
+                        "count-pickup",
+                        "count-complete"
+                    ];
+
+                    let sum = 0;
+
+                    for (let i = 0; i < infoKey.length; i++) {
+                        sum += info[infoKey[i]];
+                        $(countId[i]).innerHTML = info[infoKey[i]];
+                    }
+
+                    $("count-all").innerHTML = sum;
+
+                    setMarkerCenter(map, markers);
+                    displayShopControl()
+                }
+            );
+
         }
-    );
+    ).catch((e) => {
+        console.log(e);
+    })
 };
 
 switch (parseInt(group)) {

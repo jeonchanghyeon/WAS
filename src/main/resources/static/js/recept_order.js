@@ -1,20 +1,20 @@
-import {withPostMethod} from "./ajax.js";
-import {getMeta} from './meta.js'
-import {$} from "./element.js"
+import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
+import {$, formSerialize, jsonifyFormData} from "./element.js"
 import {modalOpen} from "./popup_search_address.js"
+import {loadPoint} from "./point.js";
+
+loadPoint();
 
 const receptForm = $("recept_form");
 
 receptForm.onsubmit = function () {
     const formData = new FormData(this);
 
-    withPostMethod(
+    ajax(
         "/order-reception/efg",
-        formData,
-        () => {
-        },
-        getMeta("_csrf_header"),
-        getMeta("_csrf")
+        "POST",
+        JSON.stringify(jsonifyFormData(formData)),
+        setCSRFHeader
     );
 
     return false;
@@ -54,7 +54,7 @@ btnBranchName.onsubmit
     = () => false;
 
 addCost.onchange
-    = extraCharge.onchange
+    = deliveryCost.onchange
     = () => {
     additionalCost.value
         = parseInt(deliveryCost.value)

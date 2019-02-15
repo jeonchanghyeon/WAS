@@ -1,13 +1,11 @@
-import {ajax, withGetMethod, withPostMethod} from './ajax.js'
+import {ajax, getJSON, setCSRFHeader} from './ajax.js'
 import {loadDetail} from './delivery_details.js'
-import {getMeta} from './meta.js'
 import {calendarListener} from './calendar.js'
 import {loadPoint} from "./point.js";
-import {$, appendOptions, createRow} from "./element.js";
+import {$, appendOptions, createRow, formSerialize, jsonifyFormData} from "./element.js";
 import {fillZero, HHMM, mmdd, numberWithCommas} from "./format.js";
 
 function createTable(resultList, orders) {
-
     for (let i = 0; i < orders.length; i++) {
         const order = orders[i];
 
@@ -93,8 +91,7 @@ function createTable(resultList, orders) {
     }
 }
 
-function displayError(error) {
-
+const displayError = (error) => {
     const tr = document.createElement("tr");
     const td = document.createElement("td");
 
@@ -103,7 +100,7 @@ function displayError(error) {
 
     resultList.appendChild(tr);
     tr.appendChild(td);
-}
+};
 
 const getOptionValue = (element) => element.options[element.selectedIndex].value;
 
@@ -145,29 +142,23 @@ function setSearchType() {
 }
 
 const uncheckOthers = (checkboxes) => {
-    for (let i = 1; i < checkboxes.length; i++) {
-        checkboxes[i].checked = false;
+    for (let checkbox of checkboxes) {
+        checkbox.checked = false;
     }
 };
 
 const isAllUnchecked = (checkboxes) => {
-    let flag = true;
+    const checkedCheckboxes = checkboxes.find(
+        (data) => data.checked === true
+    );
 
-    for (let i = 1; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked === true) {
-            flag = false;
-            break;
-        }
-    }
-
-    return flag;
+    return checkedCheckboxes !== undefined;
 };
 
 const appendCheckboxValue = (formData, checkboxes) => {
-
-    for (let i = 1; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked === true) {
-            formData.append(checkboxes[i].name, checkboxes[i].value)
+    for (let checkbox of checkboxes) {
+        if (checkbox.checked === true) {
+            formData.append(checkbox.name, checkbox.value)
         }
     }
 };
@@ -179,9 +170,7 @@ function submitOrderStatus() {
 
     lastSubmittedFormData = formData;
 
-    console.log(2);
-    getOrders(
-        formData,
+    getOrders(formData).then(
         (obj) => {
             const orders = obj["orders"];
 
@@ -198,7 +187,9 @@ function submitOrderStatus() {
 
             pageIndex = 2;
         }
-    );
+    ).catch((error) => {
+        displayError(error);
+    });
 }
 
 function emptyHandler() {
@@ -208,43 +199,33 @@ function emptyHandler() {
 const getRider = (branchId) => {
     const url = "/api/riders/list?id=" + branchId;
 
-    ajax(
-        url,
-        "GET",
+    getJSON(url).then(
         (obj) => {
-
             if (obj.length !== 1) {
 
             } else {
                 $("text_rider").value = obj[0]["name"];
             }
-        }
-    );
+        });
 };
 
 const getShop = (branchId) => {
     const url = "/api/shops/list?id=" + branchId;
 
-    ajax(
-        url,
-        "GET",
+    getJSON(url).then(
         (obj) => {
-
             if (obj.length !== 1) {
 
             } else {
                 $("text_shop").value = obj[0]["name"];
             }
-        }
-    );
+        });
 };
 
 const getBranchList = (element, distribId) => {
     const url = "/api/branches/list?id=" + distribId;
 
-    ajax(
-        url,
-        "GET",
+    getJSON(url).then(
         (obj) => {
             const options = [{
                 value: -1,
@@ -262,34 +243,27 @@ const getBranchList = (element, distribId) => {
             }
 
             appendOptions(element, options);
-        }
-    );
+        });
 };
 
 const getBranch = (distribId) => {
     const url = "/api/branches/list?id=" + distribId;
 
-    ajax(
-        url,
-        "GET",
+    getJSON(url).then(
         (obj) => {
-
             if (obj.length !== 1) {
 
             } else {
                 $("value_branch").value = obj[0]["id"];
                 $("text_branch").value = obj[0]["name"];
             }
-        }
-    );
+        });
 };
 
 const getDistribList = (element, headId) => {
     const url = "/api/distribs?id=" + headId;
 
-    ajax(
-        url,
-        "GET",
+    getJSON(url).then(
         (obj) => {
             const options = [{
                 value: -1,
@@ -313,72 +287,54 @@ const getDistribList = (element, headId) => {
 const getDistrib = (headId) => {
     const url = "/api/distribs?id=" + headId;
 
-    ajax(
-        url,
-        "GET",
+    getJSON(url).then(
         (obj) => {
-
             if (obj.length !== 1) {
 
             } else {
                 $("text_distrib").value = obj[0]["name"];
             }
-        }
-    );
+        });
 };
 
 const getBranchSettings = (branchId) => {
     const url = "/api/branches/" + branchId + "/settings";
-    ajax(url, "GET", (obj) => {
 
-        const selectDefaultStart = $("select_default_start");
-        const selectDelayTime = $("select_delay_time");
-        const costWon = $('cost_won');
-        const costPercent = $('cost_percent');
+    getJSON(url).then(
+        (obj) => {
+            const selectDefaultStart = $("select_default_start");
+            const selectDelayTime = $("select_delay_time");
+            const costWon = $('cost_won');
+            const costPercent = $('cost_percent');
 
-        const branchSetting = obj["branchSettings"];
+            const branchSetting = obj["branchSettings"];
 
-        const basicStartTime = branchSetting["basicStartTime"];
-        const basicStartTimeIndex = basicStartTime / 10;
-        selectDefaultStart.selectedIndex = basicStartTimeIndex;
+            const basicStartTime = branchSetting["basicStartTime"];
+            const basicStartTimeIndex = basicStartTime / 10;
+            selectDefaultStart.selectedIndex = basicStartTimeIndex;
 
-        if (basicStartTimeIndex === 0) {
-            changeToStyleSafe(selectDefaultStart);
-        } else {
-            changeToStyleWarning(selectDefaultStart);
-        }
+            if (basicStartTimeIndex === 0) {
+                changeToStyleSafe(selectDefaultStart);
+            } else {
+                changeToStyleWarning(selectDefaultStart);
+            }
 
-        const delayTime = branchSetting["delayTime"];
-        const delayTimeIndex = delayTime / 10;
-        selectDelayTime.selectedIndex = delayTimeIndex;
+            const delayTime = branchSetting["delayTime"];
+            const delayTimeIndex = delayTime / 10;
+            selectDelayTime.selectedIndex = delayTimeIndex;
 
-        if (delayTimeIndex === 0) {
-            changeToStyleSafe(selectDelayTime);
-        } else {
-            changeToStyleWarning(selectDelayTime);
-        }
+            if (delayTimeIndex === 0) {
+                changeToStyleSafe(selectDelayTime);
+            } else {
+                changeToStyleWarning(selectDelayTime);
+            }
 
-        costWon.value = branchSetting["extraCharge"];
-        costPercent.value = branchSetting["extraChargePercent"] * 100;
-    })
+            costWon.value = branchSetting["extraCharge"];
+            costPercent.value = branchSetting["extraChargePercent"] * 100;
+        })
 };
 
-function getOrders(formData, func) {
-    const url = "/api/orders";
-
-    withGetMethod(
-        url,
-        formData,
-        (obj) => {
-            try {
-                func(obj);
-            } catch (error) {
-                console.log(func);
-                console.log(error);
-                displayError(error);
-            }
-        });
-}
+const getOrders = (formData) => getJSON('/api/orders?' + formSerialize(formData));
 
 loadPoint();
 
@@ -500,10 +456,8 @@ $("form_search").onsubmit = function () {
         const formData = new FormData(this);
         lastSubmittedFormData = baseForm = formData;
 
-        getOrders(
-            formData,
+        getOrders(formData).then(
             (obj) => {
-
                 const orders = obj["orders"];
                 const counts = obj["counts"];
 
@@ -522,7 +476,9 @@ $("form_search").onsubmit = function () {
 
                 pageIndex = 2;
             }
-        );
+        ).catch((error) => {
+            displayError(error);
+        });
     }
 
     return false;
@@ -534,20 +490,16 @@ $("form_default_start").onsubmit
 
     const branchId = parseInt(getCurrentBranchId());
     if (branchId !== -1) {
-        const csrfToken = getMeta("_csrf");
-        const csrfHeader = getMeta("_csrf_header");
-
-        const url = "/api/branches/" + branchId + "/settings";
         const formData = new FormData(this);
 
-        withPostMethod(
-            url,
-            formData,
-            () => {
+        const extraChargePercent = formData.get("extraChargePercent");
+        formData.set("extraChargePercent", extraChargePercent / 100.0);
 
-            },
-            csrfHeader,
-            csrfToken
+        ajax(
+            "/api/branches/" + branchId + "/settings",
+            "POST",
+            JSON.stringify(jsonifyFormData(formData)),
+            setCSRFHeader
         );
     }
 
@@ -555,18 +507,16 @@ $("form_default_start").onsubmit
 };
 
 window.onscroll = function () {
-    if ((window.innerHeight + window.scrollY) < $("window-parent").offsetHeight - 1 || lastSubmittedFormData === null || isEmpty === true) {
+    if ((window.innerHeight + window.scrollY) < $("window-parent").offsetHeight - 1
+        || lastSubmittedFormData === null || isEmpty === true) {
         return;
     }
 
     const formData = copyFormData(lastSubmittedFormData);
     formData.append("pageIndex", pageIndex);
 
-    console.log(1);
-    getOrders(
-        formData,
+    getOrders(formData).then(
         (obj) => {
-
             const orders = obj["orders"];
 
             isEmpty = orders.length === 0;
@@ -574,7 +524,9 @@ window.onscroll = function () {
             createTable(resultList, orders);
             pageIndex++;
         }
-    );
+    ).catch((error) => {
+        displayError(error);
+    });
 };
 
 document.body.onload = () => {

@@ -1,8 +1,8 @@
 export const mmdd = date => {
-    const mm = (date.getMonth() + 1).toString();
-    const dd = date.getDate().toString();
+    const mm = fillZero(date.getMonth() + 1, 2);
+    const dd = fillZero(date.getDate(), 2);
 
-    return (mm[1] ? mm : '0' + mm[0]) + "-" + (dd[1] ? dd : '0' + dd[0]);
+    return [mm, dd].join('-');
 };
 
 export const HHMM = (date) => {
@@ -10,18 +10,30 @@ export const HHMM = (date) => {
         return "-"
     }
 
-    const HH = date.getHours().toString();
-    const MM = date.getMinutes().toString();
+    const HH = fillZero(date.getHours(), 2);
+    const MM = fillZero(date.getMinutes(), 2);
 
-    return (HH[1] ? HH : '0' + HH[0]) + ":" + (MM[1] ? MM : '0' + MM[0]);
+    return [HH, MM].join(':');
 };
 
-export const fillZero = (str, digit) => {
-    const zeroNum = digit - str.length;
+export const fillZero = (number, digit) => {
+    number = number.toString();
+    const zeroNum = digit - number.length;
+
     if (zeroNum < 0) {
-        return str;
+        return number;
     }
-    return '00000'.substr(str.length, zeroNum) + str;
+
+    return '0'.repeat(zeroNum) + number;
 };
 
-export const numberWithCommas = (str) => str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+export const numberWithCommas = (str) =>
+    str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+export const YYYYmmdd = (date) => {
+    const mm = fillZero(date.getMonth() + 1, 2);
+    const dd = fillZero(date.getDate(), 2);
+    const YYYY = fillZero(date.getFullYear(), 4);
+
+    return [YYYY, mm, dd].join('-');
+};
