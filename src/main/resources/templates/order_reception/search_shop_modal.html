@@ -4,26 +4,24 @@
         <!-- 헤더 -->
         <header class="modal-header">
             <div class="title">상점 검색</div>
-            <button class="close-button-black" id="close-button"></button>
+            <button class="close-button-black" id="shop-close-button"></button>
         </header>
         <!-- 검색 -->
         <section class="shop-search-section">
+            <form id="form-shop-search" hidden="hidden"/>
             <div class="search-box">
-                <input type="text" placeholder="상점명 검색"/>
-                <button></button>
+                <input type="text" placeholder="상점명 검색" name="shopName" form="form-shop-search"/>
+                <button form="form-shop-search" type="submit"></button>
             </div>
         </section>
         <!-- 결과 리스트 -->
-        <section class="result-section">
-            <label class="radio-items"><input type="radio" name="options" checked="checked"/><span
-                    class="check-marker"></span>롯데리아
-                부산남구점</label>
-            <label class="radio-items"><input type="radio" name="options"/><span class="check-marker"></span>롯데리아
-                부산남구점</label>
+        <form hidden="hidden" id="form-result-shop"/>
+        <input type="hidden" id="result-shop-name" name="shopName" form="form-result-shop"/>
+        <section class="result-section" id="shop-result-section">
         </section>
         <!-- 확인 버튼 영역 -->
         <section class="submit-section">
-            <button class="round-rect-fill-orange">확인</button>
+            <button class="round-rect-fill-orange" form="form-result-shop" type="submit">확인</button>
         </section>
     </div>
 </div>

@@ -1,14 +1,13 @@
 @import "common";
 
-#modal {
-  position: fixed;
-  visibility: hidden;
-}
-
 .menu-modal-background {
   $modal_width: 680px;
   $modal_height: 545px;
   @include bg-modal($modal_width, 112px, 112px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
 
   /* TODO 컨테이너 관련 css */
   .modal-container {
@@ -62,17 +61,21 @@
     .right-container {
       width: 320px;
       height: 100%;
+
       .table-title {
         @include custom-font(14px, $color_orange, bold);
       }
+
       .table-container {
         td, th {
           &:nth-child(1) {
             width: 15%;
           }
+
           &:nth-child(2) {
             width: 30%;
           }
+
           &:nth-child(3) {
             width: 25%;
           }
@@ -129,33 +132,42 @@
       text-align: center;
       border-collapse: collapse;
       width: 100%;
+
       thead {
         background-color: $color_gray_table;
         color: $color_placeholder;
         font-size: 12px;
+
         th, td {
           height: 24px;
         }
       }
+
       tbody {
         color: #1f1f1f;
+
         tr {
           @include underline;
         }
+
         th, td {
           height: 32px;
         }
       }
+
       th, td {
         height: 32px;
+
         &:nth-child(1) {
           width: 40%;
         }
+
         &:nth-child(2) {
           width: 30%;
         }
       }
     }
+
     .scroll-container {
       @include scroll-view;
       height: calc(100% - 24px);
@@ -169,6 +181,7 @@
     background-size: 19px;
     border: none;
   }
+
   .minus-enable {
     width: 19px;
     height: 19px;
@@ -176,6 +189,7 @@
     background-size: 19px;
     border: none;
   }
+
   .minus-disable {
     width: 19px;
     height: 19px;

@@ -1,14 +1,13 @@
 @import "common";
 
-#modal {
-  position: fixed;
-  display: none;
-}
-
 .address-modal {
   $modal_width: 960px;
   $modal_height: 610px;
   @include bg-modal($modal_width, 30px, 30px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
 
   .modal-container {
     @include modal-attribute($modal_width, $modal_height);
@@ -27,6 +26,7 @@
         width: 100%;
         text-align: center;
       }
+
       .close-button-white {
         width: 11px;
         height: 11px;
@@ -104,9 +104,11 @@
 
       > thead {
         @include custom-font(12px, #707070, normal);
+
         tr {
           height: 28px;
           background-color: #e3e3e3;
+
           td, th {
             text-align: center;
           }
@@ -115,6 +117,7 @@
 
       > tbody {
         @include custom-font(14px, #323232, normal);
+
         tr {
           @include underline;
           height: 48px;
@@ -126,14 +129,17 @@
           width: 10%;
           text-align: center;
         }
+
         &:nth-child(2) {
           width: 20%;
           text-align: center;
         }
+
         &:nth-child(3) {
           width: 35%;
           padding-left: 10px;
         }
+
         &:nth-child(4) {
           padding-left: 10px;
         }
@@ -156,9 +162,11 @@
       border: none;
       border-bottom: 1px solid #434343;
       background-color: #1f1f1f;
+
       &:hover {
         background-color: $color_orange;
       }
+
       &:nth-child(15) {
         border-bottom: 0;
       }
@@ -218,6 +226,7 @@
       height: 40px;
       padding-left: 13px;
       margin-right: 7.5px;
+
       &::placeholder {
         color: $color-placeholder;
       }
