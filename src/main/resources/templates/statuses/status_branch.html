@@ -8,6 +8,7 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Please</title>
     <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/mileage_modal.css"/>
     <link rel="stylesheet" type="text/css" href="/css/home.css"/>
     <link rel="stylesheet" type="text/css" href="/css/delivery_details.css"/>
     <link rel="stylesheet" type="text/css" href="/codebase/fonts/font_roboto/roboto.css"/>
@@ -121,7 +122,7 @@
                             <div class="inline">
                                 <input type="text" id="cost_percent" form="form_additional_cost"
                                        name="extraChargePercent"/>
-                                <label for="cost_percent">원</label>
+                                <label for="cost_percent">%</label>
                             </div>
                         </td>
                         <th><input type="submit" class="btn-big" value="적용" form="form_additional_cost"/>
