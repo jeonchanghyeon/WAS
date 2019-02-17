@@ -1,26 +1,151 @@
 @charset "UTF-8";
+/* TODO 사용자 정의 변수 */
+/* 컬러 */
+/* 이미지 */
+/* TODO mixin 정의 */
+/* 스크롤 뷰 */
+/* 커스톰 폰트 */
+/* 모달 투명 배경 */
+/* 모달 컨테이너 */
+/* 분할선 */
+/* 버튼 기본 모양 정의 */
+/* TODO Component 정의 */
+.rect-fill-orange {
+  background-color: #ff9037;
+  border: 1px solid #ff9037;
+  border-radius: 0;
+  padding: 0;
+}
+
+.rect-empty-orange {
+  background-color: #ffffff;
+  border: 1px solid #ff9037;
+  border-radius: 0;
+  padding: 0;
+}
+
+.rect-empty-white {
+  background-color: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 0;
+  padding: 0;
+}
+
+.round-rect-fill-orange {
+  background-color: #ff9037;
+  border: 1px solid #ff9037;
+  border-radius: 21px;
+  padding: 0;
+}
+
+.round-rect-empty-orange {
+  background-color: #ffffff;
+  border: 1px solid #ff9037;
+  border-radius: 21px;
+  padding: 0;
+}
+
+.round-rect-empty-white {
+  background-color: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 21px;
+  padding: 0;
+}
+
+.rect-white {
+  background-color: #ffffff;
+  border: 1px solid #4a4a4a;
+  border-radius: 0;
+  padding: 0;
+}
+
+.rect-black {
+  background-color: #4a4a4a;
+  border: 1px solid #4a4a4a;
+  border-radius: 0;
+  padding: 0;
+}
+
+.edit-box {
+  background-color: #f1f1f1;
+  border: 1px solid #f1f1f1;
+  border-radius: 0;
+  padding: 0;
+}
+
+.search-box {
+  background-color: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 0;
+  padding: 0;
+  display: flex;
+}
+.search-box > input {
+  height: 100%;
+  border: none;
+  padding-left: 16px;
+}
+.search-box > input::placeholder {
+  color: #979797;
+}
+.search-box > button {
+  height: 100%;
+  background: #ffffff url("/img/search_orange.png") no-repeat center center;
+  border: none;
+}
+
+.close-button-white {
+  background: rgba(0, 0, 0, 0) url("/img/close_white.png") no-repeat center center;
+  background-size: 100%;
+  border: none;
+  padding: 0;
+}
+
+.close-button-black {
+  background: rgba(0, 0, 0, 0) url("/img/close_black.png") no-repeat center center;
+  background-size: 100%;
+  border: none;
+  padding: 0;
+}
+
+.radio-items:hover input[type=radio] ~ .check-marker {
+  /* 라디오 버튼 덮힐 경우 */
+}
+.radio-items input[type=radio] {
+  margin: 0;
+  -webkit-appearance: none;
+  /* 라디오 버튼 없애기 for chrome*/
+  -moz-appearance: none;
+  /* 라디오 버튼 없애기 for firefox*/
+  appearance: none;
+  /* 라디오 버튼 없애기 공통*/
+  display: none;
+  /* 라디오 버튼 없애기 for IE10, 11*/
+}
+.radio-items input[type=radio]:checked ~ .check-marker {
+  /* 라디오 버튼 선택된 경우 */
+}
+.radio-items .check-marker {
+  /* 라디오 버튼 기본 모양 */
+}
+
 #modal {
   position: fixed;
   visibility: hidden;
 }
 
-/* TODO mixin 정의 */
-/* 스크롤 뷰 */
-/* 커스톰 폰트 */
-/* 컨테이너 분할선 */
-/* 모달 투명 배경 */
 /* 지불방법 선택 버튼 */
 /* 상태 선택 버튼 */
 /* 결제 방법 선택 버튼 */
 /* TODO 컨테이너 관련 css */
-.modal-background {
+.order-detail-modal-background {
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
-  padding: 30px calc(50% - 550px);
+  padding: 30px calc(50% - 550px) 30px;
+  /* TODO 요소 관련 css */
 }
-
-.detail-modal-container {
+.order-detail-modal-background .order-detail-modal-container {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -35,9 +160,8 @@
   background-color: #ffffff;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
 }
-
-.detail-header {
-  border-bottom: 1px solid #a9a9a9;
+.order-detail-modal-background .detail-header {
+  border-bottom: 1px solid #d0d0d0;
   width: calc(100% - 58px);
   height: 70px;
   padding-left: 29px;
@@ -46,66 +170,63 @@
   justify-content: space-between;
   align-items: center;
 }
-.detail-header .title_container {
+.order-detail-modal-background .detail-header .title-container {
   height: 100%;
   display: flex;
   align-items: center;
 }
-
-.body {
+.order-detail-modal-background .detail-header .close-button-black {
+  width: 20px;
+  height: 20px;
+}
+.order-detail-modal-background .body {
   width: 100%;
   height: calc(100% - 70px);
   display: flex;
   overflow: hidden;
 }
-
-.aside {
+.order-detail-modal-background .aside {
   min-width: 194px;
   height: calc(100% - 34px);
   padding: 17px 13px;
   background-color: #4a4a4a;
 }
-
-.main-section {
+.order-detail-modal-background .main-section {
   width: calc(100% - 220px);
   height: 100%;
   overflow: hidden;
 }
-
-.status-container {
-  border-bottom: 1px solid #a9a9a9;
+.order-detail-modal-background .status-container {
+  border-bottom: 1px solid #d0d0d0;
   height: 69px;
   padding-left: 26px;
   display: flex;
   align-items: center;
 }
-
-.inform-container {
+.order-detail-modal-background .inform-container {
   width: 100%;
   margin-bottom: 20px;
 }
-
-.delivery-pay-container {
+.order-detail-modal-background .delivery-pay-container {
   width: 100%;
   margin-bottom: 20px;
 }
-.delivery-pay-container .delivery-pay-buttons {
+.order-detail-modal-background .delivery-pay-container .delivery-pay-buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
   padding-left: 5px;
   padding-right: 5px;
 }
-
-.delivery-status-container {
+.order-detail-modal-background .delivery-status-container {
   width: calc(100% + 26px);
   margin-left: -13px;
   margin-right: -13px;
 }
-.delivery-status-container .aside-subsection-title {
+.order-detail-modal-background .delivery-status-container .aside-subsection-title {
   margin-left: 13px;
 }
-.delivery-status-container .aside-status-container {
+.order-detail-modal-background .delivery-status-container .aside-status-container {
   margin-top: 8px;
   width: 100%;
   height: 53px;
@@ -115,141 +236,131 @@
   background-color: #424242;
   padding-left: 0;
 }
-.delivery-status-container .aside-status-container .current-status-container {
+.order-detail-modal-background .delivery-status-container .aside-status-container .current-status-container {
   width: calc(100% / 4);
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.delivery-status-container .aside-status-container .current-status-container::before {
+.order-detail-modal-background .delivery-status-container .aside-status-container .current-status-container::before {
   content: ">";
   padding-right: 10px;
   color: #6d6d6d;
 }
-.delivery-status-container .aside-status-container .current-status-container:first-child {
+.order-detail-modal-background .delivery-status-container .aside-status-container .current-status-container:first-child {
   width: auto;
   margin-left: 15px;
   margin-right: 5px;
 }
-.delivery-status-container .aside-status-container .current-status-container:first-child::before {
+.order-detail-modal-background .delivery-status-container .aside-status-container .current-status-container:first-child::before {
   content: none;
 }
-.delivery-status-container .aside-status-container .current-status-container:last-child::after {
+.order-detail-modal-background .delivery-status-container .aside-status-container .current-status-container:last-child::after {
   content: "";
   padding-right: 10px;
 }
-
-.delivery-info-container {
-  border-bottom: 1px solid #a9a9a9;
+.order-detail-modal-background .delivery-info-container {
+  border-bottom: 1px solid #d0d0d0;
   height: 181px;
   display: flex;
   flex-direction: column;
   padding: 14px 25px;
 }
-
-.delivery-contents-container {
+.order-detail-modal-background .delivery-contents-container {
   display: flex;
   width: 100%;
   margin-bottom: 11px;
 }
-.delivery-contents-container:nth-child(2) {
+.order-detail-modal-background .delivery-contents-container:nth-child(2) {
   height: 180px;
 }
-.delivery-contents-container:last-child {
+.order-detail-modal-background .delivery-contents-container:last-child {
   margin-bottom: 0;
 }
-.delivery-contents-container .contents-sub-title {
+.order-detail-modal-background .delivery-contents-container .contents-sub-title {
   width: 60px;
 }
-
-.others-info-container {
-  border-bottom: 1px solid #a9a9a9;
+.order-detail-modal-background .others-info-container {
+  border-bottom: 1px solid #d0d0d0;
   height: 81px;
   display: flex;
   padding: 14px 25px;
 }
-.others-info-container .left-container {
+.order-detail-modal-background .others-info-container .left-container {
   width: 200px;
   margin-right: 150px;
   display: flex;
   flex-direction: column;
 }
-.others-info-container .right-container {
+.order-detail-modal-background .others-info-container .right-container {
   display: flex;
   flex-direction: column;
 }
-
-.left-others-contents {
+.order-detail-modal-background .left-others-contents {
   width: 100%;
   display: flex;
   margin-bottom: 11px;
 }
-.left-others-contents:last-child {
+.order-detail-modal-background .left-others-contents:last-child {
   margin-bottom: 0;
 }
-.left-others-contents .contents-sub-title {
+.order-detail-modal-background .left-others-contents .contents-sub-title {
   flex: 1;
 }
-
-.right-others-contents {
+.order-detail-modal-background .right-others-contents {
   width: 100%;
   display: flex;
   align-items: center;
   margin-bottom: 11px;
 }
-.right-others-contents:last-child {
+.order-detail-modal-background .right-others-contents:last-child {
   margin-bottom: 0;
 }
-.right-others-contents .contents-sub-title {
+.order-detail-modal-background .right-others-contents .contents-sub-title {
   width: 66px;
 }
-
-.list-container {
+.order-detail-modal-background .list-container {
   display: flex;
   justify-content: space-between;
   padding: 14px 25px;
 }
-
-.product-container .table-container {
+.order-detail-modal-background .product-container .table-container {
   min-width: 306px;
 }
-.product-container .contents-sub-title {
+.order-detail-modal-background .product-container .contents-sub-title {
   margin-bottom: 10px;
 }
-.product-container th:nth-child(1), .product-container td:nth-child(1) {
+.order-detail-modal-background .product-container th:nth-child(1), .order-detail-modal-background .product-container td:nth-child(1) {
   width: 15%;
 }
-.product-container th:nth-child(2), .product-container td:nth-child(2) {
+.order-detail-modal-background .product-container th:nth-child(2), .order-detail-modal-background .product-container td:nth-child(2) {
   width: 40%;
 }
-.product-container th:nth-child(3), .product-container td:nth-child(3) {
+.order-detail-modal-background .product-container th:nth-child(3), .order-detail-modal-background .product-container td:nth-child(3) {
   width: 20%;
 }
-
-.order-container .contents-sub-title {
+.order-detail-modal-background .order-container .contents-sub-title {
   margin-bottom: 10px;
 }
-.order-container .table-container {
+.order-detail-modal-background .order-container .table-container {
   min-width: 498px;
 }
-.order-container td:nth-child(1), .order-container th:nth-child(1) {
+.order-detail-modal-background .order-container td:nth-child(1), .order-detail-modal-background .order-container th:nth-child(1) {
   width: 10%;
 }
-.order-container td:nth-child(2), .order-container th:nth-child(2) {
+.order-detail-modal-background .order-container td:nth-child(2), .order-detail-modal-background .order-container th:nth-child(2) {
   width: 10%;
 }
-.order-container td:nth-child(3), .order-container th:nth-child(3) {
+.order-detail-modal-background .order-container td:nth-child(3), .order-detail-modal-background .order-container th:nth-child(3) {
   width: 30%;
 }
-.order-container td:nth-child(4), .order-container th:nth-child(4) {
+.order-detail-modal-background .order-container td:nth-child(4), .order-detail-modal-background .order-container th:nth-child(4) {
   width: 20%;
 }
-.order-container td:nth-child(5), .order-container th:nth-child(5) {
+.order-detail-modal-background .order-container td:nth-child(5), .order-detail-modal-background .order-container th:nth-child(5) {
   width: 15%;
 }
-
-/* TODO 요소 관련 css */
-.title {
+.order-detail-modal-background .title {
   font-family: NotoSansCJKkr;
   font-weight: 300;
   font-style: normal;
@@ -260,8 +371,7 @@
   letter-spacing: normal;
   margin-right: 20px;
 }
-
-.belong {
+.order-detail-modal-background .belong {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -271,23 +381,15 @@
   line-height: normal;
   letter-spacing: normal;
 }
-.belong:nth-child(2)::before, .belong:first-child::before {
+.order-detail-modal-background .belong:nth-child(2)::before, .order-detail-modal-background .belong:first-child::before {
   content: none;
 }
-.belong::before {
+.order-detail-modal-background .belong::before {
   padding-left: 5px;
   padding-right: 5px;
   content: "|";
 }
-
-.btn-close {
-  background-color: #FFFFFF;
-  text-align: center;
-  font-size: 30px;
-  border: none;
-}
-
-.aside-subsection-title {
+.order-detail-modal-background .aside-subsection-title {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -297,12 +399,11 @@
   line-height: normal;
   letter-spacing: normal;
 }
-
-.inform-table {
+.order-detail-modal-background .inform-table {
   width: 100%;
   margin-top: 5px;
 }
-.inform-table th {
+.order-detail-modal-background .inform-table th {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -316,7 +417,7 @@
   text-align: left;
   padding: 5px 0 5px 10px;
 }
-.inform-table td {
+.order-detail-modal-background .inform-table td {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -329,8 +430,7 @@
   text-align: right;
   padding: 5px 10px 5px 0;
 }
-
-.aside-btn-unselected {
+.order-detail-modal-background .aside-btn-unselected {
   width: 90px;
   height: 36px;
   background: rgba(0, 0, 0, 0);
@@ -345,8 +445,7 @@
   letter-spacing: normal;
   border: 1px solid #9b9b9b;
 }
-
-.aside-btn-selected {
+.order-detail-modal-background .aside-btn-selected {
   width: 90px;
   height: 36px;
   background: rgba(0, 0, 0, 0);
@@ -361,8 +460,7 @@
   letter-spacing: normal;
   border: 1px solid #ff9037;
 }
-
-.fill-button {
+.order-detail-modal-background .fill-button {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -382,8 +480,7 @@
   background-color: #ff9037;
   border: 1px solid #ff9037;
 }
-
-.border-button {
+.order-detail-modal-background .border-button {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -403,8 +500,7 @@
   border: 1px solid #ff9037;
   color: #ff9037;
 }
-
-.default-button {
+.order-detail-modal-background .default-button {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -424,8 +520,7 @@
   border: 1px solid #979797;
   color: #979797;
 }
-
-.contents-sub-title {
+.order-detail-modal-background .contents-sub-title {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -435,8 +530,7 @@
   line-height: normal;
   letter-spacing: normal;
 }
-
-.contents {
+.order-detail-modal-background .contents {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -446,19 +540,17 @@
   line-height: normal;
   letter-spacing: normal;
 }
-.contents:not(:nth-child(2))::before {
+.order-detail-modal-background .contents:not(:nth-child(2))::before {
   content: "";
   margin-right: 20px;
 }
-
-.call_icon {
+.order-detail-modal-background .call_icon {
   width: 11px;
   height: 11px;
   text-align: center;
   margin-right: 5px;
 }
-
-.current-status-default {
+.order-detail-modal-background .current-status-default {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -471,11 +563,10 @@
   text-align: center;
   flex-direction: column;
 }
-.current-status-default span:first-child {
+.order-detail-modal-background .current-status-default span:first-child {
   margin-bottom: 5px;
 }
-
-.current-status-color {
+.order-detail-modal-background .current-status-color {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -488,14 +579,13 @@
   text-align: center;
   flex-direction: column;
 }
-.current-status-color span:first-child {
+.order-detail-modal-background .current-status-color span:first-child {
   margin-bottom: 5px;
 }
-
-.contents-table {
+.order-detail-modal-background .contents-table {
   margin-top: -5px;
 }
-.contents-table th, .contents-table td {
+.order-detail-modal-background .contents-table th, .order-detail-modal-background .contents-table td {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -507,18 +597,17 @@
   padding-top: 5px;
   padding-bottom: 5px;
 }
-.contents-table th {
+.order-detail-modal-background .contents-table th {
   text-align: left;
   font-size: 12px;
   color: #9b9b9b;
   padding-right: 10px;
 }
-.contents-table td {
+.order-detail-modal-background .contents-table td {
   font-size: 13px;
   color: #4a4a4a;
 }
-
-.pay-type-default-button {
+.order-detail-modal-background .pay-type-default-button {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -533,8 +622,7 @@
   margin-right: 10px;
   border: 1px solid #999999;
 }
-
-.pay-type-color-button {
+.order-detail-modal-background .pay-type-color-button {
   font-family: NotoSansCJKkr;
   font-weight: bold;
   font-style: normal;
@@ -549,20 +637,19 @@
   margin-right: 10px;
   border: 1px solid #ff9037;
 }
-
-.table-container {
+.order-detail-modal-background .table-container {
   height: 240px;
   border: 1px solid #aaaaaa;
 }
-.table-container table {
+.order-detail-modal-background .table-container table {
   min-width: 100%;
   border-collapse: collapse;
 }
-.table-container table td, .table-container table th {
+.order-detail-modal-background .table-container table td, .order-detail-modal-background .table-container table th {
   height: 24px;
   text-align: center;
 }
-.table-container table thead {
+.order-detail-modal-background .table-container table thead {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -573,7 +660,7 @@
   letter-spacing: normal;
   background-color: #eaeaea;
 }
-.table-container table tbody {
+.order-detail-modal-background .table-container table tbody {
   font-family: NotoSansCJKkr;
   font-weight: normal;
   font-style: normal;
@@ -583,29 +670,28 @@
   line-height: normal;
   letter-spacing: normal;
 }
-.table-container table tbody tr {
+.order-detail-modal-background .table-container table tbody tr {
   border-bottom: 0.5px solid #aaaaaa;
 }
-.table-container table tbody tr:last-child {
+.order-detail-modal-background .table-container table tbody tr:last-child {
   border-bottom: 0;
 }
-.table-container .scroll-table {
+.order-detail-modal-background .table-container .scroll-table {
   height: 216px;
   overflow: auto;
   overflow-x: hidden;
   overflow-y: scroll;
-  /*스크롤 감추기*/
   /*크롬전용 커스톰 스크롤*/
 }
-.table-container .scroll-table::-webkit-scrollbar {
+.order-detail-modal-background .table-container .scroll-table::-webkit-scrollbar {
   width: 3px;
   background: none;
 }
-.table-container .scroll-table::-webkit-scrollbar-thumb {
-  background: #302c2c;
+.order-detail-modal-background .table-container .scroll-table::-webkit-scrollbar-thumb {
+  background: #aeaeae;
   opacity: 0.4;
 }
-.table-container .scroll-table::-webkit-scrollbar-track {
+.order-detail-modal-background .table-container .scroll-table::-webkit-scrollbar-track {
   background: #f8f7fb;
 }
 

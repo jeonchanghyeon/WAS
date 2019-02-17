@@ -11,15 +11,19 @@ import org.springframework.stereotype.Repository
 class AddressDAO {
     @Autowired
     @Qualifier("jdbcMain")
-    private lateinit var template: JdbcTemplate
+    private lateinit var mainTemplate: JdbcTemplate
+    @Autowired
+    @Qualifier("jdbcAddr")
+    private lateinit var addrTemplate: JdbcTemplate
+
 
     @Throws(SqlAbnormalResultException::class)
     fun getAddressList(pageIndex: Int?, address: String, category: Int): String {
-        return template.queryForJSONObject("CALL getAddressList(?, ?, ?, ?)", pageIndex, "", address, category)
+        return addrTemplate.queryForJSONObject("CALL getAddressList(?, ?, ?, ?)", pageIndex, "", address, category)
     }
 
     @Throws(SqlAbnormalResultException::class)
     fun getEnableDong(authKey: String, info: String): String {
-        return template.queryForJSONObject("CALL getEnableDongByConsonant(?, ?)", authKey, info)
+        return mainTemplate.queryForJSONObject("CALL getEnableDongByConsonant(?, ?)", authKey, info)
     }
 }

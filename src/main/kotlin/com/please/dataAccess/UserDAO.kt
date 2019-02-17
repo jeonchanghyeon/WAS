@@ -23,4 +23,10 @@ class UserDAO {
     fun setInfo(authKey: String, userInfo: String): String {
         return template.queryForJSONObject("CALL setUser(?, ?)", authKey, userInfo)
     }
+
+    //마일리지 거래를 위한 송신처와 수신처의 필요 정보
+    @Throws(SqlAbnormalResultException::class)
+    fun getTransactionInformation(authKey: String, data: String): String {
+        return template.queryForJSONObject("CALL getTransactionInformation(?,?)", authKey, data)
+    }
 }

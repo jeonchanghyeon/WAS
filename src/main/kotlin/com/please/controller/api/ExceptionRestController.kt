@@ -1,6 +1,7 @@
 package com.please.controller.api
 
 import com.please.exception.GroupNotFoundException
+import com.please.exception.MissingBalanceException
 import com.please.exception.SessionExpirationException
 import com.please.exception.SqlAbnormalResultException
 import com.please.persistence.getExceptionLog
@@ -52,6 +53,13 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
     fun emptyResultError(e: QueryTimeoutException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
         log.error(getExceptionLog(e, req))
         return ResponseEntity(ErrorInfo(600), HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    //포인트 잔액이 부족할 경우
+    @ExceptionHandler(MissingBalanceException::class)
+    fun abnormalResultError(e: MissingBalanceException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
+        log.error(getExceptionLog(e, req))
+        return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
     }
 
     //프로시저 수행 중 프로시저에서 예상가능한 에러가 발생한 경우(디비 참조)

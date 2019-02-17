@@ -30,6 +30,12 @@ class DbConfig {
         return DataSourceBuilder.create().build()
     }
 
+    @Bean(name = ["dsAddr"])
+    @ConfigurationProperties(prefix = "spring.addrDb.datasource")
+    fun addressDataSource(): DataSource {
+        return DataSourceBuilder.create().build()
+    }
+
     @Bean
     fun transactionManager(): PlatformTransactionManager {
         val tm = DataSourceTransactionManager()
@@ -47,5 +53,11 @@ class DbConfig {
     @Autowired
     fun mainJdbcTemplate(@Qualifier("dsMain") dsMain: DataSource): JdbcTemplate {
         return JdbcTemplate(dsMain)
+    }
+
+    @Bean(name = ["jdbcAddr"])
+    @Autowired
+    fun addrJdbcTemplate(@Qualifier("dsAddr") dsAddr: DataSource): JdbcTemplate {
+        return JdbcTemplate(dsAddr)
     }
 }
