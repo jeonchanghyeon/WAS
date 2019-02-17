@@ -1,246 +1,130 @@
-import {ajax} from './ajax.js'
-import {getMeta} from "./meta.js";
+import {$, createRow} from "./element.js";
+import {HHMM} from "./format.js";
+import {getJSON} from "./ajax.js";
 
-const windowModal = document.getElementById("modal");
-const textDistance = document.getElementById("distance");
-const textBranchName = document.getElementById("branchName");
-const textDeliveryCost = document.getElementById("deliveryCost");
-const btnAsideCash = document.getElementById("aside_cash");
-const btnAsidePoint = document.getElementById("aside_point");
-const imgStatusBar = document.getElementById("statusBar");
-const textShopName = document.getElementById("shopName");
-const textStartingTel = document.getElementById("startingTel");
-const textStartingRoad = document.getElementById("startingRoad");
-const textRiderName = document.getElementById("riderName");
-const textRiderTel = document.getElementById("riderTel");
-const textCustomerTel = document.getElementById("customerTel");
-const textRoad = document.getElementById("road");
-const textMemo = document.getElementById("memo");
-const tableMenu = document.getElementById("menu_table");
-const textMenuPrice = document.getElementById("menuPrice");
-const textAdditionalMenuPrice = document.getElementById("additionalMenuPrice");
-const textTotalPrice = document.getElementById("totalPrice");
-const textOrderAutoCancelTime = document.getElementById("orderAutoCancelTime");
-const textCookTime = document.getElementById("cookTime");
-const btnCash = document.getElementById("cash");
-const btnCard = document.getElementById("card");
-const btnPrepay = document.getElementById("prepay");
-const textExtraCharge = document.getElementById("extraCharge");
-const textAddCost = document.getElementById("addCost");
-const textSum = document.getElementById("sum");
-const tableLog = document.getElementById("log-table");
+export const loadDetail = (id) => {
+    getJSON("/api/orders/" + id).then(
+        (obj) => {
+            const order = obj["order"];
+            const riderId = order["riderId"];
+            const orderStatusId = order["orderStatusId"];
 
-export const loadDetail = (id, riderId) => {
-    try {
+            let sum = order["additionalCost"]
+                .map((data) => data["cost"])
+                .reduce((sum, number) => sum + number, 0);
 
-        ajax(
-            "/api/orders/" + id,
-            "GET",
-            (obj) => {
-                const order = obj["order"];
+            const addCost = order["additionalCost"]
+                .find((data) => data["label"].toString() === "추가대행료")
+                ["cost"];
 
-                riderId = order["riderId"];
+            const extraCharge = sum - addCost;
 
-                textDistance.innerText = order["distance"] + "km";
-                textBranchName.innerText = order["branchName"];
+            sum += order["deliveryCost"];
 
-                textDeliveryCost.innerText = order["deliveryCost"] + "원";
+            $("distance").innerText = order["distance"] + "km";
+            $("branchName").innerText = order["branchName"];
 
-                const additionalCost = order["additionalCost"];
+            $("deliveryCost").innerText = order["deliveryCost"] + "원";
+            $("extraCharge").innerText = extraCharge + "원";
+            $("addCost").innerText = addCost + "원";
+            $("sum").innerText = sum + "원";
 
-                let addCost = 0;
-                let sum = 0;
+            const dcpayment = [$("aside_cash"), $("aside_point")];
 
-                for (let i = 0; i < additionalCost.length; i++) {
-                    if (additionalCost[i]["label"] == "추가대행료") {
-                        addCost = additionalCost[i]["cost"];
-                    }
-                    sum += additionalCost[i]["cost"];
+            for (let i = 0; i < dcpayment.length; i++) {
+                if (order["deliveryCostPaymentType"] - 1 === i) {
+                    dcpayment[i].className = "aside-btn-selected";
+                } else {
+                    dcpayment[i].className = "aside-btn-unselected";
                 }
-                const extraCharge = sum - addCost;
-
-                sum += order["deliveryCost"];
-
-                textExtraCharge.innerText = extraCharge + "원";
-                textAddCost.innerText = addCost + "원";
-                textSum.innerText = sum + "원";
-
-                const deliveryCostPaymentType = order["deliveryCostPaymentType"];
-
-                switch (deliveryCostPaymentType) {
-                    case 1:
-                        btnAsideCash.className = "aside-btn-selected";
-                        btnAsidePoint.className = "aside-btn-unselected";
-                        break;
-                    case 2:
-                        btnAsideCash.className = "aside-btn-unselected";
-                        btnAsidePoint.className = "aside-btn-selected";
-                        break;
-                }
-
-                const orderStatusId = order["orderStatusId"];
-
-                switch (orderStatusId) {
-                    case 1:
-                        imgStatusBar.src = "/img/status_bar4.png";
-                        break;
-                    case 2:
-                        imgStatusBar.src = "/img/status_bar3.png";
-                        break;
-                    case 3:
-                        imgStatusBar.src = "/img/status_bar2.png";
-                        break;
-                    case 4:
-                        imgStatusBar.src = "/img/status_bar1.png";
-                        break;
-                }
-
-                textShopName.innerText = order["shopName"];
-                textStartingTel.innerText = order["startingTel"];
-                textStartingRoad.innerText = order["startingRoad"];
-
-                textRiderName.innerText = order["riderName"];
-                textRiderTel.innerText = order["riderTel"];
-
-                textCustomerTel.innerText = order["customerTel"];
-                textRoad.innerText = order["road"];
-                textMemo.innerText = order["memo"];
-
-                const menu = order["menu"];
-
-                tableMenu.innerHTML = "";
-
-                for (let i = 0; i < menu.length; i++) {
-                    const row = document.createElement("tr");
-                    const temp = ["", "label", "", "price", "count", "price"];
-
-                    for (let j = 0; j < temp.length; j++) {
-                        const col = document.createElement("td");
-                        if (j === 0) {
-                            col.innerHTML = i + 1;
-                        } else {
-                            col.innerHTML = menu[i][temp[j]];
-                        }
-                        row.appendChild(col);
-                    }
-                    tableMenu.appendChild(row);
-                }
-
-                textMenuPrice.innerText = order["menuPrice"] + "원";
-                textAdditionalMenuPrice.innerText = order["additionalMenuPrice"] + "원";
-                textTotalPrice.innerText = order["additionalMenuPrice"] + order["menuPrice"] + "원";
-
-                textOrderAutoCancelTime.innerText = order["orderAutoCancelTime"] + "분";
-                textCookTime.innerText = order["cookTime"] + "분";
-
-                const paymentType = order["paymentType"];
-
-                switch (paymentType) {
-                    case 1:
-                        btnCash.className = "btn-selected";
-                        btnCard.className = "btn-unselected";
-                        btnPrepay.className = "btn-unselected";
-                        break;
-                    case 2:
-                        btnCash.className = "btn-unselected";
-                        btnCard.className = "btn-selected";
-                        btnPrepay.className = "btn-unselected";
-                        break;
-                    case 3:
-                        btnCash.className = "btn-unselected";
-                        btnPrepay.className = "btn-selected";
-                        btnCard.className = "btn-unselected";
-                        break;
-                }
-
-                for (let i = 0; i < buttons.length; i++) {
-                    buttons[i].onclick = function () {
-                        const url = "/api/orders/" + id;
-
-                        const obj = {
-                            "id": id,
-                            "orderStatusId": this.value,
-                            "riderId": riderId
-                        };
-
-                        const content = JSON.stringify(obj);
-
-                        ajax(
-                            url,
-                            "PATCH",
-                            () => {
-
-                            },
-                            content,
-                            csrfHeader,
-                            csrfToken
-                        )
-                    };
-
-                    buttons[i].onsubmit = () => false;
-                }
-
             }
-        );
 
-        ajax(
-            "/api/orders/" + id + "/logs",
-            "GET",
-            (obj) => {
-                const logs = obj["logs"];
+            $("shopName").innerText = order["shopName"];
+            $("customerTel").innerText = order["customerTel"];
+            $("memo").innerText = order["memo"];
+            // $("road").innerText = order["road"];
 
-                tableLog.innerHTML = "";
+            $("riderName").innerText = order["riderName"];
+            // $("riderTel").innerText = order["riderTel"];
 
-                const arr = [
-                    "createDate",
-                    "logType",
-                    "name",
-                    "oldValue",
-                    "newValue"];
+            $("menuPrice").innerText = order["menuPrice"] + "원";
+            $("additionalMenuPrice").innerText = order["additionalMenuPrice"] + "원";
+            $("totalPrice").innerText = order["additionalMenuPrice"] + order["menuPrice"] + "원";
+            $("cookTime").innerText = order["cookTime"] + "분";
 
+            const btns = [$("card"), $("cash"), $("prepay")];
 
-                for (let i = 0; i < logs.length; i++) {
-                    const row = document.createElement("tr");
+            const paymentType = order["paymentType"];
 
-                    const col = document.createElement("td");
-                    col.innerText = (i + 1).toString();
-                    row.appendChild(col);
-
-                    for (let j = 0; j < arr.length; j++) {
-                        const col = document.createElement("td");
-                        col.innerText = logs[i][arr[j]];
-                        row.appendChild(col);
-                    }
-                    tableLog.appendChild(row);
+            for (let i = 0; i < btns.length; i++) {
+                if (i === paymentType - 1) {
+                    btns[i].className = "pay-type-color-button";
+                } else {
+                    btns[i].className = "pay-type-default-button";
                 }
-
-                windowModal.style.visibility = "visible";
             }
-        );
-    } catch (error) {
-        console.log(error.message);
-    }
+
+            const tableMenu = $("menu_table");
+            const menus = order["menu"];
+
+            tableMenu.innerHTML = "";
+
+            const keys = ["", "label", "count", "price"];
+
+            for (let menu of menus) {
+                const texts = keys.map((key) => menu[key]);
+                const row = createRow(texts);
+
+                tableMenu.appendChild(row);
+            }
+
+            $("modal").style.display = "inherit";
+        }
+    ).catch((e) => {
+        console.log(e);
+    });
+
+    getJSON("/api/orders/" + id + "/logs")
+        .then(
+        (obj) => {
+            const logs = obj["logs"];
+            const tableLog = $("log-table");
+
+            tableLog.innerHTML = "";
+
+            const keys = [
+                "id",
+                "createDate",
+                "logType",
+                "name",
+                "oldValue",
+                "newValue"];
+
+            for (let log of logs) {
+                const texts = keys.map((key) => {
+                    const value = log[key];
+                    if (key === "createDate") {
+                        return HHMM(new Date(value));
+                    } else {
+                        return value;
+                    }
+                });
+
+                const row = createRow(texts);
+
+                tableLog.appendChild(row);
+            }
+        }
+    ).catch((e) => {
+        console.log(e);
+    });
 };
 
-const ids = [
-    "orderStatusId1",
-    "orderStatusId2",
-    "orderStatusId3",
-    "orderStatusId4",
-    "orderStatusId5",
-    "orderStatusId6"
-];
+const buttons = [
+    "orderStatusId1", "orderStatusId2", "orderStatusId3",
+    "orderStatusId4", "orderStatusId5", "orderStatusId6"
+].map((data) => $(data));
 
-const buttons = [];
-
-for (let i = 0; i < ids.length; i++) {
-    buttons[i] = document.getElementById(ids[i]);
-}
-
-const btnClose = document.getElementById("btn_close");
-btnClose.onclick = () => {
-    windowModal.style.visibility = "hidden";
+$("btn_close").onclick = () => {
+    $("modal").style.display = "none";
 };
-
-const csrfToken = getMeta("_csrf");
-const csrfHeader = getMeta("_csrf_header");

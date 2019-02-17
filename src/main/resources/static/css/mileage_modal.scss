@@ -1,10 +1,5 @@
 @import "common";
 
-#modal {
-  position: fixed;
-  visibility: hidden;
-}
-
 /* 마일리지 모달, 송금대상 모달 공통 컴포넌트 */
 .mileage-modal-background, .transfer-modal-background {
   /* TODO 컨테이너 관련 css */
@@ -18,7 +13,7 @@
   .submit-section {
     flex: 1;
     min-height: 96px;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
   }
@@ -42,9 +37,11 @@
 
   .search-box {
     height: 40px - 2px;
+
     > input {
       width: calc(100% - 40px);
     }
+
     > button {
       min-width: 40px;
       background-size: 15px 15px;
@@ -57,6 +54,10 @@
   $modal_width: 360px;
   $modal_height: 640px;
   @include bg-modal($modal_width, 64px, 64px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
 
   /* TODO mixin 정의 */
   /* 라디오 버튼 선택 시 버튼 뷰 */
@@ -102,12 +103,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     > span {
       @include custom-font(14px, #9b9b9b, 500);
       display: block;
       font-family: AppleSDGothicNeo;
       margin-bottom: 4px;
     }
+
     > div {
       @include custom-font(24px, $color_orange, bold);
       font-family: Roboto;
@@ -124,7 +127,7 @@
   .withdraw-section, .transfer-section {
     width: 100%;
     height: calc(100% - 218px - 92px); //main-section과 submit-section의 높이 제외
-    display: flex;
+    display : none;
     flex-direction: column;
 
     .gray-container {
@@ -151,6 +154,7 @@
   .withdraw-section {
     .gray-container {
       flex-direction: column;
+
       > div:nth-child(1) {
         @include custom-font($color: #979797);
         margin-bottom: 9px;
@@ -170,12 +174,14 @@
       width: 206px - 2px;
       height: 36px - 2px;
       display: flex;
+
       .rect-empty-white {
         width: calc(100% - 74px);
         padding-left: 15px;
         text-align: left;
         border-right: none;
       }
+
       .rect-empty-orange {
         @include custom-font(14px, $color_orange, 500);
         line-height: 1.43;
@@ -188,6 +194,7 @@
   .transfer-section {
     .gray-container {
       flex-direction: column;
+
       > div:nth-child(1) {
         @include custom-font($color: #979797);
         margin-bottom: 9px;
@@ -269,6 +276,7 @@
     &::-ms-expand {
       display: none; /* 화살표 없애기 for IE10, 11*/
     }
+
     padding-left: 15px;
   }
 
@@ -286,6 +294,10 @@
   $modal_width: 340px;
   $modal_height: 545px;
   @include bg-modal($modal_width, 150px, 71px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
 
   /* TODO 컨테이너 관련 css */
   .modal-container {
@@ -305,6 +317,7 @@
       .title {
         @include custom-font(16px, $color_gray_font, bold);
       }
+
       .close-button-black {
         width: 14px;
         height: 14px;
@@ -348,11 +361,13 @@
       background: url($url_radio_hover) no-repeat;
       background-size: 20px;
     }
+
     /* 라디오 버튼 선택된 경우 */
     input[type="radio"]:checked ~ .check-marker {
       background: url($url_radio_on) no-repeat;
       background-size: 20px;
     }
+
     /* 라디오 버튼 선택X */
     .check-marker {
       width: 20px;

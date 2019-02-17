@@ -1,82 +1,60 @@
-import {ajax, withGetMethod} from './ajax.js'
-import {$} from "./element.js"
+import {getJSON} from './ajax.js'
+import {$, formSerialize} from "./element.js"
 
 //동 이름 불러오기
 const loadEnableDong = () => {
-    const url = "/api/address/enable-dong";
+    const formData = new FormData($("form_enable_area"));
 
-    const formEnableArea = $("form_enable_area");
-    const formData = new FormData(formEnableArea);
-
-    withGetMethod(
-        url,
-        formData,
+    getJSON('/api/address/enable-dong?' + formSerialize(formData)).then(
         (obj) => {
-            try {
-                const table = $("enable_dong");
-                const enableDong = obj["enableDong"];
+            const container = $("enable_dong");
+            const enableDongs = obj["enableDong"];
 
-                table.innerHTML = "";
+            container.innerHTML = "";
 
-                for (let i = 0; i < enableDong.length; i++) {
+            for (let dong of enableDongs) {
+                const button = document.createElement("button");
 
-                    const dong = enableDong[i];
+                button.innerHTML = dong["eubMyeonDong"];
 
-                    const tr = document.createElement("tr");
-                    const td = document.createElement("td");
-                    const button = document.createElement("button");
+                button.onclick = () => {
+                    const jibun = dong["siDo"] + " " + dong["siGunGu"] + " " + dong["eubMyeonDong"];
+                    alert(jibun);
+                    $("jibun").value = jibun;
+                };
 
-                    button.innerHTML = dong["eubMyeonDong"];
-
-                    button.onclick = () => {
-                        const jibun = dong["siDo"] + " " + dong["siGunGu"] + " " + dong["eubMyeonDong"]
-                        alert(jibun);
-                        $("jibun").value = jibun;
-                    };
-
-                    td.appendChild(button);
-                    tr.appendChild(td);
-                    table.appendChild(tr);
-                }
-
-            } catch (e) {
-                console.log(e);
+                container.appendChild(button);
             }
-
-        });
+        }
+    ).catch((e) => {
+        console.log(e);
+    });
 };
 
 // $("form_address").onsubmit = searchAddress;
 
 //건물명
 const searchAddress = (userId, address) => {
-    const url = `http://13.209.35.180:1547/address/get?userId=${userId}&address=${address}&searchType=1`;
-
-    ajax(
-        url,
-        "GET",
+    getJSON(`http://13.209.35.180:1547/address/get?userId=${userId}&address=${address}&searchType=1`).then(
         (obj) => {
-            try {
-                // const data = obj["data"];
-                //
-                // const address = $("address");
-                // for (let i = 0; i < data.length; i++) {
-                //     const tr = document.createElement("tr");
-                //     for (let j = 0; j < 3; j++) {
-                //         const td = document.createElement("td");
-                //
-                //         tr.appendChild(td);
-                //     }
-                //     tr.appendChild(address);
-                // }
+            // const data = obj["data"];
+            //
+            // const address = $("address");
+            // for (let i = 0; i < data.length; i++) {
+            //     const tr = document.createElement("tr");
+            //     for (let j = 0; j < 3; j++) {
+            //         const td = document.createElement("td");
+            //
+            //         tr.appendChild(td);
+            //     }
+            //     tr.appendChild(address);
+            // }
 
-                console.log(obj);
-
-            } catch (e) {
-                console.log(e);
-            }
+            console.log(obj);
         }
-    );
+    ).catch((e) => {
+        console.log(e);
+    });
 };
 
 $("btn_close").onclick = () => {
@@ -114,11 +92,7 @@ $("form-jibun").onsubmit = function () {
     const userId = 1;
     const address = formData.get("jibun");
 
-    const url = `http://13.209.35.180:1547/address/get?userId=${userId}&address=${address}&searchType=1`;
-
-    ajax(
-        url,
-        "GET",
+    getJSON(`http://13.209.35.180:1547/address/get?userId=${userId}&address=${address}&searchType=1`).then(
         (obj) => console.log(obj)
     );
 

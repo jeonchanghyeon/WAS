@@ -17,12 +17,15 @@
     <input type="hidden" name="id" id="userId" th:value="${id}"/>
     <input type="hidden" name="group" id="group" value="3"/>
     <div class="header-right">
-        <div class="point-area">
+        <div class="point-area" id="point-area">
             <span id="point">-1</span>
         </div>
-        <a href="#order-reception">
+        <a href="order-reception">
             <button class="button">접수하기</button>
         </a>
     </div>
+
+    <div th:replace="statuses/mileage_modal:: mileage_modal"></div>
+    <div th:replace="statuses/transfer_modal:: transfer_modal"></div>
 </header>
 </html>

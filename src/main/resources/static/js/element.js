@@ -4,7 +4,6 @@ export const appendOptions = (element, options) => {
     element.innerHTML = "";
 
     for (let i = 0; i < options.length; i++) {
-
         const option = document.createElement('option');
 
         option.text = options[i].text;
@@ -23,7 +22,9 @@ export const createCol = (text, func) => {
 
     col.innerHTML = text;
 
-    func(col);
+    if (func !== undefined) {
+        func(col);
+    }
 
     return col;
 };
@@ -42,7 +43,9 @@ export const createRow = (texts, func) => {
         row.appendChild(col);
     }
 
-    func(row);
+    if (func !== undefined) {
+        func(row);
+    }
 
     return row;
 };
@@ -57,7 +60,21 @@ export const createTbody = (lines, func) => {
         tbody.appendChild(row);
     }
 
-    func(tbody);
+    if (func !== undefined) {
+        func(tbody);
+    }
 
     return tbody;
+};
+
+export const formSerialize = (formData) => new URLSearchParams(formData).toString();
+
+export const jsonifyFormData = (formData) => {
+    const jsonObject = {};
+
+    for (const [key, value] of formData.entries()) {
+        jsonObject[key] = value;
+    }
+
+    return jsonObject;
 };

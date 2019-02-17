@@ -8,6 +8,7 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Please</title>
     <link rel="stylesheet" type="text/css" href="/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/mileage_modal.css"/>
     <link rel="stylesheet" href="/css/popup_search_address.css"/>
     <link rel="stylesheet" href="/css/recept_order.css"/>
     <link rel="stylesheet" href="/css/search_modal.css"/>
@@ -32,14 +33,16 @@
                 <div class="info-container">
                     <div class="info-row">
                         <div class="required">지사명</div>
+                        <input type="hidden" name="branchId" id="branchId"/>
                         <input type="text" class="edit-box" required="required" name="branch-name"
-                               placeholder="지사명을 입력하세요."/>
+                               placeholder="지사명을 입력하세요." id="branchName" readonly="readonly"/>
                         <button class="search-button" id="btn_branch_name"> 검색</button>
                     </div>
                     <div class="info-row">
                         <div class="required">상점명</div>
+                        <input type="hidden" name="shopId" id="shopId"/>
                         <input type="text" class="edit-box" required="required" name="shop-name"
-                               placeholder="상점명을 입력하세요."/>
+                               placeholder="상점명을 입력하세요." id="shopName" readonly="readonly"/>
                         <button class="search-button" id="btn_shop_name"> 검색</button>
                     </div>
                     <div class="info-row">
@@ -65,12 +68,12 @@
                     <input type="hidden" name="distance"/>
                     <input type="hidden" name="distanceFactor"/>
                 </div>
-                <div class="map"></div>
+                <div class="map" id="map"></div>
                 <div class="item-info-container">
                     <span class="subsection-title">상품정보</span>
                     <div>
                         <button class="rect-white">갯수추가</button>
-                        <button class="rect-black">메뉴(POS)</button>
+                        <button class="rect-black" id="btn-menu">메뉴(POS)</button>
                     </div>
                 </div>
                 <div class="table-container">
@@ -241,13 +244,11 @@
                         <span class="subsection-title">대행료 지불방법</span>
                         <div class="buttons">
                             <label class="radio-items">
-                                <input required="required" type="radio" id="pt" name="delivery-cost-payment-type"
-                                       checked="checked"/>
+                                <input type="radio" id="pt" name="delivery-cost-payment-type"/>
                                 <span class="check-marker">포인트</span>
                             </label>
                             <label class="radio-items">
-                                <input required="required" type="radio" id="money"
-                                       name="delivery-cost-payment-type"/>
+                                <input type="radio" id="money" name="delivery-cost-payment-type"/>
                                 <span class="check-marker">현금</span>
                             </label>
                         </div>
@@ -271,7 +272,14 @@
         </form>
     </section>
 </div>
+<!-- 주소 모달-->
 <div th:replace="order_reception/reception_address_modal :: modal"></div>
+<!-- 지사 모달-->
+<div th:replace="order_reception/search_branch_modal :: branch_search_modal"></div>
+<!-- 상점명 모달-->
+<div th:replace="order_reception/search_shop_modal :: shop_search_modal"></div>
+<!-- 상품메뉴 모달-->
+<div th:replace="order_reception/menu_modal:: menu_modal"></div>
 </body>
 
 <script src="/js/recept_order.js" type="module"></script>

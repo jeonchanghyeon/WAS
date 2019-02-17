@@ -1,56 +1,38 @@
-export function ajax(url, method, func, content = null, csrfHeader, csrfToken) {
-    let xhr = new XMLHttpRequest();
-    xhr.open(method, url, true);
+import {getMeta} from "./meta.js";
 
+export const ajax = (url, method, content, pre) => new Promise(
+    (resolve, reject) => {
+        const xhr = new XMLHttpRequest();
 
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.setRequestHeader(csrfHeader, csrfToken);
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (this.status === 200) {
-                try {
-                    const obj = JSON.parse(this.responseText);
-                    func(obj);
-                } catch (error) {
-                }
-            }
+        if (pre !== undefined) {
+            pre(xhr);
         }
-    };
 
-    xhr.send(content)
-}
+        xhr.onload = function () {
+            if (this.status >= 200 && this.status < 400) {
+                resolve(this.responseText);
+            } else {
+                reject(new Error("Server error"));
+            }
+        };
 
-export function withGetMethod(url, formData, func) {
-    try {
-        url += "?";
-        url += new URLSearchParams(formData).toString();
+        xhr.onerror = reject;
 
-        ajax(url, "GET", func);
-
-    } catch (error) {
-        console.log(error.message);
+        xhr.send(content);
     }
-}
+);
 
-const jsonify = (formData) => {
+export const getJSON = (url) =>
+    ajax(url, "GET").then(
+        (res) => JSON.parse(res)
+    );
 
-    let jsonObject = {};
+export const setCSRFHeader = (xhr) => {
+    const csrfHeader = getMeta("_csrf_header");
+    const csrfToken = getMeta("_csrf");
 
-    for (const [key, value] of formData.entries()) {
-        jsonObject[key] = value;
-    }
-
-    return jsonObject;
+    xhr.setRequestHeader(csrfHeader, csrfToken);
 };
-
-export function withPostMethod(url, formData, func, csrfHeader, csrfToken) {
-    try {
-        const jsonObject = jsonify(formData);
-
-        ajax(url, "POST", func, JSON.stringify(jsonObject), csrfHeader, csrfToken);
-
-    } catch (error) {
-        console.log(error.message);
-    }
-}

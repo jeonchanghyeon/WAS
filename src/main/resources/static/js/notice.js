@@ -1,8 +1,7 @@
-import {ajax, withGetMethod} from "./ajax.js";
+import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
 import {loadPoint} from "./point.js";
-import {$, appendOptions, createRow} from "./element.js";
+import {$, appendOptions, createRow, formSerialize, jsonifyFormData} from "./element.js";
 import {fillZero} from "./format.js"
-import {getMeta} from "./meta.js";
 
 const distribSelect = $("select-distrib-branch");
 const userId = $("userId").value;
@@ -49,12 +48,9 @@ const changeButton = (num) => {
 };
 
 const submitBranchForm = () => {
-    const url = '/api/notices';
     const formData = new FormData($("branch-notice-form"));
 
-    withGetMethod(
-        url,
-        formData,
+    getJSON('/api/notices?' + formSerialize(formData)).then(
         (obj) => {
             const notices = obj["notices"];
             const tbody = $("result-branch-notice");
@@ -65,12 +61,9 @@ const submitBranchForm = () => {
 };
 
 const submitDistribForm = () => {
-    const url = '/api/notices';
     const formData = new FormData($("distrib-notice-form"));
 
-    withGetMethod(
-        url,
-        formData,
+    getJSON('/api/notices?' + formSerialize(formData)).then(
         (obj) => {
             const notices = obj["notices"];
             const tbody = $("result-distrib-notice");
@@ -81,12 +74,9 @@ const submitDistribForm = () => {
 };
 
 const submitHeadForm = () => {
-    const url = '/api/notices';
     const formData = new FormData($("head-notice-form"));
 
-    withGetMethod(
-        url,
-        formData,
+    getJSON('/api/notices?' + formSerialize(formData)).then(
         (obj) => {
             const notices = obj["notices"];
             const tbody = $("result-head-notice");
@@ -154,11 +144,7 @@ const createNoticeList = (tbody, notices) => {
 
         const row = createRow(line, (row) => {
             row.ondblclick = () => {
-                const url = "/api/notices/" + noticeId;
-
-                ajax(
-                    url,
-                    "GET",
+                getJSON("/api/notices/" + noticeId).then(
                     (obj) => {
                         const notice = obj["notice"];
 
@@ -218,26 +204,21 @@ if ($("btn-branch-notice") !== null) {
 
 if ($("btn-new-notice") !== null) {
     $("btn-new-notice").onclick = () => {
-
         displayDiv(3);
     };
 }
 
 const getDistribList = (headId, element) => {
-    const url = "/api/distribs?id=" + headId;
-
-    ajax(
-        url,
-        "GET",
+    getJSON("/api/distribs?id=" + headId).then(
         (obj) => {
             const options = [{
                 value: "",
                 text: "총판 선택"
             }];
 
-            for (let i = 0; i < obj.length; i++) {
-                const id = obj[i]["id"];
-                const name = obj[i]["name"];
+            for (let o of obj) {
+                const id = o["id"];
+                const name = o["name"];
 
                 options.push({
                     value: id,
@@ -250,26 +231,23 @@ const getDistribList = (headId, element) => {
 };
 
 const getBranchList = (distribId, element) => {
-    const url = "/api/branches/list?id=" + distribId;
-
-    ajax(
-        url,
-        "GET",
+    getJSON("/api/branches/list?id=" + distribId).then(
         (obj) => {
             const options = [{
                 value: "",
                 text: "지사 선택"
             }];
 
-            for (let i = 0; i < obj.length; i++) {
-                const id = obj[i]["id"];
-                const name = obj[i]["name"];
+            for (let o of obj) {
+                const id = o["id"];
+                const name = o["name"];
 
                 options.push({
                     value: id,
                     text: name
                 });
             }
+
             appendOptions(element, options);
         });
 };
@@ -354,8 +332,8 @@ const checkboxIds = [
     "checkbox-rider-head"
 ];
 
-for (let i = 0; i < checkboxIds.length; i++) {
-    const checkbox = $(checkboxIds[i]);
+for (let checkboxId of checkboxIds.length) {
+    const checkbox = $(checkboxId);
 
     if (checkbox !== null) {
         checkbox.onclick = submitHeadForm;
@@ -364,21 +342,17 @@ for (let i = 0; i < checkboxIds.length; i++) {
 
 if ($("form-notice-post") !== null) {
     $("form-notice-post").onsubmit = () => {
-        const url = "/api/notices";
+
         const formData = new FormData($("form-notice-post"));
 
-        let jsonObject = {};
-
-        for (const [key, value] of formData.entries()) {
-            jsonObject[key] = value;
-        }
+        let jsonObject = jsonifyFormData(formData);
 
         const checkboxIds = ["555", "333", "444"];
 
         let arr = [];
 
-        for (let i = 0; i < checkboxIds.length; i++) {
-            const checkbox = $(checkboxIds[i]);
+        for (let checkboxId of checkboxIds) {
+            const checkbox = $(checkboxId);
 
             if (checkbox.checked === true) {
                 arr.push(checkbox.value);
@@ -387,14 +361,11 @@ if ($("form-notice-post") !== null) {
 
         jsonObject["types"] = arr;
 
-        ajax(url,
+        ajax(
+            "/api/notices",
             "PUT",
-            () => {
-
-            },
             JSON.stringify(jsonObject),
-            getMeta("_csrf_header"),
-            getMeta("_csrf")
+            setCSRFHeader
         );
 
         return false;
@@ -404,21 +375,16 @@ if ($("form-notice-post") !== null) {
 if ($("form-notice-modify") !== null) {
     $("form-notice-modify").onsubmit = () => {
         const id = $("modify-notice-write-id").value;
-        const url = "/api/notices/" + id;
         const formData = new FormData($("form-notice-modify"));
 
-        let jsonObject = {};
-
-        for (const [key, value] of formData.entries()) {
-            jsonObject[key] = value;
-        }
+        let jsonObject = jsonifyFormData(formData);
 
         const checkboxIds = ["5555", "3333", "4444", "6666"];
 
         let arr = [];
 
-        for (let i = 0; i < checkboxIds.length; i++) {
-            const checkbox = $(checkboxIds[i]);
+        for (let checkboxId of checkboxIds) {
+            const checkbox = $(checkboxId);
 
             if (checkbox.checked === true) {
                 arr.push(checkbox.value);
@@ -427,13 +393,11 @@ if ($("form-notice-modify") !== null) {
 
         jsonObject["types"] = arr;
 
-        ajax(url,
+        ajax(
+            "/api/notices/" + id,
             "POST",
-            () => {
-            },
             JSON.stringify(jsonObject),
-            getMeta("_csrf_header"),
-            getMeta("_csrf")
+            setCSRFHeader
         );
 
         return false;
@@ -442,11 +406,8 @@ if ($("form-notice-modify") !== null) {
 
 $("btn-modify").onclick = () => {
     const noticeId = $("detail-notice-id").value;
-    const url = "/api/notices/" + noticeId;
 
-    ajax(
-        url,
-        "GET",
+    getJSON("/api/notices/" + noticeId).then(
         (obj) => {
             const notice = obj["notice"];
 
@@ -480,18 +441,12 @@ $("btn-modify").onclick = () => {
 
 $("btn-remove").onclick = () => {
     const id = $("detail-notice-id").value;
-    const url = "/api/notices/" + id;
 
     ajax(
-        url,
+        "/api/notices/" + id,
         "DELETE",
-        (obj) => {
-            loadHeadNotice();
-        },
-        null,
-        getMeta("_csrf_header"),
-        getMeta("_csrf")
-    );
+        setCSRFHeader
+    ).then(loadHeadNotice);
 };
 
 
@@ -501,11 +456,7 @@ $("btn-pre").onclick = () => {
     const prevId = getPrevId(noticeIds, noticeId);
 
     if (prevId !== -1) {
-        const url = "/api/notices/" + prevId;
-
-        ajax(
-            url,
-            "GET",
+        getJSON("/api/notices/" + prevId).then(
             (obj) => {
                 const notice = obj["notice"];
 
@@ -535,11 +486,7 @@ $("btn-post").onclick = () => {
     const nextId = getNextId(noticeIds, noticeId);
 
     if (nextId !== -1) {
-        const url = "/api/notices/" + nextId;
-
-        ajax(
-            url,
-            "GET",
+        getJSON("/api/notices/" + nextId).then(
             (obj) => {
                 const notice = obj["notice"];
 

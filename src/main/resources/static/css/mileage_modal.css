@@ -129,11 +129,6 @@
   /* 라디오 버튼 기본 모양 */
 }
 
-#modal {
-  position: fixed;
-  visibility: hidden;
-}
-
 /* 마일리지 모달, 송금대상 모달 공통 컴포넌트 */
 .mileage-modal-background, .transfer-modal-background {
   /* TODO 컨테이너 관련 css */
@@ -148,7 +143,7 @@
 .mileage-modal-background .submit-section, .transfer-modal-background .submit-section {
   flex: 1;
   min-height: 96px;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
 }
@@ -190,6 +185,10 @@
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
   padding: 64px calc(50% - 180px) 64px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
   /* TODO mixin 정의 */
   /* 라디오 버튼 선택 시 버튼 뷰 */
   /* 라디오 버튼 선택되지 않을 시 버튼 뷰 */
@@ -268,7 +267,7 @@
 .mileage-modal-background .withdraw-section, .mileage-modal-background .transfer-section {
   width: 100%;
   height: calc(100% - 218px - 92px);
-  display: flex;
+  display: none;
   flex-direction: column;
 }
 .mileage-modal-background .withdraw-section .gray-container, .mileage-modal-background .transfer-section .gray-container {
@@ -478,6 +477,10 @@
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
   padding: 150px calc(50% - 170px) 71px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
   /* TODO 컨테이너 관련 css */
   /* TODO 요소 관련 css */
 }

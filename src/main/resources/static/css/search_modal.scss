@@ -1,14 +1,13 @@
 @import "common";
 
-#modal {
-  position: fixed;
-  visibility: hidden;
-}
-
 .search-modal-background {
   $modal_width: 340px;
   $modal_height: 545px;
   @include bg-modal($modal_width, 121px, 121px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
 
   /* TODO 컨테이너 관련 css */
   .modal-container {
@@ -61,6 +60,7 @@
       padding-right: 15px;
       display: flex;
       align-items: center;
+
       .search-box {
         width: 100%;
       }
@@ -134,6 +134,7 @@
       background: url($url_radio_hover) no-repeat;
       background-size: 20px;
     }
+
     input[type="radio"] {
       /* 라디오 버튼 선택된 경우 */
       &:checked ~ .check-marker {
@@ -141,6 +142,7 @@
         background-size: 20px;
       }
     }
+
     /* 라디오 버튼 선택X */
     .check-marker {
       width: 20px;
