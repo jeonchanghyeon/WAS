@@ -5,6 +5,8 @@ import {loadPoint} from "./point.js";
 import {$, appendOptions, createRow, formSerialize, jsonifyFormData} from "./element.js";
 import {fillZero, HHMM, mmdd, numberWithCommas} from "./format.js";
 
+loadPoint();
+
 function createTable(resultList, orders) {
     for (let i = 0; i < orders.length; i++) {
         const order = orders[i];
@@ -19,12 +21,11 @@ function createTable(resultList, orders) {
         const createDay = mmdd(createDate) + "-" + HHMM(createDate);
         const shopName = order["shopName"];
 
-        let orderStatusId = null;
+        let orderStatusId = order["orderStatusId"];
 
-        if (order["orderStatusId"] === 1 && order["branchId"] !== parseInt(getCurrentBranchId())) {
+        if (order["orderStatusId"] === 1
+            && (order["branchId"] !== getCurrentBranchId())) {
             orderStatusId = 7;
-        } else {
-            orderStatusId = order["orderStatusId"];
         }
 
         const parsingOrderStatus = statusStr[orderStatusId - 1];
@@ -36,35 +37,33 @@ function createTable(resultList, orders) {
         const cancelTime = HHMM(cancelDate);
         const deliveryCost = numberWithCommas(order["deliveryCost"].toString());
 
-        let sumOfAdditionalCost = 0;
-
         const riderName = order["riderName"];
         const parsingPaymentType = paymentTypeStr[order["paymentType"] - 1];
         const memo = order["memo"];
+
+        let sumOfAdditionalCost = 0;
 
         for (let i = 0; i < order["additionalCost"].length; i++) {
             sumOfAdditionalCost += order["additionalCost"][i]["cost"];
         }
 
-        const text = [
-            id,
-            createDay,
-            shopName,
-            parsingOrderStatus,
-            createTime,
-            allocateTime,
-            pickupTime,
-            completeTime,
-            cancelTime,
-            deliveryCost,
-            sumOfAdditionalCost,
-            riderName,
-            parsingPaymentType,
-            memo,
-        ];
-
         const row = createRow(
-            text,
+            [
+                id,
+                createDay,
+                shopName,
+                parsingOrderStatus,
+                createTime,
+                allocateTime,
+                pickupTime,
+                completeTime,
+                cancelTime,
+                deliveryCost,
+                sumOfAdditionalCost,
+                riderName,
+                parsingPaymentType,
+                memo,
+            ],
             (row) => {
                 row.className = statusStyleName[orderStatusId - 1];
 
@@ -102,14 +101,15 @@ const displayError = (error) => {
     tr.appendChild(td);
 };
 
-const getOptionValue = (element) => element.options[element.selectedIndex].value;
+const getOptionValue = (element) =>
+    element.options[element.selectedIndex].value;
 
 const getCurrentBranchId = () => {
     if (branchSelect === null) {
         return $("value_branch").value;
     }
 
-    return getOptionValue(branchSelect);
+    return parseInt(getOptionValue(branchSelect));
 };
 
 const changeToStyleSafe = (element) => {
@@ -147,13 +147,11 @@ const uncheckOthers = (checkboxes) => {
     }
 };
 
-const isAllUnchecked = (checkboxes) => {
-    const checkedCheckboxes = checkboxes.find(
-        (data) => data.checked === true
+const isAllUnchecked = (checkboxes) =>
+    checkboxes.every(
+        (data) =>
+            data.checked === true
     );
-
-    return checkedCheckboxes !== undefined;
-};
 
 const appendCheckboxValue = (formData, checkboxes) => {
     for (let checkbox of checkboxes) {
@@ -170,22 +168,21 @@ function submitOrderStatus() {
 
     lastSubmittedFormData = formData;
 
+    pageIndex = 1;
+
     getOrders(formData).then(
         (obj) => {
             const orders = obj["orders"];
 
             resultList.innerHTML = '';
 
-            if (orders.length === 0) {
-                isEmpty = true;
+            isEmpty = orders.length === 0;
+            if (isEmpty) {
                 emptyHandler();
-            } else {
-                isEmpty = false;
             }
 
             createTable(resultList, orders);
-
-            pageIndex = 2;
+            pageIndex++;
         }
     ).catch((error) => {
         displayError(error);
@@ -197,9 +194,7 @@ function emptyHandler() {
 }
 
 const getRider = (branchId) => {
-    const url = "/api/riders/list?id=" + branchId;
-
-    getJSON(url).then(
+    getJSON("/api/riders/list?id=" + branchId).then(
         (obj) => {
             if (obj.length !== 1) {
 
@@ -210,9 +205,7 @@ const getRider = (branchId) => {
 };
 
 const getShop = (branchId) => {
-    const url = "/api/shops/list?id=" + branchId;
-
-    getJSON(url).then(
+    getJSON("/api/shops/list?id=" + branchId).then(
         (obj) => {
             if (obj.length !== 1) {
 
@@ -223,9 +216,7 @@ const getShop = (branchId) => {
 };
 
 const getBranchList = (element, distribId) => {
-    const url = "/api/branches/list?id=" + distribId;
-
-    getJSON(url).then(
+    getJSON("/api/branches/list?id=" + distribId).then(
         (obj) => {
             const options = [{
                 value: -1,
@@ -247,9 +238,7 @@ const getBranchList = (element, distribId) => {
 };
 
 const getBranch = (distribId) => {
-    const url = "/api/branches/list?id=" + distribId;
-
-    getJSON(url).then(
+    getJSON("/api/branches/list?id=" + distribId).then(
         (obj) => {
             if (obj.length !== 1) {
 
@@ -261,9 +250,7 @@ const getBranch = (distribId) => {
 };
 
 const getDistribList = (element, headId) => {
-    const url = "/api/distribs?id=" + headId;
-
-    getJSON(url).then(
+    getJSON("/api/distribs?id=" + headId).then(
         (obj) => {
             const options = [{
                 value: -1,
@@ -285,9 +272,7 @@ const getDistribList = (element, headId) => {
 };
 
 const getDistrib = (headId) => {
-    const url = "/api/distribs?id=" + headId;
-
-    getJSON(url).then(
+    getJSON("/api/distribs?id=" + headId).then(
         (obj) => {
             if (obj.length !== 1) {
 
@@ -297,10 +282,8 @@ const getDistrib = (headId) => {
         });
 };
 
-const getBranchSettings = (branchId) => {
-    const url = "/api/branches/" + branchId + "/settings";
-
-    getJSON(url).then(
+const getBranchSettings = (branchId) =>
+    getJSON("/api/branches/" + branchId + "/settings").then(
         (obj) => {
             const selectDefaultStart = $("select_default_start");
             const selectDelayTime = $("select_delay_time");
@@ -331,12 +314,10 @@ const getBranchSettings = (branchId) => {
 
             costWon.value = branchSetting["extraCharge"];
             costPercent.value = branchSetting["extraChargePercent"] * 100;
-        })
-};
+        });
 
-const getOrders = (formData) => getJSON('/api/orders?' + formSerialize(formData));
-
-loadPoint();
+const getOrders = (formData) =>
+    getJSON('/api/orders?' + formSerialize(formData));
 
 const Group = {
     GUEST: 1,
@@ -352,7 +333,6 @@ const paymentTypeStr = ["카드", "현금", "선결제"];
 const statusStyleName = ["status1", "status2", "status3", "status4", "status5", "status6", "status7"];
 
 const checkboxIds = [
-    "checkbox_all",
     "checkbox_accept",
     "checkbox_allocate",
     "checkbox_pickup",
@@ -376,9 +356,10 @@ const spanIds = [
 const resultList = $("result_list");
 const branchSelect = $("select_branch");
 
+const checkboxAll = $("checkbox_all");
 const checkboxes = [];
-for (let i = 0; i < checkboxIds.length; i++) {
-    checkboxes[i] = $(checkboxIds[i]);
+for (let checkboxId of checkboxIds) {
+    checkboxes.push($(checkboxId));
 }
 
 const statusText = [];
@@ -429,7 +410,7 @@ const loadCounts = (counts) => {
     statusText[0].innerHTML = sum;
 };
 
-checkboxes[0].onclick = function () {
+checkboxAll.onclick = function () {
     if (this.checked === true) {
         uncheckOthers(checkboxes);
     }
@@ -439,9 +420,9 @@ checkboxes[0].onclick = function () {
     }
 };
 
-for (let i = 1; i < checkboxes.length; i++) {
-    checkboxes[i].onclick = () => {
-        checkboxes[0].checked = isAllUnchecked(checkboxes);
+for (let checkbox of checkboxes) {
+    checkbox.onclick = () => {
+        checkboxAll.checked = isAllUnchecked(checkboxes);
 
         if (baseForm !== null) {
             submitOrderStatus();
@@ -450,36 +431,37 @@ for (let i = 1; i < checkboxes.length; i++) {
 }
 
 $("form_search").onsubmit = function () {
-    if (getCurrentBranchId() !== "-1") {
-        setSearchType();
-
-        const formData = new FormData(this);
-        lastSubmittedFormData = baseForm = formData;
-
-        getOrders(formData).then(
-            (obj) => {
-                const orders = obj["orders"];
-                const counts = obj["counts"];
-
-                resultList.innerHTML = '';
-
-                loadCounts(counts);
-
-                if (orders.length === 0) {
-                    isEmpty = true;
-                    emptyHandler()
-                } else {
-                    isEmpty = false;
-                }
-
-                createTable(resultList, orders);
-
-                pageIndex = 2;
-            }
-        ).catch((error) => {
-            displayError(error);
-        });
+    if (getCurrentBranchId() === -1) {
+        alert("지사를 선택해주세요.");
+        return false;
     }
+    setSearchType();
+
+    const formData = new FormData(this);
+    lastSubmittedFormData = baseForm = formData;
+
+    pageIndex = 1;
+
+    getOrders(formData).then(
+        (obj) => {
+            const orders = obj["orders"];
+            const counts = obj["counts"];
+
+            resultList.innerHTML = '';
+
+            loadCounts(counts);
+
+            isEmpty = orders.length === 0;
+            if (isEmpty) {
+                emptyHandler()
+            }
+
+            createTable(resultList, orders);
+            pageIndex++;
+        }
+    ).catch((error) => {
+        displayError(error);
+    });
 
     return false;
 };
@@ -488,7 +470,7 @@ $("form_default_start").onsubmit
     = $("form_delay_time").onsubmit
     = $("form_additional_cost").onsubmit = function () {
 
-    const branchId = parseInt(getCurrentBranchId());
+    const branchId = getCurrentBranchId();
     if (branchId !== -1) {
         const formData = new FormData(this);
 
@@ -532,6 +514,7 @@ window.onscroll = function () {
 document.body.onload = () => {
     const id = $("userId").value;
     const group = $("group").value;
+
 
     switch (parseInt(group)) {
         case Group.RIDER:
@@ -592,4 +575,5 @@ document.body.onload = () => {
     }
 
     calendarListener();
+
 };

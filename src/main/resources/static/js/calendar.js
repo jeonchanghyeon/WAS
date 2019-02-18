@@ -1,3 +1,5 @@
+import {YYYYmmdd} from "./format.js";
+import {$} from "./element.js";
 
 export const calendarListener = () => {
     let myCalendar;
@@ -15,4 +17,15 @@ export const calendarListener = () => {
     myCalendar = new dhtmlXCalendarObject(["select_start_date", "select_end_date"]);
     myCalendar.hideTime();
     myCalendar.loadUserLanguage('kr');
+
+    const startDate = new Date();
+    const endDate = new Date();
+
+    endDate.setDate(endDate.getDate() + 1);
+
+    const start = YYYYmmdd(startDate) + ' ' + "09:00:00";
+    const end = YYYYmmdd(endDate) + ' ' + "09:00:00";
+
+    $("select_start_date").value = start;
+    $("select_end_date").value = end;
 };
