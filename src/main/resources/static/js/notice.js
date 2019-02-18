@@ -3,6 +3,8 @@ import {loadPoint} from "./point.js";
 import {$, appendOptions, createRow, formSerialize, jsonifyFormData} from "./element.js";
 import {fillZero} from "./format.js"
 
+loadPoint();
+
 const distribSelect = $("select-distrib-branch");
 const userId = $("userId").value;
 
@@ -258,7 +260,6 @@ if ($("select-branch") !== null) {
 }
 
 getDistribList(userId, $("select-distrib-head"));
-loadPoint();
 
 if (distribSelect !== null) {
     distribSelect.onchange = function () {
@@ -332,7 +333,7 @@ const checkboxIds = [
     "checkbox-rider-head"
 ];
 
-for (let checkboxId of checkboxIds.length) {
+for (let checkboxId of checkboxIds) {
     const checkbox = $(checkboxId);
 
     if (checkbox !== null) {
@@ -347,15 +348,17 @@ if ($("form-notice-post") !== null) {
 
         let jsonObject = jsonifyFormData(formData);
 
-        const checkboxIds = ["555", "333", "444"];
+        const checkboxIds = ["666", "555", "333", "444"];
 
         let arr = [];
 
         for (let checkboxId of checkboxIds) {
             const checkbox = $(checkboxId);
 
-            if (checkbox.checked === true) {
-                arr.push(checkbox.value);
+            if (checkbox !== null) {
+                if (checkbox.checked === true) {
+                    arr.push(checkbox.value);
+                }
             }
         }
 
@@ -366,7 +369,7 @@ if ($("form-notice-post") !== null) {
             "PUT",
             JSON.stringify(jsonObject),
             setCSRFHeader
-        );
+        ).then(loadHeadNotice);
 
         return false;
     };
@@ -386,8 +389,10 @@ if ($("form-notice-modify") !== null) {
         for (let checkboxId of checkboxIds) {
             const checkbox = $(checkboxId);
 
-            if (checkbox.checked === true) {
-                arr.push(checkbox.value);
+            if (checkbox !== null) {
+                if (checkbox.checked === true) {
+                    arr.push(checkbox.value);
+                }
             }
         }
 
@@ -398,7 +403,7 @@ if ($("form-notice-modify") !== null) {
             "POST",
             JSON.stringify(jsonObject),
             setCSRFHeader
-        );
+        ).then(loadHeadNotice);
 
         return false;
     };
@@ -445,10 +450,10 @@ $("btn-remove").onclick = () => {
     ajax(
         "/api/notices/" + id,
         "DELETE",
+        null,
         setCSRFHeader
     ).then(loadHeadNotice);
 };
-
 
 $("btn-pre").onclick = () => {
 
