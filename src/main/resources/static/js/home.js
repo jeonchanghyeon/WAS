@@ -101,15 +101,25 @@ const displayError = (error) => {
     tr.appendChild(td);
 };
 
-const getOptionValue = (element) =>
-    element.options[element.selectedIndex].value;
+const getOptionValue = (element) => {
+    if (element.selectedIndex === -1) {
+        return undefined;
+    }
+
+    return element.options[element.selectedIndex].value;
+};
 
 const getCurrentBranchId = () => {
     if (branchSelect === null) {
         return $("value_branch").value;
     }
 
-    return parseInt(getOptionValue(branchSelect));
+    const branchId = getOptionValue(branchSelect);
+    if (branchId === undefined) {
+        return -1;
+    }
+
+    return parseInt(branchId);
 };
 
 const changeToStyleSafe = (element) => {
