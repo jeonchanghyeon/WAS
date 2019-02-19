@@ -1,7 +1,8 @@
 import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
-import {$, formSerialize, jsonifyFormData} from "./element.js"
+import {$, createRow, formSerialize, jsonifyFormData} from "./element.js"
 import {modalOpen} from "./popup_search_address.js"
 import {loadPoint} from "./point.js";
+import {numberWithCommas} from "./format.js";
 
 loadPoint();
 
@@ -42,8 +43,13 @@ const btnBranchName = $("btn_branch_name");
 const btnShopName = $("btn_shop_name");
 
 btnAddress.onclick = () => {
-    const shopId = $("shop_id").value;
-    modalOpen(shopId);
+    const shopId = $("shopId").value;
+
+    if (shopId === "") {
+        alert("상점을 선택해주세요.");
+    } else {
+        modalOpen(shopId);
+    }
 
     return false;
 };
@@ -112,10 +118,9 @@ btnShopName.onclick = () => {
 
     if (selectedBranchId === "") {
         alert("지사를 선택해주세요.");
-        return false;
+    } else {
+        getJSON('api/shops?branch-id=' + selectedBranchId).then(getShop);
     }
-
-    getJSON('api/shops?branch-id=' + selectedBranchId).then(getShop);
 
     return false;
 };
@@ -188,13 +193,123 @@ $("form-result-shop").onsubmit = function () {
     return false;
 };
 
+let asdf = [];
+
 $("btn-menu").onclick = () => {
-    $("menu_modal").style.display = "initial";
+    const shopId = $("shopId").value;
+
+    if (shopId === "") {
+        alert("상점을 선택해주세요.");
+    } else {
+        getJSON("api/shops/" + shopId + "/menu-list").then(
+            obj => {
+                // const menus = obj["menu"];
+
+                const menu = [
+                    {
+                        id: 1,
+                        label: "짬뽕",
+                        price: 3000
+                    },
+                    {
+                        id: 2,
+                        label: "자장면",
+                        price: 3000
+                    }
+                ];
+
+                const table = $("all-menu");
+                const selected = $("selected-menu");
+
+                table.innerText = '';
+                selected.innerText = '';
+
+                for (let i = 0; i < menu.length; i++) {
+                    const row = createRow(
+                        [
+                            menu[i].label,
+                            numberWithCommas(menu[i].price)
+                        ],
+                        row => {
+                            const btn = document.createElement("button");
+                            btn.className = "rect-empty-orange";
+                            btn.innerHTML = "선택";
+
+                            btn.onclick = () => {
+
+                                console.log(
+                                    asdf.find((data) => data.id === menu[i].id)
+                                );
+
+                                if (asdf.find((data) => data.id === menu[i].id) === undefined) {
+                                    asdf.push(
+                                        {
+                                            id: menu[i].id,
+                                            item: {
+                                                label: menu[i].label,
+                                                price: menu[i].price
+                                            },
+                                            count: 0
+                                        }
+                                    );
+
+                                    const row = createRow(
+                                        [
+                                            menu[i].id,
+                                            menu[i].label,
+                                            '<div class="num-count-container">\n' +
+                                            '<input class="minus-disable" type="button"/>\n' +
+                                            '<div name="value">0</div>\n' +
+                                            '<input class="plus-enable" type="button"/>\n' +
+                                            '</div>',
+                                            numberWithCommas(menu[i].price)
+                                        ]
+                                    );
+
+                                    selected.appendChild(row);
+                                }
+
+                            };
+
+                            row.appendChild(btn);
+                        }
+                    );
+
+                    table.appendChild(row);
+                }
+
+                $("menu_modal").style.display = "initial";
+            }
+        );
+    }
 
     return false;
 };
 
 $("menu-close-button").onclick = () => {
+    $("menu_modal").style.display = "none";
+};
+
+$("menu-modal-confirm").onclick = () => {
+    const tbody = $("asdfasdf");
+
+    tbody.innerHTML = '';
+
+    for (let i = 0; i < asdf.length; i++) {
+        const row = createRow(
+            [
+                asdf[i].id,
+                asdf[i].item.label,
+                0,
+                asdf[i].item.price,
+                asdf[i].count,
+                asdf[i].item.price * asdf[i].count
+            ]
+        );
+
+        tbody.appendChild(row);
+    }
+
     $("menu_modal").style.display = "none";
 };
 

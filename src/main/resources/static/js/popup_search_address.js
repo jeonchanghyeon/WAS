@@ -1,5 +1,5 @@
-import {getJSON} from './ajax.js'
-import {$, formSerialize} from "./element.js"
+import {ajax, getJSON} from './ajax.js'
+import {$, createRow, formSerialize} from "./element.js"
 
 //동 이름 불러오기
 const loadEnableDong = () => {
@@ -18,39 +18,18 @@ const loadEnableDong = () => {
                 button.innerHTML = dong["eubMyeonDong"];
 
                 button.onclick = () => {
-                    const jibun = dong["siDo"] + " " + dong["siGunGu"] + " " + dong["eubMyeonDong"];
-                    alert(jibun);
-                    $("jibun").value = jibun;
+                    const address = dong["siDo"] + " " + dong["siGunGu"] + " " + dong["eubMyeonDong"];
+                    console.log(address);
+
+                    searchAddress({
+                        address: address,
+                        latitude: 0,
+                        longitude: 0,
+                    })
                 };
 
                 container.appendChild(button);
             }
-        }
-    ).catch((e) => {
-        console.log(e);
-    });
-};
-
-// $("form_address").onsubmit = searchAddress;
-
-//건물명
-const searchAddress = (userId, address) => {
-    getJSON(`http://13.209.35.180:1547/address/get?userId=${userId}&address=${address}&searchType=1`).then(
-        (obj) => {
-            // const data = obj["data"];
-            //
-            // const address = $("address");
-            // for (let i = 0; i < data.length; i++) {
-            //     const tr = document.createElement("tr");
-            //     for (let j = 0; j < 3; j++) {
-            //         const td = document.createElement("td");
-            //
-            //         tr.appendChild(td);
-            //     }
-            //     tr.appendChild(address);
-            // }
-
-            console.log(obj);
         }
     ).catch((e) => {
         console.log(e);
@@ -62,7 +41,6 @@ $("btn_close").onclick = () => {
 };
 
 //TODO 외곽 클릭시 창 닫기
-
 export const modalClose = () => {
     $("modal").style.display = "none";
 };
@@ -70,6 +48,8 @@ export const modalClose = () => {
 export const modalOpen = (shopId) => {
     $("modal-shop-id").value = shopId;
     $("modal").style.display = "inherit";
+
+    loadEnableDong();
 };
 
 const consonantArea = $("consonant-area");
@@ -84,17 +64,53 @@ for (let i = 0; i < buttons.length; i++) {
     };
 }
 
-$("form-jibun").onsubmit = function () {
-    $("jibun").value += " " + $("jibun-detail").value;
+const searchAddress = (
+    {
+        pageIndex = 1,
+        limitCount = 15,
+        address,
+        latitude,
+        longitude,
+        searchType = 4
+    }) => {
 
-    const formData = new FormData(this);
+    const url = "http://13.209.35.180:1111/address/get.json?" +
+        "pageIndex=" + pageIndex + "&" +
+        "limitCount=" + limitCount + "&" +
+        "address=" + address + "&" +
+        "latitude=" + latitude + "&" +
+        "longitude=" + longitude + "&" +
+        "searchType=" + searchType;
 
-    const userId = 1;
-    const address = formData.get("jibun");
+    ajax(
+        url,
+        "GET",
+        null,
+        xhr => {
+            xhr.withCredentials = true;
+        }
+    ).then(
+        res => {
+            const obj = JSON.parse(res);
+            const container = $("address-result");
+            for (let o of obj) {
+                const {
+                    road,
+                    x,
+                    y,
+                    jibun,
+                    title
+                } = o;
 
-    getJSON(`http://13.209.35.180:1547/address/get?userId=${userId}&address=${address}&searchType=1`).then(
-        (obj) => console.log(obj)
+                const row = createRow([
+                    "",
+                    title,
+                    jibun,
+                    road,
+                ]);
+
+                container.appendChild(row);
+            }
+        }
     );
-
-    return false;
 };
