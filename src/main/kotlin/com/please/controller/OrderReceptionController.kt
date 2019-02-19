@@ -16,22 +16,15 @@ class OrderReceptionController {
         model.addAttribute("id", authInfo.id)
 
         return when (authInfo.group) {
-            7 -> {
+            in 5..7 -> {
                 "order_reception/reception_head"
             }
-            6 -> {
-                "order_reception/reception_distrib"
-            }
-            5 -> {
-                "order_reception/reception_branch"
-            }
             3 -> {
-                "order_reception/reception_shop"
+                "order_reception/reception_head"
             }
             else -> {
                 throw GroupNotFoundException("Order reception page load failed. (group = ${authInfo.group})")
             }
-
         }
     }
 }
