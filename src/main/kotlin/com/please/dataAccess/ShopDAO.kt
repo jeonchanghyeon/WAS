@@ -23,7 +23,7 @@ class ShopDAO {
         return template.queryForList("CALL getShopListById(?)", id)
     }
 
-    fun getMenuItems(authKey: String, id: Long): String {
-        return template.queryForJSONObject("CALL getMenuItems(?, getUserIdById(?))", authKey, id)
+    fun getMenuItems(authKey: String, shopId: Long): String {
+        return template.queryForJSONObject("CALL getMenuItems(?, getUserIdById(?))", authKey, shopId)
     }
 }

@@ -25,9 +25,16 @@ class ShopController {
         return shopService.getShops(id)
     }
 
+    /*
+    * result -> {"resultCode", "description",
+    *            "menu": [  {"price":500,"label":"메뉴1"},
+    *                       {"price":5000,"label":"메뉴2"},
+    *                       {"price":50000,"label":"메뉴3"}  ]
+    *            }
+    * */
     @GetMapping(value = ["{id}/menu-list"])
     fun getMenuList(@PathVariable id: Long): Any {
         val authInfo = getAuthInfo()
-        return shopService.getMenu(authInfo.authKey, id)
+        return shopService.getMenuList(authInfo.authKey, id)
     }
 }

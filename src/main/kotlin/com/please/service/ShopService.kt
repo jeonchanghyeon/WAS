@@ -1,9 +1,11 @@
 package com.please.service
 
 import com.please.dataAccess.ShopDAO
+import org.json.JSONArray
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class ShopService {
@@ -25,8 +27,33 @@ class ShopService {
         return shopDAO.getShops(id)
     }
 
-    fun getMenu(authKey: String, id: Long): String {
-        return shopDAO.getMenuItems(authKey, id)
-    }
+    fun getMenuList(authKey: String, shopId: Long): String {
+        val menuInfo = JSONObject(shopDAO.getMenuItems(authKey, shopId))
+        val result = JSONObject()
+        val menuList = JSONArray()
 
+        var tmp = menuInfo["menu"] as JSONArray
+        val queue = ArrayDeque<JSONArray>()
+        queue.add(tmp)
+
+        while (queue.isNotEmpty()) {
+            tmp = queue.poll()
+
+            for (i in 0 until tmp.length()) {
+                val json = tmp[i] as JSONObject
+
+                if (!json.has("lowItems")) {
+                    menuList.put(json)
+                } else {
+                    queue.add(json["lowItems"] as JSONArray)
+                }
+            }
+        }
+
+        result.put("resultCode", menuInfo["resultCode"])
+        result.put("description", menuInfo["description"])
+        result.put("menu", menuList)
+
+        return result.toString()
+    }
 }
