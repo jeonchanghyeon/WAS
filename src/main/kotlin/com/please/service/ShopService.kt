@@ -25,4 +25,8 @@ class ShopService {
         return shopDAO.getShops(id)
     }
 
+    fun getMenu(authKey: String, id: Long): String {
+        return shopDAO.getMenuItems(authKey, id)
+    }
+
 }
