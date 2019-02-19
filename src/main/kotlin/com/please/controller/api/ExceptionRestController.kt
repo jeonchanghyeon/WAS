@@ -57,7 +57,7 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
 
     //포인트 잔액이 부족할 경우
     @ExceptionHandler(MissingBalanceException::class)
-    fun abnormalResultError(e: MissingBalanceException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
+    fun usePointError(e: MissingBalanceException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
         log.error(getExceptionLog(e, req))
         return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
     }
