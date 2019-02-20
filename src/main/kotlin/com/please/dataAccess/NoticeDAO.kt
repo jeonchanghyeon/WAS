@@ -20,17 +20,17 @@ class NoticeDAO {
 
     @Throws(SqlAbnormalResultException::class)
     fun update(authKey: String, noticeInfo: String): String {
-        return template.queryForJSONObject("CALL setNotice(?, ?)", authKey, noticeInfo)
+        return template.queryForJSONObject("CALL setNoticeForWeb(?, ?)", authKey, noticeInfo)
     }
 
     @Throws(SqlAbnormalResultException::class)
     fun getNotice(authKey: String, noticeId: Int): String {
-        return template.queryForJSONObject("CALL getNotice(?, ?)", authKey, noticeId)
+        return template.queryForJSONObject("CALL getNoticeForWeb(?, ?)", authKey, noticeId)
     }
 
     @Throws(SqlAbnormalResultException::class)
     fun insert(authKey: String, addedNotice: String): String {
-        return template.queryForJSONObject("CALL addNotice(?, ?)", authKey, addedNotice)
+        return template.queryForJSONObject("CALL addNoticeForWeb(?, ?)", authKey, addedNotice)
     }
 
     @Throws(SqlAbnormalResultException::class)

@@ -32,7 +32,7 @@ class OrderDAO {
     //검색 조건에 맞는 주문 목록 쿼리
     @Throws(SqlAbnormalResultException::class)
     fun searchOrders(branchId: String, conditionParseString: String): String {
-        return template.queryForJSONObject("CALL getSearchedOrders(getUserAuthKeyById(?), ?)", branchId, conditionParseString)
+        return template.queryForJSONObject("CALL getSearchedOrdersForWeb(getUserAuthKeyById(?), ?)", branchId, conditionParseString)
     }
 
     //검색 조건에 맞는 각각의 상태 개수 쿼리(검색 조건 중 날짜로만 필터)
