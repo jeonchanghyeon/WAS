@@ -476,10 +476,27 @@ $("form_search").onsubmit = function () {
     return false;
 };
 
-$("form_default_start").onsubmit
-    = $("form_delay_time").onsubmit
-    = $("form_additional_cost").onsubmit = function () {
+const setBranchSetting = (branchId, formData) =>
+    ajax(
+        "/api/branches/" + branchId + "/settings",
+        "POST",
+        JSON.stringify(jsonifyFormData(formData)),
+        setCSRFHeader
+    );
 
+$("form_default_start").onsubmit
+    = $("form_delay_time").onsubmit = function () {
+    const branchId = getCurrentBranchId();
+    if (branchId !== -1) {
+        const formData = new FormData(this);
+
+        setBranchSetting(branchId, formData);
+    }
+
+    return false;
+};
+
+$("form_additional_cost").onsubmit = function () {
     const branchId = getCurrentBranchId();
     if (branchId !== -1) {
         const formData = new FormData(this);
@@ -487,12 +504,7 @@ $("form_default_start").onsubmit
         const extraChargePercent = formData.get("extraChargePercent");
         formData.set("extraChargePercent", extraChargePercent / 100.0);
 
-        ajax(
-            "/api/branches/" + branchId + "/settings",
-            "POST",
-            JSON.stringify(jsonifyFormData(formData)),
-            setCSRFHeader
-        );
+        setBranchSetting(branchId, formData);
     }
 
     return false;
