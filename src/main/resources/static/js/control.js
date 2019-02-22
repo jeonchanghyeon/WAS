@@ -1,16 +1,22 @@
-import {formSerialize, getJSON} from './ajax.js'
+import {getJSON} from './ajax.js'
 import {loadPoint} from "./point.js";
-import {$, createCol, createRow} from "./element.js"
+import {$, createCol, createRow, formSerialize} from "./element.js"
 import {
     createInfoWindow,
     createMarker,
+    drawPolyLine,
     hideInfo,
     initMap,
     removeInfo,
     removeMarkers,
     setMarkerCenter,
-    showInfo
+    showInfo,
 } from "./naver.js"
+import {fillZero} from "./format.js";
+
+loadPoint();
+
+const map = initMap();
 
 const Group = {
     GUEST: 1,
@@ -31,6 +37,11 @@ const riders = $("rider-control-area");
 const shops = $("shop-control-area");
 const downs = $("down-control-area");
 const branches = $("branch-control-area");
+const formBranchSearch = $("form-branch-search");
+const formRiderSearch = $("form-rider-search");
+const formShopSearch = $("form-shop-search");
+const shopBranchId = $("shop-branch-id");
+const riderBranchId = $("rider-branch-id");
 
 const displayRiderControl = () => {
     if (branches !== null) {
@@ -91,18 +102,13 @@ const displayBranchControl = () => {
     $("map").style.height = "100%";
 };
 
-const map = initMap();
-
-loadPoint();
-
-const a = () => {
-    const url = "/api/branches";
+const getBranchControl = () => {
     const formBranchSearch = $("form-branch-search");
     const formData = new FormData(formBranchSearch);
 
     if (formBranchSearch !== null) {
 
-        getJSON(url + '?' + formSerialize(formData)).then(
+        getJSON('/api/branches?' + formSerialize(formData)).then(
             (obj) => {
                 const branches = obj["branches"];
 
@@ -125,7 +131,7 @@ const a = () => {
 
                     const text = [
                         name,
-                        riderWorkOn + "명/" + riderTotal + "명",
+                        fillZero(riderWorkOn, 2) + "명/" + fillZero(riderTotal, 2) + "명",
                         shareCallNum,
                     ];
 
@@ -135,14 +141,14 @@ const a = () => {
                             col.onclick = () => {
 
                                 $("branch-name").innerText = name;
-                                $("rider-branch-id").value = id;
-                                $("shop-branch-id").value = id;
+                                riderBranchId.value = id;
+                                shopBranchId.value = id;
                                 $("count-worker").innerText = riderWorkOn + "/" + riderTotal;
 
                                 $("branch-latitude").value = latitude;
                                 $("branch-longitude").value = longitude;
 
-                                b();
+                                getRiderControl();
                             }
                         });
 
@@ -151,13 +157,24 @@ const a = () => {
 
                     tableBranches.appendChild(row);
 
-                    const marker = createMarker(map, latitude, longitude, '/img/marker-branch.png');
+                    const marker = createMarker({
+                            map: map,
+                            position: {
+                                latitude: latitude,
+                                longitude: longitude,
+                            },
+                            icon: '/img/marker-branch.png'
+                        }
+                    );
+
                     markers.push(marker);
 
                     const info = createInfoWindow({
                         map: map,
-                        latitude: latitude,
-                        longitude: longitude,
+                        position: {
+                            latitude: latitude,
+                            longitude: longitude
+                        },
                         name: name,
                         icon: "/img/bubble-blue.png",
                         textColor: "#FFFFFF"
@@ -176,8 +193,7 @@ const a = () => {
     }
 };
 
-const b = () => {
-    const url = "/api/riders";
+const getRiderControl = () => {
     const formRiderSearch = $("form-rider-search");
 
     const workOn = $("work-on").checked;
@@ -200,13 +216,24 @@ const b = () => {
     const longitude = $("branch-longitude").value;
     const name = $("branch-name").innerText;
 
-    const marker = createMarker(map, latitude, longitude, '/img/marker-branch.png');
+    const marker = createMarker({
+            map: map,
+            position: {
+                latitude: latitude,
+                longitude: longitude,
+            },
+            icon: '/img/marker-branch.png'
+        }
+    );
+
     markers.push(marker);
 
     const info = createInfoWindow({
         map: map,
-        latitude: latitude,
-        longitude: longitude,
+        position: {
+            latitude: latitude,
+            longitude: longitude
+        },
         name: name,
         icon: "/img/bubble-blue.png",
         textColor: "#FFFFFF"
@@ -214,7 +241,7 @@ const b = () => {
 
     infos.push(info);
 
-    getJSON(url + '?' + formSerialize(formData)).then(
+    getJSON('/api/riders?' + formSerialize(formData)).then(
         (obj) => {
             const riders = obj["riders"];
 
@@ -224,40 +251,47 @@ const b = () => {
             for (let i = 0; i < riders.length; i++) {
                 const rider = riders[i];
 
-                const riderStatusId = rider["additional"]["riderStatusId"];
-                const allocateCount = rider["allocateCount"];
-                const completeCount = rider["completeCount"];
-                const pickupCount = rider["pickupCount"];
-                const tel = rider["tel"];
-                const latitude = rider["latitude"];
-                const longitude = rider["longitude"];
+                const riderStatusId = rider["riderStatusId"];
                 const name = rider["name"];
                 const id = rider["id"];
+                const latitude = rider["latitude"];
+                const longitude = rider["longitude"];
 
                 const text = [
                     "",
                     name,
-                    allocateCount,
-                    completeCount,
-                    pickupCount,
-                    tel,
+                    fillZero(rider["allocateCount"], 2),
+                    fillZero(rider["completeCount"], 2),
+                    fillZero(rider["pickupCount"], 2),
+                    rider["tel"]
                 ];
 
-                const row = createRow(text, (row) => {
-                    const marker = createMarker(map, latitude, longitude, '/img/marker-rider.png');
-                    markers.push(marker);
-
-                    const info = createInfoWindow({
+                const marker = createMarker({
                         map: map,
+                        position: {
+                            latitude: latitude,
+                            longitude: longitude,
+                        },
+                        icon: '/img/marker-rider.png'
+                    }
+                );
+
+                markers.push(marker);
+
+                const info = createInfoWindow({
+                    map: map,
+                    position: {
                         latitude: latitude,
-                        longitude: longitude,
-                        name: name,
-                        icon: "/img/bubble-white.png",
-                        textColor: "#4a4a4a"
-                    });
+                        longitude: longitude
+                    },
+                    name: name,
+                    icon: "/img/bubble-white.png",
+                    textColor: "#4a4a4a"
+                });
 
-                    infos.push(info);
+                infos.push(info);
 
+                const row = createRow(text, (row) => {
                     row.ondblclick = () => {
                         getJSON("/api/riders/" + id).then(
                             (obj) => {
@@ -266,6 +300,76 @@ const b = () => {
                                 const tel = rider["tel"];
                                 const name = rider["name"];
                                 const orders = rider["orders"];
+
+                                const table = $("rider-order-status");
+                                table.innerHTML = '';
+
+                                for (let i = 0; i < orders.length; i++) {
+                                    const order = orders[i];
+
+                                    const id = order['id'];
+                                    const orderStatusId = order['orderStatusId'].toString();
+
+                                    let sMarkerIconUrl = null;
+                                    let dMarkerIconUrl = null;
+                                    let strokeColor = null;
+
+                                    if (orderStatusId === '2') {
+                                        sMarkerIconUrl = '/img/marker-start-allocated.png';
+                                        dMarkerIconUrl = '/img/marker-arrival-allocated.png';
+                                        strokeColor = 'ff6d8b';
+                                    } else if (orderStatusId === '3') {
+                                        sMarkerIconUrl = '/img/marker-start-pickup.png';
+                                        dMarkerIconUrl = '/img/marker-arrival-pickup.png';
+                                        strokeColor = 'c043ff';
+                                    }
+
+                                    const startPosition = {
+                                        latitude: order['startingLatitude'],
+                                        Longitude: order['startingLongitude']
+                                    };
+
+                                    const destinationPosition = {
+                                        latitude: order['destinationLatitude'],
+                                        Longitude: order['destinationLongitude']
+                                    };
+
+                                    drawPolyLine({
+                                        map: map,
+                                        path: [startPosition, destinationPosition],
+                                        strokeColor: strokeColor
+                                    });
+
+                                    markers.push(
+                                        createMarker({
+                                                map: map,
+                                                position: startPosition,
+                                                icon: sMarkerIconUrl
+                                            }
+                                        )
+                                    );
+
+                                    markers.push(
+                                        createMarker({
+                                                map: map,
+                                                position: destinationPosition,
+                                                icon: dMarkerIconUrl
+                                            }
+                                        )
+                                    );
+
+                                    const row = createRow(
+                                        [
+                                            '<button class="btn_pickup">픽업</button>',
+                                            '<span>' + order['shopName'] + '</span>\n' +
+                                            '<span> > </span>\n' +
+                                            '<span>' + order['addressDetail'] + '</span>',
+                                            '<button class="btn_detail">주문상세보기</button>'
+                                        ]
+                                    );
+
+                                    table.appendChild(row)
+                                }
 
                                 $("rider-name").innerHTML = name;
                                 $("rider-tel").innerHTML = tel;
@@ -290,17 +394,14 @@ const b = () => {
             }
 
             setMarkerCenter(map, markers);
-            displayRiderControl()
-
-
+            displayRiderControl();
         }
     ).catch((e) => {
         console.log(e);
     })
 };
 
-const c = () => {
-    const url = "/api/shops";
+const getShopControl = () => {
     const formShopSearch = $("form-shop-search");
     const formData = new FormData(formShopSearch);
 
@@ -311,13 +412,24 @@ const c = () => {
     const longitude = $("branch-longitude").value;
     const name = $("branch-name").innerText;
 
-    const marker = createMarker(map, latitude, longitude, '/img/marker-branch.png');
+    const marker = createMarker({
+            map: map,
+            position: {
+                latitude: latitude,
+                longitude: longitude
+            },
+            icon: '/img/marker-branch.png'
+        }
+    );
+
     markers.push(marker);
 
     const info = createInfoWindow({
         map: map,
-        latitude: latitude,
-        longitude: longitude,
+        position: {
+            latitude: latitude,
+            longitude: longitude
+        },
         name: name,
         icon: "/img/bubble-blue.png",
         textColor: "#FFFFFF"
@@ -325,7 +437,7 @@ const c = () => {
 
     infos.push(info);
 
-    getJSON(url + '?' + formSerialize(formData)).then(
+    getJSON('/api/shops?' + formSerialize(formData)).then(
         (obj) => {
             const shops = obj["shops"];
 
@@ -335,43 +447,47 @@ const c = () => {
             for (let i = 0; i < shops.length; i++) {
                 const shop = shops[i];
 
-                const allocateCount = shop["allocateCount"];
-                const completeCount = shop["completeCount"];
-                const pickupCount = shop["pickupCount"];
-                const tel = shop["tel"];
-                const latitude = shop["latitude"];
-                const longitude = shop["longitude"];
                 const name = shop["name"];
 
                 const text = [
                     name,
                     "",
-                    allocateCount,
-                    completeCount,
-                    pickupCount,
-                    tel,
+                    fillZero(shop["allocateCount"], 2),
+                    fillZero(shop["completeCount"], 2),
+                    fillZero(shop["pickupCount"], 2),
+                    shop["tel"]
                 ];
 
-                const row = createRow(text, () => {
-                    const marker = createMarker(map, latitude, longitude, '/img/marker-shop.png');
-                    markers.push(marker);
-
-                    const info = createInfoWindow({
+                const marker = createMarker({
                         map: map,
-                        latitude: latitude,
-                        longitude: longitude,
-                        name: name,
-                        icon: "/img/bubble-red.png",
-                        textColor: "#FFFFFF"
-                    });
+                        position: {
+                            latitude: shop["latitude"],
+                            longitude: shop["longitude"]
+                        },
+                        icon: '/img/marker-shop.png'
+                    }
+                );
+                markers.push(marker);
 
-                    infos.push(info);
+                const info = createInfoWindow({
+                    map: map,
+                    position: {
+                        latitude: latitude,
+                        longitude: longitude
+                    },
+                    name: name,
+                    icon: "/img/bubble-red.png",
+                    textColor: "#FFFFFF"
                 });
+
+                infos.push(info);
+
+                const row = createRow(text);
 
                 tableShops.appendChild(row);
             }
 
-            getJSON("/api/orders/statuses?branch-id=" + $("shop-branch-id").value).then(
+            getJSON("/api/orders/statuses?branch-id=" + shopBranchId.value).then(
                 (obj) => {
                     const info = obj["info"];
 
@@ -406,55 +522,90 @@ const c = () => {
         }
     ).catch((e) => {
         console.log(e);
-    })
+    });
+
+    getJSON('/api/riders?branch-id=' + shopBranchId.value).then(
+        (obj) => {
+            const riders = obj["riders"];
+
+            for (let i = 0; i < riders.length; i++) {
+                const rider = riders[i];
+
+                const latitude = rider["latitude"];
+                const longitude = rider["longitude"];
+                const name = rider["name"];
+
+                const marker = createMarker({
+                        map: map,
+                        position: {
+                            latitude: latitude,
+                            longitude: longitude
+                        },
+                        icon: '/img/marker-rider.png'
+                    }
+                );
+
+                markers.push(marker);
+
+                const info = createInfoWindow({
+                    map: map,
+                    position: {
+                        latitude: latitude,
+                        longitude: longitude
+                    },
+                    name: name,
+                    icon: "/img/bubble-white.png",
+                    textColor: "#4a4a4a"
+                });
+
+                infos.push(info);
+            }
+        }
+    );
 };
 
 switch (parseInt(group)) {
     case Group.HEAD:
     case Group.DISTRIB:
-        a();
+        getBranchControl();
         break;
     case Group.BRANCH:
 
-        $("rider-branch-id").value = id;
-        $("shop-branch-id").value = id;
+        riderBranchId.value = id;
+        shopBranchId.value = id;
 
-        b();
+        getRiderControl();
         break;
     case Group.SHOP:
 
-        $("shop-branch-id").value = id;
+        shopBranchId.value = id;
 
-        b();
+        getRiderControl();
         break;
 }
 
-const formBranchSearch = $("form-branch-search");
-const formRiderSearch = $("form-rider-search");
-const formShopSearch = $("form-shop-search");
-
 if (formBranchSearch !== null) {
     formBranchSearch.onsubmit = () => {
-        a();
+        getBranchControl();
         return false;
     };
 }
 
 if (formBranchSearch !== null) {
     formRiderSearch.onsubmit = () => {
-        b();
+        getRiderControl();
         return false;
     };
 }
 
 formShopSearch.onsubmit = () => {
-    c();
+    getShopControl();
     return false;
 };
 
-$("btn-rider-control").onclick = b;
-$("btn-shop-control").onclick = c;
-$("btn-close").onclick = a;
+$("btn-rider-control").onclick = getRiderControl;
+$("btn-shop-control").onclick = getShopControl;
+$("btn-close").onclick = getBranchControl;
 
 $("afe").onclick = function () {
     if (this.checked === true) {

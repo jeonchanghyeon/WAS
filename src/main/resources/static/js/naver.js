@@ -1,9 +1,12 @@
-export const createMarker = (map, latitude, longitude, icon) => {
+export const createMarker = (option) => {
 
     return new naver.maps.Marker({
-        position: new naver.maps.LatLng(latitude, longitude),
-        map: map,
-        icon: icon
+        position: new naver.maps.LatLng(
+            option.position.latitude,
+            option.position.longitude
+        ),
+        map: option.map,
+        icon: option.icon
     });
 };
 
@@ -154,9 +157,26 @@ export const createInfoWindow = (option) => {
 
     return new InfoOverlay({
         map: option.map,
-        position: new naver.maps.LatLng(option.latitude, option.longitude),
+        position: new naver.maps.LatLng(
+            option.position.latitude,
+            option.position.longitude
+        ),
         infoName: option.name,
         icon: option.icon,
         textColor: option.textColor
+    });
+};
+
+export const drawPolyLine = (option) => {
+
+    return new naver.maps.Polyline({
+        map: option.map,
+        path: option.path.map(
+            (position) => new naver.maps.LatLng(
+                position.latitude,
+                position.Longitude
+            )
+        ),
+        strokeColor: option.strokeColor
     });
 };
