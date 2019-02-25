@@ -1,36 +1,36 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<div th:fragment="modal" id="modal" class="address-modal">
-    <div class="modal-container">
+<div th:fragment="modal" id="modal" class="addr-modal-container">
+    <div class="addr-modal">
         <!-- 헤더 -->
-        <header class="modal-header">
-            <span>주소검색</span>
-            <button class="close-button-white" id="btn_close"></button>
+        <header class="addr-header">
+            <span class="addr-header__title">주소검색</span>
+            <button class="close-button addr-header__close-button" id="btn_close"></button>
         </header>
 
-        <div class="body">
+        <div class="addr-body">
             <!-- 사이드 바 -->
             <aside class="aside">
-                <div class="title-block">
-                    <span>배달가능 동 선택</span>
+                <div class="aside__title-block">
+                    배달가능 동 선택
                 </div>
-                <div class="select-container">
+                <div class="aside__select-container">
                     <!-- 자음 선택 테이블 -->
-                    <div class="consonant" id="consonant-area">
-                        <button value="0">전체</button>
-                        <button value="1">ㄱ</button>
-                        <button value="2">ㄴ</button>
-                        <button value="3">ㄷ</button>
-                        <button value="4">ㄹ</button>
-                        <button value="5">ㅁ</button>
-                        <button value="6">ㅂ</button>
-                        <button value="7">ㅅ</button>
-                        <button value="8">ㅇ</button>
-                        <button value="9">ㅈ</button>
-                        <button value="10">ㅊ</button>
-                        <button value="11">ㅋ</button>
-                        <button value="12">ㅌ</button>
-                        <button value="13">ㅍ</button>
-                        <button value="14">ㅎ</button>
+                    <div class="aside__consonant" id="consonant-area">
+                        <button class="aside__item" value="0">전체</button>
+                        <button class="aside__item" value="1">ㄱ</button>
+                        <button class="aside__item" value="2">ㄴ</button>
+                        <button class="aside__item" value="3">ㄷ</button>
+                        <button class="aside__item" value="4">ㄹ</button>
+                        <button class="aside__item" value="5">ㅁ</button>
+                        <button class="aside__item" value="6">ㅂ</button>
+                        <button class="aside__item" value="7">ㅅ</button>
+                        <button class="aside__item" value="8">ㅇ</button>
+                        <button class="aside__item" value="9">ㅈ</button>
+                        <button class="aside__item" value="10">ㅊ</button>
+                        <button class="aside__item" value="11">ㅋ</button>
+                        <button class="aside__item" value="12">ㅌ</button>
+                        <button class="aside__item" value="13">ㅍ</button>
+                        <button class="aside__item aside__item--last" value="14">ㅎ</button>
                     </div>
 
                     <form id="form_enable_area" hidden="hidden">
@@ -39,81 +39,78 @@
                     </form>
 
                     <!-- 동 선택 테이블 -->
-                    <div class="enable-dong-scroll" id="enable_dong">
+                    <div class="aside__enable-dong" id="enable_dong">
                     </div>
                 </div>
             </aside>
 
             <!-- 사이드바 제외한 오른쪽 부분 -->
-            <section class="modal-main-section">
+            <section class="addr-main">
                 <!-- 검색 -->
-                <div class="upper-area">
-                    <div class="select-tower">
-                        <button class="rect-empty-white">전체</button>
-                        <button class="rect-empty-white">아파트</button>
-                        <button class="rect-empty-white">빌라/주택</button>
-                        <button class="rect-empty-white">모텔/호텔</button>
-                        <button class="rect-empty-white">학교</button>
-                        <button class="rect-empty-white">당구장</button>
-                        <button class="rect-empty-white">병원</button>
-                        <button class="rect-empty-white">학원</button>
-                        <button class="rect-empty-white">빌딩</button>
-                        <button class="rect-empty-white">관공서</button>
-                    </div>
+                <div class="select-tower-container addr-main__select-tower-container">
+                    <button class="button button--empty-white select-tower-container__button">전체</button>
+                    <button class="button button--empty-white select-tower-container__button">아파트</button>
+                    <button class="button button--empty-white select-tower-container__button">빌라/주택</button>
+                    <button class="button button--empty-white select-tower-container__button">모텔/호텔</button>
+                    <button class="button button--empty-white select-tower-container__button">학교</button>
+                    <button class="button button--empty-white select-tower-container__button">당구장</button>
+                    <button class="button button--empty-white select-tower-container__button">병원</button>
+                    <button class="button button--empty-white select-tower-container__button">학원</button>
+                    <button class="button button--empty-white select-tower-container__button">빌딩</button>
+                    <button class="button button--empty-white select-tower-container__button">관공서</button>
+                </div>
 
-                    <div class="search-area">
-                        <div class="search-container">
-                            <form id="form-jibun" hidden="hidden">
-                                <input type="hidden" id="jibun"/>
-                            </form>
+                <div class="search-container addr-main__search-container">
+                    <form id="form-jibun" hidden="hidden">
+                        <input type="hidden" id="jibun"/>
+                    </form>
 
-                            <span>지번주소</span>
-                            <input type="text" placeholder="ex) 44-1, 용호로 38-17" class="rect-empty-white"
-                                   id="jibun-detail"/>
-                            <button type="submit" class="rect-fill-orange" form="form-jibun">주소검색</button>
-                        </div>
-                        <span class="caption">* 동을 제외하고 작성해주세요.</span>
-                        <div class="search-container">
-                            <form hidden="hidden">
-                                <input type="hidden"/>
-                            </form>
+                    <span class="search-container__title">지번주소</span>
+                    <input class="text search-container__text" type="text" placeholder="ex) 44-1, 용호로 38-17"
+                           id="jibun-detail"/>
+                    <button class="button search-container__button" type="submit" form="form-jibun">주소검색</button>
+                </div>
+                <span class="search-container__caption">* 동을 제외하고 작성해주세요.</span>
+                <div class="search-container addr-main__search-container addr-main__search-container--margin">
+                    <form hidden="hidden">
+                        <input type="hidden"/>
+                    </form>
 
-                            <span>명칭</span>
-
-                            <input type="text" placeholder="ex) 푸르지오 아파트" class="rect-empty-white"/>
-                            <button type="submit" class="rect-fill-orange">주소검색</button>
-                        </div>
-                    </div>
+                    <span class="search-container__title">명칭</span>
+                    <input class="text search-container__text" type="text" placeholder="ex) 푸르지오 아파트"/>
+                    <button class="button search-container__button" type="submit">주소검색</button>
                 </div>
                 <!-- 결과 목록 -->
-                <div class="scroll-table">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>즐겨찾기</th>
-                            <th>건물명</th>
-                            <th>지번주소</th>
-                            <th>도로명주소</th>
-                        </tr>
-                        </thead>
-                    </table>
-                    <div class="address-list-scroll">
-                        <table>
-                            <tbody>
+                <div class="result-container">
+                    <div class="scroll-table">
+                        <table class="scroll-table__thead result-container__thead">
+                            <thead>
                             <tr>
-                                <td class="star"></td>
-                                <td>삼진여객</td>
-                                <td>각화동 183-18</td>
-                                <td>군왕로 194번길 13</td>
+                                <th class="scroll-table__thead-cell">즐겨찾기</th>
+                                <th class="scroll-table__thead-cell">건물명</th>
+                                <th class="scroll-table__thead-cell">지번주소</th>
+                                <th class="scroll-table__thead-cell">도로명주소</th>
                             </tr>
-                            <tr>
-                                <td class="star-empty"></td>
-                                <td>삼진여객</td>
-                                <td>각화동 183-18</td>
-                                <td>군왕로 194번길 13</td>
-                            </tr>
-                            </tbody>
+                            </thead>
                         </table>
+                        <div class="scroll-table__scroll result-container__scroll">
+                            <table class="scroll-table__tbody result-container__tbody">
+                                <tbody>
+                                <tr>
+                                    <td class="star"></td>
+                                    <td>삼진여객</td>
+                                    <td>각화동 183-18</td>
+                                    <td>군왕로 194번길 13</td>
+                                </tr>
+                                <tr>
+                                    <td class="star star--empty"></td>
+                                    <td>삼진여객</td>
+                                    <td>각화동 183-18</td>
+                                    <td>군왕로 194번길 13</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>

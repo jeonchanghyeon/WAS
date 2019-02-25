@@ -32,6 +32,12 @@ $("btn-deposit").onclick = displayDepositSection;
 
 const mileageModal = $('mileage_modal');
 
+mileageModal.onclick = (ev) => {
+    if(ev.target.id === "mileage_modal") {
+        mileageModal.style.display = 'none';
+    }
+};
+
 $("close-button").onclick = () => {
     mileageModal.style.display = 'none';
 };

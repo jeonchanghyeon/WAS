@@ -1,34 +1,34 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<div th:fragment="menu_modal" id="menu_modal" class="menu-modal-background">
-    <div class="modal-container">
+<div th:fragment="menu_modal" id="menu_modal" class="menu-modal-container">
+    <div class="menu-modal">
         <!-- 헤더 -->
-        <header class="modal-header">
-            <div class="title">메뉴(POS)</div>
-            <button class="close-button-black" id="menu-close-button"></button>
+        <header class="menu-header">
+            <div class="menu-header__title">메뉴(POS)</div>
+            <button class="close-button close-button--black menu-header__close-button" id="menu-close-button"></button>
         </header>
         <!-- 바디 -->
-        <section class="main-section">
+        <section class="menu-body">
             <!--전체메뉴 리스트(왼쪽)-->
-            <div class="left-container">
-                <div class="table-title">전체 메뉴</div>
-                <div class="table-container">
-                    <table>
+            <div class="total-menu-container">
+                <div class="menu-table-title">전체 메뉴</div>
+                <div class="scroll-table total-menu-container__scroll-table">
+                    <table class="scroll-table__thead total-menu-container__thead">
                         <thead>
                         <tr>
-                            <td>상품명</td>
-                            <td>가격</td>
-                            <td></td>
+                            <td class="scroll-table__thead-cell">상품명</td>
+                            <td class="scroll-table__thead-cell">가격</td>
+                            <td class="scroll-table__thead-cell"></td>
                         </tr>
                         </thead>
                     </table>
-                    <div class="scroll-container">
-                        <table>
+                    <div class="scroll-table__scroll total-menu-container__scroll">
+                        <table class="scroll-table__tbody total-menu-container__tbody">
                             <tbody>
                             <tr>
                                 <td>짬뽕</td>
                                 <td>7,000</td>
                                 <td>
-                                    <button class="rect-empty-orange">선택</button>
+                                    <button class="button button--empty-orange total-menu-container__button">선택</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -37,32 +37,32 @@
                 </div>
             </div>
             <!-- 가운데 화살표 -->
-            <div class="right-arrow"></div>
+            <div class="menu-body__right-arrow"></div>
             <!--선택된 메뉴 리스트(오른쪽)-->
-            <div class="right-container">
-                <div class="table-title">선택된 메뉴</div>
-                <div class="table-container">
-                    <table class="table">
+            <div class="selected-menu-container">
+                <div class="menu-table-title menu-table-title--orange">선택된 메뉴</div>
+                <div class="scroll-table selected-menu-container__scroll-table">
+                    <table class="scroll-table__thead selected-menu-container__thead">
                         <thead>
                         <tr>
-                            <td>순번</td>
-                            <td>상품명</td>
-                            <td>개수</td>
-                            <td>가격</td>
+                            <td class="scroll-table__thead-cell">순번</td>
+                            <td class="scroll-table__thead-cell">상품명</td>
+                            <td class="scroll-table__thead-cell">개수</td>
+                            <td class="scroll-table__thead-cell">가격</td>
                         </tr>
                         </thead>
                     </table>
-                    <div class="scroll-container">
-                        <table class="table">
+                    <div class="scroll-table__scroll selected-menu-container__scroll">
+                        <table class="scroll-table__tbody selected-menu-container__tbody">
                             <tbody>
                             <tr>
                                 <td>2</td>
                                 <td>짬뽕</td>
                                 <td>
-                                    <div class="num-count-container">
-                                        <input class="minus-disable" type="button"/>
+                                    <div class="num-count">
+                                        <input class="num-count__minus num-count__minus--disable" type="button"/>
                                         <div name="value">0</div>
-                                        <input class="plus-enable" type="button"/>
+                                        <input class="num-count__plus" type="button"/>
                                     </div>
                                 </td>
                                 <td>7,000</td>
@@ -71,10 +71,10 @@
                                 <td>1</td>
                                 <td>짬뽕</td>
                                 <td>
-                                    <div class="num-count-container">
-                                        <input class="minus-enable" type="button"/>
+                                    <div class="num-count">
+                                        <input class="num-count__minus" type="button"/>
                                         <div name="value">1</div>
-                                        <input class="plus-enable" type="button"/>
+                                        <input class="num-count__plus" type="button"/>
                                     </div>
                                 </td>
                                 <td>7,000</td>
@@ -86,8 +86,8 @@
             </div>
         </section>
         <!-- 푸터(확인 버튼) -->
-        <section class="submit-section">
-            <button class="round-rect-fill-orange">확인</button>
+        <section class="menu-footer">
+            <button class="button button--round menu-footer__button">확인</button>
         </section>
     </div>
 </div>

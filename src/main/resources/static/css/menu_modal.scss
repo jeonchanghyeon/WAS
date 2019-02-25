@@ -1,200 +1,201 @@
-@import "common";
+$modal-width: 680px;
+$modal-height: 545px;
 
-.menu-modal-background {
-  $modal_width: 680px;
-  $modal_height: 545px;
-  @include bg-modal($modal_width, 112px, 112px);
+/* Container css */
+
+.menu-modal-container {
+  @include bg-modal($modal-width, 112px, 112px);
   position: fixed;
   top: 0;
   left: 0;
   display: none;
+}
 
-  /* TODO 컨테이너 관련 css */
-  .modal-container {
-    @include custom-font;
-    @include modal-attribute($modal_width, $modal_height);
+.menu-modal {
+  @include modal-attribute($modal-width, $modal-height);
+}
 
-    .modal-header {
-      @include underline;
-      width: calc(100% - 15px - 15px);
-      height: 47px;
-      padding-left: 15px;
-      padding-right: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+.menu-header {
+  @include underline;
+  width: calc(100% - 15px - 15px);
+  height: 47px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-      .title {
-        @include custom-font(16px, #4a4a4a, 500);
-        height: 100%;
-        display: flex;
-        align-items: center;
-      }
-
-      .close-button-black {
-        width: 14px;
-        height: 14px;
-      }
-    }
-  }
-
-  .main-section {
-    width: calc(100% - 30px - 30px);
-    height: 412px;
-    padding-left: 30px;
-    padding-right: 30px;
+  @include e('title') {
+    height: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-
-    .left-container {
-      width: 250px;
-      height: 100%;
-
-      .rect-empty-orange {
-        @include custom-font(12px, $color_orange, normal);
-        width: 48px;
-        height: 25px;
-      }
-    }
-
-    .right-container {
-      width: 320px;
-      height: 100%;
-
-      .table-title {
-        @include custom-font(14px, $color_orange, bold);
-      }
-
-      .table-container {
-        td, th {
-          &:nth-child(1) {
-            width: 15%;
-          }
-
-          &:nth-child(2) {
-            width: 30%;
-          }
-
-          &:nth-child(3) {
-            width: 25%;
-          }
-        }
-      }
-    }
+    font-size: 16px;
+    font-weight: 500;
   }
 
-  .submit-section {
-    flex: 1 1 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .round-rect-fill-orange {
-      @include custom-font($size: 16px, $color: #ffffff, $weight: bold);
-      width: 300px;
-      height: 46px;
-    }
+  @include e('close-button') {
+    width: 24px;
+    height: 24px;
+    background-size: 14px;
   }
+}
 
-  .num-count-container {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.menu-body {
+  width: calc(100% - 30px - 30px);
+  height: 412px;
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-  /* TODO 요소 관련 css */
-  .right-arrow {
+  @include e('right-arrow') {
     margin-top: 40px;
     width: 20px;
     height: 25px;
-    background: url($url_arrow_to_right) no-repeat center center;
+    background: url($url-arrow-to-right) no-repeat center center;
     background-size: 20px 25px;
   }
+}
 
-  .table-title {
-    @include custom-font($weight: bold);
-    height: 52px;
+.total-menu-container {
+  width: 250px;
+  height: 100%;
+
+  @include e('scroll-table') {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    height: calc(100% - 52px);
 
-  .table-container {
-    width: 100%;
-    height: calc(100% - 52px - 1px);
-    border: 1px solid $color_gray_border;
-
-    table {
-      @include custom-font;
-      text-align: center;
-      border-collapse: collapse;
-      width: 100%;
-
-      thead {
-        background-color: $color_gray_table;
-        color: $color_placeholder;
-        font-size: 12px;
-
-        th, td {
-          height: 24px;
-        }
+    th, td {
+      &:nth-child(1) {
+        width: 40%;
       }
 
-      tbody {
-        color: #1f1f1f;
-
-        tr {
-          @include underline;
-        }
-
-        th, td {
-          height: 32px;
-        }
+      &:nth-child(2) {
+        width: 30%;
       }
-
-      th, td {
-        height: 32px;
-
-        &:nth-child(1) {
-          width: 40%;
-        }
-
-        &:nth-child(2) {
-          width: 30%;
-        }
-      }
-    }
-
-    .scroll-container {
-      @include scroll-view;
-      height: calc(100% - 24px);
     }
   }
 
-  .plus-enable {
+  @include e('thead') {
+    font-size: 12px;
+    color: #979797;
+
+    td, th {
+      height: 24px; //테이블 헤더의 높이 정의
+    }
+  }
+
+  @include e('scroll') {
+    height: calc(100% - 24px); //테이블 바디의 높이 정의
+  }
+
+  @include e('tbody') {
+    td, th {
+      height: 32px; //테이블 바디 로우 높이 정의
+    }
+  }
+
+  @include e('button') {
+    width: 48px;
+    height: 25px;
+  }
+}
+
+.selected-menu-container {
+  width: 320px;
+  height: 100%;
+
+  @include e('scroll-table') {
+    width: 100%;
+    height: calc(100% - 52px);
+
+    td, th {
+      &:nth-child(1) {
+        width: 15%;
+      }
+
+      &:nth-child(2) {
+        width: 30%;
+      }
+
+      &:nth-child(3) {
+        width: 25%;
+      }
+    }
+  }
+
+  @include e('thead') {
+    font-size: 12px;
+    color: #979797;
+
+    td, th {
+      height: 24px; //테이블 헤더의 높이 정의
+    }
+  }
+
+  @include e('scroll') {
+    height: calc(100% - 24px); //테이블 바디의 높이 정의
+  }
+
+  @include e('tbody') {
+    td, th {
+      height: 32px; //테이블 바디 로우 높이 정의
+    }
+  }
+}
+
+.menu-footer {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include e('button'){
+    font-size: 16px;
+    width: 300px;
+    height: 46px;
+  }
+}
+
+/* BLOCK CSS */
+.menu-table-title {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+
+  @include m('orange') {
+    color: $color-orange
+  }
+}
+
+.num-count {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include e('plus') {
     width: 19px;
     height: 19px;
-    background: url($url_plus_enable) no-repeat center center;
+    background: url($url-plus-enable) no-repeat center center;
     background-size: 19px;
     border: none;
   }
 
-  .minus-enable {
+  @include e('minus') {
     width: 19px;
     height: 19px;
-    background: url($url_minus_enable) no-repeat center center;
+    background: url($url-minus-enable) no-repeat center center;
     background-size: 19px;
     border: none;
-  }
 
-  .minus-disable {
-    width: 19px;
-    height: 19px;
-    background: url($url_minus_disable) no-repeat center center;
-    background-size: 19px;
-    border: none;
+    @include m('disable') {
+      background: url($url-minus-disable) no-repeat center center;
+      background-size: 19px;
+    }
   }
 }

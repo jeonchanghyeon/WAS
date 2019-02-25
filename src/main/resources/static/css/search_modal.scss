@@ -1,126 +1,45 @@
-@import "common";
+$modal_width: 340px;
+$modal_height: 545px;
 
-.search-modal-background {
-  $modal_width: 340px;
-  $modal_height: 545px;
+/* Container CSS */
+.search-modal-container {
   @include bg-modal($modal_width, 121px, 121px);
   position: fixed;
   top: 0;
   left: 0;
   display: none;
+}
 
-  /* TODO 컨테이너 관련 css */
-  .modal-container {
-    @include custom-font;
-    @include modal-attribute($modal_width, $modal_height);
+.search-modal {
+  @include modal-attribute($modal_width, $modal_height);
+}
 
-    .modal-header {
-      @include underline;
-      width: calc(100% - 15px - 15px);
-      height: 47px;
-      padding-left: 15px;
-      padding-right: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+.search-section {
+  @include underline;
+  width: calc(100% - 15px - 15px);
+  height: 64px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-      .title {
-        @include custom-font($size: 16px, $weight: bold);
-        height: 100%;
-        display: flex;
-        align-items: center;
-      }
-
-      .close-button-black {
-        width: 14px;
-        height: 14px;
-      }
-    }
-
-    .branch-search-section {
-      @include underline;
-      width: calc(100% - 15px - 15px);
-      height: 64px;
-      padding-left: 15px;
-      padding-right: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .search-box {
-        width: 181px;
-      }
-    }
-
-    .shop-search-section {
-      @include underline;
-      width: calc(100% - 15px - 15px);
-      height: 64px;
-      padding-left: 15px;
-      padding-right: 15px;
-      display: flex;
-      align-items: center;
-
-      .search-box {
-        width: 100%;
-      }
-    }
-
-    .result-section {
-      @include scroll-view;
-      width: 100%;
-      height: 359px - 23px;
-    }
-
-    .submit-section {
-      padding: 23px 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      .round-rect-fill-orange {
-        @include custom-font($size: 16px, $color: #ffffff, $weight: bold);
-        width: 300px;
-        height: 46px;
-      }
-    }
-  }
-
-  /* TODO 요소 관련 css */
-  .search-box {
-    width: 100%;
-    height: 38px;
-
-    > input {
-      @include custom-font;
-      width: calc(100% - 40px);
-    }
-
-    > button {
-      min-width: 40px;
-      background-size: 15px 15px;
-    }
-  }
-
-  .selector {
-    @include custom-font;
-    width: 120px;
+  @include e('search-form') {
+    width: 181px;
     height: 40px;
-    border: 1px solid $color_gray_border;
-    background: #ffffff url($url_select_btn_bright) no-repeat right center;
-    background-size: 40px 40px;
-    padding-left: 12px;
 
-    -webkit-appearance: none; /* 화살표 없애기 for chrome*/
-    -moz-appearance: none; /* 화살표 없애기 for firefox*/
-    appearance: none; /* 화살표 없애기 공통*/
-    &::-ms-expand {
-      display: none; /* 화살표 없애기 for IE10, 11*/
+    @include m('shop') {
+      width: 100%;
     }
   }
+}
 
-  .radio-items {
-    @include custom-font;
+.result-section {
+  @include scroll-view;
+  width: 100%;
+  height: 359px - 23px;
+
+  @include e('radio-item') {
     @include underline;
     width: calc(100% - 34px);
     height: 40px;
@@ -128,28 +47,45 @@
     padding-right: 17px;
     display: flex;
     align-items: center;
+  }
 
-    /* 라디오 버튼 덮힐 경우 */
-    &:hover input[type="radio"] ~ .check-marker {
-      background: url($url_radio_hover) no-repeat;
-      background-size: 20px;
-    }
-
-    input[type="radio"] {
-      /* 라디오 버튼 선택된 경우 */
-      &:checked ~ .check-marker {
-        background: url($url_radio_on) no-repeat;
-        background-size: 20px;
-      }
-    }
-
-    /* 라디오 버튼 선택X */
-    .check-marker {
-      width: 20px;
-      height: 20px;
-      margin-right: 18px;
-      background: url($url_radio_off) no-repeat;
-      background-size: 20px;
-    }
+  @include e('shape') {
+    background-size: 20px;
+    padding-left: 38px;
   }
 }
+
+.submit-section {
+  padding: 23px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include e('button') {
+    width: 300px;
+    height: 46px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $color-white;
+  }
+}
+
+/* BLOCK css */
+.selector {
+  width: 120px;
+  height: 40px;
+  border: 1px solid $color_gray_border;
+  background: #ffffff url($url_select_btn_bright) no-repeat right center;
+  background-size: 40px 40px;
+  padding-left: 12px;
+
+  -webkit-appearance: none; /* 화살표 없애기 for chrome*/
+  -moz-appearance: none; /* 화살표 없애기 for firefox*/
+  appearance: none; /* 화살표 없애기 공통*/
+  &::-ms-expand {
+    display: none; /* 화살표 없애기 for IE10, 11*/
+  }
+}
+
+
+

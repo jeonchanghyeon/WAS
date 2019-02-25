@@ -1,198 +1,211 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<div th:fragment="modal" class="order-detail-modal-background" id="modal">
-    <div class="order-detail-modal-container">
+<div th:fragment="modal" class="order-detail-modal-container" id="modal">
+    <div class="order-detail-modal">
         <!-- 헤더 -->
-        <header class="detail-header">
-            <div class="title-container">
-                <span class="title">배송 상세 보기</span>
-                <span class="belong">광주총판</span>
-                <span class="belong">광주두암지사</span>
+        <header class="order-detail-header order-detail-modal__order-detail-header">
+            <div class="order-detail-header__title-group">
+                <span class="order-detail-header__title">배송 상세 보기</span>
+                <span class="order-detail-header__belong">광주총판</span>
+                <span class="order-detail-header__belong order-detail-header__belong--before">광주두암지사</span>
             </div>
-            <button class="close-button-black" id="btn_close">x</button>
+            <button class="close-button close-button--black order-detail-header__close-button" id="btn_close"></button>
         </header>
 
         <!-- 바디 -->
-        <div class="body">
+        <div class="order-detail-body order-detail-modal__order-detail-body">
             <!-- 사이드 바 -->
-            <aside class="aside">
+            <aside class="order-detail-aside order-detail-body__order-detail-aside">
                 <!-- 기본 정보 -->
-                <div class="inform-container">
-                    <span class="aside-subsection-title">기본정보</span>
-                    <table class="inform-table">
-                        <tr>
-                            <th>거리</th>
-                            <td id="distance">1.26km</td>
-                        </tr>
-                        <tr>
-                            <th>구역</th>
-                            <td id="branchName">두암동</td>
-                        </tr>
-                    </table>
-                </div>
+                <span class="order-detail-aside__title">기본정보</span>
+                <table class="order-detail-aside__table">
+                    <tr>
+                        <th class="order-detail-aside__th">거리</th>
+                        <td class="order-detail-aside__td" id="distance">1.26km</td>
+                    </tr>
+                    <tr>
+                        <th class="order-detail-aside__th">구역</th>
+                        <td class="order-detail-aside__td" id="branchName">두암동</td>
+                    </tr>
+                </table>
                 <!-- 배달대행료 -->
-                <div class="inform-container">
-                    <span class="aside-subsection-title">배달대행료</span>
-                    <table class="inform-table">
-                        <tr>
-                            <th>배달대행료</th>
-                            <td id="deliveryCost">4200원</td>
-                        </tr>
-                        <tr>
-                            <th>할증</th>
-                            <td id="extraCharge">0원</td>
-                        </tr>
-                        <tr>
-                            <th>배달추가요금</th>
-                            <td id="addCost">0원</td>
-                        </tr>
-                        <tr>
-                            <th>대행료합계</th>
-                            <td id="sum">4200원</td>
-                        </tr>
-                    </table>
-                </div>
+                <span class="order-detail-aside__title">배달대행료</span>
+                <table class="order-detail-aside__table">
+                    <tr>
+                        <th class="order-detail-aside__th">배달대행료</th>
+                        <td class="order-detail-aside__td" id="deliveryCost">4200원</td>
+                    </tr>
+                    <tr>
+                        <th class="order-detail-aside__th">할증</th>
+                        <td class="order-detail-aside__td" id="extraCharge">0원</td>
+                    </tr>
+                    <tr>
+                        <th class="order-detail-aside__th">배달추가요금</th>
+                        <td class="order-detail-aside__td" id="addCost">0원</td>
+                    </tr>
+                    <tr>
+                        <th class="order-detail-aside__th">대행료합계</th>
+                        <td class="order-detail-aside__td" id="sum">4200원</td>
+                    </tr>
+                </table>
 
                 <!-- 배달대행로 지불방법 -->
-                <div class="delivery-pay-container">
-                    <span class="aside-subsection-title">배달대행료 지불방법</span>
-                    <div class="delivery-pay-buttons">
-                        <button class="aside-btn-unselected" id="aside_cash">현금</button>
-                        <button class="aside-btn-selected" id="aside_point">포인트</button>
-                    </div>
+                <span class="order-detail-aside__title">배달대행료 지불방법</span>
+                <div class="delivery-pay-buttons order-detail-aside__delivery-pay-buttons">
+                    <button class="button button--empty-white delivery-pay-buttons__button" id="aside_cash">현금</button>
+                    <button class="button button--empty-orange delivery-pay-buttons__button" id="aside_point">포인트
+                    </button>
                 </div>
 
                 <!-- 배송현황 -->
-                <div class="delivery-status-container">
-                    <span class="aside-subsection-title">배송현황</span>
-                    <div class="aside-status-container">
-                        <div class="current-status-container">
-                            <div class="current-status-default">
-                                <span>접수</span>
-                                <span>12:03</span>
-                            </div>
-                        </div>
-                        <div class="current-status-container">
-                            <div class="current-status-color">
-                                <span>배차</span>
-                                <span>12:03</span>
-                            </div>
-                        </div>
-                        <div class="current-status-container">
-                            <div class="current-status-default">
-                                <span>픽업</span>
-                                <span>-</span>
-                            </div>
-                        </div>
-                        <div class="current-status-container">
-                            <div class="current-status-default">
-                                <span>완료</span>
-                                <span>-</span>
-                            </div>
-                        </div>
+                <span class="order-detail-aside__title">배송현황</span>
+                <div class="order-status-container order-detail-aside__order-status-container">
+                    <div class="current-status order-status-container__current-status">
+                        <div class="current-status__name">접수</div>
+                        <div>12:03</div>
+                    </div>
+                    <div class="order-status-container__arrow"></div>
+                    <div class="current-status current-status--orange order-status-container__current-status">
+                        <div class="current-status__name">배차</div>
+                        <div>12:03</div>
+                    </div>
+                    <div class="order-status-container__arrow"></div>
+                    <div class="current-status current-status--normal order-status-container__current-status">
+                        <div class="current-status__name">픽업</div>
+                        <div>-</div>
+                    </div>
+                    <div class="order-status-container__arrow"></div>
+                    <div class="current-status current-status--normal order-status-container__current-status">
+                        <div class="current-status__name">완료</div>
+                        <div>-</div>
                     </div>
                 </div>
-
             </aside>
 
-            <section class="main-section">
+            <section class="order-detail-main-section order-detail-body__order-detail-main-section">
                 <!-- 상태변경 -->
-                <div class="status-container">
-                    <button class="border-button" id="orderStatusId1" value="1">주문수정</button>
-                    <button class="border-button" id="orderStatusId6" value="6">추가접수</button>
-                    <button class="fill-button" id="orderStatusId7" value="7">완료</button>
-                    <button class="fill-button" id="orderStatusId4" value="4">배달기사재배차</button>
-                    <button class="default-button" id="orderStatusId2" value="2">주문취소</button>
-                    <button class="default-button" id="orderStatusId3" value="3">배차취소</button>
-                    <button class="default-button" id="orderStatusId5" value="5">픽업취소</button>
+                <div class="status-button-container order-detail-main-section__status-button-container">
+                    <button class="button button--round button--empty-orange status-button-container__button"
+                            id="orderStatusId1" value="1">주문수정
+                    </button>
+                    <button class="button button--round button--empty-orange status-button-container__button"
+                            id="orderStatusId6" value="6">추가접수
+                    </button>
+                    <button class="button button--round status-button-container__button" id="orderStatusId7" value="7">
+                        완료
+                    </button>
+                    <button class="button button--round status-button-container__button" id="orderStatusId4" value="4">
+                        배달기사재배차
+                    </button>
+                    <button class="button button--round button--empty-white status-button-container__button"
+                            id="orderStatusId2" value="2">주문취소
+                    </button>
+                    <button class="button button--round button--empty-white status-button-container__button"
+                            id="orderStatusId3" value="3">배차취소
+                    </button>
+                    <button class="button button--round button--empty-white status-button-container__button status-button-container__button--end"
+                            id="orderStatusId5" value="5">픽업취소
+                    </button>
                 </div>
 
                 <!-- 출발지, 도착지, 기사정보, 배송메시지 정보 -->
-                <div class="delivery-info-container">
-                    <div class="delivery-contents-container">
-                        <div class="contents-sub-title">출발지</div>
-                        <span class="contents">미스터피자 중흥점</span>
+                <div class="delivery-info-container order-detail-main-section__delivery-info-container">
+                    <div class="delivery-info-row delivery-info-container__delivery-info-row">
+                        <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle">출발지</div>
+                        <div class="order-detail-contents">미스터피자 중흥점</div>
                     </div>
-                    <div class="delivery-contents-container">
-                        <div class="contents-sub-title">도착지</div>
-                        <div>
-                            <table class="contents-table">
-                                <tr>
-                                    <th>전화번호</th>
-                                    <td>010-1234-5678</td>
-                                </tr>
-                                <tr>
-                                    <th>요청사항</th>
-                                    <td>한개 빠진게 있어서 다시 부릅니다 ㅜ 대신 더 맛있게 해주세요</td>
-                                </tr>
-                                <tr>
-                                    <th>도로명주소</th>
-                                    <td>부산광역시 북구 화명동 69 부산화명수목원 투썸플레이스</td>
-                                </tr>
-                                <tr>
-                                    <th>지번주소</th>
-                                    <td>부산광역시 북구 산성로 299(화명동) 부산화명수목원 투썸플레이스</td>
-                                </tr>
-                                <tr>
-                                    <th>상세주소</th>
-                                    <td>투썸아파트 201호</td>
-                                </tr>
-                            </table>
+                    <div class="delivery-info-row delivery-info-container__delivery-info-row">
+                        <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle">도착지</div>
+                        <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
+                            전화번호
                         </div>
+                        <div class="order-detail-contents">010-1234-5678</div>
                     </div>
-                    <div class="delivery-contents-container">
-                        <div class="contents-sub-title">기사정보</div>
-                        <span class="contents">윤태호1기사</span>
-                        <span class="contents"><img alt="logo" class="call_icon" src="/img/phone.png"/>010-1234-5678</span>
+                    <div class="delivery-info-row delivery-info-container__delivery-info-row">
+                        <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle"></div>
+                        <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
+                            요청사항
+                        </div>
+                        <div class="order-detail-contents">한개 빠진게 있어서 다시 부릅니다 ㅜ 대신 더 맛있게 해주세요</div>
+                    </div>
+                    <div class="delivery-info-row delivery-info-container__delivery-info-row">
+                        <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle"></div>
+                        <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
+                            도로명주소
+                        </div>
+                        <div class="order-detail-contents">부산광역시 북구 화명동 69 부산화명수목원 투썸플레이스</div>
+                    </div>
+                    <div class="delivery-info-row delivery-info-container__delivery-info-row">
+                        <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle"></div>
+                        <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
+                            지번주소
+                        </div>
+                        <div class="order-detail-contents">부산광역시 북구 산성로 299(화명동) 부산화명수목원 투썸플레이스</div>
+                    </div>
+                    <div class="delivery-info-row delivery-info-container__delivery-info-row">
+                        <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle"></div>
+                        <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
+                            상세주소
+                        </div>
+                        <div class="order-detail-contents">투썸아파트 201호</div>
+                    </div>
+
+                    <div class="delivery-info-row delivery-info-container__delivery-info-row delivery-info-container__delivery-info-row--end">
+                        <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle">기사정보</div>
+                        <div class="order-detail-contents delivery-info-row__order-detail-contents">윤태호1기사</div>
+                        <div class="order-detail-contents">
+                            <div class="order-detail-contents__icon"></div>
+                            010-1234-5678
+                        </div>
                     </div>
                 </div>
                 <!--요금, 조리시간 정보, 결제방법 -->
-                <div class="others-info-container">
-                    <div class="left-container">
-                        <div class="left-others-contents">
-                            <div class="contents-sub-title">상품요금</div>
-                            <span class="contents">110000원</span>
+                <div class="others-info-container order-detail-main-section__others-info-container">
+                    <div class="others-info-container__others-left-container">
+                        <div class="others-left-row others-info-container__others-left-row">
+                            <div class="order-detail-subtitle others-left-row__order-detail-subtitle">상품요금</div>
+                            <div class="order-detail-contents others-left-row__order-detail-contents">110000원</div>
                         </div>
-                        <div class="left-others-contents">
-                            <div class="contents-sub-title">상품추가요금</div>
-                            <span class="contents">0원</span>
+                        <div class="others-left-row others-info-container__others-left-row">
+                            <div class="order-detail-subtitle others-left-row__order-detail-subtitle">상품추가요금</div>
+                            <div class="order-detail-contents others-left-row__order-detail-contents">0원</div>
                         </div>
-                        <div class="left-others-contents">
-                            <div class="contents-sub-title">고객요금합계</div>
-                            <span class="contents">1110000원</span>
+                        <div class="others-left-row others-info-container__others-left-row others-info-container__others-left-row--end">
+                            <div class="order-detail-subtitle others-left-row__order-detail-subtitle">고객요금합계</div>
+                            <div class="order-detail-contents others-left-row__order-detail-contents">1110000원</div>
                         </div>
                     </div>
-                    <div class="right-container">
-                        <div class="right-others-contents">
-                            <div class="contents-sub-title">조리시간</div>
-                            <span class="contents">20분</span>
+                    <div class="others-info-container__right-container">
+                        <div class="others-right-row others-info-container__others-right-row">
+                            <div class="order-detail-subtitle others-right-row__order-detail-subtitle">조리시간</div>
+                            <div class="order-detail-contents others-right-row__order-detail-contents">20분</div>
                         </div>
-                        <div class="right-others-contents">
-                            <div class="contents-sub-title">결제방법</div>
-                            <button class="pay-type-default-button">현금</button>
-                            <button class="pay-type-default-button">카드</button>
-                            <button class="pay-type-color-button">선결제</button>
+                        <div class="others-right-row others-info-container__others-right-row others-info-container__others-right-row--end">
+                            <div class="order-detail-subtitle others-right-row__order-detail-subtitle">결제방법</div>
+                            <button class="button button--empty-white others-right-row__button">현금</button>
+                            <button class="button button--empty-white others-right-row__button">카드</button>
+                            <button class="button button--empty-orange others-right-row__button">선결제</button>
                         </div>
                     </div>
                 </div>
 
                 <!--상품내역, 주문이력-->
-                <div class="list-container">
+                <div class="order-list-container order-detail-main-section__order-list-container">
                     <!-- 상품내역 -->
-                    <div class="product-container">
-                        <div class="contents-sub-title">상품내역</div>
-                        <div class="table-container">
-                            <table>
+                    <div class="product-container order-list-container__product-container">
+                        <div class="order-detail-subtitle product-container__order-detail-subtitle">상품내역</div>
+                        <div class="scroll-table">
+                            <table class="scroll-table__thead product-container__thead">
                                 <thead>
                                 <tr>
-                                    <th>순번</th>
-                                    <th>상품명</th>
-                                    <th>개수</th>
-                                    <th>가격</th>
+                                    <th class="scroll-table__thead-cell">순번</th>
+                                    <th class="scroll-table__thead-cell">상품명</th>
+                                    <th class="scroll-table__thead-cell">개수</th>
+                                    <th class="scroll-table__thead-cell">가격</th>
                                 </tr>
                                 </thead>
                             </table>
-                            <div class="scroll-table">
-                                <table>
+                            <div class="scroll-table__scroll product-container__scroll">
+                                <table class="scroll-table__tbody product-container__tbody">
                                     <tbody>
                                     <tr>
                                         <td>5</td>
@@ -206,23 +219,23 @@
                         </div>
                     </div>
                     <!-- 주문이력 -->
-                    <div class="order-container">
-                        <div class="contents-sub-title">주문이력</div>
-                        <div class="table-container">
-                            <table>
+                    <div class="order-container order-list-container__order-container">
+                        <div class="order-detail-subtitle order-container__order-detail-subtitle">주문이력</div>
+                        <div class="scroll-table">
+                            <table class="scroll-table__thead order-container__thead">
                                 <thead>
                                 <tr>
-                                    <th>순번</th>
-                                    <th>시간</th>
-                                    <th>유형</th>
-                                    <th>행위자</th>
-                                    <th>기존값</th>
-                                    <th>새로운 값</th>
+                                    <th class="scroll-table__thead-cell">순번</th>
+                                    <th class="scroll-table__thead-cell">시간</th>
+                                    <th class="scroll-table__thead-cell">유형</th>
+                                    <th class="scroll-table__thead-cell">행위자</th>
+                                    <th class="scroll-table__thead-cell">기존값</th>
+                                    <th class="scroll-table__thead-cell">새로운 값</th>
                                 </tr>
                                 </thead>
                             </table>
-                            <div class="scroll-table">
-                                <table>
+                            <div class="scroll-table__scroll order-container__scroll">
+                                <table class="scroll-table__tbody order-container__tbody">
                                     <tbody>
                                     <tr>
                                         <td>001</td>

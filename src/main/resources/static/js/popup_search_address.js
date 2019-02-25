@@ -36,6 +36,12 @@ const loadEnableDong = () => {
     });
 };
 
+$("modal").onclick = (ev) => {
+    if (ev.target.id === "modal") {
+        modalClose();
+    }
+};
+
 $("btn_close").onclick = () => {
     modalClose();
 };

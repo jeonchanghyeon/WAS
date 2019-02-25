@@ -1,265 +1,262 @@
-@import "common";
+$modal-width: 960px;
+$modal-height: 610px;
 
-.address-modal {
-  $modal_width: 960px;
-  $modal_height: 610px;
-  @include bg-modal($modal_width, 30px, 30px);
+/* Container CSS */
+.addr-modal-container {
+  @include bg-modal($modal-width, 30px, 30px);
   position: fixed;
   top: 0;
   left: 0;
   display: none;
+}
 
-  .modal-container {
-    @include modal-attribute($modal_width, $modal_height);
+.addr-modal {
+  @include modal-attribute($modal-width, $modal-height);
+}
 
-    .modal-header {
-      width: calc(100% - 15px - 15px - 11px);
-      height: 50px;
-      background-color: #1f1f1f;
-      padding-left: 15px + 11px;
-      padding-right: 15px;
-      display: flex;
-      align-items: center;
+.addr-header {
+  width: calc(100% - 15px - 15px - 11px);
+  height: 50px;
+  background-color: #1f1f1f;
+  padding-left: 15px + 11px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
 
-      > span {
-        @include custom-font(16px, $color_white, 500);
-        width: 100%;
-        text-align: center;
-      }
-
-      .close-button-white {
-        width: 11px;
-        height: 11px;
-        justify-self: flex-end;
-      }
-    }
-
-    .body {
-      display: flex;
-      height: calc(100% - 50px);
-
-      .aside {
-        width: 177px;
-        height: 100%;
-
-        .title-block {
-          width: 100%;
-          height: 50px;
-          background-color: $color_wood;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          > span {
-            @include custom-font(14px, $color_orange, bold);
-          }
-        }
-
-        .select-container {
-          width: 100%;
-          height: calc(100% - 50px);
-          display: flex;
-          overflow: hidden;
-        }
-      }
-
-      .modal-main-section {
-        flex: 1;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-
-        .upper-area {
-          margin: 11px 16px 11px 16px;
-
-          .search-area {
-            display: flex;
-            flex-direction: column;
-          }
-        }
-
-        .scroll-table {
-          width: 100%;
-          height: calc(100% - 192px);
-        }
-      }
-    }
-  }
-
-  .scroll-table {
+  @include e('title') {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
-
-    .address-list-scroll {
-      @include scroll-view($color_white, $color_gray_table);
-      width: 100%;
-      height: calc(100% - 28px);
-    }
-
-    table {
-      width: 100%;
-      table-layout: fixed;
-      border-collapse: collapse;
-
-      > thead {
-        @include custom-font(12px, #707070, normal);
-
-        tr {
-          height: 28px;
-          background-color: #e3e3e3;
-
-          td, th {
-            text-align: center;
-          }
-        }
-      }
-
-      > tbody {
-        @include custom-font(14px, #323232, normal);
-
-        tr {
-          @include underline;
-          height: 48px;
-        }
-      }
-
-      td, th {
-        &:nth-child(1) {
-          width: 10%;
-          text-align: center;
-        }
-
-        &:nth-child(2) {
-          width: 20%;
-          text-align: center;
-        }
-
-        &:nth-child(3) {
-          width: 35%;
-          padding-left: 10px;
-        }
-
-        &:nth-child(4) {
-          padding-left: 10px;
-        }
-      }
-    }
+    font-size: 16px;
+    font-weight: 500;
+    color: $color-white;
+    text-align: center;
   }
 
-  .consonant {
+  @include e('close-button') {
+    width: 11px;
+    height: 11px;
+    justify-self: flex-end;
+  }
+}
+
+.addr-body {
+  height: calc(100% - 50px);
+  display: flex;
+}
+
+.aside {
+  width: 177px;
+  height: 100%;
+
+  @include e('title-block') {
+    width: 100%;
+    height: 50px;
+    background-color: $color-wood;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: $color-orange;
+  }
+
+  @include e('select-container') {
+    width: 100%;
+    height: calc(100% - 50px);
+    display: flex;
+    overflow: hidden;
+  }
+
+  @include e('consonant') {
     width: 40px;
     background-color: #1f1f1f;
     border-right: 1px solid #434343;
+  }
 
-    > button {
-      @include custom-font(14px, $color_white, bold);
-      width: 40px;
-      height: calc(100% / 15);
-      text-align: center;
-      overflow: hidden;
-      padding: 0;
-      border: none;
-      border-bottom: 1px solid #434343;
-      background-color: #1f1f1f;
+  @include e('item') {
+    width: 40px;
+    height: calc(100% / 15);
+    text-align: center;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid #434343;
+    background-color: #1f1f1f;
+    color: $color-white;
+    font-weight: bold;
 
-      &:hover {
-        background-color: $color_orange;
-      }
+    &:hover {
+      background-color: $color-orange;
+    }
 
-      &:nth-child(15) {
-        border-bottom: 0;
-      }
+    @include m('last') {
+      border-bottom: 0;
     }
   }
 
-  .enable-dong-scroll {
-    @include scroll-view($color_wood, $color_gray_table, false);
+  @include e('enable-dong') {
+    @include scroll-view($color-wood, $color-gray-table, false);
     width: calc(100% - 39px);
     height: 510px;
-    background-color: $color_wood;
+    background-color: $color-wood;
 
     > button {
-      @include custom-font(14px, $color_white, bold);
+      @include custom-font(14px, $color-white, bold);
       width: 100%;
       height: (100% / 15);
       border: none;
       padding: 0 5px 0 0;
       border-bottom: 1px solid #434343;
-      background: $color_wood;
+      background: $color-wood;
 
       &:hover {
-        background-color: $color_white;
-        color: $color_orange;
+        background-color: $color-white;
+        color: $color-orange;
       }
     }
   }
+}
 
-  .select-tower {
-    width: 100%;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
+//.upper-area {
+//  margin: 11px 16px 11px 16px;
+//}
 
-    .rect-empty-white {
-      @include custom-font(14px, #323232, 500);
-      width: 72px;
-      height: 46px;
-    }
+.addr-main {
+  flex: 1;
+  height: 100%;
+
+  @include e('select-tower-container') {
+    margin: 11px 16px 10px;
   }
 
-  .search-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  @include e('search-container') {
+    margin-left: 16px;
+    margin-right: 16px;
 
-    > span {
-      @include custom-font(12px, #323232, normal);
-      flex: 1;
-      margin-right: 10px;
-      text-align: center;
-    }
-
-    .rect-empty-white {
-      @include custom-font(12px, $color_gray_font, normal);
-      width: 565.5px;
-      height: 40px;
-      padding-left: 13px;
-      margin-right: 7.5px;
-
-      &::placeholder {
-        color: $color-placeholder;
-      }
-    }
-
-    .rect-fill-orange {
-      @include custom-font(14px, $color_white, 500);
-      width: 108.6px;
-      height: 40px;
-      background: $color_orange url($url_search_white) no-repeat 10% center;
-      background-size: 15.9px 15.9px;
-      padding-left: 15.9px;
+    @include m('margin') {
+      margin-bottom: 13px;
     }
   }
+}
 
-  .caption {
-    @include custom-font(12px, #d0021b, normal);
+.select-tower-container {
+  display: flex;
+  justify-content: space-between;
+
+  @include e('button') {
+    font-weight: 500;
+    color: #323232;
+    width: 72px;
+    height: 46px;
+  }
+}
+
+.search-container {
+  width: calc(100% - 32px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  @include e('title') {
+    flex: 1;
+    margin-right: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #323232;
+  }
+
+  @include e('text') {
+    width: 565.5px;
+    height: 40px;
+    padding-left: 13px;
+    margin-right: 7.5px;
+    font-size: 12px;
+    color: $color-gray-font;
+  }
+
+  @include e('button') {
+    width: 108.6px;
+    height: 40px;
+    background: $color-orange url($url-search-white) no-repeat 10% center;
+    background-size: 15.9px 15.9px;
+    padding-left: 15.9px;
+  }
+
+  @include e('caption') {
+    display: block;
     margin-left: calc(100% - 684.1px);
     margin-top: 2px;
     margin-bottom: 12px;
+    font-size: 12px;
+    color: #d0021b;
+  }
+}
+
+.result-container {
+  width: 100%;
+  height: calc(100% - 192px);
+
+  //테이블의 컬럼별 너비 설정
+  td, th {
+    &:nth-child(1) {
+      width: 10%;
+    }
+
+    &:nth-child(2) {
+      width: 20%;
+    }
+
+    &:nth-child(3) {
+      width: 35%;
+    }
   }
 
-  .star {
-    width: 15px;
-    height: 15px;
-    background: url($url_orange_star) no-repeat center center;
-    background-size: 15px;
+  @include e('thead') {
+    font-size: 12px;
+    color: #707070;
+    background-color: #e3e3e3;
+
+    tr, th {
+      height: 24px; //테이블 헤더의 높이 정의
+    }
   }
 
-  .star-empty {
-    width: 15px;
-    height: 15px;
-    background: url($url_empty_star) no-repeat center center;
+  @include e('scroll') {
+    height: calc(100% - 28px); //테이블 바디의 높이 정의
+  }
+
+  @include e('tbody') {
+    color: #323232;
+
+    td, th {
+      height: 48px; //테이블 바디 로우 높이 정의
+
+      &:nth-child(1) {
+        text-align: center;
+      }
+
+      &:nth-child(2) {
+        text-align: center;
+      }
+
+      &:nth-child(3) {
+        padding-left: 10px;
+      }
+
+      &:nth-child(4) {
+        padding-left: 10px;
+      }
+    }
+  }
+}
+
+.star {
+  width: 15px;
+  height: 15px;
+  background: url($url-orange-star) no-repeat center center;
+  background-size: 15px;
+
+  @include m('empty') {
+    background: url($url-empty-star) no-repeat center center;
     background-size: 15px;
   }
 }
+

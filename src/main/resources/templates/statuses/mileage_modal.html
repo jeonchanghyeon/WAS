@@ -1,24 +1,26 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<div th:fragment="mileage_modal" id="mileage_modal" class="mileage-modal-background">
-    <div class="modal-container">
+<div th:fragment="mileage_modal" id="mileage_modal" class="mileage-modal-container">
+    <div class="mileage-modal">
         <!-- 헤더 -->
-        <header class="modal-header">
-            <button class="close-button-white" id="close-button"></button>
+        <header class="mileage-header">
+            <button class="close-button mileage-header__close-button" id="close-button"></button>
         </header>
 
         <!--날짜, 마일리지총액, 출금, 송금버튼-->
-        <section class="main-section">
+        <section class="mileage-body">
             <!--날짜, 마일리지총액-->
-            <div class="status-container">
-                <span id="mileage-description">2018-12-07 현재 마일리지</span>
-                <div id="mileage">1,147,070원</div>
+            <div class="mileage-status-container">
+                <span class="mileage-status-container__title" id="mileage-description">2018-12-07 현재 마일리지</span>
+                <div class="mileage-status-container__mileage" id="mileage">1,147,070원</div>
             </div>
             <!--출금, 송금버튼-->
             <div class="process-button-container">
-                <label class="radio-items"><input type="radio" name="process" checked="checked" id="btn-withdraw"/>
-                    <span class="check-marker">마일리지 출금</span></label>
-                <label class="radio-items"><input type="radio" name="process" id="btn-deposit"/>
-                    <span class="check-marker">마일리지 송금</span></label>
+                <label class="select-button"><input class="select-button__input" type="radio" name="process"
+                                                    checked="checked" id="btn-withdraw"/>
+                    <span class="select-button__shape">마일리지 출금</span></label>
+                <label class="select-button"><input class="select-button__input" type="radio" name="process"
+                                                    id="btn-deposit"/>
+                    <span class="select-button__shape">마일리지 송금</span></label>
             </div>
         </section>
 
@@ -26,39 +28,37 @@
         <!-- 마일리지 출금 -->
         <section class="withdraw-section" id="withdraw-section">
             <div class="gray-container">
-                <div>출금계좌</div>
-                <div class="rect-empty-white">광주총판 1003-929-091121 우리은행</div>
+                <div class="gray-container__title">출금계좌</div>
+                <div class="text gray-container__text">광주총판 1003-929-091121 우리은행</div>
             </div>
-            <div class="input-output-container">
-                <div class="input-output-row">
-                    <div>출금금액</div>
-                    <div class="edit-button-container">
-                        <input type="text" class="rect-empty-white"/>
-                        <button class="rect-empty-orange">전액인출</button>
-                    </div>
+            <div class="io-container">
+                <div class="io-row io-container__io-row">
+                    <div class="io-row__subtitle">출금금액</div>
+                    <input class="text io-row__text io-row__text--with-button io-row__text--left " type="text"/>
+                    <button class="button button--empty-orange io-row__button">전액인출</button>
                 </div>
-                <div class="input-output-row">
-                    <div>출금수수료</div>
-                    <input type="text" class="rect-empty-white" value="300원" readonly="readonly"/>
+                <div class="io-row io-container__io-row">
+                    <div class="io-row__subtitle">출금수수료</div>
+                    <input class="text io-row__text" type="text" value="300원" readonly="readonly"/>
                 </div>
-                <div class="input-output-row">
-                    <div>차감포인트</div>
-                    <input type="text" class="rect-empty-white" value="100,000,300원" readonly="readonly"/>
+                <div class="io-row io-container__io-row">
+                    <div class="io-row__subtitle">차감포인트</div>
+                    <input class="text io-row__text io-row__text--red" type="text" value="100,000,300원" readonly="readonly"/>
                 </div>
-                <div class="input-output-row">
-                    <div>출금비밀번호</div>
-                    <input type="password" class="rect-empty-white"/>
+                <div class="io-row io-container__io-row io-container__io-row--end">
+                    <div class="io-row__subtitle">출금비밀번호</div>
+                    <input class="text io-row__text io-row__text--left" type="password"/>
                 </div>
             </div>
         </section>
-        <section class="submit-section" id="withdraw-submit-section">
-            <button class="round-rect-fill-orange">출금 신청</button>
+        <section class="mileage-footer" id="withdraw-submit-section">
+            <button class="button button--round mileage-footer__button">출금 신청</button>
         </section>
         <!--마일리지 송금-->
         <section class="transfer-section" id="transfer-section">
             <div class="gray-container">
-                <div>송금대상</div>
-                <div class="search-container">
+                <div class="gray-container__title">송금대상</div>
+                <div class="transfer-info-container">
                     <select class="group-selector">
                         <option value="" disabled="disabled" selected="selected" hidden="hidden">선택</option>
                         <option value="7">본사</option>
@@ -67,29 +67,29 @@
                         <option value="3">상점</option>
                         <option value="2">기사</option>
                     </select>
-                    <div class="search-box">
-                        <input type="text"/>
-                        <button></button>
+                    <div class="search-form transfer-info-container__search-form">
+                        <input class="search-form__input transfer-info-container__input" type="text"/>
+                        <button class="search-form__button transfer-info-container__button"></button>
                     </div>
                 </div>
             </div>
-            <div class="input-output-container">
-                <div class="input-output-row">
-                    <div>출금금액</div>
-                    <input type="text" class="rect-empty-white" value="100,000,300원"/>
+            <div class="io-container">
+                <div class="io-row io-container__io-row">
+                    <div class="io-row__subtitle">출금금액</div>
+                    <input class="text io-row__text" type="text" value="100,000,300원"/>
                 </div>
-                <div class="input-output-row">
-                    <div>차감포인트</div>
-                    <input type="text" class="rect-empty-white" value="100,000,300원" readonly="readonly"/>
+                <div class="io-row io-container__io-row">
+                    <div class="io-row__subtitle">차감포인트</div>
+                    <input class="text io-row__text io-row__text--red" type="text" value="100,000,300원" readonly="readonly"/>
                 </div>
-                <div class="input-output-row">
-                    <div>출금비밀번호</div>
-                    <input type="password" class="rect-empty-white"/>
+                <div class="io-row io-container__io-row io-container__io-row--end">
+                    <div class="io-row__subtitle">출금비밀번호</div>
+                    <input class="text io-row__text io-row__text--left" type="password" />
                 </div>
             </div>
         </section>
-        <section class="submit-section" id="deposit-submit-section">
-            <button class="round-rect-fill-orange">송금</button>
+        <section class="mileage-footer" id="deposit-submit-section">
+            <button class="button button--round mileage-footer__button">송금</button>
         </section>
     </div>
 </div>
