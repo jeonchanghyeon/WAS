@@ -1,32 +1,51 @@
-/* TODO 사용자 정의 변수 */
-/* 컬러 */
-$color_gray: #f1f1f1;
-$color_white: #ffffff;
-$color_orange: #ff9037;
-$color_gray_border: #d0d0d0;
-$color_gray_table: #eaeaea;
-$color_gray_font: #4a4a4a;
-$color_wood: #302c2c;
+/* Color */
+$color-gray: #f1f1f1;
+$color-white: #ffffff;
+$color-orange: #ff9037;
+$color-gray-table-border: #d0d0d0;
+$color-gray-border: #aeaeae;
+$color-gray-table: #eaeaea;
+$color-gray-font: #4a4a4a;
+$color-wood: #302c2c;
 $color-placeholder: #979797;
 
-/* 이미지 */
-$base_url_images: "/img/";
-$url_close_white: $base_url_images + "close_white.png";
-$url_close_black: $base_url_images + "close_black.png";
-$url_select_btn_bright: $base_url_images + "select_btn_bright.png";
-$url_search_orange: $base_url_images + "search_orange.png";
-$url_search_white: $base_url_images + "search_white.png";
-$url_radio_on: $base_url_images + "radio_on.png";
-$url_radio_off: $base_url_images + "radio_off.png";
-$url_radio_hover: $base_url_images + "radio_hover.png";
-$url_orange_star: $base_url_images + "orange_star.png";
-$url_empty_star: $base_url_images + "empty_star.png";
-$url_arrow_to_right: $base_url_images + "arrow_to_right.png";
-$url_minus_enable: $base_url_images + "minus_enable.png";
-$url_minus_disable: $base_url_images + "minus_disable.png";
-$url_plus_enable: $base_url_images + "plus_enable.png";
+/* Image */
+$base-url-images: "/img/";
+$url-close-white: $base-url-images + "close_white.png";
+$url-close-black: $base-url-images + "close_black.png";
+$url-select-btn-bright: $base-url-images + "select_btn_bright.png";
+$url-search-orange: $base-url-images + "search_orange.png";
+$url-search-white: $base-url-images + "search_white.png";
+$url-radio-on: $base-url-images + "radio_on.png";
+$url-radio-off: $base-url-images + "radio_off.png";
+$url-radio-hover: $base-url-images + "radio_hover.png";
+$url-orange-star: $base-url-images + "orange_star.png";
+$url-empty-star: $base-url-images + "empty_star.png";
+$url-arrow-to-right: $base-url-images + "arrow_to_right.png";
+$url-minus-enable: $base-url-images + "minus_enable.png";
+$url-minus-disable: $base-url-images + "minus_disable.png";
+$url-plus-enable: $base-url-images + "plus_enable.png";
+
+$import-flag: true !global;
+
+
 
 /* TODO mixin 정의 */
+
+/* ELEMENT */
+@mixin e($element) {
+  &__#{$element} {
+    @content;
+  }
+}
+
+/* MODIFIER */
+@mixin m($modifier) {
+  &--#{$modifier} {
+    @content;
+  }
+}
+
 /* 스크롤 뷰 */
 @mixin scroll-view($track-color: #f8f7fb, $thumb-color: #aeaeae, $scroll-display: true) {
   overflow: auto;
@@ -56,7 +75,7 @@ $url_plus_enable: $base_url_images + "plus_enable.png";
 }
 
 /* 커스톰 폰트 */
-@mixin custom-font($size: 14px, $color: $color_gray_font, $weight: normal) {
+@mixin custom-font($size: 14px, $color: $color-gray-font, $weight: normal) {
   font: {
     family: NotoSansCJKkr;
     weight: $weight;
@@ -70,11 +89,11 @@ $url_plus_enable: $base_url_images + "plus_enable.png";
 }
 
 /* 모달 투명 배경 */
-@mixin bg-modal($width, $top_padding, $bottom_padding) {
+@mixin bg-modal($width, $top-padding, $bottom-padding) {
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.5);
-  padding: $top_padding calc(50% - #{$width / 2}) $bottom_padding;
+  padding: $top-padding calc(50% - #{$width / 2}) $bottom-padding;
 }
 
 /* 모달 컨테이너 */
@@ -84,13 +103,13 @@ $url_plus_enable: $base_url_images + "plus_enable.png";
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background-color: $color_white;
+  background-color: $color-white;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* 분할선 */
 @mixin underline {
-  border-bottom: 1px solid $color_gray_border;
+  border-bottom: 1px solid $color-gray-table-border;
 }
 
 /* 버튼 기본 모양 정의 */
@@ -101,91 +120,243 @@ $url_plus_enable: $base_url_images + "plus_enable.png";
   padding: 0;
 }
 
-/* TODO Component 정의 */
-.rect-fill-orange {
-  @include rect-shape($color-orange, $color-orange, 0);
+body {
+  @include custom-font;
+  margin: 0;
 }
 
-.rect-empty-orange {
-  @include rect-shape($color-white, $color-orange, 0);
+/* TODO BLOCK 정의 */
+.button {
+  padding: 0;
+  border-radius: 0;
+  background-color: $color-orange;
+  border: 1px solid $color-orange;
+  font: {
+    weight: 500;
+    size: 14px;
+  }
+  color: $color-white;
+
+  @include m('round') {
+    border-radius: 21px;
+  }
+
+  @include m('empty-orange') {
+    background-color: rgba(0, 0, 0, 0.0);
+    color: $color-orange;
+  }
+
+  @include m('empty-white') {
+    background-color: rgba(0, 0, 0, 0.0);
+    border: 1px solid $color-gray-border;
+    color: #9b9b9b;
+  }
+
+  @include m('white') {
+    background-color: $color-white;
+    border: 1px solid #4a4a4a;
+    color: $color-gray-font;
+    font-size: 12px;
+  }
+
+  @include m('black') {
+    background-color: #4a4a4a;
+    border: 1px solid #4a4a4a;
+    color: $color-white;
+    font-size: 12px;
+  }
 }
 
-.rect-empty-white {
-  @include rect-shape($color-white, $color_gray_border, 0);
+.text {
+  @include rect-shape($color-white, $color-gray-border, 0);
+  padding-left: 10px;
+  padding-right: 10px;
+
+  &::placeholder {
+    color: $color-placeholder;
+  }
+
+  @include m('disabled') {
+    background-color: $color-gray;
+    border-color: $color-gray;
+  }
 }
 
-.round-rect-fill-orange {
-  @include rect-shape($color-orange, $color-orange, 21px);
-}
-
-.round-rect-empty-orange {
-  @include rect-shape($color-white, $color-orange, 21px);
-}
-
-.round-rect-empty-white {
-  @include rect-shape($color-white, $color_gray_border, 21px);
-}
-
-.rect-white {
-  @include rect-shape($color-white, $color_gray_font, 0);
-}
-
-.rect-black {
-  @include rect-shape($color_gray_font, $color_gray_font, 0);
-}
-
-.edit-box {
-  @include rect-shape($color_gray, $color_gray, 0);
-}
-
-.search-box {
-  @include rect-shape($color-white, $color_gray_border, 0);
+.search-form {
+  @include rect-shape($color-white, $color-gray-border, 0);
+  width: calc(100% - 2px);
+  height: 40px;
   display: flex;
-  > input {
+  overflow: hidden;
+
+  @include e('input') {
+    width: calc(100% - 40px);
     height: 100%;
     border: none;
     padding-left: 16px;
 
     &::placeholder {
-      color: $color_placeholder;
+      color: $color-placeholder;
     }
   }
-  > button {
+
+  @include e('button') {
+    width: 40px;
     height: 100%;
-    background: #ffffff url($url_search_orange) no-repeat center center;
+    background: #ffffff url($url-search-orange) no-repeat center center;
+    background-size: 15px 15px;
     border: none;
   }
 }
 
-.close-button-white {
-  background: rgba(0, 0, 0, 0) url($url_close_white) no-repeat center center;
+.close-button {
+  background: rgba(0, 0, 0, 0) url($url-close-white) no-repeat center center;
   background-size: 100%;
   border: none;
   padding: 0;
-}
 
-.close-button-black {
-  background: rgba(0, 0, 0, 0) url($url_close_black) no-repeat center center;
-  background-size: 100%;
-  border: none;
-  padding: 0;
-}
-
-.radio-items {
-  &:hover input[type="radio"] ~ .check-marker {
-    /* 라디오 버튼 덮힐 경우 */
+  @include m('black') {
+    background: rgba(0, 0, 0, 0) url($url-close-black) no-repeat center center;
   }
-  input[type="radio"] {
+}
+
+.group-button {
+  $root: &;
+  display: inline-block;
+
+  @include e('input') {
     margin: 0;
     -webkit-appearance: none; /* 라디오 버튼 없애기 for chrome*/
     -moz-appearance: none; /* 라디오 버튼 없애기 for firefox*/
     appearance: none; /* 라디오 버튼 없애기 공통*/
     display: none; /* 라디오 버튼 없애기 for IE10, 11*/
-    &:checked ~ .check-marker {
-      /* 라디오 버튼 선택된 경우 */
+
+    /* 라디오 버튼 선택된 경우 */
+    &:checked ~ #{$root}__shape {
+      color: $color-orange;
+      border-color: $color-orange;
     }
   }
-  .check-marker {
-    /* 라디오 버튼 기본 모양 */
+
+  /* 라디오 버튼 기본 모양 */
+  @include e('shape') {
+    @include custom-font(14px, #9b9b9b, 500);
+    @include rect-shape($color-white, $color-gray-border, 0);
+    letter-spacing: 0.5px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.radio-item {
+  $root: &;
+  display: block;
+
+  /* 라디오 버튼 덮힐 경우 */
+  @include m('hovered') {
+    &:hover #{$root}__input ~ #{$root}__shape {
+      background-image: url($url-radio-hover);
+      background-repeat: no-repeat;
+      background-position: left center;
+    }
+
+    //checked를 우선 처리
+    #{$root}__input:checked ~ #{$root}__shape {
+      background-image: url($url-radio-on);
+      background-repeat: no-repeat;
+      background-position: left center;
+    }
+  }
+
+  @include e('input') {
+    margin: 0;
+    -webkit-appearance: none; /* 라디오 버튼 없애기 for chrome*/
+    -moz-appearance: none; /* 라디오 버튼 없애기 for firefox*/
+    appearance: none; /* 라디오 버튼 없애기 공통*/
+    display: none; /* 라디오 버튼 없애기 for IE10, 11*/
+
+    /* 라디오 버튼 선택된 경우 */
+    &:checked ~ #{$root}__shape {
+      background-image: url($url-radio-on);
+      background-repeat: no-repeat;
+      background-position: left center;
+    }
+  }
+
+  /* 라디오 버튼 기본 모양 */
+  @include e('shape') {
+    height: 100%;
+    background: url($url-radio-off) no-repeat left center;
+    background-size: 20px;
+    padding-left: 20px + 18px;  //(= width)
+  }
+}
+
+.scroll-table {
+  width: 100%;
+  height: auto;
+  border: 1px solid $color-gray-table-border;
+
+  @include e('thead') {
+    @include custom-font;
+    color: $color-gray-font;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background-color: $color-gray-table;
+  }
+
+  @include e('thead-cell') {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  @include e('tbody') {
+    @include custom-font;
+    width: 100%;
+    color: #1f1f1f;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    th, td {
+      @include underline;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: middle;
+      text-align: center;
+    }
+  }
+
+  @include e('scroll') {
+    @include scroll-view;
+    width: 100%;
+  }
+}
+
+.modal-header {
+  @include underline;
+  width: calc(100% - 19px - 18px);
+  height: 47px;
+  padding-right: 19px;
+  padding-left: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include e('title') {
+    font-size: 16px;
+    font-weight: 500;
+    color: $color-gray-font;
+  }
+
+  @include e('close-button') {
+    @extend .close-button, .close-button--black;
+    width: 24px;
+    height: 24px;
+    background-size: 14px;
   }
 }

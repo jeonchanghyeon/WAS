@@ -1,445 +1,434 @@
 @import "common";
+@import "mileage_modal";
 
-#modal {
-  position: fixed;
-  visibility: hidden;
-}
-
-/* 지불방법 선택 버튼 */
-@mixin payment-button {
-  width: 90px;
-  height: 36px;
-  background: rgba(0, 0, 0, 0);
-  border-radius: 2px;
-}
-
-/* 상태 선택 버튼 */
-@mixin status-button {
-  @include custom-font($color: #ffffff, $weight: bold);
-  width: 104px;
-  height: 42px;
-  border-radius: 21px;
-  background-color: #ffffff;
-  border: 1px solid #ffffff;
-  margin-right: 9px;
-  padding: 1px;
-  text-align: center;
-}
-
-/* 결제 방법 선택 버튼 */
-@mixin pay-type-button {
-  width: 60px;
-  height: 24px;
-  background-color: #ffffff;
-  margin-right: 10px;
-}
-
-@mixin current-status {
-  display: flex;
-  text-align: center;
-  flex-direction: column;
-  span:first-child {
-    margin-bottom: 5px;
-  }
-}
+$modal_width: 1100px;
+$modal_height: 768px;
+$url-phone: $base-url-images + "phone.png";
 
 /* TODO 컨테이너 관련 css */
-.order-detail-modal-background {
-  $modal_width: 1100px;
-  $modal_height: 768px;
+.order-detail-modal-container {
   @include bg-modal($modal_width, 30px, 30px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+}
 
-  .order-detail-modal-container {
-    @include custom-font;
-    width: $modal_width;
-    height: $modal_height;
-    overflow: hidden;
-    background-color: #ffffff;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
-  }
-
-  .detail-header {
-    @include underline;
+.order-detail-modal {
+  @include modal-attribute($modal_width, $modal_height);
+  @include e('order-detail-header') {
     width: calc(100% - 58px);
     height: 70px;
     padding-left: 29px;
     padding-right: 29px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .title-container {
-      height: 100%;
-      display: flex;
-      align-items: center;
-    }
-
-    .close-button-black {
-      width:20px;
-      height:20px;
-    }
   }
 
-  .body {
+  @include e('order-detail-body') {
     width: 100%;
     height: calc(100% - 70px);
+  }
+}
+
+.order-detail-header {
+  @include underline;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include e('title-group') {
     display: flex;
-    overflow: hidden;
   }
 
-  .aside {
-    min-width: 220px - 26px;
-    height: calc(100% - 34px);
-    padding: 17px 13px;
-    background-color: #4a4a4a;
-  }
-
-  .main-section {
-    width: calc(100% - 220px);
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .status-container {
-    @include underline;
-    height: 70px - 1px;
-    padding-left: 26px;
-    display: flex;
-    align-items: center;
-  }
-
-  .inform-container {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .delivery-pay-container {
-    width: 100%;
-    margin-bottom: 20px;
-    .delivery-pay-buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
-      padding-left: 5px;
-      padding-right: 5px;
-    }
-  }
-
-  .delivery-status-container {
-    width: calc(100% + 26px);
-    margin-left: -13px;
-    margin-right: -13px;
-    .aside-subsection-title {
-      margin-left: 13px;
-    }
-    .aside-status-container {
-      margin-top: 8px;
-      width: 100%;
-      height: 53px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      background-color: #424242;
-      padding-left: 0;
-      .current-status-container {
-        width: calc(100% / 4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        &::before {
-          content: ">";
-          padding-right: 10px;
-          color: #6d6d6d;
-        }
-        &:first-child {
-          width: auto;
-          margin-left: 15px;
-          margin-right: 5px;
-          &::before {
-            content: none;
-          }
-        }
-        &:last-child::after {
-          content: "";
-          padding-right: 10px;
-        }
-      }
-    }
-  }
-
-  .delivery-info-container {
-    @include underline;
-    height: 181px;
-    display: flex;
-    flex-direction: column;
-    padding: 14px 25px;
-  }
-
-  .delivery-contents-container {
-    display: flex;
-    width: 100%;
-    margin-bottom: 11px;
-    &:nth-child(2) {
-      height: 180px;
-    }
-    &:last-child {
-      margin-bottom: 0;
-    }
-    .contents-sub-title {
-      width: 60px;
-    }
-  }
-
-  .others-info-container {
-    @include underline;
-    height: 81px;
-    display: flex;
-    padding: 14px 25px;
-    .left-container {
-      width: 200px;
-      margin-right: 150px;
-      display: flex;
-      flex-direction: column;
-    }
-    .right-container {
-      display: flex;
-      flex-direction: column;
-    }
-  }
-
-  .left-others-contents {
-    width: 100%;
-    display: flex;
-    margin-bottom: 11px;
-    &:last-child {
-      margin-bottom: 0;
-    }
-    .contents-sub-title {
-      flex: 1;
-    }
-  }
-
-  .right-others-contents {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    margin-bottom: 11px;
-    &:last-child {
-      margin-bottom: 0;
-    }
-    .contents-sub-title {
-      width: 66px;
-    }
-  }
-
-  .list-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 14px 25px;
-  }
-
-  .product-container {
-    .table-container {
-      min-width: 306px;
-    }
-    .contents-sub-title {
-      margin-bottom: 10px;
-    }
-    th, td {
-      &:nth-child(1) {
-        width: 15%;
-      }
-      &:nth-child(2) {
-        width: 40%;
-      }
-      &:nth-child(3) {
-        width: 20%;
-      }
-    }
-  }
-
-  .order-container {
-    .contents-sub-title {
-      margin-bottom: 10px;
-    }
-    .table-container {
-      min-width: 498px;
-    }
-    td, th {
-      &:nth-child(1) {
-        width: 10%;
-      }
-      &:nth-child(2) {
-        width: 10%;
-      }
-      &:nth-child(3) {
-        width: 30%;
-      }
-      &:nth-child(4) {
-        width: 20%;
-      }
-      &:nth-child(5) {
-        width: 15%;
-      }
-    }
-  }
-
-  /* TODO 요소 관련 css */
-  .title {
-    @include custom-font($size: 24px, $weight: 300);
+  @include e('title') {
+    display: block;
+    font-size: 24px;
+    font-weight: 300;
     margin-right: 20px;
   }
 
-  .belong {
-    @include custom-font(15px, #979797, bold);
-    &:nth-child(2)::before, &:first-child::before {
-      content: none;
-    }
-    &::before {
-      padding-left: 5px;
-      padding-right: 5px;
-      content: "|";
-    }
-  }
-
-  .aside-subsection-title {
-    @include custom-font($color: #ffffff, $weight: bold);
-  }
-
-  .inform-table {
-    width: 100%;
-    margin-top: 5px;
-    th {
-      @include custom-font($color: #9b9b9b);
-      height: 15px;
-      letter-spacing: -0.7px;
-      text-align: left;
-      padding: 5px 0 5px 10px;
-    }
-    td {
-      @include custom-font($color: #ffffff);
-      height: 15px;
-      text-align: right;
-      padding: 5px 10px 5px 0;
-    }
-  }
-
-  .aside-btn-unselected {
-    @include payment-button;
-    @include custom-font(13px, #ffffff, bold);
-    border: 1px solid #9b9b9b;
-  }
-
-  .aside-btn-selected {
-    @include payment-button;
-    @include custom-font(13px, #ff9037, bold);
-    border: 1px solid #ff9037;
-  }
-
-  .fill-button {
-    @include status-button;
-    background-color: #ff9037;
-    border: 1px solid #ff9037;
-  }
-
-  .border-button {
-    @include status-button;
-    border: 1px solid #ff9037;
-    color: #ff9037;
-  }
-
-  .default-button {
-    @include status-button;
-    border: 1px solid #979797;
+  @include e('belong') {
+    font-size: 15px;
+    font-weight: 500;
     color: #979797;
-  }
+    display: flex;
+    align-items: flex-end;
 
-  .contents-sub-title {
-    @include custom-font($size: 13px, $color: #323232, $weight: bold);
-  }
-
-  .contents {
-    @include custom-font($size: 13px);
-    &:not(:nth-child(2))::before {
-      content: "";
-      margin-right: 20px;
+    @include m('before') {
+      &::before {
+        padding-left: 5px;
+        padding-right: 5px;
+        content: "|";
+      }
     }
   }
 
-  .call_icon {
+  @include e('close-button') {
+    width: 25px;
+    height: 25px;
+    background-size: 16px;
+  }
+}
+
+.order-detail-body {
+  display: flex;
+  overflow: hidden;
+
+  @include e('order-detail-aside') {
+    min-width: 220px - 26px;
+    height: calc(100% - 34px);
+    padding: 17px 13px;
+  }
+
+  @include e('order-detail-main-section') {
+    width: calc(100% - 220px);
+    height: 100%;
+  }
+}
+
+.order-detail-aside {
+  background-color: #4a4a4a;
+
+  @include e('title') {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    color: #ffffff;
+    margin-bottom: 5px;
+  }
+
+  @include e('table') {
+    @include custom-font($color: #9b9b9b);
+    width: 100%;
+    margin-bottom: 22px;
+  }
+
+  @include e('th') {
+    height: 15px;
+    letter-spacing: -0.7px;
+    text-align: left;
+    padding: 5px 0 5px 10px;
+  }
+
+  @include e('td') {
+    color: $color-white;
+    height: 15px;
+    text-align: right;
+    padding: 5px 10px 5px 0;
+  }
+
+  @include e('delivery-pay-buttons') {
+    width: calc(100% - 10px);
+    padding: 8px 5px;
+    margin-bottom: 24px;
+  }
+
+  @include e('order-status-container') {
+    margin-left: -13px;
+    margin-right: -13px;
+    padding-left: 17px;
+    padding-right: 17px;
+    width: calc(100% + 26px - 34px);
+    height: 53px;
+  }
+}
+
+.delivery-pay-buttons {
+  display: flex;
+  justify-content: space-between;
+
+  @include e('button') {
+    width: 90px;
+    height: 36px;
+    font-size: 13px;
+  }
+}
+
+.order-status-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #424242;
+
+  @include e('current-status') {
+    min-width: calc(100% / 4 - 60px / 4);
+  }
+
+  @include e('arrow') {
+    background: url($url-arrow-to-right) no-repeat center center;
+    background-size: 7px;
+    width: 20px;
+    height: 7px;
+  }
+}
+
+.current-status {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: -0.6px;
+  color: #ffffff;
+
+  @include m('orange') {
+    color: $color-orange;
+  }
+
+  @include m('normal') {
+    font-weight: normal;
+  }
+
+  @include e('name') {
+    margin-bottom: 5px;
+  }
+}
+
+.order-detail-main-section {
+  overflow: hidden;
+
+  @include e('status-button-container') {
+    @include underline;
+    width: 100%;
+    height: 70px - 1px;
+    padding-left: 26px;
+  }
+
+  @include e('delivery-info-container') {
+    @include underline;
+    padding: 14px 25px;
+  }
+
+  @include e('others-info-container') {
+    @include underline;
+    padding: 14px 25px;
+  }
+
+  @include e('order-list-container') {
+    padding: 14px 25px;
+  }
+}
+
+.status-button-container {
+  display: flex;
+  align-items: center;
+
+  @include e('button') {
+    width: 104px;
+    height: 42px;
+    margin-right: 9px;
+
+    @include m('end') {
+      margin-right: 0;
+    }
+  }
+}
+
+.delivery-info-container {
+  display: flex;
+  flex-direction: column;
+
+  @include e('delivery-info-row') {
+    width: 100%;
+    margin-bottom: 11px;
+
+    @include m('end') {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.delivery-info-row {
+  display: flex;
+
+  @include e('order-detail-subtitle') {
+    width: 60px;
+
+    @include m('sub') {
+      width: 70px;
+    }
+  }
+
+  @include e('order-detail-contents') {
+    margin-right: 17px;
+  }
+}
+
+.others-info-container {
+  display: flex;
+
+  @include e('others-left-container') {
+    width: 200px;
+    margin-right: 150px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @include e('others-right-container') {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @include e('others-left-row') {
+    margin-bottom: 12px;
+
+    @include m('end') {
+      margin-bottom: 0;
+    }
+  }
+
+  @include e('others-right-row') {
+    margin-bottom: 12px;
+
+    @include m('end') {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.others-left-row {
+  display: flex;
+  align-items: center;
+
+  @include e('order-detail-subtitle') {
+    width: 99px;
+  }
+
+  @include e('order-detail-contents') {
+    width: 70px;
+    justify-content: flex-end;
+  }
+}
+
+.others-right-row {
+  display: flex;
+  align-items: center;
+
+  @include e('order-detail-subtitle') {
+    width: 66px;
+  }
+
+  @include e('button') {
+    width: 60px;
+    height: 24px;
+    font-size: 13px;
+    margin-right: 6px;
+
+    @include m('end') {
+      margin-right: 0;
+    }
+  }
+}
+
+.order-list-container {
+  display: flex;
+  justify-content: space-between;
+
+  @include e('product-container') {
+    width: 306px;
+  }
+
+  @include e('order-container') {
+    width: 498px;
+  }
+}
+
+.product-container, .order-container {
+  @include e('order-detail-subtitle') {
+    margin-bottom: 10px;
+  }
+
+  @include e('thead') {
+    font-size: 12px;
+
+    td, th {
+      height: 24px; //테이블 헤더의 높이 정의
+    }
+  }
+
+  @include e('scroll') {
+    height: 247px - 24px; //테이블 바디의 높이 정의
+  }
+
+  @include e('tbody') {
+    font-size: 12px;
+
+    tr {
+      height: 24px; //테이블 바디 로우 높이 정의
+    }
+  }
+}
+
+.product-container {
+  //테이블의 컬럼별 너비 설정
+  th, td {
+    &:nth-child(1) {
+      width: 15%;
+    }
+    &:nth-child(2) {
+      width: 40%;
+    }
+    &:nth-child(3) {
+      width: 20%;
+    }
+  }
+}
+
+.order-container {
+  td, th {
+    &:nth-child(1) {
+      width: 10%;
+    }
+    &:nth-child(2) {
+      width: 10%;
+    }
+    &:nth-child(3) {
+      width: 30%;
+    }
+    &:nth-child(4) {
+      width: 20%;
+    }
+    &:nth-child(5) {
+      width: 15%;
+    }
+  }
+
+  @include e('tbody') {
+    td, th {
+      &:nth-child(2) {
+        padding-left: 10px;
+      }
+      &:nth-child(4) {
+        padding-left: 10px;
+      }
+      &:nth-child(6) {
+        padding-left: 10px;
+      }
+    }
+  }
+}
+
+.order-detail-subtitle {
+  font-size: 13px;
+  font-weight: 500;
+  color: #323232;
+
+  @include m('sub') {
+    font-size: 12px;
+    font-weight: normal;
+    color: #9b9b9b;
+  }
+}
+
+.order-detail-contents {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+
+  @include e('icon') {
     width: 11px;
     height: 11px;
-    text-align: center;
+    background: url($url-phone) no-repeat center center;
+    background-size: 11px;
     margin-right: 5px;
-  }
-  .current-status-default {
-    @include custom-font(12px, #ffffff, bold);
-    @include current-status;
-  }
-
-  .current-status-color {
-    @include custom-font(12px, #ff9037, bold);
-    @include current-status;
-  }
-
-  .contents-table {
-    margin-top: -5px;
-    th, td {
-      @include custom-font;
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-    th {
-      text-align: left;
-      font-size: 12px;
-      color: #9b9b9b;
-      padding-right: 10px;
-    }
-    td {
-      font-size: 13px;
-      color: #4a4a4a;
-    }
-  }
-
-  .pay-type-default-button {
-    @include custom-font($size: 13px, $weight: bold);
-    @include pay-type-button;
-    border: 1px solid #999999;
-  }
-
-  .pay-type-color-button {
-    @include custom-font($size: 13px, $color: #ff9037, $weight: bold);
-    @include pay-type-button;
-    border: 1px solid #ff9037;
-  }
-
-  .table-container {
-    height: 240px;
-    border: 1px solid #aaaaaa;
-    table {
-      min-width: 100%;
-      border-collapse: collapse;
-      td, th {
-        height: 24px;
-        text-align: center;
-      }
-      thead {
-        @include custom-font($size: 12px);
-        background-color: #eaeaea;
-      }
-      tbody {
-        @include custom-font($size: 12px, $color: #1f1f1f);
-        tr {
-          border-bottom: 0.5px solid #aaaaaa;
-          &:last-child {
-            border-bottom: 0;
-          }
-        }
-      }
-    }
-    .scroll-table {
-      height: 216px;
-      @include scroll-view;
-    }
   }
 }

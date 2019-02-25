@@ -57,11 +57,11 @@ const getBranch = (obj) => {
     for (let branch of branches) {
 
         const label = document.createElement("label");
-        label.className = "radio-items";
+        label.className = "radio-item radio-item--hovered result-section__radio-item";
 
         label.innerHTML =
-            '<input type="radio" name="branchId" form="form-result-branch" value=' + branch["id"] + '>' +
-            '<span class="check-marker"></span>' + branch["name"];
+            '<input class="radio-item__input" type="radio" name="branchId" form="form-result-branch" value=' + branch["id"] + '>' +
+            '<span class="radio-item__shape result-section__shape"></span>' + branch["name"];
 
         label.onclick = () => {
             $("result-branch-name").value = branch["name"];
@@ -82,11 +82,11 @@ const getShop = (obj) => {
     for (let shop of shops) {
 
         const label = document.createElement("label");
-        label.className = "radio-items";
+        label.className = "radio-item radio-item--hovered result-section__radio-item";
 
         label.innerHTML =
-            '<input type="radio" name="shopId" form="form-result-shop" value=' + shop["id"] + '>' +
-            '<span class="check-marker"></span>' + shop["name"];
+            '<input class="radio-item__input" type="radio" name="shopId" form="form-result-shop" value=' + shop["id"] + '>' +
+            '<span class="radio-item__shape result-section__shape"></span>' + shop["name"];
 
         label.onclick = () => {
             $("result-shop-name").value = shop["name"];
@@ -118,6 +118,18 @@ btnShopName.onclick = () => {
     getJSON('api/shops?branch-id=' + selectedBranchId).then(getShop);
 
     return false;
+};
+
+$("branch_search_modal").onclick = (ev) => {
+    if (ev.target.id === "branch_search_modal") {
+        $("branch_search_modal").style.display = "none";
+    }
+};
+
+$("shop_search_modal").onclick = (ev) => {
+    if (ev.target.id === "shop_search_modal") {
+        $("shop_search_modal").style.display = "none";
+    }
 };
 
 $("branch-close-button").onclick = () => {

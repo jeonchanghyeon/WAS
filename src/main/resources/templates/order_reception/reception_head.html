@@ -7,90 +7,90 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Please</title>
-    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/mileage_modal.css"/>
-    <link rel="stylesheet" href="/css/popup_search_address.css"/>
+    <link rel="stylesheet" type="text/css" href="css/header.css"/>
     <link rel="stylesheet" href="/css/recept_order.css"/>
-    <link rel="stylesheet" href="/css/search_modal.css"/>
-    <link rel="stylesheet" href="/css/menu_modal.css"/>
 </head>
 
 <body>
-<div class="reception-container">
-    <div th:replace="header/header_head :: header"></div>
-    <section class="main-section">
-        <!-- 헤더 -->
-        <div class="header">
-            주문접수
-            <div class="required">입력필수값</div>
-        </div>
-        <form id="recept_form" class="body">
-            <input type="hidden" name="shop-id" id="shop_id" value="1121"/>
-            <input type="hidden" name="point" id="point"/>
+<div th:replace="header/header_head :: header"></div>
+<section class="reception-container">
+    <!-- 헤더 -->
+    <div class="reception-header reception-container__reception-header">
+        <div class="reception-header__title">주문접수</div>
+        <div class="subtitle subtitle--white subtitle--required reception-header__subtitle">입력필수값</div>
+    </div>
+    <form class="reception-main reception-container__reception-main" id="recept_form">
+        <input type="hidden" name="shop-id" id="shop_id" value="1121"/>
+        <input type="hidden" name="point" id="point"/>
 
-            <!-- 왼쪽 부분-->
-            <section class="left-section">
-                <div class="info-container">
-                    <div class="info-row">
-                        <div class="required">지사명</div>
-                        <input type="hidden" name="branchId" id="branchId"/>
-                        <input type="text" class="edit-box" required="required" name="branch-name"
-                               placeholder="지사명을 입력하세요." id="branchName" readonly="readonly"/>
-                        <button class="search-button" id="btn_branch_name"> 검색</button>
-                    </div>
-                    <div class="info-row">
-                        <div class="required">상점명</div>
-                        <input type="hidden" name="shopId" id="shopId"/>
-                        <input type="text" class="edit-box" required="required" name="shop-name"
-                               placeholder="상점명을 입력하세요." id="shopName" readonly="readonly"/>
-                        <button class="search-button" id="btn_shop_name"> 검색</button>
-                    </div>
-                    <div class="info-row">
-                        <div class="required">고객전화번호</div>
-                        <input type="tel" class="edit-box" required="required" name="customer-tel"
-                               placeholder="고객전화번호를 입력하세요."/>
-                    </div>
-                    <div class="info-row">
-                        <div class="required">고객 주소</div>
-                        <input type="text" required="required" class="edit-box" name="address"
-                               placeholder="배송할 주소를 검색해주세요."/>
-                        <button class="search-button" id="btn_address"> 검색</button>
-                    </div>
-                    <div class="info-row">
-                        <div></div>
-                        <input type="text" class="edit-box" name="address-detail"
-                               placeholder="상세 주소를 검색해주세요."/>
-                    </div>
-                    <input type="hidden" name="jibun"/>
-                    <input type="hidden" name="road"/>
-                    <input type="hidden" name="latitude"/>
-                    <input type="hidden" name="longitude"/>
-                    <input type="hidden" name="distance"/>
-                    <input type="hidden" name="distanceFactor"/>
+        <!-- 왼쪽 부분-->
+        <section class="reception-left-section">
+            <div class="info-row reception-left-section__info-row">
+                <div class="subtitle subtitle--required info-row__subtitle">지사명</div>
+                <input type="hidden" name="branchId" id="branchId"/>
+                <input class="text text--disabled info-row__text" type="text" required="required" name="branch-name"
+                       placeholder="지사명을 입력하세요." id="branchName" readonly="readonly"/>
+                <button class="button button--rect button--empty-orange info-row__button" id="btn_branch_name"> 검색
+                </button>
+            </div>
+            <div class="info-row reception-left-section__info-row">
+                <div class="subtitle subtitle--required info-row__subtitle">상점명</div>
+                <input type="hidden" name="shopId" id="shopId"/>
+                <input class="text text--disabled info-row__text" type="text" required="required" name="shop-name"
+                       placeholder="상점명을 입력하세요." id="shopName" readonly="readonly"/>
+                <button class="button button--rect button--empty-orange info-row__button" id="btn_shop_name"> 검색
+                </button>
+            </div>
+            <div class="info-row reception-left-section__info-row">
+                <div class="subtitle subtitle--required info-row__subtitle">고객전화번호</div>
+                <input class="text text--disabled info-row__text" type="tel" required="required" name="customer-tel"
+                       placeholder="고객전화번호를 입력하세요."/>
+            </div>
+            <div class="info-row reception-left-section__info-row">
+                <div class="subtitle subtitle--required info-row__subtitle">고객 주소</div>
+                <input class="text text--disabled info-row__text" type="text" required="required" name="address"
+                       placeholder="배송할 주소를 검색해주세요."/>
+                <button class="button button--rect button--empty-orange info-row__button" id="btn_address"> 검색</button>
+            </div>
+            <div class="info-row reception-left-section__info-row">
+                <div class="info-row__subtitle"></div>
+                <input class="text text--disabled info-row__text" type="text" name="address-detail"
+                       placeholder="상세 주소를 검색해주세요."/>
+            </div>
+            <input type="hidden" name="jibun"/>
+            <input type="hidden" name="road"/>
+            <input type="hidden" name="latitude"/>
+            <input type="hidden" name="longitude"/>
+            <input type="hidden" name="distance"/>
+            <input type="hidden" name="distanceFactor"/>
+            <div class="map reception-left-section__map" id="map"></div>
+            <div class="item-info-container reception-left-section__item-info-container">
+                <span class="subtitle">상품정보</span>
+                <div>
+                    <button class="button button--rect button--white item-info-container__button item-info-container__button--margin">
+                        갯수추가
+                    </button>
+                    <button class="button button--rect button--black item-info-container__button" id="btn-menu">
+                        메뉴(POS)
+                    </button>
                 </div>
-                <div class="map" id="map"></div>
-                <div class="item-info-container">
-                    <span class="subsection-title">상품정보</span>
-                    <div>
-                        <button class="rect-white">갯수추가</button>
-                        <button class="rect-black" id="btn-menu">메뉴(POS)</button>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table class="table">
+            </div>
+            <div class="item-info-table">
+                <div class="scroll-table">
+                    <table class="scroll-table__thead item-info-table__thead">
                         <thead>
                         <tr>
-                            <td>순번</td>
-                            <td>상품명</td>
-                            <td>구분</td>
-                            <td>단간</td>
-                            <td>갯수</td>
-                            <td>판매가</td>
+                            <td class="scroll-table__thead-cell">순번</td>
+                            <td class="scroll-table__thead-cell">상품명</td>
+                            <td class="scroll-table__thead-cell">구분</td>
+                            <td class="scroll-table__thead-cell">단간</td>
+                            <td class="scroll-table__thead-cell">갯수</td>
+                            <td class="scroll-table__thead-cell">판매가</td>
                         </tr>
                         </thead>
                     </table>
-                    <div class="table-scroll">
-                        <table>
+                    <div class="scroll-table__scroll item-info-table__scroll">
+                        <table class="scroll-table__tbody item-info-table__tbody">
                             <tbody>
                             <tr>
                                 <td>1</td>
@@ -128,150 +128,170 @@
                         </table>
                     </div>
                 </div>
-                <div class="table_caption">더블클릭하면 상품이 삭제됩니다.</div>
-                <input type="hidden" name="menu"/>
-                <div class="item-cost-container">
-                    <div class="item-cost">
-                        <div class="required" for="menu-price">상품요금</div>
-                        <input type="text" class="edit-box" required="required" name="menu-price" id="menu-price"/>
-                    </div>
-                    <div class="item-cost">
-                        <div class="subsection-title" for="additional-menuPrice">상품추가요금</div>
-                        <input type="text" class="edit-box" name="additional-menuPrice" id="additional-menuPrice"/>
-                    </div>
-                    <div class="item-cost">
-                        <div class="subsection-title" for="sum">고객요금 합계</div>
-                        <input type="text" class="edit-box" id="sum" disabled="disabled" value="0원"/>
-                    </div>
+            </div>
+            <div class="caption reception-left-section__caption">더블클릭하면 상품이 삭제됩니다.</div>
+            <input type="hidden" name="menu"/>
+            <div class="item-cost-container">
+                <div class="item-cost item-cost-container__item-cost">
+                    <div class="subtitle subtitle--required item-cost__subtitle" for="menu-price">상품요금</div>
+                    <input class="text text--disabled item-cost__text" type="text" required="required" name="menu-price"
+                           id="menu-price"/>
                 </div>
-            </section>
+                <div class="item-cost item-cost-container__item-cost">
+                    <div class="subtitle item-cost__subtitle" for="additional-menuPrice">상품추가요금</div>
+                    <input class="text text--disabled item-cost__text" type="text" name="additional-menuPrice"
+                           id="additional-menuPrice"/>
+                </div>
+                <div class="item-cost item-cost-container__item-cost">
+                    <div class="subtitle item-cost__subtitle" for="sum">고객요금 합계</div>
+                    <input class="text text--disabled item-cost__text" type="text" id="sum" disabled="disabled"
+                           value="0원"/>
+                </div>
+            </div>
+        </section>
 
-            <!-- 오른쪽 부분-->
-            <section class="right-section">
-                <div class="payment-type-container">
-                    <div class="required">결제방법</div>
-                    <label class="radio-items">
-                        <input required="required" type="radio" id="cash" name="payment-type"
-                               value="1" checked="checked"/>
-                        <span class="check-marker">현금</span>
+        <!-- 오른쪽 부분-->
+        <section class="reception-right-section">
+            <div class="payment-type-container reception-right-section__payment-type-container">
+                <div class="subtitle subtitle--required payment-type-container__subtitle">결제방법</div>
+                <label class="group-button payment-type-container__group-button">
+                    <input class="group-button__input" required="required" type="radio" id="cash" name="payment-type"
+                           value="1" checked="checked"/>
+                    <span class="group-button__shape">현금</span>
+                </label>
+                <label class="group-button payment-type-container__group-button">
+                    <input class="group-button__input" required="required" type="radio" id="card" name="payment-type"
+                           value="2"/>
+                    <span class="group-button__shape">카드</span>
+                </label>
+                <label class="group-button payment-type-container__group-button">
+                    <input class="group-button__input" required="required" type="radio" id="prepay" name="payment-type"
+                           value="3"/>
+                    <span class="group-button__shape">선결제</span>
+                </label>
+            </div>
+            <div class="cook-time-container reception-right-section__cook-time-container">
+                <div class="cook-time-container__row">
+                    <div class="subtitle cook-time-container__subtitle">조리시간</div>
+                    <label class="group-button cook-time-container__group-button">
+                        <input class="group-button__input" required="required" type="radio" id="cook_m15"
+                               name="cook-time"
+                               checked="checked"/>
+                        <span class="group-button__shape">15분후</span>
                     </label>
-                    <label class="radio-items">
-                        <input required="required" type="radio" id="card" name="payment-type"
-                               value="2"/>
-                        <span class="check-marker">카드</span>
+                    <label class="group-button cook-time-container__group-button">
+                        <input class="group-button__input" required="required" type="radio" id="cook_m20"
+                               name="cook-time"/>
+                        <span class="group-button__shape">20분후</span>
                     </label>
-                    <label class="radio-items">
-                        <input required="required" type="radio" id="prepay" name="payment-type"
-                               value="3"/>
-                        <span class="check-marker">선결제</span>
+                    <label class="group-button cook-time-container__group-button">
+                        <input class="group-button__input" required="required" type="radio" id="cook_m25"
+                               name="cook-time"/>
+                        <span class="group-button__shape">25분후</span>
+                    </label>
+                    <label class="group-button cook-time-container__group-button">
+                        <input class="group-button__input" required="required" type="radio" id="cook_m30"
+                               name="cook-time"/>
+                        <span class="group-button__shape">30분후</span>
                     </label>
                 </div>
-                <div class="cook-time-container">
-                    <div class="cook-time-row">
-                        <div class="subsection-title">조리시간</div>
-                        <label class="radio-items">
-                            <input required="required" type="radio" id="cook_m15" name="cook-time"
-                                   checked="checked"/>
-                            <span class="check-marker">15분후</span>
-                        </label>
-                        <label class="radio-items">
-                            <input required="required" type="radio" id="cook_m20" name="cook-time"/>
-                            <span class="check-marker">20분후</span>
-                        </label>
-                        <label class="radio-items">
-                            <input required="required" type="radio" id="cook_m25" name="cook-time"/>
-                            <span class="check-marker">25분후</span>
-                        </label>
-                        <label class="radio-items">
-                            <input required="required" type="radio" id="cook_m30" name="cook-time"/>
-                            <span class="check-marker">30분후</span>
-                        </label>
-                    </div>
-                    <div class="cook-time-row">
-                        <label class="radio-items">
-                            <input required="required" type="radio" id="cook_m35" name="cook-time"/>
-                            <span class="check-marker">35분후</span>
-                        </label>
-                        <label class="radio-items">
-                            <input required="required" type="radio" id="cook_m40" name="cook-time"/>
-                            <span class="check-marker">40분후</span>
-                        </label>
-                        <label class="radio-items">
-                            <input required="required" type="radio" id="cook_m50" name="cook-time"/>
-                            <span class="check-marker">50분후</span>
-                        </label>
-                    </div>
+                <div class="cook-time-container__row cook-time-container__row--second">
+                    <label class="group-button cook-time-container__group-button">
+                        <input class="group-button__input" required="required" type="radio" id="cook_m35"
+                               name="cook-time"/>
+                        <span class="group-button__shape">35분후</span>
+                    </label>
+                    <label class="group-button cook-time-container__group-button">
+                        <input class="group-button__input" required="required" type="radio" id="cook_m40"
+                               name="cook-time"/>
+                        <span class="group-button__shape">40분후</span>
+                    </label>
+                    <label class="group-button cook-time-container__group-button">
+                        <input class="group-button__input" required="required" type="radio" id="cook_m50"
+                               name="cook-time"/>
+                        <span class="group-button__shape">50분후</span>
+                    </label>
                 </div>
+            </div>
 
-                <div class="cost-setting-container">
-                    <div class="dist-setting-container">
-                        <div class="subsection-title">배송대행료 설정</div>
-                        <label class="basic-label">
-                            <input required="required" type="radio" id="setting_distance" name="dist-type"
-                                   checked="checked"/>
-                            거리별
-                        </label>
-                        <input type="text" class="edit-box" id="distance"/>
-                        <label class="basic-label">
-                            <input required="required" type="radio" id="setting_dong" name="dist-type"/>
-                            동별
-                        </label>
-                    </div>
-                    <div class="cost-setting-etc-container">
-                        <div class="item-cost">
-                            <label for="delivery-cost" class="required"> 배송대행료</label>
-                            <input required="required" type="text" class="edit-box" name="delivery-cost"
-                                   id="delivery-cost"/>
-                        </div>
-                        <div class="item-cost">
-                            <label for="add-cost" class="subsection-title"> 배송추가요금</label>
-                            <input type="text" class="edit-box" id="add-cost"/>
-                        </div>
-                    </div>
-                    <div class="cost-setting-etc-container">
-                        <div class="item-cost">
-                            <label for="extra-charge" class="subsection-title"> 할증</label>
-                            <input type="text" class="edit-box" id="extra-charge" disabled="disabled" value="0원"/>
-                        </div>
-                        <div class="item-cost">
-                            <label for="additional-cost" class="subsection-title"> 배송대행료합계</label>
-                            <input type="text" class="edit-box" name="additional-cost" id="additional-cost"
-                                   readonly="readonly"
-                                   disabled="disabled" value="0원"/>
-                        </div>
-                    </div>
-                    <div class="cost-type-container">
-                        <span class="subsection-title">대행료 지불방법</span>
-                        <div class="buttons">
-                            <label class="radio-items">
-                                <input type="radio" id="pt" name="delivery-cost-payment-type"/>
-                                <span class="check-marker">포인트</span>
-                            </label>
-                            <label class="radio-items">
-                                <input type="radio" id="money" name="delivery-cost-payment-type"/>
-                                <span class="check-marker">현금</span>
-                            </label>
-                        </div>
-                    </div>
+            <div class="dist-setting-container reception-right-section__dist-setting-container">
+                <div class="subtitle dist-setting-container__subtitle">배송대행료 설정</div>
+                <label class="radio-item dist-setting-container__radio-item">
+                    <input class="radio-item__input dist-setting-container__input" required="required" type="radio"
+                           id="setting_distance" name="dist-type"
+                           checked="checked"/>
+                    <span class="radio-item__shape dist-setting-container__shape">거리별</span>
+                </label>
+                <input class="text text--disabled dist-setting-container__text" type="text" id="distance"/>
+                <label class="radio-item dist-setting-container__radio-item">
+                    <input class="radio-item__input dist-setting-container__input" required="required" type="radio"
+                           id="setting_dong" name="dist-type"/>
+                    <span class="radio-item__shape dist-setting-container__shape">동별</span>
+                </label>
+            </div>
+            <div class="cost-setting-container reception-right-section__cost-setting-container reception-right-section__cost-setting-container--margin">
+                <div class="item-cost cost-setting-container__item-cost">
+                    <label class="subtitle subtitle--required item-cost__subtitle" for="delivery-cost"> 배송대행료</label>
+                    <input class="text text--disabled item-cost__text" required="required" type="text"
+                           name="delivery-cost"
+                           id="delivery-cost"/>
                 </div>
-                <div class="request-memo-container">
-                    <div class="subsection-title">요청사항</div>
-                    <div>
-                        <input type="text" class="edit-box" name="memo" placeholder="요청사항을 입력해주세요"/>
-                        <button class="search-button">상용문구</button>
-                    </div>
+                <div class="item-cost cost-setting-container__item-cost">
+                    <label class="subtitle item-cost__subtitle" for="add-cost"> 배송추가요금</label>
+                    <input class="text text--disabled item-cost__text" type="text" id="add-cost"/>
                 </div>
-                <div class="result-button-container">
-                    <button class="round-rect-fill-orange" type="submit">배송요청</button>
-                    <button class="round-rect-empty-orange" name="is-suspend" value="true" id="wait" type="submit">
+            </div>
+            <div class="cost-setting-container reception-right-section__cost-setting-container">
+                <div class="item-cost cost-setting-container__item-cost">
+                    <label class="subtitle item-cost__subtitle" for="extra-charge"> 할증</label>
+                    <input class="text text--disabled item-cost__text" type="text" id="extra-charge" disabled="disabled"
+                           value="0원"/>
+                </div>
+                <div class="item-cost cost-setting-container__item-cost">
+                    <label class="subtitle item-cost__subtitle" for="additional-cost"> 배송대행료합계</label>
+                    <input class="text text--disabled item-cost__text" type="text" name="additional-cost"
+                           id="additional-cost"
+                           readonly="readonly"
+                           disabled="disabled" value="0원"/>
+                </div>
+            </div>
+            <div class="cost-type-container reception-right-section__cost-type-container">
+                <span class="subtitle">대행료 지불방법</span>
+                <div>
+                    <label class="group-button cost-type-container__group-button cost-type-container__group-button--margin">
+                        <input class="group-button__input" type="radio" id="pt" name="delivery-cost-payment-type"
+                               checked="checked"/>
+                        <span class="group-button__shape">포인트</span>
+                    </label>
+                    <label class="group-button cost-type-container__group-button">
+                        <input class="group-button__input" type="radio" id="money" name="delivery-cost-payment-type"/>
+                        <span class="group-button__shape">현금</span>
+                    </label>
+                </div>
+            </div>
+            <div class="request-memo-container reception-right-section__request-memo-container">
+                <div class="subtitle">요청사항</div>
+                <div>
+                    <input class="text text--disabled request-memo-container__text request-memo-container__text"
+                           type="text" name="memo" placeholder="요청사항을 입력해주세요"/>
+                    <button class="button button--empty-orange request-memo-container__button">상용문구</button>
+                </div>
+            </div>
+            <div class="result-button-container">
+                <div>
+                    <button class="button button--round result-button-container__button" type="submit">배송요청</button>
+                    <button class="button button--round button--empty-orange result-button-container__button result-button-container__button--second"
+                            name="is-suspend" value="true" id="wait" type="submit">
                         접수대기
                     </button>
-                    <button class="round-rect-empty-white" type="submit">취소</button>
                 </div>
-            </section>
-        </form>
-    </section>
-</div>
+                <button class="button button--round button--empty-white result-button-container__button"
+                        type="submit">취소
+                </button>
+            </div>
+        </section>
+    </form>
+</section>
 <!-- 주소 모달-->
 <div th:replace="order_reception/reception_address_modal :: modal"></div>
 <!-- 지사 모달-->

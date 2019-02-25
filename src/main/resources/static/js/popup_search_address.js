@@ -57,6 +57,12 @@ const searchAddress = (userId, address) => {
     });
 };
 
+$("modal").onclick = (ev) => {
+    if (ev.target.id === "modal") {
+        modalClose();
+    }
+};
+
 $("btn_close").onclick = () => {
     modalClose();
 };

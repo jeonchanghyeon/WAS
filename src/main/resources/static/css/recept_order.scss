@@ -1,426 +1,432 @@
 @import "common";
+@import "mileage_modal";
+@import "menu_modal";
+@import "popup_search_address";
+@import "search_modal";
 
+$contents-width: 900px;
+$contents-height: 728px;
+$center-padding: 40px;
+
+/* BLOCK */
+.subtitle {
+  height: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #323232;
+  display: flex;
+  align-items: center;
+
+  @include m('white') {
+    font-weight: normal;
+    color: $color-white;
+  }
+
+  @include m('required') {
+    &::before {
+      font-size: 20px;
+      content: "▪";
+      color: $color-orange;
+    }
+  }
+}
+
+/* Container */
 .reception-container {
-  $contents_width: 900px;
-  $contents_height: 728px;
-  $center_padding: 40px;
   width: 100%;
+  height: $contents-height;
+  display: flex;
+  flex-direction: column;
+
+  @include e('reception-header') {
+    width: calc(50% + #{$contents-width / 2});
+    min-height: 70px;
+    padding-left: calc(50% - #{$contents-width / 2});
+  }
+
+  @include e('reception-main') {
+    height: calc(100% - 70px - 74px); //상하 마진, 헤더
+    min-width: $contents-width;
+    margin: 30px calc(50% - #{$contents-width / 2}) 44px;
+  }
+
+  @media (max-width: $contents-width + 200px) {
+    .reception-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: calc(100% - 200px);
+    }
+    .reception-left-section {
+      width: $contents-width / 2;
+      padding: 0 0 40px 0;
+      border-right: 0;
+    }
+    .reception-right-section {
+      width: $contents-width / 2;
+      padding: 40px 0 0 0;
+      border-top: 1px solid #aeaeae;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.reception-header {
+  display: flex;
+  align-items: center;
+  background-color: #4a4a4a;
+
+  @include e('title') {
+    font-weight: 300;
+    font-size: 24px;
+    color: $color-white;
+  }
+
+  @include e('subtitle') {
+    height: 32px;
+    margin-left: 14px;
+    font-size: 12px;
+  }
+}
+
+.reception-main {
+  display: flex;
+}
+
+.reception-left-section {
+  width: $contents-width / 2 - $center-padding;
+  padding-right: $center-padding - 1px; //보더
+  height: 100%;
+  border-right: 1px solid $color-gray-table-border;
+
+  @include e('info-row') {
+    margin-bottom: 10px;
+  }
+
+  @include e('map') {
+    margin-bottom: 18px;
+  }
+
+  @include e('item-info-container') {
+    margin-bottom: 10px;
+  }
+
+  @include e('caption') {
+    margin-bottom: 10px;
+  }
+}
+
+.reception-right-section {
+  width: $contents-width / 2 - $center-padding;
+  padding-left: $center-padding;
   height: 100%;
 
-  /* TODO 컨테이너 CSS */
-  .main-section {
-    width: 100%;
-    height: $contents_height;
-    display: flex;
-    flex-direction: column;
-
-    .header {
-      @include custom-font(24px, $color_white, 300);
-      $left_padding: calc(50% - #{$contents_width / 2});
-      width: calc(50% + #{$contents_width / 2});
-      height: 70px;
-      background-color: $color_gray_font;
-      padding-left: $left_padding;
-      display: flex;
-      align-items: center;
-      .required {
-        color: $color_white;
-        margin-left: 14px;
-        font-weight: normal;
-        font-size: 12px;
-      }
-    }
-
-    .body {
-      margin: 30px calc(50% - #{$contents_width / 2}) 44px;
-      height: calc(100% - 70px - 74px); //상하 마진, 헤더
-      min-width: $contents_width;
-      display: flex;
-
-      .left-section {
-        width: $contents_width / 2 - $center_padding;
-        padding-right: $center_padding - 1px; //보더
-        height: 100%;
-        border-right: 1px solid $color_gray_border;
-      }
-
-      .right-section {
-        width: $contents_width / 2 - $center_padding;
-        padding-left: $center_padding;
-        height: 100%;
-      }
-    }
-  }
-
-  .info-container {
-    margin-bottom: 9px;
-
-    .info-row {
-      display: flex;
-      height: 32px;
-      margin-bottom: 10px;
-
-      .required {
-        width: 120px;
-        height: 100%;
-      }
-
-      .edit-box {
-        flex: 1;
-      }
-
-      .search-button {
-        width: 80px;
-        height: 32px;
-        background: url($url_search_orange) no-repeat 16px center;
-        background-size: 13px;
-        padding-left: 16px;
-        margin-left: 3px;
-      }
-
-      &:nth-child(5) {
-        .edit-box {
-          margin-left: 120px;
-        }
-      }
-    }
-  }
-
-  .item-info-container {
-    width: 100%;
-    height: 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    .rect-white {
-      @include custom-font(12px, $color_gray_font, bold);
-      width: 98px;
-      height: 100%;
-      margin-right: 5px;
-    }
-    .rect-black {
-      @include custom-font(12px, $color_white, bold);
-      width: 98px;
-      height: 100%;
-    }
-  }
-
-  .payment-type-container {
-    display: flex;
+  @include e('payment-type-container') {
     margin-bottom: 16px;
-    .required {
-      margin-right: 19px;
-    }
-    .radio-items {
-      width: 74px;
-      height: 33px;
-      margin-right: 7px;
-    }
   }
 
-  .cook-time-container {
-    @include underline;
-    width: 100%;
-    margin-bottom: 20px;
-    .cook-time-row {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      margin-bottom: 10px;
-      .subsection-title {
-        margin-right: 30px;
-      }
-      &:nth-child(2) {
-        padding-left: 86px;
-        margin-bottom: 20px;
-      }
-      .radio-items {
-        width: 74px;
-        height: 30px;
-        margin-right: 7px;
-      }
-    }
-  }
-
-  .cost-setting-container {
-    @include underline;
-    width: 100%;
+  @include e('cook-time-container') {
+    @include underline();
+    padding-bottom: 20px;
     margin-bottom: 18px;
   }
 
-  .dist-setting-container {
-    display: flex;
-    align-items: center;
+  @include e('dist-setting-container') {
     margin-bottom: 18px;
-    .subsection-title {
-      letter-spacing: 0.2px;
-      margin-right: 10px;
-    }
-    .basic-label {
-      @include custom-font(14px, #9b9b9b, 500);
-      margin-right: 10px;
-    }
-    .edit-box {
-      width: 68px;
-      margin-right: 38px;
-    }
   }
 
-  .cost-setting-etc-container {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+  @include e('cost-setting-container') {
+    margin-bottom: 17px;
 
-    .item-cost {
-      width: 180px;
-      .subsection-title, .required {
-        display: block;
-        margin-bottom: 6px;
-      }
-    }
-    &:nth-child(3) {
-      margin-top: 17px;
+    @include m('margin') {
       margin-bottom: 25px;
     }
   }
 
-  .cost-type-container {
-    width: 100%;
-    height: 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-
-    .buttons {
-      width: 200px;
-      display: flex;
-      justify-content: space-between;
-
-      .radio-items {
-        width: 97px;
-        height: 32px;
-      }
-    }
-  }
-
-  .request-memo-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 60px;
-
-    .edit-box {
-      width: 230px;
-      margin-right: 3px;
-    }
-    .search-button {
-      width: 80px;
-      height: 32px;
-    }
-  }
-
-  .item-cost-container {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-
-  .item-cost {
-    width: 30%;
-    .subsection-title, .required {
-      margin-bottom: 8px;
-    }
-    .edit-box {
-      text-align: right;
-      width: 100%;
-    }
-  }
-
-  /* TODO 요소 CSS */
-  .required {
-    @include custom-font(14px, #323232, bold);
-    &::before {
-      width: 5px;
-      height: 5px;
-      font-size: 20px;
-      content: "▪";
-      color: $color_orange !important;
-    }
-  }
-
-  .search-button {
-    @include rect-shape($color-white, $color_gray_border, 0);
-    @include custom-font(14px, $color_orange, 500);
-    letter-spacing: 0.5px;
-  }
-
-  .subsection-title {
-    @include custom-font(14px, #323232, bold);
-  }
-
-  .edit-box {
-    @include custom-font($size: 12px, $weight: 500);
-    height: 32px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 2px;
-    border: none;
-    background-color: #f1f1f1;
-  }
-
-  .map {
+  @include e('cost-type-container') {
+    @include underline();
+    padding-bottom: 25px;
     margin-bottom: 18px;
-    width: 100%;
-    height: 135px;
-    border: 1px solid #aeaeae;
   }
 
-  .radio-items {
-    /* 라디오 버튼 선택된 경우 */
-    input[type="radio"]:checked ~ .check-marker {
-      @include custom-font(14px, $color_orange, $weight: 500);
-      @include rect-shape($color_white, $color_orange, 0);
-      letter-spacing: 0.5px;
+  @include e('request-memo-container') {
+    margin-bottom: 45px;
+  }
+}
+
+.map {
+  width: 100%;
+  height: 135px;
+  border: 1px solid #aeaeae;
+}
+
+.item-info-container {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include e('button') {
+    width: 98px;
+    height: 100%;
+
+    @include m('margin') {
+      margin-right: 5px;
     }
+  }
+}
 
-    /* 라디오 버튼 기본 모양 */
-    .check-marker {
-      @include custom-font(14px, #9b9b9b, 500);
-      @include rect-shape($color_white, $color_gray_border, 0);
-      letter-spacing: 0.5px;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.item-info-table {
+
+  //테이블의 컬럼별 너비 설정
+  td, th {
+    &:nth-child(1) {
+      width: 10%;
+    }
+    &:nth-child(2) {
+      width: 30%;
+    }
+    &:nth-child(3) {
+      width: 15%;
+    }
+    &:nth-child(4) {
+      width: 15%;
+    }
+    &:nth-child(5) {
+      width: 10%;
     }
   }
 
-  .label {
-    @include custom-font(14px, #9b9b9b, bold);
+  @include e('thead') {
+    font-size: 12px;
+
+    td, th {
+      height: 24px; //테이블 헤더의 높이 정의
+    }
   }
 
-  .table-container {
-    border: 1px solid $color_gray_table;
+  @include e('scroll') {
+    height: 66px; //테이블 바디의 높이 정의
+  }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-      thead {
-        @include custom-font(12px, $color_gray_font, normal);
-        background-color: $color_gray_table;
-        th, td {
-          height: 24px;
-          text-align: center;
-          vertical-align: middle;
-        }
+  @include e('tbody') {
+    td, th {
+      height: 33px; //테이블 바디 로우 높이 정의
+
+      &:nth-child(1) {
+        text-align: center;
       }
-      tbody {
-        @include custom-font(14px, #1f1f1f, normal);
-        th, td {
-          @include underline;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          vertical-align: middle;
-          height: 33px;
-        }
-        td, th {
-          &:nth-child(1) {
-            text-align: center;
-          }
-          &:nth-child(2) {
-            padding-left: 10px;
-          }
-          &:nth-child(3) {
-            text-align: center;
-          }
-          &:nth-child(4) {
-            padding-left: 10px;
-          }
-          &:nth-child(5) {
-            text-align: center;
-          }
-          &:nth-child(6) {
-            padding-left: 10px;
-          }
-        }
+      &:nth-child(2) {
+        padding-left: 10px;
       }
-      td, th {
-        &:nth-child(1) {
-          width: 10%;
-        }
-        &:nth-child(2) {
-          width: 30%;
-        }
-        &:nth-child(3) {
-          width: 15%;
-        }
-        &:nth-child(4) {
-          width: 15%;
-        }
-        &:nth-child(5) {
-          width: 10%;
-        }
+      &:nth-child(3) {
+        text-align: center;
       }
-    }
-    .table-scroll {
-      @include scroll-view;
-      height: 66px;
-      width: 100%;
-    }
-  }
-
-  .table_caption {
-    @include custom-font(12px, #9b9b9b, normal);
-    text-align: right;
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-  .result-button-container {
-    .round-rect-fill-orange {
-      @include custom-font(16px, $color_white, bold);
-      width: 125px;
-      height: 42px;
-      margin-right: 4px;
-    }
-    .round-rect-empty-orange {
-      @include custom-font(16px, $color_orange, bold);
-      width: 125px;
-      height: 42px;
-      margin-right: 19px;
-    }
-    .round-rect-empty-white {
-      @include custom-font(16px, #9b9b9b, bold);
-      width: 125px;
-      height: 42px;
-    }
-  }
-
-  @media (max-width: $contents_width + 200px) {
-    .main-section {
-      .body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        margin: 30px 5px 44px;
-        .left-section {
-          width: $contents_width / 2;
-          padding: 0 0 40px 0;
-          border-right: 0;
-        }
-        .right-section {
-          width: $contents_width / 2;
-          padding: 40px 0 0 0;
-          border-top: 1px solid #aeaeae;
-        }
+      &:nth-child(4) {
+        padding-left: 10px;
+      }
+      &:nth-child(5) {
+        text-align: center;
+      }
+      &:nth-child(6) {
+        padding-left: 10px;
       }
     }
   }
 }
+
+.item-cost-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  @include e('item-cost') {
+    width: 124px;
+  }
+}
+
+.payment-type-container {
+  display: flex;
+  align-items: center;
+
+  @include e('subtitle') {
+    margin-right: 19px;
+  }
+
+  @include e('group-button') {
+    width: 74px;
+    height: 33px;
+    margin-right: 7px;
+  }
+}
+
+.cook-time-container {
+  width: 100%;
+
+  @include e('row') {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+
+    @include m('second') {
+      width: calc(100% - 86px);
+      padding-left: 86px;
+      margin-bottom: 20px;
+    }
+  }
+
+  @include e('subtitle') {
+    margin-right: 30px;
+  }
+
+  @include e('group-button') {
+    width: 74px;
+    height: 30px;
+    margin-right: 7px;
+  }
+}
+
+.dist-setting-container {
+  $root: &;
+  width: 100%;
+  height: 32px;
+  display: flex;
+  align-items: center;
+
+  @include e('subtitle') {
+    letter-spacing: 0.2px;
+    margin-right: 16px;
+  }
+
+  @include e('radio-item') {
+    margin-right: 10px;
+  }
+
+  @include e('shape') {
+    background-size: 16px;
+    padding-left: 20px;
+    font-weight: 500;
+    color: #9b9b9b;
+  }
+
+  @include e('text') {
+    width: 68px;
+    height: 100%;
+    font-weight: 500;
+    color: #9b9b9b;
+    margin-right: 38px;
+  }
+}
+
+.cost-setting-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  @include e('item-cost') {
+    width: 180px;
+  }
+}
+
+.cost-type-container {
+  width: 100%;
+  height: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include e('group-button') {
+    width: 97px;
+    height: 32px;
+
+    @include m('margin') {
+      margin-right: 6px;
+    }
+  }
+}
+
+
+.request-memo-container {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @include e('text') {
+    width: 230px;
+    height: 100%;
+    margin-right: 3px;
+  }
+
+  @include e('button') {
+    width: 80px;
+    height: 100%;
+  }
+}
+
+.result-button-container {
+  display: flex;
+  justify-content: space-between;
+
+  @include e('button') {
+    width: 125px;
+    height: 42px;
+    font-size: 16px;
+    font-weight: bold;
+
+    @include m('second') {
+      margin-left: 4px;
+    }
+  }
+}
+
+/* BLOCK CSS */
+.info-row {
+  display: flex;
+  height: 32px;
+
+  @include e('subtitle') {
+    width: 120px;
+    height: 100%;
+  }
+
+  @include e('text') {
+    font-weight: 500;
+    font-size: 12px;
+    flex: 1;
+  }
+
+  @include e('button') {
+    width: 80px;
+    height: 32px;
+    background: url($url-search-orange) no-repeat 16px center;
+    background-size: 13px;
+    padding-left: 16px;
+    margin-left: 3px;
+  }
+}
+
+.item-cost {
+  @include e('subtitle') {
+    margin-bottom: 8px;
+  }
+
+  @include e('text') {
+    width: 100%;
+    height: 32px;
+    text-align: right;
+  }
+}
+
+.caption {
+  font-size: 12px;
+  color: #9b9b9b;
+  text-align: right;
+  width: 100%;
+}
+
+
+

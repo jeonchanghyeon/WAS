@@ -1,14 +1,14 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<div th:fragment="branch_search_modal" id="branch_search_modal" class="search-modal-background">
-    <div class="modal-container">
+<div th:fragment="branch_search_modal" id="branch_search_modal" class="search-modal-container">
+    <div class="search-modal">
         <!-- 헤더 -->
         <header class="modal-header">
-            <div class="title">지사 검색</div>
-            <button class="close-button-black" id="branch-close-button"></button>
+            <div class="modal-header__title">지사 검색</div>
+            <button class="modal-header__close-button" id="branch-close-button"></button>
         </header>
         <!-- 검색 -->
-        <section class="branch-search-section">
-            <form id="form-branch-search" hidden="hidden"/>
+        <section class="search-section">
+            <form id="form-branch-search" hidden="hidden"></form>
             <select class="selector" name="metro" form="form-branch-search">
                 <option value="" selected="selected">지역 선택</option>
                 <option value="광주">광주광역시</option>
@@ -27,19 +27,19 @@
                 <option value="전라남도">전라남도</option>
                 <option value="제주도">제주도</option>
             </select>
-            <div class="search-box">
-                <input type="text" placeholder="지사명 검색" name="branch-name" form="form-branch-search"/>
-                <button form="form-branch-search" type="submit"></button>
+            <div class="search-form search-section__search-form">
+                <input class="search-form__input" type="text" placeholder="지사명 검색" name="branch-name" form="form-branch-search"/>
+                <button class="search-form__button" form="form-branch-search" type="submit"></button>
             </div>
         </section>
         <!-- 결과 리스트 -->
-        <form hidden="hidden" id="form-result-branch"/>
+        <form hidden="hidden" id="form-result-branch"></form>
         <input type="hidden" id="result-branch-name" name="branchName" form="form-result-branch"/>
         <section class="result-section" id="branch-result-section">
         </section>
         <!-- 확인 버튼 영역 -->
         <section class="submit-section">
-            <button class="round-rect-fill-orange" form="form-result-branch" type="submit">확인</button>
+            <button class="button button--round submit-section__button" form="form-result-branch" type="submit">확인</button>
         </section>
     </div>
 </div>
