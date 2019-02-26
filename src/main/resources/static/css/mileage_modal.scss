@@ -34,13 +34,6 @@ $transfer-modal-height: 545px;
   }
 }
 
-.mileage-body {
-  width: 100%;
-  height: 186px;
-  display: flex;
-  flex-direction: column;
-}
-
 .mileage-status-container {
   width: 100%;
   min-height: 160px - 32px;
@@ -70,12 +63,11 @@ $transfer-modal-height: 545px;
   width: 100%;
   height: 53px;
   display: flex;
-  flex: 1;
 }
 
 .withdraw-section, .transfer-section {
   width: 100%;
-  height: calc(100% - 218px - 92px); //main-section과 submit-section의 높이 제외
+  flex:1;
   display: none;
   flex-direction: column;
 }
@@ -180,9 +172,7 @@ $transfer-modal-height: 545px;
 }
 
 .mileage-footer {
-  flex: 1;
   height: 96px;
-  //display: none;
   display: flex;
   justify-content: center;
   align-items: center;
