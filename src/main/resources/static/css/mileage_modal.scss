@@ -99,14 +99,14 @@ $transfer-modal-height: 545px;
   }
 
   @include e('text') {
-    width: 300px;
+    width: 300px - 22px;
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 15px;
     font-weight: 500;
-    color: $color-gray-font
+    color: $color-gray-font;
   }
 }
 

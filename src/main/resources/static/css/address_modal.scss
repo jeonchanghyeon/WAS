@@ -1,0 +1,381 @@
+$modal-width: 961px;
+$modal-height: 737px;
+
+$url-daum-logo: $base-url-images + "daum-logo.png";
+$url-daum-with-name: $base-url-images + "daum-name.png";
+$url-daum-white-with-name: $base-url-images + "daum-white-name.png";
+$url-star-white-with-name: $base-url-images + "star-white-name.png";
+$url-star-with-name: $base-url-images + "star-name.png";
+$url-marker: $base-url-images + "marker.png";
+$url-flag: $base-url-images + "flag.png";
+
+/* BLOCK */
+.fav-button {
+  border: none;
+  background: $color-white url($url-star-with-name) no-repeat center center;
+  background-size: 62px 47px;
+
+  @include m('selected') {
+    background: #4a90e2 url($url-star-white-with-name) no-repeat center center;
+    background-size: 62px 47px;
+  }
+}
+
+.daum-button {
+  border: none;
+  background: $color-white url($url-daum-with-name) no-repeat center center;
+  background-size: 62px 47px;
+
+  @include m('selected') {
+    background: #4a90e2 url($url-daum-white-with-name) no-repeat center center;
+    background-size: 62px 47px;
+  }
+}
+
+/* Container */
+.addr-modal-container {
+  @include bg-modal($modal-width, 30px, 30px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+
+  @include custom-font;
+}
+
+.addr-modal {
+  @include modal-attribute($modal-width, $modal-height);
+}
+
+.addr-header {
+  width: calc(100% - 8px);
+  height: 32px;
+  background-color: #1f1f1f;
+  padding-left: 4px;
+  padding-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  @include e('close-button') {
+    width: 24px;
+    height: 24px;
+    background-size: 14px;
+  }
+}
+
+.direct-search-bar {
+  width: calc(100% - 19px - 19px);
+  height: 76px;
+  padding-left: 19px;
+  padding-right: 19px;
+  background-color: #373e51;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include e('title') {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 0.83;
+    color: #ffffff;
+    margin-right: 18px;
+  }
+
+  @include e('text') {
+    width: 677px - 22px;
+    height: 42px;
+    font-size: 16px;
+    line-height: 1.25;
+    margin-right: 6px;
+  }
+
+  @include e('button') {
+    @include custom-font(14px, $color-white, 500);
+    width: 126.6px;
+    height: 46px;
+    border: solid 1px #4b5369;
+    background: #1a2133 url($url-daum-logo) no-repeat 10% center;
+    background-size: 45px 19px;
+    padding-left: 55px;
+  }
+}
+
+.indirect-search-container {
+  width: 100%;
+  height: calc(100% - 108px);
+
+  @include e('title-bar') {
+    @include underline;
+    width: calc(100% - 19px);
+    height: 61px;
+    display: flex;
+    align-items: center;
+    padding-left: 19px;
+  }
+
+  @include e('title') {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 0.83;
+    margin-right: 16px;
+  }
+
+  @include e('description') {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.33;
+  }
+}
+
+.addr-main-section {
+  width: 100%;
+  height: calc(100% - 61px);
+  display: flex;
+}
+
+.addr-aside {
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+
+  @include e('addr-sort') {
+    width: 86px - 2px;
+    border-right: 2px solid #605e5e;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.consonant-container {
+  height: 100%;
+  width: 46px;
+  background-color: #c0c0c0;
+
+  @include e('button') {
+    @include custom-font(15px, $color-gray-font, bold);
+    width: 46px;
+    height: calc(100% / 15);
+    text-align: center;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid #a8a8a8;
+    background-color: #c0c0c0;
+
+    @include m('selected') {
+      border-bottom: none;
+      background-color: #616161;
+      color: $color-white;
+    }
+
+    @include m('end') {
+      border-bottom: 0;
+    }
+  }
+}
+
+.enable-dong-container {
+  @include scroll-view($scroll-display: false);
+  width: 128px - 2px;
+  height: 100%;
+  background-color: #dddddd;
+  border-right: 2px solid #605e5e;
+
+  @include e('button') {
+    @include custom-font(16px, $color-gray-font, bold);
+    width: 100%;
+    height: calc(100% / 15);
+    border: none;
+    padding: 0;
+    border-bottom: 1px solid #a8a8a8;
+    background: #dddddd;
+
+    @include m('selected') {
+      border-bottom: none;
+      background-color: #4a90e2;
+      color: $color-white;
+    }
+  }
+}
+
+.building-container {
+  @include scroll-view($scroll-display: false);
+  width: 102px - 2px;
+  height: 100%;
+  background-color: #f0f0f0;
+  border-right: 2px solid #605e5e;
+
+  @include e('button') {
+    @include custom-font(16px, $color-gray-font, bold);
+    width: 100%;
+    height: calc(100% / 15);
+    border: none;
+    padding: 0;
+    border-bottom: 1px solid #a8a8a8;
+    background: #f0f0f0;
+
+    @include m('selected') {
+      background-color: #4a90e2;
+      border-bottom: none;
+      color: $color-white;
+    }
+
+    @include m('end') {
+      border-bottom: 0;
+    }
+  }
+}
+
+.addr-sort {
+  display: flex;
+  flex-direction: column;
+
+  @include e('fav-button') {
+    width: 100%;
+    height: 50%;
+  }
+
+  @include e('daum-button') {
+    height: 50%;
+    width: 100%;
+  }
+}
+
+.addr-right-section {
+  flex: 1;
+  width: 599px;
+  height: 100%;
+
+  @include e('search-container') {
+    margin-left: 16px;
+    margin-right: 16px;
+
+    @include m('margin') {
+      margin-bottom: 13px;
+    }
+  }
+}
+
+.select-consonant-container {
+  width: calc(100% - 20px);
+  height: 110px - 20px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+
+  @include e('col') {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  @include e('button') {
+    @include custom-font(15px, $color-gray-font, 500);
+    width: 65px;
+    height: 40px;
+    border: solid 1px #cacaca;
+    background-color: #dfdfdf;
+
+    @include m('big') {
+      height: 100%;
+    }
+
+    @include m('selected') {
+      color: #ffffff;
+      border: solid 1px #dcdcdc;
+      background: #616161;
+    }
+  }
+}
+
+.result-container {
+  width: 100%;
+  height: calc(100% - 110px);
+
+  @include e('thead') {
+    font-size: 12px;
+    color: #707070;
+    background-color: #e3e3e3;
+
+    tr, th {
+      height: 24px; //테이블 헤더의 높이 정의
+    }
+  }
+
+  @include e('scroll') {
+    height: calc(100% - 24px); //테이블 바디의 높이 정의
+  }
+
+  @include e('tbody') {
+    color: #323232;
+
+    tr {
+      height: 62px; //테이블 바디 로우 높이 정의
+    }
+
+    td, th {
+      &:nth-child(1) {
+        width: 80%;
+        text-align: left;
+      }
+
+      &:nth-child(2) {
+        width: 20%;
+      }
+    }
+  }
+}
+
+.addr-contents-cell {
+  width: calc(100% - 20px);
+  padding-left: 20px;
+
+  @include e('contents-container') {
+    height: calc(100% - 35px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: url($url-marker) no-repeat 0 center;
+    background-size: 19px 36px;
+    padding-left: 35px;
+    font-size: 13px;
+    color: #323232;
+
+    @include m('flag') {
+      background: url($url-flag) no-repeat 0 center;
+      background-size: 19px 36px;
+    }
+  }
+
+  @include e('road-addr') {
+    margin-bottom: 4px;
+  }
+
+  @include e('land-addr') {
+    display: flex;
+  }
+
+  @include e('land-mark') {
+    width: 32px;
+    height: 17px;
+    background-color: #d8d8d8;
+    font-size: 12px;
+    margin-right: 6px;
+    text-align: center;
+  }
+}
+
+.star {
+  width: 100%;
+  height: 62px;
+  border: none;
+  background: url($url-orange-star) no-repeat center center;
+  background-size: 15px;
+
+  @include m('empty') {
+    background: url($url-empty-star) no-repeat center center;
+    background-size: 15px;
+  }
+}
+

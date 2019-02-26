@@ -1,0 +1,178 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<div th:fragment="address_modal" id="address_modal" class="addr-modal-container">
+    <div class="addr-modal">
+        <!-- 헤더 -->
+        <header class="addr-header">
+            <button class="close-button addr-header__close-button" id="btn_close"></button>
+        </header>
+
+        <div class="direct-search-bar">
+            <div class="direct-search-bar__title">직접 검색</div>
+            <input class="text direct-search-bar__text" type="text" placeholder="ex) 금곡동 아파트"/>
+            <button class="direct-search-bar__button">지도 검색</button>
+        </div>
+
+        <div class="indirect-search-container">
+            <div class="indirect-search-container__title-bar">
+                <div class="indirect-search-container__title">간편 검색</div>
+                <div class="indirect-search-container__description">배달가등 동 선택 > 주소지 카테고리 선택 > 검색 방식 선택</div>
+            </div>
+
+            <section class="addr-main-section">
+                <!-- 사이드 바 -->
+                <aside class="addr-aside">
+                    <!-- 자음 선택 테이블 -->
+                    <div class="consonant-container" id="consonant-area">
+                        <button class="consonant-container__button consonant-container__button--selected" value="0">전체</button>
+                        <button class="consonant-container__button" value="1">ㄱ</button>
+                        <button class="consonant-container__button" value="2">ㄴ</button>
+                        <button class="consonant-container__button" value="3">ㄷ</button>
+                        <button class="consonant-container__button" value="4">ㄹ</button>
+                        <button class="consonant-container__button" value="5">ㅁ</button>
+                        <button class="consonant-container__button" value="6">ㅂ</button>
+                        <button class="consonant-container__button" value="7">ㅅ</button>
+                        <button class="consonant-container__button" value="8">ㅇ</button>
+                        <button class="consonant-container__button" value="9">ㅈ</button>
+                        <button class="consonant-container__button" value="10">ㅊ</button>
+                        <button class="consonant-container__button" value="11">ㅋ</button>
+                        <button class="consonant-container__button" value="12">ㅌ</button>
+                        <button class="consonant-container__button" value="13">ㅍ</button>
+                        <button class="consonant-container__button consonant-container__button--end" value="14">ㅎ</button>
+                    </div>
+
+                    <form id="form_enable_area" hidden="hidden">
+                        <input type="hidden" name="id" id="modal-shop-id"/>
+                        <input type="hidden" name="consonant" id="consonant" value="0"/>
+                    </form>
+
+                    <!-- 동 선택 테이블 -->
+                    <div class="enable-dong-container" id="enable_dong">
+                        <button class="enable-dong-container__button enable-dong-container__button--selected">전체</button>
+                        <button class="enable-dong-container__button">금곡동</button>
+                    </div>
+
+                    <!-- 건물 종류 테이블 -->
+                    <div class="building-container" id="category">
+                        <button class="building-container__button building-container__button--selected">전체</button>
+                        <button class="building-container__button">아파트</button>
+                        <button class="building-container__button">원룸</button>
+                        <button class="building-container__button">오피스텔</button>
+                        <button class="building-container__button">주상복합</button>
+                        <button class="building-container__button">빌라</button>
+                        <button class="building-container__button">모텔</button>
+                        <button class="building-container__button">호텔</button>
+                        <button class="building-container__button">학교</button>
+                        <button class="building-container__button">당구장</button>
+                        <button class="building-container__button">병원</button>
+                        <button class="building-container__button">학원</button>
+                        <button class="building-container__button">빌딩</button>
+                        <button class="building-container__button">기타</button>
+                    </div>
+                    <div class="addr-sort addr-aside__addr-sort">
+                        <button class="fav-button addr-sort__fav-button"></button>
+                        <button class="daum-button daum-button--selected addr-sort__daum-button"></button>
+                    </div>
+                </aside>
+
+                <!-- 사이드바 제외한 오른쪽 부분 -->
+                <section class="addr-right-section">
+                    <!-- 검색 -->
+                    <div class="select-consonant-container">
+                        <button class="select-consonant-container__button select-consonant-container__button--big select-consonant-container__button--selected">전체
+                        </button>
+                        <div class="select-consonant-container__col">
+                            <button class="select-consonant-container__button">ㄱ</button>
+                            <button class="select-consonant-container__button">ㅇ</button>
+                        </div>
+                        <div class="select-consonant-container__col">
+                            <button class="select-consonant-container__button">ㄴ</button>
+                            <button class="select-consonant-container__button">ㅈ</button>
+                        </div>
+                        <div class="select-consonant-container__col">
+                            <button class="select-consonant-container__button">ㄷ</button>
+                            <button class="select-consonant-container__button">ㅊ</button>
+                        </div>
+                        <div class="select-consonant-container__col">
+                            <button class="select-consonant-container__button">ㄹ</button>
+                            <button class="select-consonant-container__button">ㅋ</button>
+                        </div>
+                        <div class="select-consonant-container__col">
+                            <button class="select-consonant-container__button">ㅁ</button>
+                            <button class="select-consonant-container__button">ㅌ</button>
+                        </div>
+                        <div class="select-consonant-container__col">
+                            <button class="select-consonant-container__button">ㅂ</button>
+                            <button class="select-consonant-container__button">ㅍ</button>
+                        </div>
+                        <div class="select-consonant-container__col">
+                            <button class="select-consonant-container__button">ㅅ</button>
+                            <button class="select-consonant-container__button">ㅎ</button>
+                        </div>
+                    </div>
+
+                    <!-- 결과 목록 -->
+                    <div class="result-container">
+                        <div class="scroll-table">
+                            <table class="scroll-table__thead result-container__thead">
+                                <thead>
+                                <tr>
+                                    <th class="scroll-table__thead-cell">검색결과</th>
+                                </tr>
+                                </thead>
+                            </table>
+                            <div class="scroll-table__scroll result-container__scroll">
+                                <table class="scroll-table__tbody result-container__tbody">
+                                    <tbody>
+                                    <tr>
+                                        <td class="addr-contents-cell">
+                                            <div class="addr-contents-cell__contents-container">
+                                                <div class="addr-contents-cell__road-addr">광주광역시 광산구 각화로 문화아파트</div>
+                                                <div class="addr-contents-cell__land-addr">
+                                                    <div class="addr-contents-cell__land-mark">지번</div>
+                                                    광주광역시 광산구 각화동 1610-1 드림시티
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="star"></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addr-contents-cell">
+                                            <div class="addr-contents-cell__contents-container">
+                                                <div class="addr-contents-cell__road-addr">광주광역시 광산구 각화로 문화아파트</div>
+                                                <div class="addr-contents-cell__land-addr">
+                                                    <div class="addr-contents-cell__land-mark">지번</div>
+                                                    광주광역시 광산구 각화동 1610-1 드림시티
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="star star--empty"></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="addr-contents-cell">
+                                            <div class="addr-contents-cell__contents-container addr-contents-cell__contents-container--flag">
+                                                <div class="addr-contents-cell__road-addr">광주광역시 광산구 각화로 문화아파트</div>
+                                                <div class="addr-contents-cell__land-addr">
+                                                    <div class="addr-contents-cell__land-mark">지번</div>
+                                                    광주광역시 광산구 각화동 1610-1 드림시티
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="star star--empty"></button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </div>
+</div>
+</html>
