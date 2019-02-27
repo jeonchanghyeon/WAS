@@ -28,6 +28,21 @@ const displayDiv = (num) => {
             }
         }
     }
+
+    if (num === 3) {
+        console.log(num);
+        const checkboxIds = ["666", "555", "333", "444"];
+
+        for (let checkboxId of checkboxIds) {
+            const checkbox = $(checkboxId);
+            if (checkbox !== null) {
+                checkbox.checked = true;
+            }
+        }
+
+        $("post-title").innerHTML = '';
+        $("post-content").innerHTML = '';
+    }
 };
 
 const changeButton = (num) => {
@@ -254,12 +269,16 @@ const getBranchList = (distribId, element) => {
         });
 };
 
-getDistribList(userId, distribSelect);
+if (distribSelect !== null) {
+    getDistribList(userId, distribSelect);
+}
 if ($("select-branch") !== null) {
     appendOptions($("select-branch"), [{text: "지사 선택", value: "-1"}]);
 }
 
-getDistribList(userId, $("select-distrib-head"));
+if ($("select-distrib-head") != null) {
+    getDistribList(userId, $("select-distrib-head"));
+}
 
 if (distribSelect !== null) {
     distribSelect.onchange = function () {
@@ -514,3 +533,5 @@ $("btn-post").onclick = () => {
         );
     }
 };
+
+loadHeadNotice();
