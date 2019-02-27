@@ -28,10 +28,21 @@ const menuPrice = $("menu-price");
 menuPrice.onchange
     = additionalMenuPrice.onchange
     = () => {
+    let a = 0;
+    let b = 0;
+    console.log(menuPrice.value);
+    if (menuPrice.value === "") {
+        a = 0;
+    } else {
+        a = parseInt(menuPrice.value);
+    }
+    if (additionalMenuPrice.value === "") {
+        b = 0;
+    } else {
+        b = parseInt(additionalMenuPrice.value);
+    }
     sum.value
-        = parseInt(menuPrice.value)
-        + parseInt(additionalMenuPrice.value)
-        + "원";
+        = a + b + "원";
 };
 
 const deliveryCost = $("delivery-cost");
@@ -153,11 +164,25 @@ btnBranchName.onsubmit
 addCost.onchange
     = deliveryCost.onchange
     = () => {
-    additionalCost.value
-        = parseInt(deliveryCost.value)
-        + parseInt(addCost.value)
-        + parseInt(extraCharge.value)
-        + "원";
+    let a = 0;
+    let b = 0;
+    let c = 0;
+    if (deliveryCost.value === "") {
+        a = 0;
+    } else {
+        a = parseInt(deliveryCost.value);
+    }
+    if (addCost.value === "") {
+        b = 0;
+    } else {
+        b = parseInt(addCost.value);
+    }
+    if (extraCharge.value === "") {
+        c = 0;
+    } else {
+        c = parseInt(extraCharge.value);
+    }
+    additionalCost.value = a + b + c + "원";
 };
 
 $("form-branch-search").onsubmit = function () {
@@ -244,7 +269,7 @@ $("btn-menu").onclick = () => {
                         ],
                         row => {
                             const btn = document.createElement("button");
-                            btn.className = "rect-empty-orange";
+                            btn.className = "button button--empty-orange total-menu-container__button";
                             btn.innerHTML = "선택";
 
                             btn.onclick = () => {
@@ -269,10 +294,10 @@ $("btn-menu").onclick = () => {
                                         [
                                             menu[i].id,
                                             menu[i].label,
-                                            '<div class="num-count-container">\n' +
-                                            '<input class="minus-disable" type="button"/>\n' +
+                                            '<div class="num-count">\n' +
+                                            '<input class="num-count__minus num-count__minus--disable" type="button"/>\n' +
                                             '<div name="value">0</div>\n' +
-                                            '<input class="plus-enable" type="button"/>\n' +
+                                            '<input class="num-count__plus" type="button"/>\n' +
                                             '</div>',
                                             numberWithCommas(menu[i].price)
                                         ]
