@@ -11,58 +11,38 @@ function createTable(resultList, orders) {
     for (let i = 0; i < orders.length; i++) {
         const order = orders[i];
 
-        const createDate = new Date(order["createDate"]);
-        const allocateDate = new Date(order["allocateDate"]);
-        const pickupDate = new Date(order["pickupDate"]);
-        const completeDate = new Date(order["completeDate"]);
-        const cancelDate = new Date(order["cancelDate"]);
-
+        const createDate = order["createDate"];
         const id = fillZero(order["id"].toString(), 5);
         const createDay = mmdd(createDate) + "-" + HHMM(createDate);
-        const shopName = order["shopName"];
 
         let orderStatusId = order["orderStatusId"];
-
         if (order["orderStatusId"] === 1
             && (order["branchId"] !== getCurrentBranchId())) {
             orderStatusId = 7;
         }
-
         const parsingOrderStatus = statusStr[orderStatusId - 1];
 
-        const createTime = HHMM(createDate);
-        const allocateTime = HHMM(allocateDate);
-        const pickupTime = HHMM(pickupDate);
-        const completeTime = HHMM(completeDate);
-        const cancelTime = HHMM(cancelDate);
-        const deliveryCost = numberWithCommas(order["deliveryCost"].toString());
-
-        const riderName = order["riderName"];
+        const sum = order["additionalCost"]
+            .map((data) => data["cost"])
+            .reduce((sum, number) => sum + number, 0);
         const parsingPaymentType = paymentTypeStr[order["paymentType"] - 1];
-        const memo = order["memo"];
-
-        let sumOfAdditionalCost = 0;
-
-        for (let i = 0; i < order["additionalCost"].length; i++) {
-            sumOfAdditionalCost += order["additionalCost"][i]["cost"];
-        }
 
         const row = createRow(
             [
                 id,
                 createDay,
-                shopName,
+                order["shopName"],
                 parsingOrderStatus,
-                createTime,
-                allocateTime,
-                pickupTime,
-                completeTime,
-                cancelTime,
-                deliveryCost,
-                sumOfAdditionalCost,
-                riderName,
+                HHMM(createDate),
+                HHMM(order["allocateDate"]),
+                HHMM(order["pickupDate"]),
+                HHMM(order["completeDate"]),
+                HHMM(order["cancelDate"]),
+                numberWithCommas(order["deliveryCost"]),
+                numberWithCommas(sum),
+                order["riderName"],
                 parsingPaymentType,
-                memo,
+                order["memo"]
             ],
             (row) => {
                 row.className = statusStyleName[orderStatusId - 1];
@@ -83,6 +63,7 @@ function createTable(resultList, orders) {
 
                 row.ondblclick = () => {
                     loadDetail(id);
+
                 };
             });
 
@@ -195,6 +176,7 @@ function submitOrderStatus() {
             pageIndex++;
         }
     ).catch((error) => {
+        console.log(error);
         displayError(error);
     });
 }
@@ -470,6 +452,7 @@ $("form_search").onsubmit = function () {
             pageIndex++;
         }
     ).catch((error) => {
+        console.log(error);
         displayError(error);
     });
 
@@ -529,6 +512,7 @@ window.onscroll = function () {
             pageIndex++;
         }
     ).catch((error) => {
+        console.log(error);
         displayError(error);
     });
 };

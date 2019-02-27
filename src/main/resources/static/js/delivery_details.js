@@ -1,6 +1,21 @@
 import {$, createRow} from "./element.js";
-import {HHMM} from "./format.js";
+import {numberWithCommas} from "./format.js";
 import {getJSON} from "./ajax.js";
+
+const selectButton = (key, map, selected, unselected) => {
+    map.forEach(value => value.className = unselected);
+    map.get(key).className = selected;
+};
+
+const createButton = (text, className, onClick) => {
+    const btn = document.createElement("button");
+
+    btn.innerHTML = text;
+    btn.className = className;
+    btn.onclick = onClick;
+
+    return btn;
+};
 
 export const loadDetail = (id) => {
     getJSON("/api/orders/" + id).then(
@@ -24,45 +39,174 @@ export const loadDetail = (id) => {
             $("distance").innerText = order["distance"] + "km";
             $("branchName").innerText = order["branchName"];
 
-            $("deliveryCost").innerText = order["deliveryCost"] + "원";
-            $("extraCharge").innerText = extraCharge + "원";
-            $("addCost").innerText = addCost + "원";
-            $("sum").innerText = sum + "원";
+            $("deliveryCost").innerText = numberWithCommas(order["deliveryCost"]) + "원";
+            $("extraCharge").innerText = numberWithCommas(extraCharge) + "원";
+            $("addCost").innerText = numberWithCommas(addCost) + "원";
+            $("sum").innerText = numberWithCommas(sum) + "원";
 
-            const dcpayment = [$("aside_cash"), $("aside_point")];
-
-            for (let i = 0; i < dcpayment.length; i++) {
-                if (order["deliveryCostPaymentType"] - 1 === i) {
-                    dcpayment[i].className = "aside-btn-selected";
-                } else {
-                    dcpayment[i].className = "aside-btn-unselected";
-                }
-            }
+            selectButton(
+                order["deliveryCostPaymentType"],
+                new Map(
+                    [
+                        [1, $("aside_cash")],
+                        [2, $("aside_point")]
+                    ]
+                ),
+                "button button--empty-orange delivery-pay-buttons__button",
+                "button button--empty-white delivery-pay-buttons__button"
+            );
 
             $("shopName").innerText = order["shopName"];
             $("customerTel").innerText = order["customerTel"];
             $("memo").innerText = order["memo"];
-            // $("road").innerText = order["road"];
+            $("road").innerText = order["road"];
+            $("jibun").innerText = order["jibun"];
+            $("addressDetail").innerText = order["addressDetail"];
 
             $("riderName").innerText = order["riderName"];
-            // $("riderTel").innerText = order["riderTel"];
+            $("riderTel").innerText = order["riderTel"];
 
-            $("menuPrice").innerText = order["menuPrice"] + "원";
-            $("additionalMenuPrice").innerText = order["additionalMenuPrice"] + "원";
-            $("totalPrice").innerText = order["additionalMenuPrice"] + order["menuPrice"] + "원";
+            $("menuPrice").innerText = numberWithCommas(order["menuPrice"]) + "원";
+            $("additionalMenuPrice").innerText = numberWithCommas(order["additionalMenuPrice"]) + "원";
+            $("totalPrice").innerText = numberWithCommas(order["additionalMenuPrice"] + order["menuPrice"]) + "원";
             $("cookTime").innerText = order["cookTime"] + "분";
 
-            const btns = [$("card"), $("cash"), $("prepay")];
+            let buttonAttrib = null;
 
-            const paymentType = order["paymentType"];
+            switch (orderStatusId) {
+                case 1:
+                case 6:
+                    buttonAttrib = [
+                        {
+                            "text": "주문수정",
+                            "className": "button button--round button--empty-orange status-button-container__button"
+                        },
+                        {
+                            "text": "추가접수",
+                            "className": "button button--round button--empty-orange status-button-container__button"
+                        },
+                        {
+                            "text": "배달기사배차",
+                            "className": "button button--round status-button-container__button"
+                        },
+                        {
+                            "text": "주문취소",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                    ];
 
-            for (let i = 0; i < btns.length; i++) {
-                if (i === paymentType - 1) {
-                    btns[i].className = "pay-type-color-button";
-                } else {
-                    btns[i].className = "pay-type-default-button";
-                }
+                    break;
+                case 2:
+                    buttonAttrib = [
+                        {
+                            "text": "주문수정",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                        {
+                            "text": "추가접수",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                        {
+                            "text": "픽업",
+                            "className": "button button--round status-button-container__button"
+                        },
+                        {
+                            "text": "배달기사재배차",
+                            "className": "button button--round status-button-container__button"
+                        },
+                        {
+                            "text": "배차취소",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                        {
+                            "text": "주문취소",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        }
+                    ];
+
+                    break;
+                case 3:
+                    buttonAttrib = [
+                        {
+                            "text": "주문수정",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                        {
+                            "text": "추가접수",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                        {
+                            "text": "완료",
+                            "className": "button button--round status-button-container__button"
+                        },
+                        {
+                            "text": "배달기사재배차",
+                            "className": "button button--round status-button-container__button"
+                        },
+                        {
+                            "text": "주문취소",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                        {
+                            "text": "배차취소",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                        {
+                            "text": "주문취소",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        }
+                    ];
+
+                    break;
+                case 4:
+                    buttonAttrib = [
+                        {
+                            "text": "추가접수",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                        {
+                            "text": "주문취소",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                        {
+                            "text": "완료취소",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                    ];
+
+                    break;
+                case 5:
+                    buttonAttrib = [
+                        {
+                            "text": "추가접수",
+                            "className": "button button--round button--empty-white status-button-container__button"
+                        },
+                    ];
+
+                    break;
             }
+
+            const container = $("asdf");
+            container.innerHTML = '';
+            console.log(container);
+
+            for (let ba of buttonAttrib) {
+                const btn = createButton(ba.text, ba.className);
+                container.appendChild(btn);
+            }
+
+            selectButton(
+                order["paymentType"],
+                new Map(
+                    [
+                        [1, $("card")],
+                        [2, $("cash")],
+                        [3, $("prepay")]
+                    ]
+                ),
+                "button button--empty-orange others-right-row__button",
+                "button button--empty-white others-right-row__button"
+            );
 
             const tableMenu = $("menu_table");
             const menus = order["menu"];
@@ -84,8 +228,7 @@ export const loadDetail = (id) => {
         console.log(e);
     });
 
-    getJSON("/api/orders/" + id + "/logs")
-        .then(
+    getJSON("/api/orders/" + id + "/logs").then(
         (obj) => {
             const logs = obj["logs"];
             const tableLog = $("log-table");
@@ -98,13 +241,14 @@ export const loadDetail = (id) => {
                 "logType",
                 "name",
                 "oldValue",
-                "newValue"];
+                "newValue"
+            ];
 
             for (let log of logs) {
                 const texts = keys.map((key) => {
                     const value = log[key];
                     if (key === "createDate") {
-                        return HHMM(new Date(value));
+                        return HHMM(value);
                     } else {
                         return value;
                     }
