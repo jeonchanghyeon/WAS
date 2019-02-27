@@ -5,8 +5,9 @@
         <header class="order-detail-header order-detail-modal__order-detail-header">
             <div class="order-detail-header__title-group">
                 <span class="order-detail-header__title">배송 상세 보기</span>
-                <span class="order-detail-header__belong">광주총판</span>
-                <span class="order-detail-header__belong order-detail-header__belong--before">광주두암지사</span>
+                <span class="order-detail-header__belong"></span>
+                <span class="order-detail-header__belong order-detail-header__belong--before"
+                      id="branchName">광주두암지사</span>
             </div>
             <button class="close-button close-button--black order-detail-header__close-button" id="btn_close"></button>
         </header>
@@ -24,7 +25,7 @@
                     </tr>
                     <tr>
                         <th class="order-detail-aside__th">구역</th>
-                        <td class="order-detail-aside__td" id="branchName">두암동</td>
+                        <td class="order-detail-aside__td">두암동</td>
                     </tr>
                 </table>
                 <!-- 배달대행료 -->
@@ -83,7 +84,7 @@
 
             <section class="order-detail-main-section order-detail-body__order-detail-main-section">
                 <!-- 상태변경 -->
-                <div class="status-button-container order-detail-main-section__status-button-container">
+                <div class="status-button-container order-detail-main-section__status-button-container" id="asdf">
                     <button class="button button--round button--empty-orange status-button-container__button"
                             id="orderStatusId1" value="1">주문수정
                     </button>
@@ -111,50 +112,52 @@
                 <div class="delivery-info-container order-detail-main-section__delivery-info-container">
                     <div class="delivery-info-row delivery-info-container__delivery-info-row">
                         <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle">출발지</div>
-                        <div class="order-detail-contents">미스터피자 중흥점</div>
+                        <div class="order-detail-contents" id="shopName">미스터피자 중흥점</div>
                     </div>
                     <div class="delivery-info-row delivery-info-container__delivery-info-row">
                         <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle">도착지</div>
                         <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
                             전화번호
                         </div>
-                        <div class="order-detail-contents">010-1234-5678</div>
+                        <div class="order-detail-contents" id="customerTel">010-1234-5678</div>
                     </div>
                     <div class="delivery-info-row delivery-info-container__delivery-info-row">
                         <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle"></div>
                         <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
                             요청사항
                         </div>
-                        <div class="order-detail-contents">한개 빠진게 있어서 다시 부릅니다 ㅜ 대신 더 맛있게 해주세요</div>
+                        <div class="order-detail-contents" id="memo">한개 빠진게 있어서 다시 부릅니다 ㅜ 대신 더 맛있게 해주세요</div>
                     </div>
                     <div class="delivery-info-row delivery-info-container__delivery-info-row">
                         <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle"></div>
                         <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
                             도로명주소
                         </div>
-                        <div class="order-detail-contents">부산광역시 북구 화명동 69 부산화명수목원 투썸플레이스</div>
+                        <div class="order-detail-contents" id="road">부산광역시 북구 화명동 69 부산화명수목원 투썸플레이스</div>
                     </div>
                     <div class="delivery-info-row delivery-info-container__delivery-info-row">
                         <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle"></div>
                         <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
                             지번주소
                         </div>
-                        <div class="order-detail-contents">부산광역시 북구 산성로 299(화명동) 부산화명수목원 투썸플레이스</div>
+                        <div class="order-detail-contents" id="jibun">부산광역시 북구 산성로 299(화명동) 부산화명수목원 투썸플레이스</div>
                     </div>
                     <div class="delivery-info-row delivery-info-container__delivery-info-row">
                         <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle"></div>
                         <div class="order-detail-subtitle order-detail-subtitle--sub delivery-info-row__order-detail-subtitle delivery-info-row__order-detail-subtitle--sub">
                             상세주소
                         </div>
-                        <div class="order-detail-contents">투썸아파트 201호</div>
+                        <div class="order-detail-contents" id="addressDetail">투썸아파트 201호</div>
                     </div>
 
                     <div class="delivery-info-row delivery-info-container__delivery-info-row delivery-info-container__delivery-info-row--end">
                         <div class="order-detail-subtitle delivery-info-row__order-detail-subtitle">기사정보</div>
-                        <div class="order-detail-contents delivery-info-row__order-detail-contents">윤태호1기사</div>
+                        <div class="order-detail-contents delivery-info-row__order-detail-contents" id="riderName">
+                            윤태호1기사
+                        </div>
                         <div class="order-detail-contents">
                             <div class="order-detail-contents__icon"></div>
-                            010-1234-5678
+                            <span id="riderTel">010-1234-5678</span>
                         </div>
                     </div>
                 </div>
@@ -163,27 +166,36 @@
                     <div class="others-info-container__others-left-container">
                         <div class="others-left-row others-info-container__others-left-row">
                             <div class="order-detail-subtitle others-left-row__order-detail-subtitle">상품요금</div>
-                            <div class="order-detail-contents others-left-row__order-detail-contents">110000원</div>
+                            <div class="order-detail-contents others-left-row__order-detail-contents" id="menuPrice">
+                                110000원
+                            </div>
                         </div>
                         <div class="others-left-row others-info-container__others-left-row">
                             <div class="order-detail-subtitle others-left-row__order-detail-subtitle">상품추가요금</div>
-                            <div class="order-detail-contents others-left-row__order-detail-contents">0원</div>
+                            <div class="order-detail-contents others-left-row__order-detail-contents"
+                                 id="additionalMenuPrice">0원
+                            </div>
                         </div>
                         <div class="others-left-row others-info-container__others-left-row others-info-container__others-left-row--end">
                             <div class="order-detail-subtitle others-left-row__order-detail-subtitle">고객요금합계</div>
-                            <div class="order-detail-contents others-left-row__order-detail-contents">1110000원</div>
+                            <div class="order-detail-contents others-left-row__order-detail-contents" id="totalPrice">
+                                1110000원
+                            </div>
                         </div>
                     </div>
                     <div class="others-info-container__right-container">
                         <div class="others-right-row others-info-container__others-right-row">
                             <div class="order-detail-subtitle others-right-row__order-detail-subtitle">조리시간</div>
-                            <div class="order-detail-contents others-right-row__order-detail-contents">20분</div>
+                            <div class="order-detail-contents others-right-row__order-detail-contents" id="cookTime">
+                                20분
+                            </div>
                         </div>
                         <div class="others-right-row others-info-container__others-right-row others-info-container__others-right-row--end">
                             <div class="order-detail-subtitle others-right-row__order-detail-subtitle">결제방법</div>
-                            <button class="button button--empty-white others-right-row__button">현금</button>
-                            <button class="button button--empty-white others-right-row__button">카드</button>
-                            <button class="button button--empty-orange others-right-row__button">선결제</button>
+                            <button class="button button--empty-white others-right-row__button" id="cash">현금</button>
+                            <button class="button button--empty-white others-right-row__button" id="card">카드</button>
+                            <button class="button button--empty-orange others-right-row__button" id="prepay">선결제
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -206,7 +218,7 @@
                             </table>
                             <div class="scroll-table__scroll product-container__scroll">
                                 <table class="scroll-table__tbody product-container__tbody">
-                                    <tbody>
+                                    <tbody id="menu_table">
                                     <tr>
                                         <td>5</td>
                                         <td>짬뽕</td>
