@@ -66,7 +66,8 @@
             <div class="item-info-container reception-left-section__item-info-container">
                 <span class="subtitle">상품정보</span>
                 <div>
-                    <button class="button button--rect button--white item-info-container__button item-info-container__button--margin">
+                    <button class="button button--rect button--white item-info-container__button item-info-container__button--margin"
+                            onsubmit="return false;">
                         갯수추가
                     </button>
                     <button class="button button--rect button--black item-info-container__button" id="btn-menu">
@@ -90,7 +91,7 @@
                     </table>
                     <div class="scroll-table__scroll item-info-table__scroll">
                         <table class="scroll-table__tbody item-info-table__tbody">
-                            <tbody>
+                            <tbody id="asdfasdf">
                             <tr>
                                 <td>1</td>
                                 <td>핫도그</td>
@@ -139,7 +140,7 @@
                 <div class="item-cost item-cost-container__item-cost">
                     <div class="subtitle item-cost__subtitle" for="additional-menuPrice">상품추가요금</div>
                     <input class="text text--disabled item-cost__text" type="text" name="additional-menuPrice"
-                           id="additional-menuPrice"/>
+                           id="additional-menuPrice" value="0"/>
                 </div>
                 <div class="item-cost item-cost-container__item-cost">
                     <div class="subtitle item-cost__subtitle" for="sum">고객요금 합계</div>
