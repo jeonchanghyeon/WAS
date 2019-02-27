@@ -1,5 +1,6 @@
 import {ajax, getJSON} from './ajax.js'
 import {$, createRow, formSerialize} from "./element.js"
+import {addCloseModalEvent} from "./modal.js";
 
 //동 이름 불러오기
 const loadEnableDong = () => {
@@ -34,21 +35,6 @@ const loadEnableDong = () => {
     ).catch((e) => {
         console.log(e);
     });
-};
-
-$("modal").onclick = (ev) => {
-    if (ev.target.id === "modal") {
-        modalClose();
-    }
-};
-
-$("btn_close").onclick = () => {
-    modalClose();
-};
-
-//TODO 외곽 클릭시 창 닫기
-export const modalClose = () => {
-    $("modal").style.display = "none";
 };
 
 export const modalOpen = (shopId) => {
@@ -120,3 +106,5 @@ const searchAddress = (
         }
     );
 };
+
+addCloseModalEvent("modal", "btn_close");

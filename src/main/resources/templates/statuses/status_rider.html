@@ -8,7 +8,6 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Please</title>
     <link rel="stylesheet" type="text/css" href="/css/statuses/home.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/statuses/delivery_details.css"/>
     <link rel="stylesheet" type="text/css" href="/codebase/fonts/font_roboto/roboto.css"/>
     <link rel="stylesheet" type="text/css" href="/codebase/dhtmlx.css"/>
     <script src="/codebase/dhtmlx.js"></script>
@@ -139,7 +138,7 @@
 </div>
 
 <!-- 모달 창 -->
-<div th:replace="statuses/modal :: modal"></div>
+<div th:replace="statuses/delivery_detail_modal :: delivery_detail_modal"></div>
 
 <script src="/js/home.js" type="module"></script>
 <script src="/js/delivery_details.js" type="module"></script>

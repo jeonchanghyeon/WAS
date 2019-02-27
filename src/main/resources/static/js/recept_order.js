@@ -3,6 +3,7 @@ import {$, createRow, formSerialize, jsonifyFormData} from "./element.js"
 import {modalOpen} from "./popup_search_address.js"
 import {loadPoint} from "./point.js";
 import {numberWithCommas} from "./format.js";
+import {addCloseModalEvent} from "./modal.js";
 
 loadPoint();
 
@@ -134,26 +135,6 @@ btnShopName.onclick = () => {
     }
 
     return false;
-};
-
-$("branch_search_modal").onclick = (ev) => {
-    if (ev.target.id === "branch_search_modal") {
-        $("branch_search_modal").style.display = "none";
-    }
-};
-
-$("shop_search_modal").onclick = (ev) => {
-    if (ev.target.id === "shop_search_modal") {
-        $("shop_search_modal").style.display = "none";
-    }
-};
-
-$("branch-close-button").onclick = () => {
-    $("branch_search_modal").style.display = "none";
-};
-
-$("shop-close-button").onclick = () => {
-    $("shop_search_modal").style.display = "none";
 };
 
 btnBranchName.onsubmit
@@ -323,10 +304,6 @@ $("btn-menu").onclick = () => {
     return false;
 };
 
-$("menu-close-button").onclick = () => {
-    $("menu_modal").style.display = "none";
-};
-
 $("menu-modal-confirm").onclick = () => {
     const tbody = $("asdfasdf");
 
@@ -350,6 +327,9 @@ $("menu-modal-confirm").onclick = () => {
     $("menu_modal").style.display = "none";
 };
 
+addCloseModalEvent("branch_search_modal", "branch-close-button");
+addCloseModalEvent("shop_search_modal", "shop-close-button");
+addCloseModalEvent("menu_modal", "menu-close-button");
 
 // TODO 상품 메뉴
 // TODO 대행료 지불방법 불러오기
