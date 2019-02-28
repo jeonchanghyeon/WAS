@@ -117,20 +117,9 @@ const changeToStyleWarning = (element) => {
     element.style.color = "red";
 };
 
-function setSearchType() {
-    const selectSearchType = $('search_type');
-
-    for (let i = 0; i < selectSearchType.options.length; i++) {
-        let searchTypeName = selectSearchType.options[i].value;
-        let dstSearchType = $(searchTypeName);
-
-        if (i === selectSearchType.selectedIndex) {
-            dstSearchType.value = $("search_feature").value
-        } else {
-            dstSearchType.value = "";
-        }
-    }
-}
+const setSearchType = () => {
+    $("search_feature").name = getOptionValue($('search_type'));
+};
 
 const uncheckOthers = (checkboxes) => {
     for (let checkbox of checkboxes) {
