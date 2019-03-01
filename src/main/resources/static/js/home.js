@@ -126,8 +126,8 @@ const uncheckOthers = (checkboxes) => {
     }
 };
 
-const isAllUnchecked = (checkboxes) =>
-    checkboxes.every(
+const isAllchecked = (checkboxes) =>
+    checkboxes.some(
         (data) =>
             data.checked === true
     );
@@ -402,7 +402,7 @@ checkboxAll.onclick = function () {
 
 for (let checkbox of checkboxes) {
     checkbox.onclick = () => {
-        checkboxAll.checked = isAllUnchecked(checkboxes);
+        checkboxAll.checked = !isAllchecked(checkboxes);
 
         if (baseForm !== null) {
             submitOrderStatus();
