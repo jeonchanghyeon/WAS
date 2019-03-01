@@ -1,6 +1,7 @@
 import {$, createRow} from "./element.js";
 import {HHMM, numberWithCommas} from "./format.js";
 import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
+import {addCloseModalEvent} from "./modal.js"
 
 const selectButton = (key, map, selected, unselected) => {
     map.forEach(value => value.className = unselected);
@@ -267,7 +268,7 @@ export const loadDetail = (id, group) => {
                 tableMenu.appendChild(row);
             }
 
-            $("modal").style.display = "inherit";
+            $("delivery_detail_modal").style.display = "inherit";
         }
     ).catch((e) => {
         console.log(e);
@@ -314,6 +315,4 @@ const buttons = [
     "orderStatusId4", "orderStatusId5", "orderStatusId6"
 ].map((data) => $(data));
 
-$("btn_close").onclick = () => {
-    $("modal").style.display = "none";
-};
+addCloseModalEvent("delivery_detail_modal", "btn_close");

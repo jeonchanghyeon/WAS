@@ -1,7 +1,7 @@
-@import "header";
-@import "menu_modal";
-@import "popup_search_address";
-@import "search_modal";
+@import "../_header";
+@import "_menu_modal";
+@import "_popup_search_address";
+@import "_search_modal";
 
 $contents-width: 900px;
 $contents-height: 728px;

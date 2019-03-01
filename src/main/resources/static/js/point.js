@@ -1,6 +1,7 @@
 import {$} from "./element.js";
 import {numberWithCommas, YYYYmmdd} from "./format.js";
 import {getJSON} from "./ajax.js";
+import {addCloseModalEvent} from "./modal.js";
 
 export const loadPoint = () =>
     getJSON("/api/point").then(
@@ -32,16 +33,6 @@ $("btn-deposit").onclick = displayDepositSection;
 
 const mileageModal = $('mileage_modal');
 
-mileageModal.onclick = (ev) => {
-    if(ev.target.id === "mileage_modal") {
-        mileageModal.style.display = 'none';
-    }
-};
-
-$("close-button").onclick = () => {
-    mileageModal.style.display = 'none';
-};
-
 $("point-area").onclick = () => {
     const date = YYYYmmdd(new Date());
 
@@ -51,3 +42,5 @@ $("point-area").onclick = () => {
     mileageModal.style.display = 'initial';
     displayWithdrawalSection();
 };
+
+addCloseModalEvent("mileage_modal", "close-button");
