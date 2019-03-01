@@ -112,12 +112,13 @@
                         <th>할증</th>
                         <td>
                             <div>
-                                <input type="text" id="cost_won" form="form_additional_cost" name="extraCharge"/>
+                                <input type="text" id="cost_won" form="form_additional_cost" name="extraCharge"
+                                       pattern="[0-9]+" title="하나 이상의 숫자를 입력하세요."/>
                                 <label for="cost_won">원</label>
                             </div>
                             <div class="inline">
                                 <input type="text" id="cost_percent" form="form_additional_cost"
-                                       name="extraChargePercent"/>
+                                       name="extraChargePercent" pattern="[0-9]+" title="하나 이상의 숫자를 입력하세요."/>
                                 <label for="cost_percent">%</label>
                             </div>
                         </td>
