@@ -62,8 +62,7 @@ function createTable(resultList, orders) {
                 };
 
                 row.ondblclick = () => {
-                    loadDetail(id);
-
+                    loadDetail(id, $("group").value);
                 };
             });
 
