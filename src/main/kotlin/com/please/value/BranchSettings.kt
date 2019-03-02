@@ -15,5 +15,5 @@ data class BranchSettings (
     @JsonProperty("extraChargePercent")
     val extraChargePercent: Double?,
     @JsonProperty("enableOrderAccept")
-    val enableOrderAccept: String
+    val enableOrderAccept: String?
 )
