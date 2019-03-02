@@ -29,4 +29,9 @@ class UserDAO {
     fun getTransactionInformation(authKey: String, data: String): String {
         return template.queryForJSONObject("CALL getTransactionInformation(?,?)", authKey, data)
     }
+
+    @Throws(SqlAbnormalResultException::class)
+    fun getAccount(authKey: String, id: Long): String {
+        return template.queryForJSONObject("CALL getAccount(?, ?)", authKey, id)
+    }
 }

@@ -2,7 +2,9 @@ package com.please.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.please.dataAccess.UserDAO
+import com.please.exception.AccountNotFoundException
 import com.please.value.UserInfo
+import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -17,5 +19,13 @@ class UserService {
 
     fun setUserInfo(authKey: String, userInfo: UserInfo): String {
         return userDAO.setInfo(authKey, ObjectMapper().writeValueAsString(userInfo).toString())
+    }
+
+    @Throws(AccountNotFoundException::class)
+    fun getUserAccount(authKey: String, id: Long): String {
+        val userAccount = JSONObject(userDAO.getAccount(authKey, id))
+        userAccount["account"] as? String ?: throw AccountNotFoundException("Account info load failed. (user = ${userAccount["userName"]})")
+
+        return userAccount.toString()
     }
 }

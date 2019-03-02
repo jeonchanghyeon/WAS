@@ -1,9 +1,6 @@
 package com.please.controller.api
 
-import com.please.exception.GroupNotFoundException
-import com.please.exception.MissingBalanceException
-import com.please.exception.SessionExpirationException
-import com.please.exception.SqlAbnormalResultException
+import com.please.exception.*
 import com.please.persistence.getExceptionLog
 import com.please.value.ErrorInfo
 import org.apache.commons.logging.LogFactory
@@ -67,6 +64,13 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
     fun abnormalResultError(e: SqlAbnormalResultException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
         log.error(getExceptionLog(e, req))
         return ResponseEntity(e.errorInfo, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    //유저 계좌정보가 확인되지 않을 경우
+    @ExceptionHandler(AccountNotFoundException::class)
+    fun abnormalResultError(e: AccountNotFoundException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
+        log.error(getExceptionLog(e, req))
+        return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
     }
 
     //기타 에러가 발생할 경우
