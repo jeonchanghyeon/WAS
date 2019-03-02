@@ -69,13 +69,10 @@
 
                 <!-- 검색 키워드 -->
                 <div class="keyword-area">
-                    <input type="hidden" name="id" id="searchById"/>
-                    <input type="hidden" name="shopName" id="searchByShopName"/>
-                    <input type="hidden" name="riderName" id="searchByRiderName"/>
                     <select id="search_type">
-                        <option value="searchById">순번</option>
-                        <option value="searchByShopName">상점 이름</option>
-                        <option value="searchByRiderName">기사 이름</option>
+                        <option value="id">순번</option>
+                        <option value="shopName">상점 이름</option>
+                        <option value="riderName">기사 이름</option>
                     </select><input type="search" id="search_feature"/>
                     <input type="submit" id="btn_feature" value="검색"/>
                 </div>
@@ -116,12 +113,13 @@
                         <th>할증</th>
                         <td>
                             <div>
-                                <input type="text" id="cost_won" form="form_additional_cost" name="extraCharge"/>
+                                <input type="text" id="cost_won" form="form_additional_cost" name="extraCharge"
+                                       pattern="[0-9]+" title="하나 이상의 숫자를 입력하세요."/>
                                 <label for="cost_won">원</label>
                             </div>
                             <div class="inline">
                                 <input type="text" id="cost_percent" form="form_additional_cost"
-                                       name="extraChargePercent"/>
+                                       name="extraChargePercent" pattern="[0-9]+" title="하나 이상의 숫자를 입력하세요."/>
                                 <label for="cost_percent">%</label>
                             </div>
                         </td>

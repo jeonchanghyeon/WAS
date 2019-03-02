@@ -13,8 +13,8 @@ receptForm.onsubmit = function () {
     const formData = new FormData(this);
 
     ajax(
-        "/order-reception/efg",
-        "POST",
+        "api/orders",
+        "PUT",
         JSON.stringify(jsonifyFormData(formData)),
         setCSRFHeader
     );
@@ -211,7 +211,7 @@ $("form-result-shop").onsubmit = function () {
     return false;
 };
 
-let asdf = [];
+let menuList = [];
 
 $("btn-menu").onclick = () => {
     const shopId = $("shopId").value;
@@ -220,7 +220,7 @@ $("btn-menu").onclick = () => {
         alert("상점을 선택해주세요.");
     } else {
         getJSON("api/shops/" + shopId + "/menu-list").then(
-            obj => {
+            () => {
                 // const menus = obj["menu"];
 
                 const menu = [
@@ -256,11 +256,11 @@ $("btn-menu").onclick = () => {
                             btn.onclick = () => {
 
                                 console.log(
-                                    asdf.find((data) => data.id === menu[i].id)
+                                    menuList.find((data) => data.id === menu[i].id)
                                 );
 
-                                if (asdf.find((data) => data.id === menu[i].id) === undefined) {
-                                    asdf.push(
+                                if (menuList.find((data) => data.id === menu[i].id) === undefined) {
+                                    menuList.push(
                                         {
                                             id: menu[i].id,
                                             item: {
@@ -277,7 +277,7 @@ $("btn-menu").onclick = () => {
                                             menu[i].label,
                                             '<div class="num-count">\n' +
                                             '<input class="num-count__minus num-count__minus--disable" type="button"/>\n' +
-                                            '<div name="value">0</div>\n' +
+                                            '<div>0</div>\n' +
                                             '<input class="num-count__plus" type="button"/>\n' +
                                             '</div>',
                                             numberWithCommas(menu[i].price)
@@ -305,19 +305,19 @@ $("btn-menu").onclick = () => {
 };
 
 $("menu-modal-confirm").onclick = () => {
-    const tbody = $("asdfasdf");
+    const tbody = $("menu-list");
 
     tbody.innerHTML = '';
 
-    for (let i = 0; i < asdf.length; i++) {
+    for (let i = 0; i < menuList.length; i++) {
         const row = createRow(
             [
-                asdf[i].id,
-                asdf[i].item.label,
+                menuList[i].id,
+                menuList[i].item.label,
                 0,
-                asdf[i].item.price,
-                asdf[i].count,
-                asdf[i].item.price * asdf[i].count
+                menuList[i].item.price,
+                menuList[i].count,
+                menuList[i].item.price * menuList[i].count
             ]
         );
 

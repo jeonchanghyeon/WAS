@@ -5,7 +5,7 @@
         <header class="order-detail-header order-detail-modal__order-detail-header">
             <div class="order-detail-header__title-group">
                 <span class="order-detail-header__title">배송 상세 보기</span>
-                <span class="order-detail-header__belong"></span>
+                <span class="order-detail-header__belong" id="distribName"></span>
                 <span class="order-detail-header__belong order-detail-header__belong--before"
                       id="branchName">광주두암지사</span>
             </div>
@@ -62,22 +62,22 @@
                 <div class="order-status-container order-detail-aside__order-status-container">
                     <div class="current-status order-status-container__current-status">
                         <div class="current-status__name">접수</div>
-                        <div>12:03</div>
+                        <div id="createTime">12:03</div>
                     </div>
                     <div class="order-status-container__arrow"></div>
                     <div class="current-status current-status--orange order-status-container__current-status">
                         <div class="current-status__name">배차</div>
-                        <div>12:03</div>
+                        <div id="allocateTime">12:03</div>
                     </div>
                     <div class="order-status-container__arrow"></div>
                     <div class="current-status current-status--normal order-status-container__current-status">
                         <div class="current-status__name">픽업</div>
-                        <div>-</div>
+                        <div id="pickupTime">-</div>
                     </div>
                     <div class="order-status-container__arrow"></div>
                     <div class="current-status current-status--normal order-status-container__current-status">
                         <div class="current-status__name">완료</div>
-                        <div>-</div>
+                        <div id="completeTime">-</div>
                     </div>
                 </div>
             </aside>
@@ -85,27 +85,6 @@
             <section class="order-detail-main-section order-detail-body__order-detail-main-section">
                 <!-- 상태변경 -->
                 <div class="status-button-container order-detail-main-section__status-button-container" id="asdf">
-                    <button class="button button--round button--empty-orange status-button-container__button"
-                            id="orderStatusId1" value="1">주문수정
-                    </button>
-                    <button class="button button--round button--empty-orange status-button-container__button"
-                            id="orderStatusId6" value="6">추가접수
-                    </button>
-                    <button class="button button--round status-button-container__button" id="orderStatusId7" value="7">
-                        완료
-                    </button>
-                    <button class="button button--round status-button-container__button" id="orderStatusId4" value="4">
-                        배달기사재배차
-                    </button>
-                    <button class="button button--round button--empty-white status-button-container__button"
-                            id="orderStatusId2" value="2">주문취소
-                    </button>
-                    <button class="button button--round button--empty-white status-button-container__button"
-                            id="orderStatusId3" value="3">배차취소
-                    </button>
-                    <button class="button button--round button--empty-white status-button-container__button status-button-container__button--end"
-                            id="orderStatusId5" value="5">픽업취소
-                    </button>
                 </div>
 
                 <!-- 출발지, 도착지, 기사정보, 배송메시지 정보 -->
@@ -248,7 +227,7 @@
                             </table>
                             <div class="scroll-table__scroll order-container__scroll">
                                 <table class="scroll-table__tbody order-container__tbody">
-                                    <tbody>
+                                    <tbody id="log-table">
                                     <tr>
                                         <td>001</td>
                                         <td>18:07</td>

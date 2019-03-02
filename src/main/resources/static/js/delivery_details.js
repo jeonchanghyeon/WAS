@@ -1,6 +1,6 @@
 import {$, createRow} from "./element.js";
-import {numberWithCommas} from "./format.js";
-import {getJSON} from "./ajax.js";
+import {HHMM, numberWithCommas} from "./format.js";
+import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
 import {addCloseModalEvent} from "./modal.js"
 
 const selectButton = (key, map, selected, unselected) => {
@@ -18,10 +18,21 @@ const createButton = (text, className, onClick) => {
     return btn;
 };
 
-export const loadDetail = (id) => {
+const setOrderStatus = (id, orderStatusId, riderId) => {
+    ajax(
+        "/api/orders/" + id,
+        "PATCH",
+        JSON.stringify({id, orderStatusId, riderId}),
+        setCSRFHeader
+    );
+};
+
+export const loadDetail = (id, group) => {
     getJSON("/api/orders/" + id).then(
         (obj) => {
             const order = obj["order"];
+
+            const orderId = order["id"];
             const riderId = order["riderId"];
             const orderStatusId = order["orderStatusId"];
 
@@ -39,6 +50,7 @@ export const loadDetail = (id) => {
 
             $("distance").innerText = order["distance"] + "km";
             $("branchName").innerText = order["branchName"];
+            $("distribName").innerText = order["distribName"];
 
             $("deliveryCost").innerText = numberWithCommas(order["deliveryCost"]) + "원";
             $("extraCharge").innerText = numberWithCommas(extraCharge) + "원";
@@ -57,6 +69,26 @@ export const loadDetail = (id) => {
                 "button button--empty-white delivery-pay-buttons__button"
             );
 
+            $("createTime").innerHTML = HHMM(order["createDate"]);
+            $("allocateTime").innerHTML = HHMM(order["allocateDate"]);
+            $("pickupTime").innerHTML = HHMM(order["pickupDate"]);
+            $("completeTime").innerHTML = HHMM(order["completeDate"]);
+
+            const arr = [
+                "createTime",
+                "allocateTime",
+                "pickupTime",
+                "completeTime"
+            ];
+
+            for (let i = 0; i < 4; i++) {
+                if (i + 1 === orderStatusId) {
+                    $(arr[i]).parentElement.className = "current-status current-status--orange";
+                } else {
+                    $(arr[i]).parentElement.className = "current-status current-status--normal";
+                }
+            }
+
             $("shopName").innerText = order["shopName"];
             $("customerTel").innerText = order["customerTel"];
             $("memo").innerText = order["memo"];
@@ -72,128 +104,140 @@ export const loadDetail = (id) => {
             $("totalPrice").innerText = numberWithCommas(order["additionalMenuPrice"] + order["menuPrice"]) + "원";
             $("cookTime").innerText = order["cookTime"] + "분";
 
-            let buttonAttrib = null;
+            if (group > 2) {
+                const buttonAttrib = [];
 
-            switch (orderStatusId) {
-                case 1:
-                case 6:
-                    buttonAttrib = [
-                        {
-                            "text": "주문수정",
-                            "className": "button button--round button--empty-orange status-button-container__button"
-                        },
-                        {
-                            "text": "추가접수",
-                            "className": "button button--round button--empty-orange status-button-container__button"
-                        },
-                        {
-                            "text": "배달기사배차",
-                            "className": "button button--round status-button-container__button"
-                        },
-                        {
-                            "text": "주문취소",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                    ];
+                const emptyOrangeButton = "button button--round button--empty-orange status-button-container__button";
+                const emptyButton = "button button--round button--empty-white status-button-container__button";
+                const orangeButton = "button button--round status-button-container__button";
 
-                    break;
-                case 2:
-                    buttonAttrib = [
-                        {
+                switch (orderStatusId) {
+                    case 1:
+                    case 6:
+                        // 접수, 대기
+                        buttonAttrib.push({
                             "text": "주문수정",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                        {
-                            "text": "추가접수",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                        {
-                            "text": "픽업",
-                            "className": "button button--round status-button-container__button"
-                        },
-                        {
-                            "text": "배달기사재배차",
-                            "className": "button button--round status-button-container__button"
-                        },
-                        {
-                            "text": "배차취소",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                        {
-                            "text": "주문취소",
-                            "className": "button button--round button--empty-white status-button-container__button"
+                            "className": emptyOrangeButton,
+                        });
+                        buttonAttrib.push({"text": "추가접수", "className": emptyOrangeButton});
+                        if (group !== 3) {
+                            buttonAttrib.push({
+                                "text": "배달기사배차",
+                                "className": orangeButton,
+                                "onclick": () => setOrderStatus(orderId, 4)
+                            });
                         }
-                    ];
-
-                    break;
-                case 3:
-                    buttonAttrib = [
-                        {
+                        buttonAttrib.push({
+                            "text": "주문취소",
+                            "className": emptyButton,
+                            "onclick": () => setOrderStatus(orderId, 5)
+                        });
+                        break;
+                    case 2:
+                        // 배차
+                        buttonAttrib.push({
                             "text": "주문수정",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                        {
+                            "className": emptyOrangeButton,
+                        });
+                        buttonAttrib.push({
                             "text": "추가접수",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                        {
-                            "text": "완료",
-                            "className": "button button--round status-button-container__button"
-                        },
-                        {
-                            "text": "배달기사재배차",
-                            "className": "button button--round status-button-container__button"
-                        },
-                        {
-                            "text": "주문취소",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                        {
-                            "text": "배차취소",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                        {
-                            "text": "주문취소",
-                            "className": "button button--round button--empty-white status-button-container__button"
+                            "className": emptyOrangeButton,
+                        });
+                        if (group !== 3) {
+                            buttonAttrib.push({
+                                "text": "픽업",
+                                "className": orangeButton,
+                                "onclick": () => setOrderStatus(orderId, 3)
+                            });
+                            buttonAttrib.push({
+                                "text": "배달기사배차",
+                                "className": orangeButton,
+                                "onclick": () => setOrderStatus(orderId, 2)
+                            });
                         }
-                    ];
-
-                    break;
-                case 4:
-                    buttonAttrib = [
-                        {
-                            "text": "추가접수",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                        {
+                        buttonAttrib.push({
+                            "text": "배차취소",
+                            "className": emptyButton,
+                            "onclick": () => setOrderStatus(orderId, 1)
+                        });
+                        buttonAttrib.push({
                             "text": "주문취소",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                        {
+                            "className": emptyButton,
+                            "onclick": () => setOrderStatus(orderId, 5)
+                        });
+
+                        break;
+                    case 3:
+                        // 픽업
+                        buttonAttrib.push({
+                            "text": "주문수정",
+                            "className": emptyOrangeButton,
+                        });
+                        buttonAttrib.push({
+                            "text": "추가접수",
+                            "className": emptyOrangeButton,
+                        });
+                        if (group !== 3) {
+                            buttonAttrib.push({
+                                "text": "완료",
+                                "className": orangeButton,
+                                "onclick": () => setOrderStatus(orderId, 4)
+                            });
+                            buttonAttrib.push({
+                                "text": "배달기사재배차",
+                                "className": orangeButton,
+                                "onclick": () => setOrderStatus(orderId, 2)
+                            });
+                        }
+                        buttonAttrib.push({
+                            "text": "주문취소",
+                            "className": emptyButton,
+                            "onclick": () => setOrderStatus(orderId, 5)
+                        });
+                        buttonAttrib.push({
+                            "text": "배차취소",
+                            "className": emptyButton,
+                            "onclick": () => setOrderStatus(orderId, 1)
+                        });
+                        buttonAttrib.push({
+                            "text": "픽업취소",
+                            "className": emptyButton,
+                            "onclick": () => setOrderStatus(orderId, 2)
+                        });
+                        break;
+                    case 4:
+                        // 완료
+                        buttonAttrib.push({
+                            "text": "추가접수",
+                            "className": emptyOrangeButton,
+                        });
+                        buttonAttrib.push({
+                            "text": "주문취소",
+                            "className": emptyButton,
+                            "onclick": () => setOrderStatus(orderId, 5)
+                        });
+                        buttonAttrib.push({
                             "text": "완료취소",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                    ];
-
-                    break;
-                case 5:
-                    buttonAttrib = [
-                        {
+                            "className": emptyButton,
+                            "onclick": () => setOrderStatus(orderId, 3)
+                        });
+                        break;
+                    case 5:
+                        // 취소
+                        buttonAttrib.push({
                             "text": "추가접수",
-                            "className": "button button--round button--empty-white status-button-container__button"
-                        },
-                    ];
+                            "className": emptyOrangeButton,
+                        });
+                        break;
+                }
 
-                    break;
-            }
+                const container = $("asdf");
+                container.innerHTML = '';
 
-            const container = $("asdf");
-            container.innerHTML = '';
-            console.log(container);
-
-            for (let ba of buttonAttrib) {
-                const btn = createButton(ba.text, ba.className);
-                container.appendChild(btn);
+                for (let ba of buttonAttrib) {
+                    const btn = createButton(ba.text, ba.className, ba.onclick);
+                    container.appendChild(btn);
+                }
             }
 
             selectButton(
@@ -210,14 +254,15 @@ export const loadDetail = (id) => {
             );
 
             const tableMenu = $("menu_table");
-            const menus = order["menu"];
+            const menu = order["menu"];
 
             tableMenu.innerHTML = "";
 
-            const keys = ["", "label", "count", "price"];
+            const keys = ["label", "count", "price"];
 
-            for (let menu of menus) {
-                const texts = keys.map((key) => menu[key]);
+            for (let i = 0; i < menu.length; i++) {
+                const texts = keys.map((key) => menu[i][key]);
+                texts.unshift(i + 1);
                 const row = createRow(texts);
 
                 tableMenu.appendChild(row);

@@ -62,8 +62,7 @@ function createTable(resultList, orders) {
                 };
 
                 row.ondblclick = () => {
-                    loadDetail(id);
-
+                    loadDetail(id, $("group").value);
                 };
             });
 
@@ -117,20 +116,9 @@ const changeToStyleWarning = (element) => {
     element.style.color = "red";
 };
 
-function setSearchType() {
-    const selectSearchType = $('search_type');
-
-    for (let i = 0; i < selectSearchType.options.length; i++) {
-        let searchTypeName = selectSearchType.options[i].value;
-        let dstSearchType = $(searchTypeName);
-
-        if (i === selectSearchType.selectedIndex) {
-            dstSearchType.value = $("search_feature").value
-        } else {
-            dstSearchType.value = "";
-        }
-    }
-}
+const setSearchType = () => {
+    $("search_feature").name = getOptionValue($('search_type'));
+};
 
 const uncheckOthers = (checkboxes) => {
     for (let checkbox of checkboxes) {
@@ -138,8 +126,8 @@ const uncheckOthers = (checkboxes) => {
     }
 };
 
-const isAllUnchecked = (checkboxes) =>
-    checkboxes.every(
+const isAllchecked = (checkboxes) =>
+    checkboxes.some(
         (data) =>
             data.checked === true
     );
@@ -414,7 +402,7 @@ checkboxAll.onclick = function () {
 
 for (let checkbox of checkboxes) {
     checkbox.onclick = () => {
-        checkboxAll.checked = isAllUnchecked(checkboxes);
+        checkboxAll.checked = !isAllchecked(checkboxes);
 
         if (baseForm !== null) {
             submitOrderStatus();

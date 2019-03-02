@@ -40,8 +40,8 @@ const displayDiv = (num) => {
             }
         }
 
-        $("post-title").innerHTML = '';
-        $("post-content").innerHTML = '';
+        $("post-title").value = '';
+        $("post-content").value = '';
     }
 };
 
