@@ -32,6 +32,6 @@ class BranchDAO {
 
     @Throws(SqlAbnormalResultException::class)
     fun setBranchSettings(authKey: String, jsonData: String): String {
-        return template.queryForJSONObject("CALL setBranchSettings(?, ?)", authKey, jsonData)
+        return template.queryForJSONObject("CALL setBranchSettingsForWeb(?, ?)", authKey, jsonData)
     }
 }

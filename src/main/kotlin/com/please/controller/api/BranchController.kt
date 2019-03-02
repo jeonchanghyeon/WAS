@@ -2,6 +2,7 @@ package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
 import com.please.service.BranchService
+import com.please.value.BranchSettings
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -31,8 +32,9 @@ class BranchController {
     }
 
     @PostMapping(value = ["{branch-id}/settings"])
-    fun setBranchSettings(@RequestBody data: MutableMap<String, Any?>, @PathVariable(value = "branch-id") id: Long): Any {
+    fun setBranchSettings(@RequestBody branchSettings: BranchSettings, @PathVariable(value = "branch-id") id: Long): Any {
         val authInfo = getAuthInfo()
-        return branchService.setBranchSettings(authInfo.authKey, data, id)
+        branchSettings.id = id
+        return branchService.setBranchSettings(authInfo.authKey, branchSettings, id)
     }
 }

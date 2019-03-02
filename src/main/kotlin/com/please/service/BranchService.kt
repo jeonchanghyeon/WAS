@@ -1,6 +1,8 @@
 package com.please.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.please.dataAccess.BranchDAO
+import com.please.value.BranchSettings
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -26,17 +28,7 @@ class BranchService {
         return branchDAO.getBranchSettings(authKey, branchId)
     }
 
-    fun setBranchSettings(authKey: String, data: MutableMap<String, Any?>, id: Long): String {
-        val settings = branchDAO.getBranchSettings(authKey, id)
-
-        val branchSetting = JSONObject(settings).get("branchSettings") as JSONObject
-        val newSettings = JSONObject()
-        val names = arrayOf("basicStartTime", "delayTime", "extraCharge", "extraChargePercent", "enableOrderAccept")
-
-        newSettings.put("id", id)
-        for (name in names) {
-            newSettings.put(name, data[name] ?: branchSetting.get(name))
-        }
-        return branchDAO.setBranchSettings(authKey, newSettings.toString())
+    fun setBranchSettings(authKey: String, branchSettings: BranchSettings, id: Long): String {
+        return branchDAO.setBranchSettings(authKey, ObjectMapper().writeValueAsString(branchSettings))
     }
 }
