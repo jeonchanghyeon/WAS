@@ -16,7 +16,7 @@ class PointService {
     @Autowired
     private lateinit var pointDAO: PointDAO
     @Autowired
-    private lateinit var userDAO: UserDAO
+    private lateinit var userService: UserService
 
     fun getPoint(id: Long): String {
         val jsonObject = JSONObject()
@@ -28,13 +28,11 @@ class PointService {
     @Transactional
     @Throws(MissingBalanceException::class)
     fun sendPoint(authKey: String, receiverId: Long, point: Int): String {
-        val userTxType = 5
-        val jsonInfo = JSONObject()
-        jsonInfo.put("id", receiverId)
+        val userTxType = 5  //송금 타입
 
         checkPoint(authKey, point)  //포인트를 사용할 수 있는지 검사
 
-        val txInfo = JSONObject(userDAO.getTransactionInformation(authKey, jsonInfo.toString()))
+        val txInfo = JSONObject(userService.getTransactionInformation(authKey, receiverId))
         val description = "${txInfo.getString("senderName")} ${txInfo.getString("receiverName")}에게 송금"
 
         val senderTxInfo = TransactionInfo(txInfo.getString("receiverAuthKey"), point * 1, userTxType, receiverId, description)
@@ -45,6 +43,8 @@ class PointService {
 
         return pointDAO.updatePoint(processingInfo.toString())
     }
+
+
 
     fun checkPoint(authKey: String, point: Int): Boolean {
         val checkPoint = JSONObject(pointDAO.checkPoint(authKey, point))
