@@ -28,11 +28,12 @@ class AddressController {
      */
     @GetMapping(value = ["enable-dong"])
     fun getEnableArea(@RequestParam(value = "id") id: Long,
-                      @RequestParam(value = "consonant") consonant: Int): Any {
+                      @RequestParam(value = "consonant") consonant: Int,
+                      @RequestParam(value = "pageIndex", required = false) pageIndex: Int?): Any {
         /*  id -> 상점 아이디
             consonant -> 0:전체, 1:ㄱ, 2:ㄴ ...... 14:ㅎ
         */
         val authInfo = getAuthInfo()
-        return addressService.getEnableArea(authInfo.authKey, id, consonant)
+        return addressService.getEnableArea(authInfo.authKey, id, consonant, pageIndex)
     }
 }

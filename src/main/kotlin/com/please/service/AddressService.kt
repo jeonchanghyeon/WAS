@@ -10,10 +10,11 @@ class AddressService {
     @Autowired
     private lateinit var addressDAO: AddressDAO
 
-    fun getEnableArea(authKey: String, id: Long, consonant: Int): String {
+    fun getEnableArea(authKey: String, id: Long, consonant: Int, pageIndex: Int?): String {
         val info = JSONObject()
         info.put("id", id)
         info.put("consonant", consonant)
+        info.put("pageIndex", pageIndex)
         return addressDAO.getEnableDong(authKey, info.toString())
     }
 
