@@ -23,6 +23,7 @@ class OrderController {
     @RequestMapping(method = [RequestMethod.PUT])
     fun addOrder(@RequestBody orderReceiptInfo: OrderReceiptInfo): Any {
         val authInfo = getAuthInfo()
+        println(orderReceiptInfo.toString())
         return orderService.addOrder(authInfo.authKey, orderReceiptInfo)
     }
 

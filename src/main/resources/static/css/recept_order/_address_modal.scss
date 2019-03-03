@@ -38,7 +38,7 @@ $url-flag: $base-url-images + "flag.png";
   position: fixed;
   top: 0;
   left: 0;
-  display: block;
+  display: none;
 
   @include custom-font;
 }

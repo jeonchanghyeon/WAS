@@ -16,6 +16,8 @@ import java.sql.Timestamp
 class OrderService {
     @Autowired
     private lateinit var orderDAO: OrderDAO
+    @Autowired
+    private lateinit var pointService: PointService
 
     fun getOrder(authKey: String, orderId: Int): String {
         return orderDAO.getOrder(authKey, orderId)
@@ -27,6 +29,8 @@ class OrderService {
 
     @Transactional
     fun addOrder(authKey: String, orderReceiptInfo: OrderReceiptInfo): String {
+        val pointObj = JSONObject(pointService.getPoint(orderReceiptInfo.shopId))
+        orderReceiptInfo.point = (pointObj["point"] as JSONObject)["point"] as Int
         return orderDAO.addOrder(authKey, ObjectMapper().writeValueAsString(orderReceiptInfo))
     }
 
