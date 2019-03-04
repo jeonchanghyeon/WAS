@@ -7,23 +7,37 @@ import {addCloseModalEvent} from "./modal.js";
 
 loadPoint();
 
-const receptForm = $("recept_form");
 
-receptForm.onsubmit = function () {
-    const formData = new FormData(this);
+const receptionForm = $("reception_form");
 
-    ajax(
+const submitReceptionForm = () => {
+    const formData = new FormData(receptionForm);
+
+    const jsonObject = jsonifyFormData(formData);
+
+
+    return ajax(
         "api/orders",
         "PUT",
-        JSON.stringify(jsonifyFormData(formData)),
+        JSON.stringify(jsonObject),
         setCSRFHeader
     );
+};
+
+$("wait").onclick = () => {
+    $("is-suspend").value = true;
+};
+
+receptionForm.onsubmit = function () {
+    submitReceptionForm().then(() => {
+        $("is-suspend").value = false;
+    });
 
     return false;
 };
 
 const sum = $("sum");
-const additionalMenuPrice = $("additional-menuPrice");
+const additionalMenuPrice = $("additional-menu-price");
 const menuPrice = $("menu-price");
 
 menuPrice.onchange
@@ -50,11 +64,8 @@ const deliveryCost = $("delivery-cost");
 const additionalCost = $("additional-cost");
 const addCost = $("add-cost");
 const extraCharge = $("extra-charge");
-const btnAddress = $("btn_address");
-const btnBranchName = $("btn_branch_name");
-const btnShopName = $("btn_shop_name");
 
-btnAddress.onclick = () => {
+$("btn_address").onclick = () => {
     const shopId = $("shopId").value;
 
     if (shopId === "") {
@@ -62,8 +73,6 @@ btnAddress.onclick = () => {
     } else {
         modalOpen(shopId);
     }
-
-    return false;
 };
 
 const getBranch = (obj) => {
@@ -116,16 +125,15 @@ const getShop = (obj) => {
     $("shop_search_modal").style.display = "initial";
 };
 
-btnBranchName.onclick = () => {
+$("btn_branch_name").onclick = () => {
     getJSON('api/branches').then(getBranch)
         .catch((e) => {
             console.log(e);
         });
 
-    return false;
 };
 
-btnShopName.onclick = () => {
+$("btn_shop_name").onclick = () => {
     const selectedBranchId = $("branchId").value;
 
     if (selectedBranchId === "") {
@@ -133,14 +141,7 @@ btnShopName.onclick = () => {
     } else {
         getJSON('api/shops?branch-id=' + selectedBranchId).then(getShop);
     }
-
-    return false;
 };
-
-btnBranchName.onsubmit
-    = btnShopName.onsubmit
-    = btnAddress.onsubmit
-    = () => false;
 
 addCost.onchange
     = deliveryCost.onchange
@@ -241,6 +242,7 @@ $("btn-menu").onclick = () => {
 
                 table.innerText = '';
                 selected.innerText = '';
+                menuList.length = 0;
 
                 for (let i = 0; i < menu.length; i++) {
                     const row = createRow(
@@ -300,8 +302,6 @@ $("btn-menu").onclick = () => {
             }
         );
     }
-
-    return false;
 };
 
 $("menu-modal-confirm").onclick = () => {

@@ -18,10 +18,12 @@
         <div class="reception-header__title">주문접수</div>
         <div class="subtitle subtitle--white subtitle--required reception-header__subtitle">입력필수값</div>
     </div>
-    <form id="recept_form" hidden="hidden"></form>
+    <form id="reception_form" hidden="hidden">
+        <input type="hidden" id="branch-cost-percent"/>
+        <input type="hidden" id="branch-cost"/>
+    </form>
+
     <div class="reception-main reception-container__reception-main">
-        <input type="hidden" name="shop-id" id="shop_id" form="recept_form"/>
-        <input type="hidden" name="point" id="point" form="recept_form"/>
 
         <!-- 왼쪽 부분-->
         <section class="reception-left-section">
@@ -35,7 +37,7 @@
             </div>
             <div class="info-row reception-left-section__info-row">
                 <div class="subtitle subtitle--required info-row__subtitle">상점명</div>
-                <input type="hidden" name="shopId" id="shopId"/>
+                <input type="hidden" name="shop-id" id="shopId" form="reception_form"/>
                 <input class="text text--disabled info-row__text" type="text" required="required" name="shop-name"
                        placeholder="상점명을 입력하세요." id="shopName" readonly="readonly"/>
                 <button class="button button--rect button--empty-orange info-row__button" id="btn_shop_name"> 검색
@@ -44,25 +46,27 @@
             <div class="info-row reception-left-section__info-row">
                 <div class="subtitle subtitle--required info-row__subtitle">고객전화번호</div>
                 <input class="text text--disabled info-row__text" type="tel" required="required" name="customer-tel"
-                       placeholder="고객전화번호를 입력하세요." form="recept_form"/>
+                       placeholder="고객전화번호를 입력하세요." form="reception_form"/>
             </div>
             <div class="info-row reception-left-section__info-row">
                 <div class="subtitle subtitle--required info-row__subtitle">고객 주소</div>
                 <input class="text text--disabled info-row__text" type="text" required="required" name="address"
-                       placeholder="배송할 주소를 검색해주세요."/>
+                       id="address-jibun" readonly="readonly" placeholder="배송할 주소를 검색해주세요."/>
                 <button class="button button--rect button--empty-orange info-row__button" id="btn_address"> 검색</button>
             </div>
             <div class="info-row reception-left-section__info-row">
                 <div class="info-row__subtitle"></div>
                 <input class="text text--disabled info-row__text" type="text" name="address-detail"
-                       placeholder="상세 주소를 검색해주세요." form="recept_form"/>
+                       placeholder="상세 주소를 검색해주세요." form="reception_form"/>
             </div>
-            <input type="hidden" name="jibun" form="recept_form"/>
-            <input type="hidden" name="road" form="recept_form"/>
-            <input type="hidden" name="latitude" form="recept_form"/>
-            <input type="hidden" name="longitude" form="recept_form"/>
-            <input type="hidden" name="distance" form="recept_form"/>
-            <input type="hidden" name="distanceFactor" form="recept_form"/>
+
+            <input type="hidden" id="jibun" name="jibun" form="reception_form"/>
+            <input type="hidden" id="road" name="road" form="reception_form"/>
+            <input type="hidden" id="latitude" name="latitude" form="reception_form"/>
+            <input type="hidden" id="longitude" name="longitude" form="reception_form"/>
+            <input type="hidden" id="distance" name="distance" form="reception_form"/>
+            <input type="hidden" id="distance-factor" name="distance-factor" form="reception_form"/>
+
             <div class="map reception-left-section__map" id="map"></div>
             <div class="item-info-container reception-left-section__item-info-container">
                 <span class="subtitle">상품정보</span>
@@ -93,55 +97,23 @@
                     <div class="scroll-table__scroll item-info-table__scroll">
                         <table class="scroll-table__tbody item-info-table__tbody">
                             <tbody id="menu-list">
-                            <tr>
-                                <td>1</td>
-                                <td>핫도그</td>
-                                <td>0</td>
-                                <td>15,000</td>
-                                <td>3</td>
-                                <td>45,000</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>미국산 A급 명품 마블링 가득 소고기 스테이크</td>
-                                <td>0</td>
-                                <td>500</td>
-                                <td>1</td>
-                                <td>500</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>붕어빵</td>
-                                <td>0</td>
-                                <td>10,230,000</td>
-                                <td>4</td>
-                                <td>40,920,000</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>아이스크림</td>
-                                <td>0</td>
-                                <td>100,000,000,000</td>
-                                <td>120</td>
-                                <td>12,000,000,000,000</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
             <div class="caption reception-left-section__caption">더블클릭하면 상품이 삭제됩니다.</div>
-            <input type="hidden" name="menu" form="recept_form"/>
+
             <div class="item-cost-container">
                 <div class="item-cost item-cost-container__item-cost">
                     <div class="subtitle subtitle--required item-cost__subtitle">상품요금</div>
                     <input class="text text--disabled item-cost__text" type="text" required="required" name="menu-price"
-                           id="menu-price" form="recept_form"/>
+                           id="menu-price" form="reception_form"/>
                 </div>
                 <div class="item-cost item-cost-container__item-cost">
-                    <div class="subtitle item-cost__subtitle" for="additional-menuPrice">상품추가요금</div>
-                    <input class="text text--disabled item-cost__text" type="text" name="additional-menuPrice"
-                           id="additional-menuPrice" value="0"/>
+                    <div class="subtitle item-cost__subtitle" for="additional-menu-price">상품추가요금</div>
+                    <input class="text text--disabled item-cost__text" type="text" name="additional-menu-price"
+                           id="additional-menu-price" value="0" form="reception_form"/>
                 </div>
                 <div class="item-cost item-cost-container__item-cost">
                     <div class="subtitle item-cost__subtitle" for="sum">고객요금 합계</div>
@@ -157,19 +129,19 @@
                 <div class="subtitle subtitle--required payment-type-container__subtitle">결제방법</div>
                 <label class="group-button payment-type-container__group-button">
                     <input class="group-button__input" required="required" type="radio" id="cash" name="payment-type"
-                           form="recept_form"
-                           value="1" checked="checked"/>
+                           form="reception_form"
+                           value="2" checked="checked"/>
                     <span class="group-button__shape">현금</span>
                 </label>
                 <label class="group-button payment-type-container__group-button">
                     <input class="group-button__input" required="required" type="radio" id="card" name="payment-type"
-                           form="recept_form"
-                           value="2"/>
+                           form="reception_form"
+                           value="1"/>
                     <span class="group-button__shape">카드</span>
                 </label>
                 <label class="group-button payment-type-container__group-button">
                     <input class="group-button__input" required="required" type="radio" id="prepay" name="payment-type"
-                           form="recept_form"
+                           form="reception_form"
                            value="3"/>
                     <span class="group-button__shape">선결제</span>
                 </label>
@@ -179,40 +151,40 @@
                     <div class="subtitle cook-time-container__subtitle">조리시간</div>
                     <label class="group-button cook-time-container__group-button">
                         <input class="group-button__input" required="required" type="radio" id="cook_m15"
-                               name="cook-time" form="recept_form"
-                               checked="checked"/>
+                               name="cook-time" form="reception_form"
+                               checked="checked" value="15"/>
                         <span class="group-button__shape">15분후</span>
                     </label>
                     <label class="group-button cook-time-container__group-button">
                         <input class="group-button__input" required="required" type="radio" id="cook_m20"
-                               name="cook-time" form="recept_form"/>
+                               name="cook-time" form="reception_form" value="20"/>
                         <span class="group-button__shape">20분후</span>
                     </label>
                     <label class="group-button cook-time-container__group-button">
                         <input class="group-button__input" required="required" type="radio" id="cook_m25"
-                               name="cook-time" form="recept_form"/>
+                               name="cook-time" form="reception_form" value="25"/>
                         <span class="group-button__shape">25분후</span>
                     </label>
                     <label class="group-button cook-time-container__group-button">
                         <input class="group-button__input" required="required" type="radio" id="cook_m30"
-                               name="cook-time" form="recept_form"/>
+                               name="cook-time" form="reception_form" value="30"/>
                         <span class="group-button__shape">30분후</span>
                     </label>
                 </div>
                 <div class="cook-time-container__row cook-time-container__row--second">
                     <label class="group-button cook-time-container__group-button">
                         <input class="group-button__input" required="required" type="radio" id="cook_m35"
-                               name="cook-time" form="recept_form"/>
+                               name="cook-time" form="reception_form" value="35"/>
                         <span class="group-button__shape">35분후</span>
                     </label>
                     <label class="group-button cook-time-container__group-button">
                         <input class="group-button__input" required="required" type="radio" id="cook_m40"
-                               name="cook-time" form="recept_form"/>
+                               name="cook-time" form="reception_form" value="40"/>
                         <span class="group-button__shape">40분후</span>
                     </label>
                     <label class="group-button cook-time-container__group-button">
                         <input class="group-button__input" required="required" type="radio" id="cook_m50"
-                               name="cook-time" form="recept_form"/>
+                               name="cook-time" form="reception_form" value="50"/>
                         <span class="group-button__shape">50분후</span>
                     </label>
                 </div>
@@ -226,19 +198,20 @@
                            checked="checked"/>
                     <span class="radio-item__shape dist-setting-container__shape">거리별</span>
                 </label>
-                <input class="text text--disabled dist-setting-container__text" type="text"/>
+                <input class="text text--disabled dist-setting-container__text" type="text" id="by-distance"/>
                 <label class="radio-item dist-setting-container__radio-item">
                     <input class="radio-item__input dist-setting-container__input" required="required" type="radio"
                            id="setting_dong" name="dist-type"/>
                     <span class="radio-item__shape dist-setting-container__shape">동별</span>
                 </label>
+                <input class="text text--disabled dist-setting-container__text" type="text" style="display: none"
+                       id="by-dong"/>
             </div>
             <div class="cost-setting-container reception-right-section__cost-setting-container reception-right-section__cost-setting-container--margin">
                 <div class="item-cost cost-setting-container__item-cost">
                     <label class="subtitle subtitle--required item-cost__subtitle" for="delivery-cost"> 배송대행료</label>
                     <input class="text text--disabled item-cost__text" required="required" type="text"
-                           name="delivery-cost" form="recept_form"
-                           id="delivery-cost"/>
+                           id="delivery-cost" name="delivery-cost" form="reception_form"/>
                 </div>
                 <div class="item-cost cost-setting-container__item-cost">
                     <label class="subtitle item-cost__subtitle" for="add-cost"> 배송추가요금</label>
@@ -253,10 +226,8 @@
                 </div>
                 <div class="item-cost cost-setting-container__item-cost">
                     <label class="subtitle item-cost__subtitle" for="additional-cost"> 배송대행료합계</label>
-                    <input class="text text--disabled item-cost__text" type="text" name="additional-cost"
-                           id="additional-cost" form="recept_form"
-                           readonly="readonly"
-                           disabled="disabled" value="0원"/>
+                    <input class="text text--disabled item-cost__text" type="text" id="additional-cost"
+                           disabled="disabled"/>
                 </div>
             </div>
             <div class="cost-type-container reception-right-section__cost-type-container">
@@ -264,12 +235,12 @@
                 <div>
                     <label class="group-button cost-type-container__group-button cost-type-container__group-button--margin">
                         <input class="group-button__input" type="radio" id="pt" name="delivery-cost-payment-type"
-                               checked="checked" form="recept_form"/>
+                               checked="checked" form="reception_form" value="2"/>
                         <span class="group-button__shape">포인트</span>
                     </label>
                     <label class="group-button cost-type-container__group-button">
                         <input class="group-button__input" type="radio" id="money" name="delivery-cost-payment-type"
-                               form="recept_form"/>
+                               form="reception_form" value="1"/>
                         <span class="group-button__shape">현금</span>
                     </label>
                 </div>
@@ -278,17 +249,18 @@
                 <div class="subtitle">요청사항</div>
                 <div>
                     <input class="text text--disabled request-memo-container__text request-memo-container__text"
-                           type="text" name="memo" placeholder="요청사항을 입력해주세요" form="recept_form"/>
+                           type="text" name="memo" placeholder="요청사항을 입력해주세요" form="reception_form"/>
                     <button class="button button--empty-orange request-memo-container__button">상용문구</button>
                 </div>
             </div>
             <div class="result-button-container">
+                <input type="hidden" id="is-suspend" name="is-suspend" form="reception_form"/>
                 <div>
                     <button class="button button--round result-button-container__button" type="submit"
-                            form="recept_form">배송요청
+                            form="reception_form">배송요청
                     </button>
                     <button class="button button--round button--empty-orange result-button-container__button result-button-container__button--second"
-                            name="is-suspend" value="true" id="wait" type="submit" form="recept_form">
+                            value="true" id="wait" type="submit" form="reception_form">
                         접수대기
                     </button>
                 </div>
