@@ -1,5 +1,5 @@
 import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
-import {$, createRow, formSerialize, jsonifyFormData} from "./element.js"
+import {$, createCol, createRow, formSerialize, jsonifyFormData} from "./element.js"
 import {modalOpen} from "./popup_search_address.js"
 import {loadPoint} from "./point.js";
 import {numberWithCommas} from "./format.js";
@@ -277,11 +277,6 @@ $("btn-menu").onclick = () => {
                                         [
                                             menu[i].id,
                                             menu[i].label,
-                                            '<div class="num-count">\n' +
-                                            '<input class="num-count__minus num-count__minus--disable" type="button"/>\n' +
-                                            '<div>0</div>\n' +
-                                            '<input class="num-count__plus" type="button"/>\n' +
-                                            '</div>',
                                             numberWithCommas(menu[i].price)
                                         ]
                                     );
@@ -291,7 +286,8 @@ $("btn-menu").onclick = () => {
 
                             };
 
-                            row.appendChild(btn);
+                            const col = createCol(btn);
+                            row.appendChild(col);
                         }
                     );
 

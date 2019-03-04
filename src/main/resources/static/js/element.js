@@ -20,7 +20,7 @@ export const appendOptions = (element, options) => {
 export const createCol = (text, func) => {
     const col = document.createElement("td");
 
-    col.innerHTML = text;
+    col.append(text);
 
     if (func !== undefined) {
         func(col);
@@ -33,12 +33,7 @@ export const createRow = (texts, func) => {
     const row = document.createElement("tr");
 
     for (let i = 0; i < texts.length; i++) {
-
-        const col = createCol(
-            texts[i],
-            () => {
-            }
-        );
+        const col = createCol(texts[i]);
 
         row.appendChild(col);
     }
@@ -54,7 +49,6 @@ export const createTbody = (lines, func) => {
     const tbody = document.createElement("tbody");
 
     for (let i = 0; i < lines.length; i++) {
-
         const row = createRow(lines[i]);
 
         tbody.appendChild(row);

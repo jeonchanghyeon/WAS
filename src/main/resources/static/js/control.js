@@ -136,8 +136,11 @@ const getBranchControl = () => {
                     ];
 
                     const row = createRow(text, (row) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'btn-select';
+                        btn.innerHTML = "선택";
 
-                        const col = createCol('<button class="btn-select">선택</button>', (col) => {
+                        const col = createCol(btn, (col) => {
                             col.onclick = () => {
 
                                 $("branch-name").innerText = name;
