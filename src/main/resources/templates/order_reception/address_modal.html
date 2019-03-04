@@ -1,14 +1,29 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<div th:fragment="modal" id="modal" class="addr-modal-container">
+<div th:fragment="modal" id="address_modal" class="addr-modal-container">
     <div class="addr-modal">
         <!-- 헤더 -->
         <header class="addr-header">
             <button class="close-button addr-header__close-button" id="btn_close"></button>
         </header>
 
+        <form id="form-address" hidden="hidden">
+            <input type="hidden" id="modal-address" name="address"/>
+            <input type="hidden" id="modal-latitude" name="latitude"/>
+            <input type="hidden" id="modal-longitude" name="longitude"/>
+            <input type="hidden" name="searchType" value="7"/>
+
+            <input type="hidden" id="chosung"/>
+            <input type="hidden" id="category"/>
+        </form>
+        <form id="form-direct-search-address" hidden="hidden">
+            <input type="hidden" name="latitude" value="0"/>
+            <input type="hidden" name="longitude" value="0"/>
+        </form>
+
         <div class="direct-search-bar">
             <div class="direct-search-bar__title">직접 검색</div>
-            <input class="text direct-search-bar__text" type="text" placeholder="ex) 금곡동 아파트"/>
+            <input class="text direct-search-bar__text" type="text" name="address" placeholder="ex) 금곡동 아파트"
+                   form="form-direct-search-address"/>
             <button class="direct-search-bar__button">지도 검색</button>
         </div>
 
@@ -23,7 +38,8 @@
                 <aside class="addr-aside">
                     <!-- 자음 선택 테이블 -->
                     <div class="consonant-container" id="consonant-area">
-                        <button class="consonant-container__button consonant-container__button--selected" value="0">전체</button>
+                        <button class="consonant-container__button consonant-container__button--selected" value="0">전체
+                        </button>
                         <button class="consonant-container__button" value="1">ㄱ</button>
                         <button class="consonant-container__button" value="2">ㄴ</button>
                         <button class="consonant-container__button" value="3">ㄷ</button>
@@ -37,7 +53,8 @@
                         <button class="consonant-container__button" value="11">ㅋ</button>
                         <button class="consonant-container__button" value="12">ㅌ</button>
                         <button class="consonant-container__button" value="13">ㅍ</button>
-                        <button class="consonant-container__button consonant-container__button--end" value="14">ㅎ</button>
+                        <button class="consonant-container__button consonant-container__button--end" value="14">ㅎ
+                        </button>
                     </div>
 
                     <form id="form_enable_area" hidden="hidden">
@@ -47,12 +64,13 @@
 
                     <!-- 동 선택 테이블 -->
                     <div class="enable-dong-container" id="enable_dong">
-                        <button class="enable-dong-container__button enable-dong-container__button--selected">전체</button>
+                        <button class="enable-dong-container__button enable-dong-container__button--selected">전체
+                        </button>
                         <button class="enable-dong-container__button">금곡동</button>
                     </div>
 
                     <!-- 건물 종류 테이블 -->
-                    <div class="building-container" id="category">
+                    <div class="building-container" id="category-list">
                         <button class="building-container__button building-container__button--selected">전체</button>
                         <button class="building-container__button">아파트</button>
                         <button class="building-container__button">원룸</button>
@@ -78,7 +96,8 @@
                 <section class="addr-right-section">
                     <!-- 검색 -->
                     <div class="select-consonant-container">
-                        <button class="select-consonant-container__button select-consonant-container__button--big select-consonant-container__button--selected">전체
+                        <button class="select-consonant-container__button select-consonant-container__button--big select-consonant-container__button--selected">
+                            전체
                         </button>
                         <div class="select-consonant-container__col">
                             <button class="select-consonant-container__button">ㄱ</button>
@@ -122,7 +141,7 @@
                             </table>
                             <div class="scroll-table__scroll result-container__scroll">
                                 <table class="scroll-table__tbody result-container__tbody">
-                                    <tbody>
+                                    <tbody id="address-result">
                                     <tr>
                                         <td class="addr-contents-cell">
                                             <div class="addr-contents-cell__contents-container">

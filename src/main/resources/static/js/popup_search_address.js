@@ -1,5 +1,5 @@
-import {ajax, getJSON} from './ajax.js'
-import {$, createRow, formSerialize} from "./element.js"
+import {getJSON} from './ajax.js'
+import {$, createCol, createRow, formSerialize} from "./element.js"
 import {addCloseModalEvent} from "./modal.js";
 
 //동 이름 불러오기
@@ -15,18 +15,16 @@ const loadEnableDong = () => {
 
             for (let dong of enableDongs) {
                 const button = document.createElement("button");
+                button.className = "enable-dong-container__button";
 
                 button.innerHTML = dong["eubMyeonDong"];
 
                 button.onclick = () => {
-                    const address = dong["siDo"] + " " + dong["siGunGu"] + " " + dong["eubMyeonDong"];
-                    console.log(address);
+                    $("modal-address").value = dong["siDo"] + " " + dong["siGunGu"] + " " + dong["eubMyeonDong"];
+                    $("modal-latitude").value = dong["latitude"];
+                    $("modal-longitude").value = dong["longitude"];
 
-                    searchAddress({
-                        address: address,
-                        latitude: 0,
-                        longitude: 0,
-                    })
+                    searchAddress($("form-address"));
                 };
 
                 container.appendChild(button);
@@ -39,67 +37,80 @@ const loadEnableDong = () => {
 
 export const modalOpen = (shopId) => {
     $("modal-shop-id").value = shopId;
-    $("modal").style.display = "inherit";
+    $("address_modal").style.display = "inherit";
 
     loadEnableDong();
 };
 
-const consonantArea = $("consonant-area");
+const consonantButtons = $("consonant-area").getElementsByTagName("button");
 
-const buttons = consonantArea.getElementsByTagName("button");
-
-for (let i = 0; i < buttons.length; i++) {
-
-    buttons[i].onclick = function () {
+for (let i = 0; i < consonantButtons.length; i++) {
+    consonantButtons[i].onclick = function () {
         $("consonant").value = this.value;
         loadEnableDong();
     };
 }
 
-const searchAddress = (
-    {
-        pageIndex = 1,
-        limitCount = 15,
-        address,
-        latitude,
-        longitude,
-        searchType = 4
-    }) => {
+const categoryButtons = $("category-list").getElementsByTagName("button");
 
-    const url = "http://13.209.35.180:1111/address/get.json?" +
-        "pageIndex=" + pageIndex + "&" +
-        "limitCount=" + limitCount + "&" +
-        "address=" + address + "&" +
-        "latitude=" + latitude + "&" +
-        "longitude=" + longitude + "&" +
-        "searchType=" + searchType;
+for (let i = 0; i < categoryButtons.length; i++) {
+    categoryButtons[i].onclick = function () {
+        $("category").value = this.innerHTML;
 
-    ajax(
-        url,
-        "GET",
-        null,
-        xhr => {
-            xhr.withCredentials = true;
-        }
-    ).then(
-        res => {
-            const obj = JSON.parse(res);
+        searchAddress($("form-address"));
+    };
+}
+
+const searchAddress = (form) => {
+    const formData = new FormData(form);
+
+    const address = formData.get("address") + $("category").value;
+    formData.set("address", address);
+
+    return getJSON("http://54.180.125.205:1111/address/get?" + formSerialize(formData)).then(
+        obj => {
+            const data = obj["data"];
+
             const container = $("address-result");
-            for (let o of obj) {
-                const {
-                    road,
-                    x,
-                    y,
-                    jibun,
-                    title
-                } = o;
+            container.innerHTML = '';
 
-                const row = createRow([
-                    "",
-                    title,
-                    jibun,
-                    road,
-                ]);
+            for (let d of data) {
+                const {title, road, jibun, x, y} = d;
+
+                const cell = document.createElement('div');
+
+                cell.innerHTML = '<div class="addr-contents-cell__contents-container">\n' +
+                    '<div class="addr-contents-cell__road-addr">' + road + ' ' + title + '</div>\n' +
+                    '<div class="addr-contents-cell__land-addr">\n' +
+                    '<div class="addr-contents-cell__land-mark">지번</div>\n' +
+                    jibun + '\n' +
+                    '</div>\n' +
+                    '</div>';
+
+                cell.ondblclick = function () {
+                    $("address-jibun").value = jibun;
+                    $("jibun").value = jibun;
+                    $("road").value = road;
+                    $("latitude").value = x;
+                    $("longitude").value = y;
+                    $("distance").value = 0;
+                    $("distance-factor").value = 0;
+
+                    $("address_modal").style.display = "none";
+                };
+
+                const row = createRow(
+                    [],
+                    row => {
+                        const col = createCol(
+                            cell,
+                            col => {
+                                col.className = "addr-contents-cell";
+                            }
+                        );
+                        row.appendChild(col);
+                    }
+                );
 
                 container.appendChild(row);
             }
@@ -107,4 +118,10 @@ const searchAddress = (
     );
 };
 
-addCloseModalEvent("modal", "btn_close");
+$("form-direct-search-address").onsubmit = function () {
+    searchAddress(this);
+
+    return false;
+};
+
+addCloseModalEvent("address_modal", "btn_close");
