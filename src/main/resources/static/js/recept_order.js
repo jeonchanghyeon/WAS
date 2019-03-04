@@ -7,6 +7,34 @@ import {addCloseModalEvent} from "./modal.js";
 
 loadPoint();
 
+class Item {
+    constructor(id, label, price) {
+        this.id = id;
+        this.label = label;
+        this.price = price;
+        this.count = 0;
+    }
+
+    add() {
+        this.count += 1;
+    }
+
+    sub() {
+        if (this.count > 0) {
+            this.count -= 1;
+        }
+    }
+}
+
+const toInt = (element) => {
+    const integer = parseInt(element.value);
+
+    if (isNaN(integer) === true) {
+        return 0;
+    }
+
+    return integer;
+};
 
 const receptionForm = $("reception_form");
 
@@ -15,6 +43,15 @@ const submitReceptionForm = () => {
 
     const jsonObject = jsonifyFormData(formData);
 
+    jsonObject["menu"] = menuList.map((data) => {
+        return {
+            price: data.price,
+            count: data.count,
+            label: data.label
+        }
+    });
+
+    jsonObject["additional-cost"] = [{"cost": toInt($("add-cost")), "label": "추가대행료"}];
 
     return ajax(
         "api/orders",
@@ -43,27 +80,16 @@ const menuPrice = $("menu-price");
 menuPrice.onchange
     = additionalMenuPrice.onchange
     = () => {
-    let a = 0;
-    let b = 0;
-    console.log(menuPrice.value);
-    if (menuPrice.value === "") {
-        a = 0;
-    } else {
-        a = parseInt(menuPrice.value);
-    }
-    if (additionalMenuPrice.value === "") {
-        b = 0;
-    } else {
-        b = parseInt(additionalMenuPrice.value);
-    }
     sum.value
-        = a + b + "원";
+        = toInt(menuPrice) + toInt(additionalMenuPrice) + "원";
 };
 
 const deliveryCost = $("delivery-cost");
 const additionalCost = $("additional-cost");
 const addCost = $("add-cost");
 const extraCharge = $("extra-charge");
+const byDistance = $("by-distance");
+const byDong = $("by-dong");
 
 $("btn_address").onclick = () => {
     const shopId = $("shopId").value;
@@ -146,25 +172,13 @@ $("btn_shop_name").onclick = () => {
 addCost.onchange
     = deliveryCost.onchange
     = () => {
-    let a = 0;
-    let b = 0;
-    let c = 0;
-    if (deliveryCost.value === "") {
-        a = 0;
-    } else {
-        a = parseInt(deliveryCost.value);
-    }
-    if (addCost.value === "") {
-        b = 0;
-    } else {
-        b = parseInt(addCost.value);
-    }
-    if (extraCharge.value === "") {
-        c = 0;
-    } else {
-        c = parseInt(extraCharge.value);
-    }
-    additionalCost.value = a + b + c + "원";
+    const x = 1;
+    const branchCostPercent = toInt($("branch-cost-percent"));
+    const branchCost = toInt($("branch-cost"));
+
+    extraCharge.value = branchCostPercent * x + branchCost;
+
+    additionalCost.value = toInt(byDistance) + toInt(byDong) + toInt(deliveryCost) + toInt(addCost) + toInt(extraCharge) + "원";
 };
 
 $("form-branch-search").onsubmit = function () {
@@ -262,22 +276,55 @@ $("btn-menu").onclick = () => {
                                 );
 
                                 if (menuList.find((data) => data.id === menu[i].id) === undefined) {
-                                    menuList.push(
-                                        {
-                                            id: menu[i].id,
-                                            item: {
-                                                label: menu[i].label,
-                                                price: menu[i].price
-                                            },
-                                            count: 0
+                                    const item = new Item(menu[i].id, menu[i].label, menu[i].price);
+
+                                    menuList.push(item);
+
+                                    const span = document.createElement('span');
+                                    span.innerHTML = '0';
+
+                                    const minusBtn = document.createElement('button');
+                                    minusBtn.className = "num-count__minus num-count__minus--disable";
+
+                                    minusBtn.onclick = () => {
+                                        item.sub();
+
+                                        if (item.count > 0) {
+                                            minusBtn.className = "num-count__minus";
+                                        } else {
+                                            minusBtn.className = "num-count__minus num-count__minus--disable";
                                         }
-                                    );
+
+                                        span.innerHTML = item.count;
+                                    };
+
+                                    const plusBtn = document.createElement('button');
+                                    plusBtn.className = "num-count__plus";
+
+                                    plusBtn.onclick = () => {
+                                        item.add();
+                                        if (item.count > 0) {
+                                            minusBtn.className = "num-count__minus";
+                                        } else {
+                                            minusBtn.className = "num-count__minus num-count__minus--disable";
+                                        }
+
+                                        span.innerHTML = item.count;
+                                    };
+
+                                    const div = document.createElement('div');
+                                    div.className = "num-count";
+
+                                    div.appendChild(minusBtn);
+                                    div.appendChild(span);
+                                    div.appendChild(plusBtn);
 
                                     const row = createRow(
                                         [
-                                            menu[i].id,
-                                            menu[i].label,
-                                            numberWithCommas(menu[i].price)
+                                            item.id,
+                                            item.label,
+                                            div,
+                                            numberWithCommas(item.price)
                                         ]
                                     );
 
@@ -300,26 +347,40 @@ $("btn-menu").onclick = () => {
     }
 };
 
-$("menu-modal-confirm").onclick = () => {
+const writeMenuList = () => {
     const tbody = $("menu-list");
 
     tbody.innerHTML = '';
 
-    for (let i = 0; i < menuList.length; i++) {
+    for (let item of menuList) {
         const row = createRow(
             [
-                menuList[i].id,
-                menuList[i].item.label,
+                item.id,
+                item.label,
                 0,
-                menuList[i].item.price,
-                menuList[i].count,
-                menuList[i].item.price * menuList[i].count
-            ]
+                item.price,
+                item.count,
+                item.price * item.count
+            ],
+            row => {
+                row.ondblclick = () => {
+                    for (let i = 0; i < menuList.length; i++) {
+                        if (menuList[i].id === item.id) {
+                            menuList.splice(i, 1);
+                            break;
+                        }
+                    }
+                    writeMenuList();
+                };
+            }
         );
 
         tbody.appendChild(row);
     }
+};
 
+$("menu-modal-confirm").onclick = () => {
+    writeMenuList();
     $("menu_modal").style.display = "none";
 };
 
