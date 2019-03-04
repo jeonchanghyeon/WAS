@@ -67,7 +67,15 @@ export const createTbody = (lines, func) => {
     return tbody;
 };
 
-export const formSerialize = (formData) => new URLSearchParams(formData).toString();
+export const formSerialize = (formData) => {
+    const jsonObject = jsonifyFormData(formData);
+
+    return Object.entries(jsonObject).map(
+        entry => entry.map(
+            element => encodeURIComponent(element)
+        ).join('=')
+    ).join('&');
+};
 
 export const jsonifyFormData = (formData) => {
     const jsonObject = {};
