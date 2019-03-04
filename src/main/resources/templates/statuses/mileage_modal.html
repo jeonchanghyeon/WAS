@@ -26,21 +26,21 @@
         <section class="withdraw-section" id="withdraw-section">
             <div class="gray-container">
                 <div class="gray-container__title">출금계좌</div>
-                <div class="text gray-container__text">광주총판 1003-929-091121 우리은행</div>
+                <div class="text gray-container__text" id="bank-account">광주총판 1003-929-091121 우리은행</div>
             </div>
             <div class="io-container">
                 <div class="io-row io-container__io-row">
                     <div class="io-row__subtitle">출금금액</div>
-                    <input class="text io-row__text io-row__text--with-button io-row__text--left " type="text"/>
-                    <button class="button button--empty-orange io-row__button">전액인출</button>
+                    <input class="text io-row__text io-row__text--with-button io-row__text--left " type="text" id="amount"/>
+                    <button class="button button--empty-orange io-row__button" id="btn-full-withdraw">전액인출</button>
                 </div>
                 <div class="io-row io-container__io-row">
                     <div class="io-row__subtitle">출금수수료</div>
-                    <input class="text io-row__text" type="text" value="300원" readonly="readonly"/>
+                    <input class="text io-row__text" type="text" value="300원" readonly="readonly" id="withdraw-fees"/>
                 </div>
                 <div class="io-row io-container__io-row">
                     <div class="io-row__subtitle">차감포인트</div>
-                    <input class="text io-row__text io-row__text--red" type="text" value="100,000,300원" readonly="readonly"/>
+                    <input class="text io-row__text io-row__text--red" type="text" id="deducted-amount" readonly="readonly"/>
                 </div>
                 <div class="io-row io-container__io-row io-container__io-row--end">
                     <div class="io-row__subtitle">출금비밀번호</div>
