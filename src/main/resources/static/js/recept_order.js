@@ -1,5 +1,5 @@
 import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
-import {$, createCol, createRow, formSerialize, jsonifyFormData} from "./element.js"
+import {$, createRow, formSerialize, jsonifyFormData} from "./element.js"
 import {modalOpen} from "./popup_search_address.js"
 import {loadPoint} from "./point.js";
 import {numberWithCommas} from "./format.js";
@@ -36,6 +36,55 @@ const toInt = (element) => {
     return integer;
 };
 
+//지사 설정 불러오기
+const getBranchSettings = (branchId) =>
+    getJSON("/api/branches/" + branchId + "/settings").then(
+        (obj) => {
+            const branchSetting = obj["branchSettings"];
+
+            $("branch-extra-charge-percent").value = branchSetting["extraChargePercent"];
+            $("branch-extra-charge").value = branchSetting["extraCharge"];
+        });
+
+const getShopSettings = (shopId) =>
+    getJSON("/api/users/" + shopId).then(
+        obj => {
+            const users = obj["user"];
+            const latitude = users["latitude"];
+            const longitude = users["longitude"];
+            const additional = users["additional"];
+            const address = users["address"];
+
+            const deliveryCostBaseType = additional["deliveryCostBaseType"];
+            const distanceFactor = additional["distanceFactor"];
+            const deliveryCostPaymentType = additional["deliveryCostPaymentType"];
+
+            $("shop-address").value = address;
+            $("shop-latitude").value = latitude;
+            $("shop-longitude").value = longitude;
+            $("distance-factor").value = distanceFactor;
+
+            switch (parseInt(deliveryCostPaymentType)) {
+                case 1:
+                    $("money").checked = true;
+                    break;
+                case 2:
+                    $("pt").checked = true;
+                    break;
+            }
+
+            switch (parseInt(deliveryCostBaseType)) {
+                case 1 :
+                    $("setting_distance").checked = true;
+                    break;
+                case 2:
+                    $("setting_dong").checked = true;
+                    $("by-distance").value = "";
+                    break;
+            }
+        }
+    );
+
 const receptionForm = $("reception_form");
 
 const submitReceptionForm = () => {
@@ -51,10 +100,18 @@ const submitReceptionForm = () => {
         }
     });
 
-    jsonObject["additional-cost"] = [{"cost": toInt($("add-cost")), "label": "추가대행료"}];
+    const branchCostPercent = parseFloat($("branch-extra-charge-percent").value);
+    const branchCost = toInt($("branch-extra-charge"));
+    const x = toInt(deliveryCost);
+
+    jsonObject["additional-cost"] = [
+        {"cost": toInt($("add-cost")), "label": "추가대행료"},
+        {"cost": parseInt(x * branchCostPercent), "label": "지사할증(%)"},
+        {"cost": branchCost, "label": "지사할증"}
+    ];
 
     return ajax(
-        "api/orders",
+        "/api/orders",
         "PUT",
         JSON.stringify(jsonObject),
         setCSRFHeader
@@ -66,10 +123,24 @@ $("wait").onclick = () => {
 };
 
 receptionForm.onsubmit = function () {
+    const selectedBranchId = $("branchId").value;
+    const shopId = $("shopId").value;
+
+    if (selectedBranchId === "") {
+        alert("지사를 선택해주세요.");
+        return false;
+    }
+    if (shopId === "") {
+        alert("상점을 선택해주세요.");
+        return false;
+    }
+
     submitReceptionForm().then(() => {
         $("is-suspend").value = false;
     });
 
+    alert("접수 되었습니다");
+    location.reload();
     return false;
 };
 
@@ -81,7 +152,7 @@ menuPrice.onchange
     = additionalMenuPrice.onchange
     = () => {
     sum.value
-        = toInt(menuPrice) + toInt(additionalMenuPrice) + "원";
+        = numberWithCommas(toInt(menuPrice) + toInt(additionalMenuPrice)) + "원";
 };
 
 const deliveryCost = $("delivery-cost");
@@ -118,6 +189,7 @@ const getBranch = (obj) => {
 
         label.onclick = () => {
             $("result-branch-name").value = branch["name"];
+            getBranchSettings(branch["id"]);
         };
 
         result_section.appendChild(label);
@@ -143,6 +215,7 @@ const getShop = (obj) => {
 
         label.onclick = () => {
             $("result-shop-name").value = shop["name"];
+            getShopSettings(shop["id"]);
         };
 
         result_section.appendChild(label);
@@ -152,7 +225,7 @@ const getShop = (obj) => {
 };
 
 $("btn_branch_name").onclick = () => {
-    getJSON('api/branches').then(getBranch)
+    getJSON('/api/branches').then(getBranch)
         .catch((e) => {
             console.log(e);
         });
@@ -165,26 +238,34 @@ $("btn_shop_name").onclick = () => {
     if (selectedBranchId === "") {
         alert("지사를 선택해주세요.");
     } else {
-        getJSON('api/shops?branch-id=' + selectedBranchId).then(getShop);
+        getJSON('/api/shops?branch-id=' + selectedBranchId).then(getShop);
     }
 };
 
 addCost.onchange
     = deliveryCost.onchange
     = () => {
-    const x = 1;
-    const branchCostPercent = toInt($("branch-cost-percent"));
-    const branchCost = toInt($("branch-cost"));
+    const x = toInt(deliveryCost);
+    const branchCostPercent = parseFloat($("branch-extra-charge-percent").value);
+    const branchCost = toInt($("branch-extra-charge"));
 
-    extraCharge.value = branchCostPercent * x + branchCost;
+    const intExtraCharge = branchCostPercent * x + branchCost;
 
-    additionalCost.value = toInt(byDistance) + toInt(byDong) + toInt(deliveryCost) + toInt(addCost) + toInt(extraCharge) + "원";
+    extraCharge.value = numberWithCommas(parseInt(intExtraCharge)) + "원";
+
+    console.log($("distance").value);
+    console.log($("by-distance").value);
+
+    console.log(parseFloat($("distance").value) * parseFloat($("by-distance").value));
+
+    const intAdditionalCost = toInt(deliveryCost) + toInt(addCost) + toInt(extraCharge);
+    additionalCost.value = numberWithCommas(intAdditionalCost) + "원";
 };
 
 $("form-branch-search").onsubmit = function () {
     const formData = new FormData(this);
 
-    getJSON('api/branches?' + formSerialize(formData)).then(getBranch);
+    getJSON('/api/branches?' + formSerialize(formData)).then(getBranch);
 
     return false;
 };
@@ -195,13 +276,12 @@ $("form-shop-search").onsubmit = function () {
 
     formData.append("branch-id", branchId);
 
-    getJSON('api/shop?' + formSerialize(formData)).then(getShop);
+    getJSON('/api/shop?' + formSerialize(formData)).then(getShop);
 
     return false;
 };
 
 $("form-result-branch").onsubmit = function () {
-
     const formData = new FormData(this);
 
     $("branchId").value = formData.get('branchId');
@@ -215,7 +295,6 @@ $("form-result-branch").onsubmit = function () {
 };
 
 $("form-result-shop").onsubmit = function () {
-
     const formData = new FormData(this);
 
     $("shopId").value = formData.get('shopId');
@@ -226,7 +305,8 @@ $("form-result-shop").onsubmit = function () {
     return false;
 };
 
-let menuList = [];
+const menuList = [];
+let selectedMenu = null;
 
 $("btn-menu").onclick = () => {
     const shopId = $("shopId").value;
@@ -234,7 +314,7 @@ $("btn-menu").onclick = () => {
     if (shopId === "") {
         alert("상점을 선택해주세요.");
     } else {
-        getJSON("api/shops/" + shopId + "/menu-list").then(
+        getJSON("/api/shops/" + shopId + "/menu-list").then(
             () => {
                 // const menus = obj["menu"];
 
@@ -259,84 +339,74 @@ $("btn-menu").onclick = () => {
                 menuList.length = 0;
 
                 for (let i = 0; i < menu.length; i++) {
-                    const row = createRow(
-                        [
-                            menu[i].label,
-                            numberWithCommas(menu[i].price)
-                        ],
-                        row => {
-                            const btn = document.createElement("button");
-                            btn.className = "button button--empty-orange total-menu-container__button";
-                            btn.innerHTML = "선택";
+                    const btn = document.createElement("button");
+                    btn.className = "button button--empty-orange total-menu-container__button";
+                    btn.innerHTML = "선택";
 
-                            btn.onclick = () => {
+                    btn.onclick = () => {
+                        if (menuList.find((data) => data.id === menu[i].id)
+                            === undefined) {
+                            const item = new Item(menu[i].id, menu[i].label, menu[i].price);
 
-                                console.log(
-                                    menuList.find((data) => data.id === menu[i].id)
-                                );
+                            menuList.push(item);
 
-                                if (menuList.find((data) => data.id === menu[i].id) === undefined) {
-                                    const item = new Item(menu[i].id, menu[i].label, menu[i].price);
+                            const span = document.createElement('span');
+                            span.innerHTML = '0';
 
-                                    menuList.push(item);
+                            const minusBtn = document.createElement('button');
+                            minusBtn.className = "num-count__minus num-count__minus--disable";
 
-                                    const span = document.createElement('span');
-                                    span.innerHTML = '0';
+                            minusBtn.onclick = () => {
+                                item.sub();
 
-                                    const minusBtn = document.createElement('button');
+                                if (item.count > 0) {
+                                    minusBtn.className = "num-count__minus";
+                                } else {
                                     minusBtn.className = "num-count__minus num-count__minus--disable";
-
-                                    minusBtn.onclick = () => {
-                                        item.sub();
-
-                                        if (item.count > 0) {
-                                            minusBtn.className = "num-count__minus";
-                                        } else {
-                                            minusBtn.className = "num-count__minus num-count__minus--disable";
-                                        }
-
-                                        span.innerHTML = item.count;
-                                    };
-
-                                    const plusBtn = document.createElement('button');
-                                    plusBtn.className = "num-count__plus";
-
-                                    plusBtn.onclick = () => {
-                                        item.add();
-                                        if (item.count > 0) {
-                                            minusBtn.className = "num-count__minus";
-                                        } else {
-                                            minusBtn.className = "num-count__minus num-count__minus--disable";
-                                        }
-
-                                        span.innerHTML = item.count;
-                                    };
-
-                                    const div = document.createElement('div');
-                                    div.className = "num-count";
-
-                                    div.appendChild(minusBtn);
-                                    div.appendChild(span);
-                                    div.appendChild(plusBtn);
-
-                                    const row = createRow(
-                                        [
-                                            item.id,
-                                            item.label,
-                                            div,
-                                            numberWithCommas(item.price)
-                                        ]
-                                    );
-
-                                    selected.appendChild(row);
                                 }
 
+                                span.innerHTML = item.count;
                             };
 
-                            const col = createCol(btn);
-                            row.appendChild(col);
+                            const plusBtn = document.createElement('button');
+                            plusBtn.className = "num-count__plus";
+
+                            plusBtn.onclick = () => {
+                                item.add();
+                                if (item.count > 0) {
+                                    minusBtn.className = "num-count__minus";
+                                } else {
+                                    minusBtn.className = "num-count__minus num-count__minus--disable";
+                                }
+
+                                span.innerHTML = item.count;
+                            };
+
+                            const div = document.createElement('div');
+                            div.className = "num-count";
+
+                            div.appendChild(minusBtn);
+                            div.appendChild(span);
+                            div.appendChild(plusBtn);
+
+                            const row = createRow(
+                                [
+                                    item.id,
+                                    item.label,
+                                    div,
+                                    numberWithCommas(item.price)
+                                ]
+                            );
+
+                            selected.appendChild(row);
                         }
-                    );
+                    };
+
+                    const row = createRow([
+                        menu[i].label,
+                        numberWithCommas(menu[i].price),
+                        btn
+                    ]);
 
                     table.appendChild(row);
                 }
@@ -362,20 +432,34 @@ const writeMenuList = () => {
                 item.count,
                 item.price * item.count
             ],
-            row => {
-                row.ondblclick = () => {
-                    for (let i = 0; i < menuList.length; i++) {
-                        if (menuList[i].id === item.id) {
-                            menuList.splice(i, 1);
-                            break;
-                        }
-                    }
-                    writeMenuList();
-                };
-            }
         );
 
+        row.onclick = () => {
+            selectedMenu = item.id;
+        };
+
+        row.ondblclick = () => {
+            for (let i = 0; i < menuList.length; i++) {
+                if (menuList[i].id === item.id) {
+                    menuList.splice(i, 1);
+                    break;
+                }
+            }
+            writeMenuList();
+        };
+
         tbody.appendChild(row);
+    }
+};
+
+$("btn-add").onclick = () => {
+    if (selectedMenu !== null) {
+        const target = menuList.find((data) => data.id === selectedMenu)
+
+        if (target !== undefined) {
+            target.count++;
+            writeMenuList();
+        }
     }
 };
 
@@ -387,6 +471,3 @@ $("menu-modal-confirm").onclick = () => {
 addCloseModalEvent("branch_search_modal", "branch-close-button");
 addCloseModalEvent("shop_search_modal", "shop-close-button");
 addCloseModalEvent("menu_modal", "menu-close-button");
-
-// TODO 상품 메뉴
-// TODO 대행료 지불방법 불러오기
