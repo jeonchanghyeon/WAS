@@ -31,7 +31,7 @@ class OrderService {
     fun addOrder(authKey: String, orderReceiptInfo: OrderReceiptInfo): String {
         val pointObj = JSONObject(pointService.getPoint(orderReceiptInfo.shopId))
         orderReceiptInfo.point = (pointObj["point"] as JSONObject)["point"] as Int
-        return orderDAO.addOrder(authKey, ObjectMapper().writeValueAsString(orderReceiptInfo))
+        return orderDAO.addOrder(authKey, ObjectMapper().writeValueAsString(orderReceiptInfo).toString().replace("suspend", "isSuspend"))
     }
 
     fun searchOrdersInfo(authInfo: AuthInfo, condition: OrderCondition): String {
