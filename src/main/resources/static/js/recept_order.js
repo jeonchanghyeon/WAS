@@ -137,6 +137,10 @@ receptionForm.onsubmit = function () {
 
     submitReceptionForm().then(() => {
         $("is-suspend").value = false;
+        alert("접수 되었습니다");
+        location.reload();
+    }).catch(() =>{
+        alert("예기치 않은 오류 입니다");
     });
 
     alert("접수 되었습니다");
