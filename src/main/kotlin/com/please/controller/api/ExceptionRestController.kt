@@ -73,6 +73,13 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
         return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
     }
 
+    //유효하지 않은 데이터 값의 연산이 발생할 경우
+    @ExceptionHandler(InvalidValueException::class)
+    fun invalidValueError(e: InvalidValueException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
+        log.error(getExceptionLog(e, req))
+        return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
+    }
+
     //기타 에러가 발생할 경우
     @ExceptionHandler(Exception::class)
     fun unknownError(e: Exception, req: HttpServletRequest): ResponseEntity<ErrorInfo> {

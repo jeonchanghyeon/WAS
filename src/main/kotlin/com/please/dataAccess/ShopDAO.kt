@@ -26,4 +26,12 @@ class ShopDAO {
     fun getMenuItems(authKey: String, shopId: Long): String {
         return template.queryForJSONObject("CALL getMenuItems(?, getUserIdById(?))", authKey, shopId)
     }
+
+    fun getDeliveryCostByDistance(authKey: String, id: Long): String {
+        return template.queryForJSONObject("CALL getCostByDistance(?, ?)", authKey, JSONObject().put("id", id).toString())
+    }
+
+    fun getDeliveryCostByDong(authKey: String, id: Long): String {
+        return template.queryForJSONObject("CALL getCostByDong(?, ?)", authKey, JSONObject().put("id", id).toString())
+    }
 }

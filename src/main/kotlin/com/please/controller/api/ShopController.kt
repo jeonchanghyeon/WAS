@@ -2,6 +2,7 @@ package com.please.controller.api
 
 import com.please.persistence.getAuthInfo
 import com.please.service.ShopService
+import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -36,5 +37,15 @@ class ShopController {
     fun getMenuList(@PathVariable id: Long): Any {
         val authInfo = getAuthInfo()
         return shopService.getMenuList(authInfo.authKey, id)
+    }
+
+    // { "resultCode", "description", "deliveryCost", "extraCharge": [{"label,"cost"}, {"label,"cost"} ..], "deliveryCostSum" }
+    @GetMapping(value = ["{id}/cost"])
+    fun getDeliveryCost(@PathVariable id: Long,
+                                  @RequestParam(required = false) distance: Double?,
+                                  @RequestParam jibun: String): Any {   //jibun = 시도 시건구 읍면동 ex)부산 금정구 온천동
+        val authInfo = getAuthInfo()
+
+        return shopService.getDeliveryChargeSet(authInfo.authKey, id, distance, jibun)
     }
 }

@@ -31,6 +31,7 @@ class OrderService {
     fun addOrder(authKey: String, orderReceiptInfo: OrderReceiptInfo): String {
         val pointObj = JSONObject(pointService.getPoint(orderReceiptInfo.shopId))
         orderReceiptInfo.point = (pointObj["point"] as JSONObject)["point"] as Int
+        orderReceiptInfo.additionalCost!!.add(mapOf("cost" to orderReceiptInfo.additionalDeliveryCost, "label" to "추가대행료"))
         return orderDAO.addOrder(authKey, ObjectMapper().writeValueAsString(orderReceiptInfo).toString().replace("suspend", "isSuspend"))
     }
 

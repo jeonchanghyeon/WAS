@@ -15,8 +15,6 @@ data class OrderReceiptInfo(
         val road: String,
         @JsonProperty("address-detail")
         val addressDetail: String?,
-        @JsonProperty("distance-factor")
-        val distanceFactor: Double?,
         @JsonProperty("latitude")
         val latitude: Double?,
         @JsonProperty("longitude")
@@ -34,9 +32,11 @@ data class OrderReceiptInfo(
         @JsonProperty("cook-time")
         val cookTime: Int?,
         @JsonProperty("delivery-cost")
-        val deliveryCost: Long,
+        val deliveryCost: Int,
+        @JsonProperty("additional-delivery-cost")
+        val additionalDeliveryCost: Int,    //배송추가요금(사용자입력)
         @JsonProperty("additional-cost")
-        val additionalCost: MutableList<Map<String, Any?>>?,    //할증 + 배달추가대행료 ex) [{"cost": 1000, "label": "지사할증"}, {"cost": 0, "label": "추가대행료"}]
+        val additionalCost: MutableList<Map<String, Any?>>?,    //할증 + 배달추가대행료 ex) [{"cost": 1000, "label": "지사할증"}]
         @JsonProperty("delivery-cost-payment-type")
         val deliveryCostPaymentType: Int?,       //null: 포인트, 2: 현금,
         @JsonProperty("memo")
