@@ -80,3 +80,11 @@ export const jsonifyFormData = (formData) => {
 
     return jsonObject;
 };
+
+export const getClosureToSelectButton = (buttons, selected, unselected) => {
+    return (index) => {
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].className = (i === index) ? selected : unselected;
+        }
+    };
+};
