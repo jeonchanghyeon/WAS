@@ -6,6 +6,7 @@
             <button class="close-button addr-header__close-button" id="btn_close"></button>
         </header>
 
+        <input type="hidden" id="search-type"/>
         <form id="form-address" hidden="hidden">
             <input type="hidden" id="modal-address" name="address"/>
             <input type="hidden" id="modal-latitude" name="latitude"/>
@@ -13,15 +14,16 @@
             <input type="hidden" name="searchType" value="7"/>
         </form>
         <form id="form-direct-search-address" hidden="hidden">
-            <input type="hidden" name="latitude" value="0"/>
-            <input type="hidden" name="longitude" value="0"/>
+            <input type="hidden" id="direct-latitude" name="latitude" value="0"/>
+            <input type="hidden" id="direct-longitude" name="longitude" value="0"/>
+            <input type="hidden" name="searchType" value="7"/>
         </form>
 
         <div class="direct-search-bar">
             <div class="direct-search-bar__title">직접 검색</div>
             <input class="text direct-search-bar__text" type="text" name="address" placeholder="ex) 금곡동 아파트"
                    form="form-direct-search-address"/>
-            <button class="direct-search-bar__button">지도 검색</button>
+            <button class="direct-search-bar__button" form="form-direct-search-address">지도 검색</button>
         </div>
 
         <div class="indirect-search-container">
