@@ -1,6 +1,6 @@
 import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
 import {$, createRow, formSerialize, jsonifyFormData} from "./element.js"
-import {modalOpen} from "./popup_search_address.js"
+import {deliveryCostSum, extraChargeValue, modalOpen} from "./popup_search_address.js"
 import {loadPoint} from "./point.js";
 import {numberWithCommas} from "./format.js";
 import {addCloseModalEvent} from "./modal.js";
@@ -99,16 +99,7 @@ const submitReceptionForm = () => {
             label: data.label
         }
     });
-
-    const branchCostPercent = parseFloat($("branch-extra-charge-percent").value);
-    const branchCost = toInt($("branch-extra-charge"));
-    const x = toInt(deliveryCost);
-
-    jsonObject["additional-cost"] = [
-        {"cost": toInt($("add-cost")), "label": "추가대행료"},
-        {"cost": parseInt(x * branchCostPercent), "label": "지사할증(%)"},
-        {"cost": branchCost, "label": "지사할증"}
-    ];
+    jsonObject["additional-cost"] = extraChargeValue;
 
     return ajax(
         "/api/orders",
@@ -143,8 +134,6 @@ receptionForm.onsubmit = function () {
         alert("예기치 않은 오류 입니다");
     });
 
-    alert("접수 되었습니다");
-    location.reload();
     return false;
 };
 
@@ -249,20 +238,7 @@ $("btn_shop_name").onclick = () => {
 addCost.onchange
     = deliveryCost.onchange
     = () => {
-    const x = toInt(deliveryCost);
-    const branchCostPercent = parseFloat($("branch-extra-charge-percent").value);
-    const branchCost = toInt($("branch-extra-charge"));
-
-    const intExtraCharge = branchCostPercent * x + branchCost;
-
-    extraCharge.value = numberWithCommas(parseInt(intExtraCharge)) + "원";
-
-    console.log($("distance").value);
-    console.log($("by-distance").value);
-
-    console.log(parseFloat($("distance").value) * parseFloat($("by-distance").value));
-
-    const intAdditionalCost = toInt(deliveryCost) + toInt(addCost) + toInt(extraCharge);
+    const intAdditionalCost = toInt(addCost) + deliveryCostSum;
     additionalCost.value = numberWithCommas(intAdditionalCost) + "원";
 };
 

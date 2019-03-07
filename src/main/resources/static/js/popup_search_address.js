@@ -14,9 +14,23 @@ export const modalOpen = (shopId) => {
     });
 };
 
+const getCost = (shopId) => {
+    const formData = new FormData($("form-cost"));
+    getJSON("/api/shops/" + shopId + "/cost?" + formSerialize(formData)).then(
+        obj => {
+            $("delivery-cost").value = obj["deliveryCost"];
+
+            extraChargeValue = obj["extraCharge"];
+            deliveryCostSum = obj["deliveryCostSum"];
+
+            $("extra-charge").value = deliveryCostSum + "원";
+        }
+    );
+};
+
 const modalClose = (jibun, road, latitude, longitude) => () => {
     $("address-jibun").value = jibun;
-    $("jibun").value = jibun;
+    $("cost-jibun").value = $("jibun").value = jibun;
     $("road").value = road;
     $("latitude").value = latitude;
     $("longitude").value = longitude;
@@ -39,10 +53,13 @@ const modalClose = (jibun, road, latitude, longitude) => () => {
         }
     );
 
-    $("distance").value = distance;
+    $("cost-distance").value = $("distance").value = distance;
     $("by-distance").value = distance + "km";
 
     $("address_modal").style.display = "none";
+
+    const shopId = $("shopId").value;
+    getCost(shopId);
 
     const marker = createMarker({
             map: map,
@@ -335,3 +352,6 @@ for (let cb of chosungButtons) {
         requestByMethod();
     }
 }
+
+export let deliveryCostSum = 0;
+export let extraChargeValue = null;
