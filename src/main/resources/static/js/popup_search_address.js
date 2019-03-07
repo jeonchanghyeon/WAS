@@ -1,6 +1,9 @@
 import {getJSON} from './ajax.js'
 import {$, createCol, createRow, formSerialize, getClosureToSelectButton} from "./element.js"
 import {addCloseModalEvent} from "./modal.js";
+import {createMarker, getDistance, initMap, setMarkerCenter} from "./naver.js";
+
+const map = initMap();
 
 export const modalOpen = (shopId) => {
     $("modal-shop-id").value = shopId;
@@ -19,15 +22,39 @@ const modalClose = (jibun, road, latitude, longitude) => () => {
     $("longitude").value = longitude;
 
     // TODO
-    // const shopLatitude = $("shop-latitude").value;
-    // const shopLongitude = $("shop-longitude").value;
-    // const distance = Math.sqrt((x - shopLatitude) * (x - shopLatitude) + (y - shopLongitude) * (y - shopLongitude));
+    const shopLatitude = parseFloat($("shop-latitude").value);
+    const shopLongitude = parseFloat($("shop-longitude").value);
 
-    const distance = 0;
+    const dstLatitude = parseFloat(latitude);
+    const dstLongitude = parseFloat(longitude);
+
+    const distance = getDistance(map,
+        {
+            Latitude: shopLatitude,
+            Longitude: shopLongitude,
+        },
+        {
+            Latitude: dstLatitude,
+            Longitude: dstLongitude,
+        }
+    );
+
     $("distance").value = distance;
     $("by-distance").value = distance + "km";
 
     $("address_modal").style.display = "none";
+
+    const marker = createMarker({
+            map: map,
+            position: {
+                latitude: dstLatitude,
+                longitude: dstLongitude
+            },
+            icon: '/img/marker-shop.png'
+        }
+    );
+
+    setMarkerCenter(map, [marker]);
 };
 
 addCloseModalEvent("address_modal", "btn_close");
@@ -155,7 +182,7 @@ const bookmarkCallback = obj => {
             '<div class="addr-contents-cell__land-mark">지번</div>\n' +
             jibun + '\n' +
             '</div>';
-        cell.ondblclick = modalClose(jibun, road, x, y);
+        cell.ondblclick = modalClose(jibun, road, y, x);
 
         const col = createCol(cell);
         col.className = "addr-contents-cell";
@@ -201,7 +228,7 @@ const bookmarkListCallback = bookmark => getAddress().then(
             }
 
             cell.appendChild(div);
-            cell.ondblclick = modalClose(jibun, road, x, y);
+            cell.ondblclick = modalClose(jibun, road, y, x);
 
             const col = createCol(cell);
             col.className = "addr-contents-cell";
