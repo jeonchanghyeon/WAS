@@ -180,3 +180,18 @@ export const drawPolyLine = (option) => {
         strokeColor: option.strokeColor
     });
 };
+
+export const getDistance = (map, src, dst) => {
+    const distance = map.getProjection().getDistance(
+        new naver.maps.LatLng(
+            src.latitude,
+            src.Longitude
+        ),
+        new naver.maps.LatLng(
+            dst.latitude,
+            dst.Longitude
+        )
+    );
+
+    return distance;
+};
