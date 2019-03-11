@@ -1,85 +1,63 @@
-import {ajax, getJSON, setCSRFHeader} from './ajax.js'
-import {loadDetail} from './delivery_details.js'
-import {calendarListener} from './calendar.js'
-import {loadPoint} from "./point.js";
-import {$, appendOptions, createRow, formSerialize, jsonifyFormData} from "./element.js";
-import {fillZero, HHMM, mmdd, numberWithCommas} from "./format.js";
+import {ajax, getJSON, setCSRFHeader} from './ajax.js';
+import {loadDetail} from './delivery_details.js';
+import {calendarListener} from './calendar.js';
+import {loadPoint} from './point.js';
+import {$, appendOptions, createRow, formSerialize, jsonifyFormData} from './element.js';
+import {fillZero, HHMM, mmdd, numberWithCommas} from './format.js';
 
 loadPoint();
 
-function createTable(resultList, orders) {
-    for (let i = 0; i < orders.length; i++) {
-        const order = orders[i];
+let baseForm = null;
+let lastSubmittedFormData = null;
 
-        const createDate = order["createDate"];
-        const id = fillZero(order["id"].toString(), 5);
-        const createDay = mmdd(createDate) + "-" + HHMM(createDate);
+let selectedRow = null;
+let selectedRowClassName = null;
 
-        let orderStatusId = order["orderStatusId"];
-        if (order["orderStatusId"] === 1
-            && (order["branchId"] !== getCurrentBranchId())) {
-            orderStatusId = 7;
-        }
-        const parsingOrderStatus = statusStr[orderStatusId - 1];
+let pageIndex = 1;
+let isEmpty = false;
 
-        const sum = order["additionalCost"]
-            .map((data) => data["cost"])
-            .reduce((sum, number) => sum + number, 0);
-        const parsingPaymentType = paymentTypeStr[order["paymentType"] - 1];
-
-        const row = createRow(
-            [
-                id,
-                createDay,
-                order["shopName"],
-                parsingOrderStatus,
-                HHMM(createDate),
-                HHMM(order["allocateDate"]),
-                HHMM(order["pickupDate"]),
-                HHMM(order["completeDate"]),
-                HHMM(order["cancelDate"]),
-                numberWithCommas(order["deliveryCost"]),
-                numberWithCommas(sum),
-                order["riderName"],
-                parsingPaymentType,
-                order["memo"]
-            ],
-            (row) => {
-                row.className = statusStyleName[orderStatusId - 1];
-
-                row.onclick = () => {
-                    if (selectedRow != null) {
-                        // 스타일 복구
-                        selectedRow.className = selectedRowClassName;
-                    }
-
-                    // 스타일 저장
-                    selectedRow = row;
-                    selectedRowClassName = statusStyleName[orderStatusId - 1];
-
-                    // 선택 스타일 지정
-                    row.className = 'selected-row';
-                };
-
-                row.ondblclick = () => {
-                    loadDetail(id, $("group").value);
-                };
-            });
-
-        resultList.appendChild(row)
-    }
-}
-
-const displayError = (error) => {
-    const tr = document.createElement("tr");
-    const td = document.createElement("td");
-
-    td.colSpan = 14;
-    td.innerHTML = error.message;
-
-    resultList.appendChild(tr);
-    tr.appendChild(td);
+const Group = {
+    GUEST: 1,
+    RIDER: 2,
+    SHOP: 3,
+    BRANCH: 5,
+    DISTRIB: 6,
+    HEAD: 7,
 };
+
+const statusStr = ['접수', '배차', '픽업', '완료', '취소', '대기', '공유'];
+const paymentTypeStr = ['카드', '현금', '선결제'];
+const statusStyleName = ['status1', 'status2', 'status3', 'status4', 'status5', 'status6', 'status7'];
+
+const checkboxIds = [
+    'checkbox_accept',
+    'checkbox_allocate',
+    'checkbox_pickup',
+    'checkbox_complete',
+    'checkbox_cancel',
+    'checkbox_suspend',
+    'checkbox_share',
+];
+
+const spanIds = [
+    'count_all',
+    'count_accept',
+    'count_allocate',
+    'count_pickup',
+    'count_complete',
+    'count_cancel',
+    'count_suspend',
+    'count_share',
+];
+
+const resultList = $('result_list');
+const branchSelect = $('select_branch');
+const selectDistrib = $('select_distributor');
+
+const checkboxAll = $('checkbox_all');
+const statusCheckboxes = checkboxIds.map(checkboxId => $(checkboxId));
+
+const statusText = spanIds.map(spanId => $(spanId));
 
 const getOptionValue = (element) => {
     if (element.selectedIndex === -1) {
@@ -91,7 +69,7 @@ const getOptionValue = (element) => {
 
 const getCurrentBranchId = () => {
     if (branchSelect === null) {
-        return $("value_branch").value;
+        return $('value_branch').value;
     }
 
     const branchId = getOptionValue(branchSelect);
@@ -99,283 +77,279 @@ const getCurrentBranchId = () => {
         return -1;
     }
 
-    return parseInt(branchId);
+    return parseInt(branchId, 10);
+};
+
+const createTable = (list, orders) => {
+    const rowOnclick = (row, orderStatusId) => () => {
+        if (selectedRow != null) {
+            // 스타일 복구
+            selectedRow.className = selectedRowClassName;
+        }
+
+        // 스타일 저장
+        selectedRow = row;
+        selectedRowClassName = statusStyleName[orderStatusId - 1];
+
+        // 선택 스타일 지정
+        row.className = 'selected-row';
+    };
+
+    orders.forEach((order) => {
+        const {
+            id,
+            branchId, shopName, riderName,
+            deliveryCost, additionalCost, paymentType,
+            createDate, allocateDate, pickupDate, completeDate, cancelDate,
+            memo,
+        } = order;
+        let {orderStatusId} = order;
+
+        const createDay = `${mmdd(createDate)}-${HHMM(createDate)}`;
+        const parsingOrderStatus = statusStr[orderStatusId - 1];
+        const parsingPaymentType = paymentTypeStr[paymentType - 1];
+
+        if (orderStatusId === 1 && (branchId !== getCurrentBranchId())) {
+            orderStatusId = 7;
+        }
+
+        const sumOfAdditionalCost = additionalCost
+            .map(data => data['cost'])
+            .reduce((sum, number) => sum + number, 0);
+
+        const row = createRow([
+            fillZero(id.toString(), 5),
+            createDay,
+            shopName,
+            parsingOrderStatus,
+            HHMM(createDate),
+            HHMM(allocateDate),
+            HHMM(pickupDate),
+            HHMM(completeDate),
+            HHMM(cancelDate),
+            numberWithCommas(deliveryCost),
+            numberWithCommas(sumOfAdditionalCost),
+            riderName,
+            parsingPaymentType,
+            memo,
+        ]);
+
+        row.className = statusStyleName[orderStatusId - 1];
+        row.onclick = rowOnclick(row, orderStatusId);
+        row.ondblclick = () => {
+            loadDetail(id, $('group').value);
+        };
+
+        list.appendChild(row);
+    });
+};
+
+const displayError = (error) => {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+
+    td.colSpan = 14;
+    td.innerHTML = error.message;
+
+    resultList.appendChild(tr);
+    tr.appendChild(td);
 };
 
 const changeToStyleSafe = (element) => {
     for (let i = 0; i < element.labels.length; i++) {
-        element.labels[i].style.color = "#c1c1c1";
+        element.labels[i].style.color = '#c1c1c1';
     }
-    element.style.color = "#FFFFFF";
+    element.style.color = '#FFFFFF';
 };
 
 const changeToStyleWarning = (element) => {
     for (let i = 0; i < element.labels.length; i++) {
-        element.labels[i].style.color = "white";
+        element.labels[i].style.color = 'white';
     }
-    element.style.color = "red";
+    element.style.color = 'red';
 };
 
 const setSearchType = () => {
-    $("search_feature").name = getOptionValue($('search_type'));
+    $('search_feature').name = getOptionValue($('search_type'));
 };
 
 const uncheckOthers = (checkboxes) => {
-    for (let checkbox of checkboxes) {
+    checkboxes.forEach((checkbox) => {
         checkbox.checked = false;
-    }
+    });
 };
 
-const isAllchecked = (checkboxes) =>
-    checkboxes.some(
-        (data) =>
-            data.checked === true
-    );
+const isSomeChecked = checkboxes => checkboxes
+    .some(data => data.checked === true);
 
 const appendCheckboxValue = (formData, checkboxes) => {
-    for (let checkbox of checkboxes) {
-        if (checkbox.checked === true) {
-            formData.append(checkbox.name, checkbox.value)
-        }
-    }
-};
-
-function submitOrderStatus() {
-    const formData = copyFormData(baseForm);
-
-    appendCheckboxValue(formData, checkboxes);
-
-    lastSubmittedFormData = formData;
-
-    pageIndex = 1;
-
-    getOrders(formData).then(
-        (obj) => {
-            const orders = obj["orders"];
-
-            resultList.innerHTML = '';
-
-            isEmpty = orders.length === 0;
-            if (isEmpty) {
-                emptyHandler();
-            }
-
-            createTable(resultList, orders);
-            pageIndex++;
-        }
-    ).catch((error) => {
-        console.log(error);
-        displayError(error);
-    });
-}
-
-function emptyHandler() {
-    throw new Error("데이터가 존재하지 않습니다.");
-}
-
-const getRider = (branchId) => {
-    getJSON("/api/riders/list?id=" + branchId).then(
-        (obj) => {
-            if (obj.length !== 1) {
-
-            } else {
-                $("text_rider").value = obj[0]["name"];
-            }
+    checkboxes.filter(checkbox => checkbox.checked === true)
+        .forEach((checkbox) => {
+            formData.append(checkbox.name, checkbox.value);
         });
 };
-
-const getShop = (branchId) => {
-    getJSON("/api/shops/list?id=" + branchId).then(
-        (obj) => {
-            if (obj.length !== 1) {
-
-            } else {
-                $("text_shop").value = obj[0]["name"];
-            }
-        });
-};
-
-const getBranchList = (element, distribId) => {
-    getJSON("/api/branches/list?id=" + distribId).then(
-        (obj) => {
-            const options = [{
-                value: -1,
-                text: "--"
-            }];
-
-            for (let i = 0; i < obj.length; i++) {
-                const id = obj[i]["id"];
-                const name = obj[i]["name"];
-
-                options.push({
-                    value: id,
-                    text: name
-                });
-            }
-
-            appendOptions(element, options);
-        });
-};
-
-const getBranch = (distribId) => {
-    getJSON("/api/branches/list?id=" + distribId).then(
-        (obj) => {
-            if (obj.length !== 1) {
-
-            } else {
-                $("value_branch").value = obj[0]["id"];
-                $("text_branch").value = obj[0]["name"];
-            }
-        });
-};
-
-const getDistribList = (element, headId) => {
-    getJSON("/api/distribs?id=" + headId).then(
-        (obj) => {
-            const options = [{
-                value: -1,
-                text: "--"
-            }];
-
-            for (let i = 0; i < obj.length; i++) {
-                const id = obj[i]["id"];
-                const name = obj[i]["name"];
-
-                options.push({
-                    value: id,
-                    text: name
-                });
-            }
-
-            appendOptions(element, options);
-        });
-};
-
-const getDistrib = (headId) => {
-    getJSON("/api/distribs?id=" + headId).then(
-        (obj) => {
-            if (obj.length !== 1) {
-
-            } else {
-                $("text_distrib").value = obj[0]["name"];
-            }
-        });
-};
-
-const getBranchSettings = (branchId) =>
-    getJSON("/api/branches/" + branchId + "/settings").then(
-        (obj) => {
-            const selectDefaultStart = $("select_default_start");
-            const selectDelayTime = $("select_delay_time");
-            const costWon = $('cost_won');
-            const costPercent = $('cost_percent');
-
-            const branchSetting = obj["branchSettings"];
-
-            const basicStartTime = branchSetting["basicStartTime"];
-            const basicStartTimeIndex = basicStartTime / 10;
-            selectDefaultStart.selectedIndex = basicStartTimeIndex;
-
-            if (basicStartTimeIndex === 0) {
-                changeToStyleSafe(selectDefaultStart);
-            } else {
-                changeToStyleWarning(selectDefaultStart);
-            }
-
-            const delayTime = branchSetting["delayTime"];
-            const delayTimeIndex = delayTime / 10;
-            selectDelayTime.selectedIndex = delayTimeIndex;
-
-            if (delayTimeIndex === 0) {
-                changeToStyleSafe(selectDelayTime);
-            } else {
-                changeToStyleWarning(selectDelayTime);
-            }
-
-            costWon.value = branchSetting["extraCharge"];
-            costPercent.value = branchSetting["extraChargePercent"] * 100;
-        });
-
-const getOrders = (formData) =>
-    getJSON('/api/orders?' + formSerialize(formData));
-
-const Group = {
-    GUEST: 1,
-    RIDER: 2,
-    SHOP: 3,
-    BRANCH: 5,
-    DISTRIB: 6,
-    HEAD: 7,
-};
-
-const statusStr = ["접수", "배차", "픽업", "완료", "취소", "대기", "공유"];
-const paymentTypeStr = ["카드", "현금", "선결제"];
-const statusStyleName = ["status1", "status2", "status3", "status4", "status5", "status6", "status7"];
-
-const checkboxIds = [
-    "checkbox_accept",
-    "checkbox_allocate",
-    "checkbox_pickup",
-    "checkbox_complete",
-    "checkbox_cancel",
-    "checkbox_suspend",
-    "checkbox_share"
-];
-
-const spanIds = [
-    "count_all",
-    "count_accept",
-    "count_allocate",
-    "count_pickup",
-    "count_complete",
-    "count_cancel",
-    "count_suspend",
-    "count_share"
-];
-
-const resultList = $("result_list");
-const branchSelect = $("select_branch");
-
-const checkboxAll = $("checkbox_all");
-const checkboxes = [];
-for (let checkboxId of checkboxIds) {
-    checkboxes.push($(checkboxId));
-}
-
-const statusText = [];
-for (let i = 0; i < spanIds.length; i++) {
-    statusText[i] = $(spanIds[i]);
-}
-
-let baseForm = null;
-let lastSubmittedFormData = null;
-
-let selectedRow = null;
-let selectedRowClassName = null;
-
-let pageIndex = 1;
-let isEmpty = false;
 
 function copyFormData(src) {
     const dst = new FormData();
+    const entry = src.entries();
 
-    for (const pair of src.entries()) {
-        dst.append(pair[0], pair[1]);
+    /* eslint-disable */
+    for (const [k, v] of entry) {
+        dst.append(k, v);
     }
+    /* eslint-enable */
 
     return dst;
 }
 
-const loadCounts = (counts) => {
+const getOrders = formData => getJSON(`/api/orders?${formSerialize(formData)}`);
 
+function emptyHandler() {
+    throw new Error('데이터가 존재하지 않습니다.');
+}
+
+function submitOrderStatus() {
+    const formData = copyFormData(baseForm);
+
+    appendCheckboxValue(formData, statusCheckboxes);
+    lastSubmittedFormData = formData;
+    pageIndex = 1;
+
+    getOrders(formData).then((obj) => {
+        const {orders} = obj;
+
+        resultList.innerHTML = '';
+
+        isEmpty = orders.length === 0;
+        if (isEmpty) {
+            emptyHandler();
+        }
+
+        createTable(resultList, orders);
+        pageIndex += 1;
+    })
+        .catch((error) => {
+            displayError(error);
+        });
+}
+
+
+const getRider = (branchId) => {
+    getJSON(`/api/riders/list?id=${branchId}`).then((obj) => {
+        if (obj.length === 1) {
+            $('text_rider').value = obj[0]['name'];
+        }
+    });
+};
+
+const getShop = (branchId) => {
+    getJSON(`/api/shops/list?id=${branchId}`).then((obj) => {
+        if (obj.length === 1) {
+            $('text_shop').value = obj[0]['name'];
+        }
+    });
+};
+
+const getBranchList = (element, distribId) => {
+    getJSON(`/api/branches/list?id=${distribId}`).then((obj) => {
+        const options = [{
+            value: -1,
+            text: '--',
+        }];
+
+        obj.forEach((o) => {
+            const {id, name} = o;
+
+            options.push({
+                value: id,
+                text: name,
+            });
+        });
+
+        appendOptions(element, options);
+    });
+};
+
+const getBranch = (distribId) => {
+    getJSON(`/api/branches/list?id=${distribId}`).then((obj) => {
+        if (obj.length === 1) {
+            $('value_branch').value = obj[0]['id'];
+            $('text_branch').value = obj[0]['name'];
+        }
+    });
+};
+
+const getDistribList = (element, headId) => {
+    getJSON(`/api/distribs?id=${headId}`).then((obj) => {
+        const options = [{
+            value: -1,
+            text: '--',
+        }];
+
+        obj.forEach((o) => {
+            const {id, name} = o;
+
+            options.push({
+                value: id,
+                text: name,
+            });
+        });
+
+        appendOptions(element, options);
+    });
+};
+
+const getDistrib = (headId) => {
+    getJSON(`/api/distribs?id=${headId}`).then((obj) => {
+        if (obj.length === 1) {
+            $('text_distrib').value = obj[0]['name'];
+        }
+    });
+};
+
+const getBranchSettings = branchId => getJSON(`/api/branches/${branchId}/settings`).then((obj) => {
+    const selectDefaultStart = $('select_default_start');
+    const selectDelayTime = $('select_delay_time');
+    const costWon = $('cost_won');
+    const costPercent = $('cost_percent');
+
+    const {branchSettings} = obj;
+    const {
+        basicStartTime, delayTime, extraCharge, extraChargePercent,
+    } = branchSettings;
+
+    const basicStartTimeIndex = basicStartTime / 10;
+    selectDefaultStart.selectedIndex = basicStartTimeIndex;
+
+    if (basicStartTimeIndex === 0) {
+        changeToStyleSafe(selectDefaultStart);
+    } else {
+        changeToStyleWarning(selectDefaultStart);
+    }
+
+    const delayTimeIndex = delayTime / 10;
+    selectDelayTime.selectedIndex = delayTimeIndex;
+
+    if (delayTimeIndex === 0) {
+        changeToStyleSafe(selectDelayTime);
+    } else {
+        changeToStyleWarning(selectDelayTime);
+    }
+
+    costWon.value = extraCharge;
+    costPercent.value = extraChargePercent * 100;
+});
+
+
+const loadCounts = (counts) => {
     const arr = [
-        "acceptCount",
-        "allocateCount",
-        "pickupCount",
-        "completeCount",
-        "cancelCount",
-        "suspendCount",
-        "shareCallCount"
+        'acceptCount',
+        'allocateCount',
+        'pickupCount',
+        'completeCount',
+        'cancelCount',
+        'suspendCount',
+        'shareCallCount',
     ];
 
     let sum = 0;
@@ -383,7 +357,7 @@ const loadCounts = (counts) => {
         const count = counts[arr[i - 1]];
         if (i !== 6) {
             statusText[i].innerHTML = count;
-            sum += parseInt(count);
+            sum += parseInt(count, 10);
         }
     }
 
@@ -392,7 +366,7 @@ const loadCounts = (counts) => {
 
 checkboxAll.onclick = function () {
     if (this.checked === true) {
-        uncheckOthers(checkboxes);
+        uncheckOthers(statusCheckboxes);
     }
 
     if (baseForm !== null) {
@@ -400,63 +374,61 @@ checkboxAll.onclick = function () {
     }
 };
 
-for (let checkbox of checkboxes) {
-    checkbox.onclick = () => {
-        checkboxAll.checked = !isAllchecked(checkboxes);
+const checkboxOnclick = () => {
+    checkboxAll.checked = !isSomeChecked(statusCheckboxes);
 
-        if (baseForm !== null) {
-            submitOrderStatus();
-        }
-    };
-}
+    if (baseForm !== null) {
+        submitOrderStatus();
+    }
+};
 
-$("form_search").onsubmit = function () {
+statusCheckboxes.forEach((checkbox) => {
+    checkbox.onclick = checkboxOnclick;
+});
+
+$('form_search').onsubmit = function () {
     if (getCurrentBranchId() === -1) {
-        alert("지사를 선택해주세요.");
+        alert('지사를 선택해주세요.');
         return false;
     }
     setSearchType();
 
     const formData = new FormData(this);
-    lastSubmittedFormData = baseForm = formData;
+    lastSubmittedFormData = formData;
+    baseForm = formData;
 
     pageIndex = 1;
 
-    getOrders(formData).then(
-        (obj) => {
-            const orders = obj["orders"];
-            const counts = obj["counts"];
+    getOrders(formData).then((obj) => {
+        const {
+            orders, counts,
+        } = obj;
 
-            resultList.innerHTML = '';
+        resultList.innerHTML = '';
 
-            loadCounts(counts);
+        loadCounts(counts);
 
-            isEmpty = orders.length === 0;
-            if (isEmpty) {
-                emptyHandler()
-            }
-
-            createTable(resultList, orders);
-            pageIndex++;
+        isEmpty = orders.length === 0;
+        if (isEmpty) {
+            emptyHandler();
         }
-    ).catch((error) => {
-        console.log(error);
-        displayError(error);
-    });
+
+        createTable(resultList, orders);
+        pageIndex += 1;
+    })
+        .catch((error) => {
+            displayError(error);
+        });
 
     return false;
 };
 
-const setBranchSetting = (branchId, formData) =>
-    ajax(
-        "/api/branches/" + branchId + "/settings",
-        "POST",
-        JSON.stringify(jsonifyFormData(formData)),
-        setCSRFHeader
-    );
+const setBranchSetting = (branchId, formData) => ajax(`/api/branches/${branchId}/settings`,
+    'POST',
+    JSON.stringify(jsonifyFormData(formData)),
+    setCSRFHeader);
 
-$("form_default_start").onsubmit
-    = $("form_delay_time").onsubmit = function () {
+$('form_default_start').onsubmit = $('form_delay_time').onsubmit = function () {
     const branchId = getCurrentBranchId();
     if (branchId !== -1) {
         const formData = new FormData(this);
@@ -467,13 +439,13 @@ $("form_default_start").onsubmit
     return false;
 };
 
-$("form_additional_cost").onsubmit = function () {
+$('form_additional_cost').onsubmit = function () {
     const branchId = getCurrentBranchId();
     if (branchId !== -1) {
         const formData = new FormData(this);
 
-        const extraChargePercent = formData.get("extraChargePercent");
-        formData.set("extraChargePercent", extraChargePercent / 100.0);
+        const extraChargePercent = formData.get('extraChargePercent').toString();
+        formData.set('extraChargePercent', parseInt(extraChargePercent, 10) / 100.0);
 
         setBranchSetting(branchId, formData);
     }
@@ -482,35 +454,32 @@ $("form_additional_cost").onsubmit = function () {
 };
 
 window.onscroll = function () {
-    if ((window.innerHeight + window.scrollY) < $("window-parent").offsetHeight - 1
+    if ((window.innerHeight + window.scrollY) < $('window-parent').offsetHeight - 1
         || lastSubmittedFormData === null || isEmpty === true) {
         return;
     }
 
     const formData = copyFormData(lastSubmittedFormData);
-    formData.append("pageIndex", pageIndex);
+    formData.append('pageIndex', pageIndex);
 
-    getOrders(formData).then(
-        (obj) => {
-            const orders = obj["orders"];
+    getOrders(formData).then((obj) => {
+        const {orders} = obj;
 
-            isEmpty = orders.length === 0;
+        isEmpty = orders.length === 0;
 
-            createTable(resultList, orders);
-            pageIndex++;
-        }
-    ).catch((error) => {
-        console.log(error);
-        displayError(error);
-    });
+        createTable(resultList, orders);
+        pageIndex += 1;
+    })
+        .catch((error) => {
+            displayError(error);
+        });
 };
 
 document.body.onload = () => {
-    const id = $("userId").value;
-    const group = $("group").value;
+    const id = $('userId').value;
+    const group = $('group').value;
 
-
-    switch (parseInt(group)) {
+    switch (parseInt(group, 10)) {
         case Group.RIDER:
             getRider(id);
             getBranch(id);
@@ -543,17 +512,15 @@ document.body.onload = () => {
             break;
 
         case Group.HEAD:
-
-            const selectDistrib = $("select_distributor");
             getDistribList(selectDistrib, id);
 
             selectDistrib.onchange = function () {
                 const distribId = getOptionValue(this);
 
                 if (this.selectedIndex === 0) {
-                    appendOptions(branchSelect, [{text: "--", value: "-1"}]);
+                    appendOptions(branchSelect, [{text: '--', value: '-1'}]);
                 } else {
-                    getBranchList(branchSelect, distribId)
+                    getBranchList(branchSelect, distribId);
                 }
             };
 
@@ -566,8 +533,9 @@ document.body.onload = () => {
             };
 
             break;
+        default:
+            break;
     }
 
     calendarListener();
-
 };

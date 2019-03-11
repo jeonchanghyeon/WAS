@@ -1,4 +1,15 @@
-export const mmdd = str => {
+export const fillZero = (srcNumber, digit) => {
+    const number = srcNumber.toString();
+    const zeroNum = digit - number.length;
+
+    if (zeroNum < 0) {
+        return number;
+    }
+
+    return '0'.repeat(zeroNum) + number;
+};
+
+export const mmdd = (str) => {
     const date = new Date(str);
 
     const mm = fillZero(date.getMonth() + 1, 2);
@@ -10,8 +21,8 @@ export const mmdd = str => {
 export const HHMM = (str) => {
     const date = new Date(str);
 
-    if (isNaN(date)) {
-        return "-"
+    if (Number.isNaN(Number(date))) {
+        return '-';
     }
 
     const HH = fillZero(date.getHours(), 2);
@@ -20,19 +31,7 @@ export const HHMM = (str) => {
     return [HH, MM].join(':');
 };
 
-export const fillZero = (number, digit) => {
-    number = number.toString();
-    const zeroNum = digit - number.length;
-
-    if (zeroNum < 0) {
-        return number;
-    }
-
-    return '0'.repeat(zeroNum) + number;
-};
-
-export const numberWithCommas = (number) =>
-    number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+export const numberWithCommas = number => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 export const YYYYmmdd = (date) => {
     const mm = fillZero(date.getMonth() + 1, 2);
