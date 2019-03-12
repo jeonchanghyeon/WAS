@@ -9,7 +9,7 @@ class DistribService {
     @Autowired
     private lateinit var distribDAO: DistribDAO
 
-    fun getDistributors(id: Long): MutableList<Map<String, Any?>> {
-        return distribDAO.getDistributors(id)
+    fun getDistributors(id: Long, name: String?): MutableList<Map<String, Any?>> {
+        return distribDAO.getDistributors(id, name)
     }
 }

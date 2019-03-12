@@ -28,8 +28,8 @@ class ShopService {
         return shopDAO.searchShopList(branchId, info)
     }
 
-    fun getShops(id: Long): MutableList<Map<String, Any?>> {
-        return shopDAO.getShops(id)
+    fun getShops(id: Long, name: String?): MutableList<Map<String, Any?>> {
+        return shopDAO.getShops(id, name)
     }
 
     fun getMenuList(authKey: String, shopId: Long): String {
@@ -111,7 +111,7 @@ class ShopService {
             val siGunGu = json["siGunGu"] as String
             val eubMyeonDong = json["eubMyeonDong"] as String
 
-            if(siDo.contains(jibunList[0]) && siGunGu.contains(jibunList[1]) && eubMyeonDong.contains(jibunList[2])) {
+            if (siDo.contains(jibunList[0]) && siGunGu.contains(jibunList[1]) && eubMyeonDong.contains(jibunList[2])) {
                 cost = json["cost"] as Int
                 break
             }
@@ -120,16 +120,26 @@ class ShopService {
         return cost
     }
 
+    @Throws(InvalidValueException::class)
     fun getDeliveryChargeSet(authKey: String, shopId: Long, distance: Double?, jibun: String): String {
         val result = JSONObject()
         var cost = 0
 
-        if(distance != null) cost = getDeliveryCostByDistance(authKey, shopId, distance)
-        else cost = getDeliveryCostByDong(authKey, shopId, jibun)
-        val branchId = branchService.getBranches(shopId)[0]["id"] as Long
+        val branchId = branchService.getBranches(shopId, null)[0]["id"] as Long
         val branchSettings = JSONObject(branchService.getBranchSettings(authKey, branchId))["branchSettings"] as JSONObject
         val userInfo = JSONObject(userService.getUserInfo(authKey, shopId))["user"] as JSONObject
         val shopExtraCharge = (userInfo["additional"] as JSONObject)["extraCharge"] as JSONObject
+        val deliveryCostBaseType = (userInfo["additional"] as JSONObject)["deliveryCostBaseType"] as Int
+
+        cost = when (deliveryCostBaseType) {
+            1 -> {
+                getDeliveryCostByDistance(authKey, shopId, distance!!)
+            }
+            2 -> {
+                getDeliveryCostByDong(authKey, shopId, jibun)
+            }
+            else -> throw InvalidValueException("deliveryCostBaseType value problem (deliveryCostBaseType: $deliveryCostBaseType)")
+        }
 
         val deliveryAdditionalCost = (cost * (branchSettings["extraChargePercent"] as Double)).toInt()
         val branchExtraCharge = branchSettings["extraCharge"] as Int
@@ -137,7 +147,6 @@ class ShopService {
         val isUseDayOfWeek = shopExtraCharge["isUseDayOfWeek"] as Boolean
         val isUseTime = shopExtraCharge["isUseTime"] as Boolean
         val isUseDong = (userInfo["additional"] as JSONObject)["isUseDong"] as Boolean
-
 
         var weekDayExtraCharge = 0
         var timeExtraCharge = 0
@@ -170,7 +179,7 @@ class ShopService {
                 timeExtraCharge = byTime["cost"] as Int
             }
         }
-        if (distance != null && isUseDong) {
+        if (deliveryCostBaseType == 1 && isUseDong) {
             dongExtraCharge = getDeliveryCostByDong(authKey, shopId, jibun)
         }
         val sum = cost + deliveryAdditionalCost + branchExtraCharge + weekDayExtraCharge + timeExtraCharge
@@ -180,10 +189,11 @@ class ShopService {
         if (isUseTime) extraCharge.add(mapOf("cost" to timeExtraCharge, "label" to "시간할증"))
         if (branchExtraCharge != 0) extraCharge.add(mapOf("cost" to branchExtraCharge, "label" to "지사할증"))
         if (deliveryAdditionalCost != 0) extraCharge.add(mapOf("cost" to deliveryAdditionalCost, "label" to "지사할증(%)"))
-        if (distance != null && isUseDong) extraCharge.add(mapOf("cost" to dongExtraCharge, "label" to "동별할증"))
+        if (deliveryCostBaseType == 1 && isUseDong) extraCharge.add(mapOf("cost" to dongExtraCharge, "label" to "동별할증"))
 
         result.put("resultCode", 0)
         result.put("description", "성공적으로 수행했습니다.")
+        result.put("deliveryCostBaseType", deliveryCostBaseType)
         result.put("deliveryCost", cost)
         result.put("extraCharge", extraCharge)
         result.put("deliveryCostSum", sum)

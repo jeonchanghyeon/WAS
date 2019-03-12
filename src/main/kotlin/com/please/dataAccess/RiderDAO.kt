@@ -19,7 +19,7 @@ class RiderDAO {
         return template.queryForJSONObject("CALL getSearchedRiders(getUserAuthKeyById(?), ?)", branchId, riderInfo)
     }
 
-    fun getRiders(id: Long): MutableList<Map<String, Any?>> {
+    fun getRiders(id: Long, name: String?): MutableList<Map<String, Any?>> {
         return template.queryForList("CALL getRiderListById(?)", id)
     }
 

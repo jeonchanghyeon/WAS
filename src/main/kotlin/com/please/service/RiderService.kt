@@ -23,8 +23,8 @@ class RiderService {
         return riderDAO.searchRiderList(branchId, info.toString())
     }
 
-    fun getRiders(id: Long): MutableList<Map<String, Any?>> {
-        return riderDAO.getRiders(id)
+    fun getRiders(id: Long, name: String?): MutableList<Map<String, Any?>> {
+        return riderDAO.getRiders(id, name)
     }
 
     fun getInfoInControl(authKey: String, riderId: Long, startDate: String?, endDate: String?): String {

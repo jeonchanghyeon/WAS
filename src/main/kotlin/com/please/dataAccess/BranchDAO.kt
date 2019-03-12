@@ -16,7 +16,7 @@ class BranchDAO {
     private lateinit var template: JdbcTemplate
 
     //지사 id와 이름 목록 쿼리
-    fun getBranches(id: Long): MutableList<Map<String, Any?>> {
+    fun getBranches(id: Long, name: String?): MutableList<Map<String, Any?>> {
         return template.queryForList("CALL getBranchListById(?)", id)
     }
 

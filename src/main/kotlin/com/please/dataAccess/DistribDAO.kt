@@ -14,7 +14,7 @@ class DistribDAO {
     private lateinit var template: JdbcTemplate
 
     //총판 이름과 id를 쿼리
-    fun getDistributors(id: Long): MutableList<Map<String, Any?>> {
+    fun getDistributors(id: Long, name: String?): MutableList<Map<String, Any?>> {
         return template.queryForList("CALL getDistributorListById(?)", id)
     }
 }
