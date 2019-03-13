@@ -56,7 +56,7 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
     @ExceptionHandler(MissingBalanceException::class)
     fun usePointError(e: MissingBalanceException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
         log.error(getExceptionLog(e, req))
-        return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
+        return ResponseEntity(e.errorInfo, HttpStatus.OK)
     }
 
     //프로시저 수행 중 프로시저에서 예상가능한 에러가 발생한 경우(디비 참조)
@@ -70,12 +70,19 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
     @ExceptionHandler(AccountNotFoundException::class)
     fun abnormalResultError(e: AccountNotFoundException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
         log.error(getExceptionLog(e, req))
-        return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
+        return ResponseEntity(e.errorInfo, HttpStatus.OK)
     }
 
     //유효하지 않은 데이터 값의 연산이 발생할 경우
     @ExceptionHandler(InvalidValueException::class)
     fun invalidValueError(e: InvalidValueException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
+        log.error(getExceptionLog(e, req))
+        return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
+    }
+
+    //패스워드가 일치하지 않을 경우
+    @ExceptionHandler(PasswordMismatchException::class)
+    fun passwordMismatch(e: PasswordMismatchException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
         log.error(getExceptionLog(e, req))
         return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
     }

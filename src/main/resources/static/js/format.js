@@ -34,6 +34,9 @@ export const fillZero = (number, digit) => {
 export const numberWithCommas = (number) =>
     number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+export const numberCommasRemove = (number) =>
+    number.replace(/,/g, "");
+
 export const YYYYmmdd = (date) => {
     const mm = fillZero(date.getMonth() + 1, 2);
     const dd = fillZero(date.getDate(), 2);
