@@ -1,6 +1,6 @@
-import {getJSON} from './ajax.js'
-import {loadPoint} from "./point.js";
-import {$, createCol, createRow, formSerialize} from "./element.js"
+import {getJSON} from './ajax.js';
+import {loadPoint} from './point.js';
+import {$, createRow, formSerialize} from './element.js';
 import {
     createInfoWindow,
     createMarker,
@@ -10,9 +10,10 @@ import {
     removeInfo,
     removeMarkers,
     setMarkerCenter,
-    showInfo,
-} from "./naver.js"
-import {fillZero} from "./format.js";
+    showInfo
+} from './naver.js';
+import {fillZero} from './format.js';
+import {loadDetail} from './delivery_details.js';
 
 loadPoint();
 
@@ -30,179 +31,222 @@ const Group = {
 const markers = [];
 const infos = [];
 
-const group = $("group").value;
-const id = $("userId").value;
-
-const riders = $("rider-control-area");
-const shops = $("shop-control-area");
-const downs = $("down-control-area");
-const branches = $("branch-control-area");
-const formBranchSearch = $("form-branch-search");
-const formRiderSearch = $("form-rider-search");
-const formShopSearch = $("form-shop-search");
-const shopBranchId = $("shop-branch-id");
-const riderBranchId = $("rider-branch-id");
+const ridersArea = $('rider-control-area');
+const shopsArea = $('shop-control-area');
+const downs = $('down-control-area');
+const branchesArea = $('branch-control-area');
+const formBranchSearch = $('form-branch-search');
+const formRiderSearch = $('form-rider-search');
+const formShopSearch = $('form-shop-search');
+const shopBranchId = $('shop-branch-id');
+const riderBranchId = $('rider-branch-id');
 
 const displayRiderControl = () => {
-    if (branches !== null) {
-        branches.style.display = "none";
+    if (branchesArea !== null) {
+        branchesArea.style.display = 'none';
     }
 
-    if (shops !== null) {
-        shops.style.display = "none";
+    if (shopsArea !== null) {
+        shopsArea.style.display = 'none';
     }
 
     if (downs !== null) {
-        downs.style.display = "initial";
+        downs.style.display = 'initial';
     }
 
-    if (riders !== null) {
-        riders.style.display = "initial";
+    if (ridersArea !== null) {
+        ridersArea.style.display = 'initial';
     }
 
-    $("map-down").style.display = "none";
-    $("map").style.height = "100%";
+    $('map-down').style.display = 'none';
+    $('map').style.height = '100%';
 
-    $("btn-rider-control").className = "btn-control-selected";
-    $("btn-shop-control").className = "btn-control-unselected";
-
+    $('btn-rider-control').className = 'btn-control-selected';
+    $('btn-shop-control').className = 'btn-control-unselected';
 };
 
 const displayShopControl = () => {
-    if (branches !== null) {
-        branches.style.display = "none";
+    if (branchesArea !== null) {
+        branchesArea.style.display = 'none';
     }
-    if (riders !== null) {
-        riders.style.display = "none";
+    if (ridersArea !== null) {
+        ridersArea.style.display = 'none';
     }
 
     if (downs !== null) {
-        downs.style.display = "initial";
+        downs.style.display = 'initial';
     }
-    if (shops !== null) {
-        shops.style.display = "initial";
+    if (shopsArea !== null) {
+        shopsArea.style.display = 'initial';
     }
 
-    $("map-down").style.display = "none";
-    $("map").style.height = "100%";
+    $('map-down').style.display = 'none';
+    $('map').style.height = '100%';
 
-    $("btn-shop-control").className = "btn-control-selected";
-    $("btn-rider-control").className = "btn-control-unselected";
+    $('btn-shop-control').className = 'btn-control-selected';
+    $('btn-rider-control').className = 'btn-control-unselected';
 };
 
 const displayBranchControl = () => {
     if (downs !== null) {
-        downs.style.display = "none";
+        downs.style.display = 'none';
     }
-    if (branches !== null) {
-        branches.style.display = "initial";
+    if (branchesArea !== null) {
+        branchesArea.style.display = 'initial';
     }
 
-    $("map-down").style.display = "none";
-    $("map").style.height = "100%";
+    $('map-down').style.display = 'none';
+    $('map').style.height = '100%';
 };
 
-const getBranchControl = () => {
-    const formBranchSearch = $("form-branch-search");
-    const formData = new FormData(formBranchSearch);
+const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) => {
+    const {rider} = obj;
+    const {
+        tel, name, orders,
+    } = rider;
 
-    if (formBranchSearch !== null) {
+    const table = $('rider-order-status');
+    table.innerHTML = '';
 
-        getJSON('/api/branches?' + formSerialize(formData)).then(
-            (obj) => {
-                const branches = obj["branches"];
+    orders.forEach((order) => {
+        const {
+            id, shopName, orderStatusId,
+            addressDetail,
+            startingLatitude, startingLongitude,
+            destinationLatitude, destinationLongitude,
+        } = order;
 
-                const tableBranches = $("branches");
-                tableBranches.innerHTML = "";
+        let sMarkerIconUrl = null;
+        let dMarkerIconUrl = null;
+        let strokeColor = null;
 
-                removeMarkers(markers);
-                removeInfo(infos);
+        if (orderStatusId.toString() === '2') {
+            sMarkerIconUrl = '/img/marker-start-allocated.png';
+            dMarkerIconUrl = '/img/marker-arrival-allocated.png';
+            strokeColor = 'ff6d8b';
+        } else if (orderStatusId.toString() === '3') {
+            sMarkerIconUrl = '/img/marker-start.png';
+            dMarkerIconUrl = '/img/marker-arrival-pickup.png';
+            strokeColor = 'c043ff';
+        }
 
-                for (let i = 0; i < branches.length; i++) {
-                    const branch = branches[i];
+        const startPosition = {
+            latitude: startingLatitude,
+            Longitude: startingLongitude,
+        };
 
-                    const latitude = branch["latitude"];
-                    const riderTotal = branch["riderTotal"];
-                    const name = branch["name"];
-                    const id = branch["id"];
-                    const riderWorkOn = branch["riderWorkOn"];
-                    const shareCallNum = branch["shareCallNum"];
-                    const longitude = branch["longitude"];
+        const destinationPosition = {
+            latitude: destinationLatitude,
+            Longitude: destinationLongitude,
+        };
 
-                    const text = [
-                        name,
-                        fillZero(riderWorkOn, 2) + "명/" + fillZero(riderTotal, 2) + "명",
-                        shareCallNum,
-                    ];
-
-                    const row = createRow(text, (row) => {
-                        const btn = document.createElement('button');
-                        btn.className = 'btn-select';
-                        btn.innerHTML = "선택";
-
-                        const col = createCol(btn, (col) => {
-                            col.onclick = () => {
-
-                                $("branch-name").innerText = name;
-                                riderBranchId.value = id;
-                                shopBranchId.value = id;
-                                $("count-worker").innerText = riderWorkOn + "/" + riderTotal;
-
-                                $("branch-latitude").value = latitude;
-                                $("branch-longitude").value = longitude;
-
-                                getRiderControl();
-                            }
-                        });
-
-                        row.appendChild(col);
-                    });
-
-                    tableBranches.appendChild(row);
-
-                    const marker = createMarker({
-                            map: map,
-                            position: {
-                                latitude: latitude,
-                                longitude: longitude,
-                            },
-                            icon: '/img/marker-branch.png'
-                        }
-                    );
-
-                    markers.push(marker);
-
-                    const info = createInfoWindow({
-                        map: map,
-                        position: {
-                            latitude: latitude,
-                            longitude: longitude
-                        },
-                        name: name,
-                        icon: "/img/bubble-blue.png",
-                        textColor: "#FFFFFF"
-                    });
-
-                    infos.push(info);
-
-                }
-
-                setMarkerCenter(map, markers);
-                displayBranchControl();
-            }
-        ).catch((e) => {
-            console.log(e);
+        drawPolyLine({
+            map,
+            path: [startPosition, destinationPosition],
+            strokeColor,
         });
+
+        markers.push(createMarker({
+            map,
+            position: startPosition,
+            icon: sMarkerIconUrl,
+        }));
+
+        markers.push(createMarker({
+            map,
+            position: destinationPosition,
+            icon: dMarkerIconUrl,
+        }));
+
+        const btnStatus = document.createElement('button');
+
+        if (orderStatusId.toString() === '2') {
+            btnStatus.className = 'btn_allow';
+            btnStatus.innerText = '배차';
+        } else if (orderStatusId.toString() === '3') {
+            btnStatus.className = 'btn_pickup';
+            btnStatus.innerText = '픽업';
+        }
+
+        const div = document.createElement('div');
+        div.innerHTML = `<span>${shopName}</span>\n`
+            + '<span> > </span>\n'
+            + `<span>${addressDetail}</span>`;
+
+        const btnDetail = document.createElement('button');
+        btnDetail.className = 'btn_detail';
+        btnDetail.innerText = '주문상세보기';
+        btnDetail.onclick = () => {
+            loadDetail(id, $('group').value);
+        };
+
+        const row = createRow([btnStatus, div, btnDetail]);
+
+        table.appendChild(row);
+    });
+
+    $('rider-name').innerHTML = name;
+    $('rider-tel').innerHTML = tel;
+
+    const mapDown = $('map-down');
+    mapDown.style.display = 'initial';
+    const mapDownHeight = mapDown.offsetHeight;
+
+    $('map').style.height = `calc(100% - ${mapDownHeight}px)`;
+});
+
+const drawOverlay = (targetMap, latitude, longitude, name, userGroup) => {
+    let markerIcon = null;
+    let infoIcon = null;
+    let infoTextColor = null;
+
+    switch (userGroup) {
+        case Group.BRANCH:
+            markerIcon = '/img/marker-branch.png';
+            infoIcon = '/img/bubble-blue.png';
+            infoTextColor = '#FFFFFF';
+            break;
+
+        case Group.SHOP:
+            markerIcon = '/img/marker-shop.png';
+            infoIcon = '/img/bubble-red.png';
+            infoTextColor = '#FFFFFF';
+            break;
+
+        case Group.RIDER:
+            markerIcon = '/img/marker-rider.png';
+            infoIcon = '/img/bubble-white.png';
+            infoTextColor = '#4a4a4a';
+            break;
+
+        default:
+            break;
     }
+
+    const marker = createMarker({
+        map: targetMap,
+        position: {latitude, longitude},
+        icon: markerIcon,
+    });
+
+    markers.push(marker);
+
+    const info = createInfoWindow({
+        map: targetMap,
+        position: {latitude, longitude},
+        name,
+        icon: infoIcon,
+        textColor: infoTextColor,
+    });
+
+    infos.push(info);
 };
 
 const getRiderControl = () => {
-    const formRiderSearch = $("form-rider-search");
+    const workOn = $('work-on').checked;
+    const workOff = $('work-off').checked;
 
-    const workOn = $("work-on").checked;
-    const workOff = $("work-off").checked;
-
-    const riderStatusId = $("rider-status-id");
+    const riderStatusId = $('rider-status-id');
 
     if (workOn === false || workOff === false) {
         riderStatusId.value = workOn * 1 + workOff * 2;
@@ -215,375 +259,214 @@ const getRiderControl = () => {
     removeMarkers(markers);
     removeInfo(infos);
 
-    const latitude = $("branch-latitude").value;
-    const longitude = $("branch-longitude").value;
-    const name = $("branch-name").innerText;
+    const branchName = $('branch-name').innerText.toString();
+    const branchLatitude = parseFloat($('branch-latitude').value);
+    const branchLongitude = parseFloat($('branch-longitude').value);
 
-    const marker = createMarker({
-            map: map,
-            position: {
-                latitude: latitude,
-                longitude: longitude,
-            },
-            icon: '/img/marker-branch.png'
+    drawOverlay(map, branchLatitude, branchLongitude, branchName, Group.BRANCH);
+
+    getJSON(`/api/riders?${formSerialize(formData)}`).then((obj) => {
+        const {riders} = obj;
+
+        const tableRiders = $('riders');
+        tableRiders.innerHTML = '';
+
+        for (let i = 0; i < riders.length; i++) {
+            const rider = riders[i];
+
+            const {
+                id, name, tel,
+                allocateCount, completeCount, pickupCount,
+                latitude, longitude,
+            } = rider;
+
+            const text = [
+                '',
+                name,
+                fillZero(allocateCount, 2),
+                fillZero(pickupCount, 2),
+                fillZero(completeCount, 2),
+                tel,
+            ];
+
+            drawOverlay(map, latitude, longitude, name, Group.RIDER);
+
+            const row = createRow(text);
+
+            row.ondblclick = () => {
+                getRiderStatus(id);
+            };
+
+            tableRiders.appendChild(row);
         }
-    );
 
-    markers.push(marker);
-
-    const info = createInfoWindow({
-        map: map,
-        position: {
-            latitude: latitude,
-            longitude: longitude
-        },
-        name: name,
-        icon: "/img/bubble-blue.png",
-        textColor: "#FFFFFF"
+        setMarkerCenter(map, markers);
+        displayRiderControl();
     });
+};
 
-    infos.push(info);
+const getBranchControl = () => {
+    const formData = new FormData(formBranchSearch);
 
-    getJSON('/api/riders?' + formSerialize(formData)).then(
-        (obj) => {
-            const riders = obj["riders"];
+    if (formBranchSearch !== null) {
+        getJSON(`/api/branches?${formSerialize(formData)}`).then((obj) => {
+            const {branches} = obj;
 
-            const tableRiders = $("riders");
-            tableRiders.innerHTML = "";
+            const tableBranches = $('branches');
+            tableBranches.innerHTML = '';
 
-            for (let i = 0; i < riders.length; i++) {
-                const rider = riders[i];
+            removeMarkers(markers);
+            removeInfo(infos);
 
-                const riderStatusId = rider["riderStatusId"];
-                const name = rider["name"];
-                const id = rider["id"];
-                const latitude = rider["latitude"];
-                const longitude = rider["longitude"];
+            const btnOnclick = (id, name, riderWorkOn, riderTotal, latitude, longitude) => () => {
+                $('branch-name').innerText = name;
+                riderBranchId.value = id;
+                shopBranchId.value = id;
+                $('count-worker').innerText = `${riderWorkOn}/${riderTotal}`;
+
+                $('branch-latitude').value = latitude;
+                $('branch-longitude').value = longitude;
+
+                getRiderControl();
+            };
+
+            branches.forEach((branch) => {
+                const {
+                    latitude, riderTotal, name, id, riderWorkOn, shareCallNum, longitude,
+                } = branch;
 
                 const text = [
-                    "",
                     name,
-                    fillZero(rider["allocateCount"], 2),
-                    fillZero(rider["completeCount"], 2),
-                    fillZero(rider["pickupCount"], 2),
-                    rider["tel"]
+                    `${fillZero(riderWorkOn, 2)}명/${fillZero(riderTotal, 2)}명`,
+                    shareCallNum,
                 ];
 
-                const marker = createMarker({
-                        map: map,
-                        position: {
-                            latitude: latitude,
-                            longitude: longitude,
-                        },
-                        icon: '/img/marker-rider.png'
-                    }
-                );
+                const btn = document.createElement('button');
+                btn.className = 'btn-select';
+                btn.innerHTML = '선택';
+                btn.onclick = btnOnclick(id, name, riderWorkOn, riderTotal, latitude, longitude);
 
-                markers.push(marker);
+                text.push(btn);
 
-                const info = createInfoWindow({
-                    map: map,
-                    position: {
-                        latitude: latitude,
-                        longitude: longitude
-                    },
-                    name: name,
-                    icon: "/img/bubble-white.png",
-                    textColor: "#4a4a4a"
-                });
+                const row = createRow(text);
 
-                infos.push(info);
+                tableBranches.appendChild(row);
 
-                const row = createRow(text, (row) => {
-                    row.ondblclick = () => {
-                        getJSON("/api/riders/" + id).then(
-                            (obj) => {
-                                const rider = obj["rider"];
-
-                                const tel = rider["tel"];
-                                const name = rider["name"];
-                                const orders = rider["orders"];
-
-                                const table = $("rider-order-status");
-                                table.innerHTML = '';
-
-                                for (let i = 0; i < orders.length; i++) {
-                                    const order = orders[i];
-
-                                    const id = order['id'];
-                                    const orderStatusId = order['orderStatusId'].toString();
-
-                                    let sMarkerIconUrl = null;
-                                    let dMarkerIconUrl = null;
-                                    let strokeColor = null;
-
-                                    if (orderStatusId === '2') {
-                                        sMarkerIconUrl = '/img/marker-start-allocated.png';
-                                        dMarkerIconUrl = '/img/marker-arrival-allocated.png';
-                                        strokeColor = 'ff6d8b';
-                                    } else if (orderStatusId === '3') {
-                                        sMarkerIconUrl = '/img/marker-start-pickup.png';
-                                        dMarkerIconUrl = '/img/marker-arrival-pickup.png';
-                                        strokeColor = 'c043ff';
-                                    }
-
-                                    const startPosition = {
-                                        latitude: order['startingLatitude'],
-                                        Longitude: order['startingLongitude']
-                                    };
-
-                                    const destinationPosition = {
-                                        latitude: order['destinationLatitude'],
-                                        Longitude: order['destinationLongitude']
-                                    };
-
-                                    drawPolyLine({
-                                        map: map,
-                                        path: [startPosition, destinationPosition],
-                                        strokeColor: strokeColor
-                                    });
-
-                                    markers.push(
-                                        createMarker({
-                                                map: map,
-                                                position: startPosition,
-                                                icon: sMarkerIconUrl
-                                            }
-                                        )
-                                    );
-
-                                    markers.push(
-                                        createMarker({
-                                                map: map,
-                                                position: destinationPosition,
-                                                icon: dMarkerIconUrl
-                                            }
-                                        )
-                                    );
-
-                                    const row = createRow(
-                                        [
-                                            '<button class="btn_pickup">픽업</button>',
-                                            '<span>' + order['shopName'] + '</span>\n' +
-                                            '<span> > </span>\n' +
-                                            '<span>' + order['addressDetail'] + '</span>',
-                                            '<button class="btn_detail">주문상세보기</button>'
-                                        ]
-                                    );
-
-                                    table.appendChild(row)
-                                }
-
-                                $("rider-name").innerHTML = name;
-                                $("rider-tel").innerHTML = tel;
-
-                                // for (let i = 0; i < orders.length; i++) {
-                                //     const order = orders[i];
-                                // }
-
-                                const mapDown = $("map-down");
-                                mapDown.style.display = "initial";
-                                const mapDownHeight = mapDown.offsetHeight;
-
-                                $("map").style.height = "calc(100% - " + mapDownHeight + "px)";
-
-                            }
-                        );
-                    }
-                });
-
-                tableRiders.appendChild(row);
-
-            }
+                drawOverlay(map, latitude, longitude, name, Group.BRANCH);
+            });
 
             setMarkerCenter(map, markers);
-            displayRiderControl();
-        }
-    ).catch((e) => {
-        console.log(e);
-    })
+            displayBranchControl();
+        });
+    }
 };
 
 const getShopControl = () => {
-    const formShopSearch = $("form-shop-search");
     const formData = new FormData(formShopSearch);
 
     removeMarkers(markers);
     removeInfo(infos);
 
-    const latitude = $("branch-latitude").value;
-    const longitude = $("branch-longitude").value;
-    const name = $("branch-name").innerText;
+    const branchName = $('branch-name').innerText.toString();
+    const branchLatitude = parseFloat($('branch-latitude').value);
+    const branchLongitude = parseFloat($('branch-longitude').value);
 
-    const marker = createMarker({
-            map: map,
-            position: {
-                latitude: latitude,
-                longitude: longitude
-            },
-            icon: '/img/marker-branch.png'
+    drawOverlay(map, branchLatitude, branchLongitude, branchName, Group.BRANCH);
+
+    getJSON(`/api/shops?${formSerialize(formData)}`).then((obj) => {
+        const {shops} = obj;
+
+        const tableShops = $('shops');
+        tableShops.innerHTML = '';
+
+        for (let i = 0; i < shops.length; i++) {
+            const shop = shops[i];
+            const {
+                name, tel,
+                allocateCount, completeCount, pickupCount,
+                latitude, longitude,
+            } = shop;
+
+            const text = [
+                name,
+                '',
+                fillZero(allocateCount, 2),
+                fillZero(completeCount, 2),
+                fillZero(pickupCount, 2),
+                tel,
+            ];
+
+            drawOverlay(map, latitude, longitude, name, Group.SHOP);
+
+            const row = createRow(text);
+
+            tableShops.appendChild(row);
         }
-    );
 
-    markers.push(marker);
+        getJSON(`/api/orders/statuses?branch-id=${shopBranchId.value}`).then((object) => {
+            const {info} = object;
 
-    const info = createInfoWindow({
-        map: map,
-        position: {
-            latitude: latitude,
-            longitude: longitude
-        },
-        name: name,
-        icon: "/img/bubble-blue.png",
-        textColor: "#FFFFFF"
-    });
+            const infoKey = [
+                'acceptCount',
+                'allocateCount',
+                'pickupCount',
+                'completeCount',
+            ];
 
-    infos.push(info);
+            const countId = [
+                'count-accept',
+                'count-allocate',
+                'count-pickup',
+                'count-complete',
+            ];
 
-    getJSON('/api/shops?' + formSerialize(formData)).then(
-        (obj) => {
-            const shops = obj["shops"];
+            let sum = 0;
 
-            const tableShops = $("shops");
-            tableShops.innerHTML = "";
-
-            for (let i = 0; i < shops.length; i++) {
-                const shop = shops[i];
-
-                const name = shop["name"];
-
-                const text = [
-                    name,
-                    "",
-                    fillZero(shop["allocateCount"], 2),
-                    fillZero(shop["completeCount"], 2),
-                    fillZero(shop["pickupCount"], 2),
-                    shop["tel"]
-                ];
-
-                const marker = createMarker({
-                        map: map,
-                        position: {
-                            latitude: shop["latitude"],
-                            longitude: shop["longitude"]
-                        },
-                        icon: '/img/marker-shop.png'
-                    }
-                );
-                markers.push(marker);
-
-                const info = createInfoWindow({
-                    map: map,
-                    position: {
-                        latitude: latitude,
-                        longitude: longitude
-                    },
-                    name: name,
-                    icon: "/img/bubble-red.png",
-                    textColor: "#FFFFFF"
-                });
-
-                infos.push(info);
-
-                const row = createRow(text);
-
-                tableShops.appendChild(row);
+            for (let i = 0; i < infoKey.length; i++) {
+                sum += info[infoKey[i]];
+                $(countId[i]).innerHTML = info[infoKey[i]];
             }
 
-            getJSON("/api/orders/statuses?branch-id=" + shopBranchId.value).then(
-                (obj) => {
-                    const info = obj["info"];
+            $('count-all').innerHTML = sum;
 
-                    const infoKey = [
-                        "acceptCount",
-                        "allocateCount",
-                        "pickupCount",
-                        "completeCount"
-                    ];
-
-                    const countId = [
-                        "count-accept",
-                        "count-allocate",
-                        "count-pickup",
-                        "count-complete"
-                    ];
-
-                    let sum = 0;
-
-                    for (let i = 0; i < infoKey.length; i++) {
-                        sum += info[infoKey[i]];
-                        $(countId[i]).innerHTML = info[infoKey[i]];
-                    }
-
-                    $("count-all").innerHTML = sum;
-
-                    setMarkerCenter(map, markers);
-                    displayShopControl()
-                }
-            );
-
-        }
-    ).catch((e) => {
-        console.log(e);
+            setMarkerCenter(map, markers);
+            displayShopControl();
+        });
     });
 
-    getJSON('/api/riders?branch-id=' + shopBranchId.value).then(
-        (obj) => {
-            const riders = obj["riders"];
+    getJSON(`/api/riders?branch-id=${shopBranchId.value}`).then((obj) => {
+        const {riders} = obj;
 
-            for (let i = 0; i < riders.length; i++) {
-                const rider = riders[i];
+        for (let i = 0; i < riders.length; i++) {
+            const rider = riders[i];
+            const {name, latitude, longitude} = rider;
 
-                const latitude = rider["latitude"];
-                const longitude = rider["longitude"];
-                const name = rider["name"];
-
-                const marker = createMarker({
-                        map: map,
-                        position: {
-                            latitude: latitude,
-                            longitude: longitude
-                        },
-                        icon: '/img/marker-rider.png'
-                    }
-                );
-
-                markers.push(marker);
-
-                const info = createInfoWindow({
-                    map: map,
-                    position: {
-                        latitude: latitude,
-                        longitude: longitude
-                    },
-                    name: name,
-                    icon: "/img/bubble-white.png",
-                    textColor: "#4a4a4a"
-                });
-
-                infos.push(info);
-            }
+            drawOverlay(map, latitude, longitude, name, Group.RIDER);
         }
-    );
+    });
 };
 
-switch (parseInt(group)) {
+const group = $('group').value;
+const id = $('userId').value;
+
+switch (parseInt(group, 10)) {
     case Group.HEAD:
     case Group.DISTRIB:
         getBranchControl();
         break;
-    case Group.BRANCH:
 
+    case Group.BRANCH:
         riderBranchId.value = id;
         shopBranchId.value = id;
-
         getRiderControl();
         break;
+
     case Group.SHOP:
-
         shopBranchId.value = id;
-
         getRiderControl();
+        break;
+
+    default:
         break;
 }
 
@@ -606,11 +489,11 @@ formShopSearch.onsubmit = () => {
     return false;
 };
 
-$("btn-rider-control").onclick = getRiderControl;
-$("btn-shop-control").onclick = getShopControl;
-$("btn-close").onclick = getBranchControl;
+$('btn-rider-control').onclick = getRiderControl;
+$('btn-shop-control').onclick = getShopControl;
+$('btn-close').onclick = getBranchControl;
 
-$("afe").onclick = function () {
+$('afe').onclick = function () {
     if (this.checked === true) {
         showInfo(infos);
     } else {
