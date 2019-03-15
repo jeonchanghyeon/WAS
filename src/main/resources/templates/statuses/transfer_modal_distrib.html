@@ -4,23 +4,21 @@
         <!-- 헤더 -->
         <header class="modal-header">
             <div class="modal-header__title">송금대상 - 총판</div>
-            <button class="modal-header__close-button" id="close-button"></button>
+            <button class="modal-header__close-button" id="transfer-distrib-close-button"></button>
         </header>
 
         <section class="transfer-search-section">
             <div class="search-form">
-                <input class="search-form__input" type="text" placeholder="총판명 검색"/>
-                <button class="search-form__button"></button>
+                <input class="search-form__input" type="text" placeholder="총판명 검색" id="distrib_search_name"/>
+                <button class="search-form__button" id="distrib_result_button"></button>
+                <input hidden="hidden" id="distrib_search_id"/>
             </div>
         </section>
-        <div class="transfer-list-container transfer-list-container--distrib">
-            <label class="radio-item radio-item--hovered transfer-list-container__radio-item"><input class="radio-item__input" type="radio" name="options" checked="checked"/>
-                <span class="radio-item__shape"></span>부산남구지사</label>
-            <label class="radio-item radio-item--hovered transfer-list-container__radio-item"><input class="radio-item__input" type="radio" name="options"/>
-                <span class="radio-item__shape"></span>부산남구지사</label>
-        </div>
+        <div class="transfer-list-container transfer-list-container--distrib" id="distrib_result"></div>
+            <input type="hidden" id="distrib-name"/>
+            <input type="hidden" id="distrib-id"/>
         <section class="mileage-footer">
-            <button class="button button--round mileage-footer__button">확인</button>
+            <button class="button button--round mileage-footer__button" id="distrib_ok_button">확인</button>
         </section>
     </div>
 </div>

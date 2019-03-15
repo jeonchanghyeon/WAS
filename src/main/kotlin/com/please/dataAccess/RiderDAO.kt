@@ -19,8 +19,8 @@ class RiderDAO {
         return template.queryForJSONObject("CALL getSearchedRiders(getUserAuthKeyById(?), ?)", branchId, riderInfo)
     }
 
-    fun getRiders(id: Long): MutableList<Map<String, Any?>> {
-        return template.queryForList("CALL getRiderListById(?)", id)
+    fun getRiders(searchInfo: String): MutableList<Map<String, Any?>> {
+        return template.queryForList("CALL getSearchedRiderList(?)", searchInfo)
     }
 
     @Throws(SqlAbnormalResultException::class)

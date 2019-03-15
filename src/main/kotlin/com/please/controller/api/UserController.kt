@@ -38,11 +38,11 @@ class UserController {
 
     /*
         {"resultCode", "description",
-         "account", "bank", "owner", "userName", "point"}
+         "account", "bank", "owner", "userName"}
     */
     @GetMapping(value = ["{id}/account"])
     fun showUserAccountInfo(@PathVariable(value = "id") id: Long): Any {
         val authInfo = getAuthInfo()
-        return userService.getAccountInfo(authInfo.authKey, id)
+        return userService.getUserAccount(authInfo.authKey, id)
     }
 }

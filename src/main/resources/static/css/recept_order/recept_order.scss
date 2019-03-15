@@ -337,9 +337,12 @@ $center-padding: 40px;
   justify-content: space-between;
   align-items: center;
 
-  @include e('group-button') {
+  @include e('button') {
+    display: inline-block;
     width: 97px;
     height: 32px;
+    text-align: center;
+    line-height: 32px;
 
     @include m('margin') {
       margin-right: 6px;

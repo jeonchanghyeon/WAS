@@ -21,8 +21,9 @@ class BranchController {
     }
 
     @GetMapping(value = ["list"])
-    fun getBranchList(@RequestParam id: Long): Any {
-        return branchService.getBranches(id)
+    fun getBranchList(@RequestParam id: Long,
+                      @RequestParam(required = false) name: String?): Any {
+        return branchService.getBranches(id, name)
     }
 
     @GetMapping(value = ["{branch-id}/settings"])
@@ -35,6 +36,20 @@ class BranchController {
     fun setBranchSettings(@RequestBody branchSettings: BranchSettings, @PathVariable(value = "branch-id") id: Long): Any {
         val authInfo = getAuthInfo()
         branchSettings.id = id
-        return branchService.setBranchSettings(authInfo.authKey, branchSettings, id)
+        return branchService.setBranchSettings(authInfo.authKey, branchSettings)
+    }
+
+    /*{
+        "resultCode": "description",
+        "branchStatus":{
+            "id", "name":, "latitude", "longitude",
+            "riderTotal", "riderWorkOn", "riderWorkOff",
+            "acceptCount", "allocateCount", "pickupCount", "completeCount", "orderTotalCount"
+        }
+      }*/
+    @GetMapping(value = ["{branch-id}/status"])
+    fun getBranchStatus(@PathVariable(value = "branch-id") id: Long): Any {
+        val authInfo = getAuthInfo()
+        return branchService.getStatus(authInfo.authKey, id)
     }
 }

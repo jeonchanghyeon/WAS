@@ -22,8 +22,9 @@ class RiderController {
 
     /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping(value = ["list"])
-    fun getRiderList(@RequestParam id: Long): Any? {
-        return riderService.getRiders(id)
+    fun getRiderList(@RequestParam id: Long,
+                     @RequestParam(required = false) name: String?): Any? {
+        return riderService.getRiders(id, name)
     }
 
 

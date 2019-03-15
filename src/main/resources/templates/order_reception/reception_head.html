@@ -97,8 +97,7 @@
                         <tr>
                             <td class="scroll-table__thead-cell">순번</td>
                             <td class="scroll-table__thead-cell">상품명</td>
-                            <td class="scroll-table__thead-cell">구분</td>
-                            <td class="scroll-table__thead-cell">단간</td>
+                            <td class="scroll-table__thead-cell">단가</td>
                             <td class="scroll-table__thead-cell">갯수</td>
                             <td class="scroll-table__thead-cell">판매가</td>
                         </tr>
@@ -243,16 +242,14 @@
             <div class="cost-type-container reception-right-section__cost-type-container">
                 <span class="subtitle">대행료 지불방법</span>
                 <div>
-                    <label class="group-button cost-type-container__group-button cost-type-container__group-button--margin">
-                        <input class="group-button__input" type="radio" id="pt" name="delivery-cost-payment-type"
-                               readonly="readonly" form="reception_form" value="2"/>
-                        <span class="group-button__shape">포인트</span>
-                    </label>
-                    <label class="group-button cost-type-container__group-button">
-                        <input class="group-button__input" type="radio" id="money" name="delivery-cost-payment-type"
-                               readonly="readonly" form="reception_form" value="1"/>
-                        <span class="group-button__shape">현금</span>
-                    </label>
+                    <div class="button button--empty-white cost-type-container__button cost-type-container__button--margin" id="pt" >
+                        포인트
+                    </div>
+                    <div class="button button--empty-white cost-type-container__button" id="money">
+                        현금
+                    </div>
+                    <input hidden="hidden" id="delivery-cost-payment-type" name="delivery-cost-payment-type" form="reception_form"/>
+
                 </div>
             </div>
             <div class="request-memo-container reception-right-section__request-memo-container">

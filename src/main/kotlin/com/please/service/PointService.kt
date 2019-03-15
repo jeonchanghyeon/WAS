@@ -2,7 +2,8 @@ package com.please.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.please.dataAccess.PointDAO
-import com.please.dataAccess.UserDAO
+import com.please.exception.InvalidValueException
+import com.please.exception.PasswordMismatchException
 import com.please.exception.MissingBalanceException
 import com.please.value.TransactionInfo
 import org.json.JSONArray
@@ -26,10 +27,11 @@ class PointService {
     }
 
     @Transactional
-    @Throws(MissingBalanceException::class)
-    fun sendPoint(authKey: String, receiverId: Long, point: Int): String {
+    @Throws(PasswordMismatchException::class, MissingBalanceException::class)
+    fun sendPoint(authKey: String, senderId: Long, receiverId: Long, point: Int, password: String): String {
         val userTxType = 5  //송금 타입
 
+        if(!userService.checkDepositPassword(authKey, senderId, password)) throw PasswordMismatchException("input password mismatch. (password = $password")
         checkPoint(authKey, point)  //포인트를 사용할 수 있는지 검사
 
         val txInfo = JSONObject(userService.getTransactionInformation(authKey, receiverId))
@@ -43,8 +45,6 @@ class PointService {
 
         return pointDAO.updatePoint(processingInfo.toString())
     }
-
-
 
     fun checkPoint(authKey: String, point: Int): Boolean {
         val checkPoint = JSONObject(pointDAO.checkPoint(authKey, point))

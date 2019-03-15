@@ -20,15 +20,22 @@ class BranchService {
         return branchDAO.searchBranchList(authKey, info.toString())
     }
 
-    fun getBranches(id: Long): MutableList<Map<String, Any?>> {
-        return branchDAO.getBranches(id)
+    fun getBranches(id: Long, name: String?): MutableList<Map<String, Any?>> {
+        val info = JSONObject()
+        info.put("id", id)
+        info.put("name", name)
+        return branchDAO.getBranches(info.toString())
     }
 
     fun getBranchSettings(authKey: String, branchId: Long): String {
         return branchDAO.getBranchSettings(authKey, branchId)
     }
 
-    fun setBranchSettings(authKey: String, branchSettings: BranchSettings, id: Long): String {
+    fun setBranchSettings(authKey: String, branchSettings: BranchSettings): String {
         return branchDAO.setBranchSettings(authKey, ObjectMapper().writeValueAsString(branchSettings))
+    }
+
+    fun getStatus(authKey: String, id: Long): String {
+        return branchDAO.getBranchStatus(authKey, id)
     }
 }

@@ -15,7 +15,8 @@ class DistribController {
 
     /* result -> [{id1, name1}, {id2, name2}, ....{id11, name11}]*/
     @GetMapping
-    fun getDistribList(@RequestParam id: Long): Any {
-        return distribService.getDistributors(id)
+    fun getDistribList(@RequestParam id: Long,
+                       @RequestParam(required = false) name: String?): Any {
+        return distribService.getDistributors(id, name)
     }
 }
