@@ -40,7 +40,7 @@ class ShopController {
     }
 
     // { "resultCode", "deliveryCostBaseType": (거리별: 1, 동별: 2), "description", "deliveryCost", "extraCharge": [{"label,"cost"}, {"label,"cost"} ..], "deliveryCostSum" }
-    @GetMapping(value = ["{id}/cost"])
+    @GetMapping(value = ["{id}/delivery-cost"])
     fun getDeliveryCost(@PathVariable id: Long,
                         @RequestParam(required = false) distance: Double?,
                         @RequestParam jibun: String): Any {   //jibun = 시도 시건구 읍면동 ex)부산 금정구 온천동
