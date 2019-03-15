@@ -1,32 +1,45 @@
 import {$} from "./element.js";
 
 export function addCloseModalEvent(bgId, closeBtnId) {
-    let bgObj = $(bgId);
-
     addCloseButtonEvent(bgId, closeBtnId);
-
-    if (bgObj !== null) {
-        bgObj.onclick = (ev) => {
-            if (ev.target.id === bgId) {
-                bgObj.style.display = "none";
-            }
-        };
-    }
-
-    // document.addEventListener("keyup", function(ev) {
-    //     //keyCode == ESC
-    //     console.log(ev.target.id);
-    //
-    // }, false);
+    addCloseBackgroundClickEvent(bgId);
+    // addCloseKeyEvent(bgId);
 }
 
-export function addCloseButtonEvent(bgId, closeBtnId) {
-    let bgObj = $(bgId);
-    let closeButton = $(closeBtnId);
+export function addCloseBackgroundClickEvent(bgId) {
+    const bgObj = $(bgId);
 
-    if (closeButton !== null && bgObj !== null) {
-        closeButton.onclick = () => {
+    bgObj.onclick = (ev) => {
+        if (ev.target.id === bgId) {
             bgObj.style.display = "none";
-        };
-    }
+        }
+    };
+}
+
+// export function addCloseKeyEvent(bgId) {
+//     const bgObj = $(bgId);
+//     bgObj.tabIndex = "0";
+//
+//     bgObj.onkeydown = function(ev) {
+//         const ESC = 27;
+//         ev = ev || window.event;
+//         const keyID = (ev.which) ? ev.which : ev.keyCode;
+//         console.log(keyID);
+//         if(keyID === ESC) {
+//             bgObj.style.display = "none";
+//             return;
+//         }
+//         return false;
+//     };
+//
+//     bgObj.focus();
+// }
+
+export function addCloseButtonEvent(bgId, closeBtnId) {
+    const bgObj = $(bgId);
+    const closeButton = $(closeBtnId);
+
+    closeButton.onclick = () => {
+        bgObj.style.display = "none";
+    };
 }

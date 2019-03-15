@@ -1,7 +1,7 @@
 import {$, jsonifyFormData} from "./element.js";
-import {numberCommasRemove, numberWithCommas, YYYYmmdd} from "./format.js";
+import {filterNumber, isNumber, numberCommasRemove, numberWithCommas, YYYYmmdd} from "./format.js";
 import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
-import {addCloseButtonEvent, addCloseModalEvent} from "./modal.js";
+import {addCloseModalEvent, addCloseButtonEvent} from "./modal.js";
 
 let point_ = null;
 
@@ -34,15 +34,6 @@ export const loadPoint = () => {
 
     getPoint().then(showMileage);
 };
-
-export function checkNumberType(event) {
-    const ENTER = 13, BACKSPACE = 8, TAB = 9, DELETE = 46, NUMLOCK = 144;
-    event = event || window.event;
-    let keyID = (event.which) ? event.which : event.keyCode;
-    return (keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105)  //숫자키
-        || (keyID >= 37 && keyID <= 40) //방향키
-        || (keyID === ENTER || keyID === BACKSPACE || keyID === TAB || keyID === DELETE || keyID === NUMLOCK) //특수키;
-}
 
 //Controller
 export function getPoint() {
@@ -133,13 +124,16 @@ export function getUserList(userId, group, name) {
     if (GroupMap.has(group)) {
         switch (group) {
             case Group.DISTRIB:
-                uri = '/api/' + GroupMap.get(group) + 's?id=' + userId + '&name=' + name;
+                uri = '/api/' + GroupMap.get(group) + 's?id=' + userId;
+                if (name !== null && name !== '') uri += '&name=' + name;
                 break;
             case Group.BRANCH:
-                uri = '/api/' + GroupMap.get(group) + 'es/list?id=' + userId + '&name=' + name;
+                uri = '/api/' + GroupMap.get(group) + 'es/list?id=' + userId;
+                if (name !== null && name !== '') uri += '&name=' + name;
                 break;
             default:
-                uri = '/api/' + GroupMap.get(group) + 's/list?id=' + userId + '&name=' + name;
+                uri = '/api/' + GroupMap.get(group) + 's/list?id=' + userId;
+                if (name !== null && name !== '') uri += '&name=' + name;
         }
     }
     return getJSON(uri)
@@ -261,7 +255,7 @@ const submitWithdrawForm = function () {
         alert("출금 금액을 입력해 주세요.");
         return false;
     }
-    if (point < 0) {
+    if (!isNumber(point) || point < 0) {
         alert("정상적인 출금 금액이 아닙니다. (" + point + ")");
         return false;
     }
@@ -289,7 +283,7 @@ const submitDepositForm = function () {
         alert("송금 금액을 입력해 주세요.");
         return false;
     }
-    if (point < 0) {
+    if (!isNumber(point) || point < 0) {
         alert("정상적인 송금 금액이 아닙니다. (" + point + ")");
         return false;
     }
@@ -308,35 +302,47 @@ $('btn-deposit').onclick = showDepositSection;  //마일리지 송금 영역 버
 $("btn-full-withdraw").onclick = showFullPoint; //전액인출 버튼
 
 const withdrawInput = $('withdraw_amount_input');
-withdrawInput.onkeydown = function (ev) { //출금 금액 입력
-    if (checkNumberType(ev)) {
-        $('deducted_amount_input').value = ev.target.value;
-        return true;
-    }
-    return false;
+withdrawInput.onkeydown = filterNumber; //출금 금액 입력
+withdrawInput.onkeyup = function (ev) {
+    ev.stopPropagation();
+    ev.target.value = ev.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+    $('deducted_amount_input').value = ev.target.value;
 };
 withdrawInput.onfocus = function (ev) {
     ev.target.value = numberCommasRemove(ev.target.value);
     $('deducted_amount_input').value = ev.target.value;
 };
 withdrawInput.onblur = function (ev) {
+    ev.target.value = ev.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+    if (!isNumber(ev.target.value)) {
+        $('deducted_amount_input').value = '';
+        withdrawInput.value = '';
+        return;
+    }
+    $('deducted_amount').value = ev.target.value;
     ev.target.value = numberWithCommas(ev.target.value);
     $('deducted_amount_input').value = ev.target.value;
 };
 
 const depositInput = $('transfer_amount_input');
-depositInput.onkeydown = function (ev) { //송금 금액 입력
-    if (checkNumberType(ev)) {
-        $('reduce_amount_input').value = ev.target.value;
-        return true;
-    }
-    return false;
+depositInput.onkeydown = filterNumber; //송금 금액 입력
+depositInput.onkeyup = function (ev) {
+    ev.stopPropagation();
+    ev.target.value = ev.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+    $('reduce_amount_input').value = ev.target.value;
 };
 depositInput.onfocus = function (ev) {
     ev.target.value = numberCommasRemove(ev.target.value);
     $('reduce_amount_input').value = ev.target.value;
 };
 depositInput.onblur = function (ev) {
+    ev.target.value = ev.target.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+    if (!isNumber(ev.target.value)) {
+        $('reduce_amount_input').value = '';
+        depositInput.value = '';
+        return;
+    }
+    $('reduce_amount').value = ev.target.value;
     ev.target.value = numberWithCommas(ev.target.value);
     $('reduce_amount_input').value = ev.target.value;
 };
@@ -358,6 +364,7 @@ const showDepositUserSearchModal = function (id, searchGroup) {
 
     const initElement = function () {
         $('transfer_modal_' + groupName).style.display = 'initial';
+        $('transfer_modal_' + groupName).focus();
         $(groupName + '-name').value = '';
         $(groupName + '-id').value = '';
         $(groupName + '_search_name').value = '';   //이름 검색
@@ -371,12 +378,6 @@ const showDepositUserSearchModal = function (id, searchGroup) {
 
     const showInitModal = function () {
         initElement();
-
-        $(groupName + '_result_button').onclick = function () {
-            const name = $(groupName + '_search_name').value;
-            const id = $(groupName + '_search_id').value;
-            if (id !== '') searchResult(id * 1, searchGroup, name);
-        };
 
         switch (searchGroup) {
             case Group.DISTRIB:
@@ -501,15 +502,31 @@ const showDepositUserSearchModal = function (id, searchGroup) {
     };
 
     showInitModal();
+    addCloseButtonEvent('transfer_modal_'+ groupName, 'transfer-' + groupName + '-close-button');
+    // addCloseKeyEvent('transfer_modal_'+ groupName);
 
     $(groupName + '_ok_button').onclick = () => {
         const result = submitResultForm();
         if (result) $('transfer_modal_' + groupName).style.display = 'none';
     };
+
+    $(groupName + '_result_button').onclick = function () {
+        const name = $(groupName + '_search_name').value;
+        const id = $(groupName + '_search_id').value;
+        if (id !== '') searchResult(id * 1, searchGroup, name);
+    };
+
+    $(groupName + '_search_name').onkeydown = function (ev) {
+        const ENTER = 13;
+        ev = ev || window.event;
+        let keyID = (ev.which) ? ev.which : ev.keyCode;
+        if (keyID === ENTER) {
+            const name = $(groupName + '_search_name').value;
+            const id = $(groupName + '_search_id').value;
+            if (id !== '') searchResult(id * 1, searchGroup, name);
+            return;
+        }
+    }
 };
 
 addCloseModalEvent("mileage_modal", "mileage-close-button");
-addCloseButtonEvent("transfer_modal_distrib", "transfer-distrib-close-button");
-addCloseButtonEvent("transfer_modal_branch", "transfer-branch-close-button");
-addCloseButtonEvent("transfer_modal_shop", "transfer-shop-close-button");
-addCloseButtonEvent("transfer_modal_rider", "transfer-rider-close-button");
