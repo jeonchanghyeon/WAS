@@ -2,7 +2,6 @@ package com.please.dataAccess
 
 import com.please.exception.SqlAbnormalResultException
 import com.please.persistence.queryForJSONObject
-import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.jdbc.core.JdbcTemplate
@@ -16,8 +15,8 @@ class BranchDAO {
     private lateinit var template: JdbcTemplate
 
     //지사 id와 이름 목록 쿼리
-    fun getBranches(id: Long, name: String?): MutableList<Map<String, Any?>> {
-        return template.queryForList("CALL getBranchListById(?)", id)
+    fun getBranches(searchInfo: String): MutableList<Map<String, Any?>> {
+        return template.queryForList("CALL getSearchedBranchList(?)", searchInfo)
     }
 
     @Throws(SqlAbnormalResultException::class)
@@ -33,5 +32,10 @@ class BranchDAO {
     @Throws(SqlAbnormalResultException::class)
     fun setBranchSettings(authKey: String, jsonData: String): String {
         return template.queryForJSONObject("CALL setBranchSettingsForWeb(?, ?)", authKey, jsonData)
+    }
+
+    @Throws(SqlAbnormalResultException::class)
+    fun getBranchStatus(authKey: String, branchId: Long): String {
+        return template.queryForJSONObject("CALL getBranchStatus(?, ?)", authKey, branchId)
     }
 }

@@ -38,4 +38,18 @@ class BranchController {
         branchSettings.id = id
         return branchService.setBranchSettings(authInfo.authKey, branchSettings)
     }
+
+    /*{
+        "resultCode": "description",
+        "branchStatus":{
+            "id", "name":, "latitude", "longitude",
+            "riderTotal", "riderWorkOn", "riderWorkOff",
+            "acceptCount", "allocateCount", "pickupCount", "completeCount", "orderTotalCount"
+        }
+      }*/
+    @GetMapping(value = ["{branch-id}/status"])
+    fun getBranchStatus(@PathVariable(value = "branch-id") id: Long): Any {
+        val authInfo = getAuthInfo()
+        return branchService.getStatus(authInfo.authKey, id)
+    }
 }
