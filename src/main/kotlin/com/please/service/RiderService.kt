@@ -24,7 +24,10 @@ class RiderService {
     }
 
     fun getRiders(id: Long, name: String?): MutableList<Map<String, Any?>> {
-        return riderDAO.getRiders(id, name)
+        val info = JSONObject()
+        info.put("id", id)
+        info.put("name", name)
+        return riderDAO.getRiders(info.toString())
     }
 
     fun getInfoInControl(authKey: String, riderId: Long, startDate: String?, endDate: String?): String {

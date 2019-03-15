@@ -29,7 +29,10 @@ class ShopService {
     }
 
     fun getShops(id: Long, name: String?): MutableList<Map<String, Any?>> {
-        return shopDAO.getShops(id, name)
+        val info = JSONObject()
+        info.put("id", id)
+        info.put("name", name)
+        return shopDAO.getShops(info.toString())
     }
 
     fun getMenuList(authKey: String, shopId: Long): String {

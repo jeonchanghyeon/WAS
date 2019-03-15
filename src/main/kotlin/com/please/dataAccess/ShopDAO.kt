@@ -19,8 +19,8 @@ class ShopDAO {
         return template.queryForJSONObject("CALL getSearchedShops(getUserAuthKeyById(?), ?)", branchId, shopInfo.toString())
     }
 
-    fun getShops(id: Long, name: String?): MutableList<Map<String, Any?>> {
-        return template.queryForList("CALL getShopListById(?)", id)
+    fun getShops(searchInfo: String): MutableList<Map<String, Any?>> {
+        return template.queryForList("CALL getSearchedRiderList(?)", searchInfo)
     }
 
     fun getMenuItems(authKey: String, shopId: Long): String {
