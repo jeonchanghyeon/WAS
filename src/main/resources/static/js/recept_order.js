@@ -63,13 +63,21 @@ const getShopSettings = (shopId) =>
             $("shop-latitude").value = latitude;
             $("shop-longitude").value = longitude;
             $("distance-factor").value = distanceFactor;
+            $('delivery-cost-payment-type').value = deliveryCostPaymentType;
 
+            const uncheckedStyle = 'button button--empty-white cost-type-container__button';
+            const checkedStyle = 'button button--empty-orange cost-type-container__button';
+            const ptTarget = $('pt');
+            const moneyTarget = $('money');
             switch (parseInt(deliveryCostPaymentType)) {
                 case 1:
-                    $("money").checked = true;
+                case undefined:
+                    ptTarget.className = checkedStyle + ' cost-type-container__button--margin';
+                    moneyTarget.className = uncheckedStyle;
                     break;
                 case 2:
-                    $("pt").checked = true;
+                    ptTarget.className = uncheckedStyle + ' cost-type-container__button--margin';
+                    moneyTarget.className = checkedStyle;
                     break;
             }
 
@@ -130,7 +138,7 @@ receptionForm.onsubmit = function () {
         $("is-suspend").value = false;
         alert("접수 되었습니다");
         location.reload();
-    }).catch(() =>{
+    }).catch(() => {
         alert("예기치 않은 오류 입니다");
     });
 
