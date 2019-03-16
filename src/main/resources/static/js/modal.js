@@ -9,7 +9,7 @@ export function addCloseModalEvent(bgId, closeBtnId) {
 export function addCloseBackgroundClickEvent(bgId) {
     const bgObj = $(bgId);
 
-    bgObj.onclick = (ev) => {
+    bgObj.onclick = function(ev) {
         if (ev.target.id === bgId) {
             bgObj.style.display = 'none';
         }
@@ -39,7 +39,7 @@ export function addCloseButtonEvent(bgId, closeBtnId) {
     const bgObj = $(bgId);
     const closeButton = $(closeBtnId);
 
-    closeButton.onclick = () => {
+    closeButton.onclick = function() {
         bgObj.style.display = "none";
     };
 }

@@ -57,7 +57,7 @@ export function getPoint() {
 export function getAccountInfo(id) {
     let accountInfo = '-';
 
-    return getJSON('api/users/' + id + '/account')
+    return getJSON(`api/users/${id}/account`)
         .then((obj) => {
                 if (obj["resultCode"] * 1 === 0) {
                     let owner = obj["owner"];
@@ -99,7 +99,7 @@ export function withdrawPoint(json) {
 export function depositPoint(receiverId, json) {
     let result = false;
 
-    ajax("/api/point/" + receiverId, "PUT", JSON.stringify(json), setCSRFHeader)
+    ajax(`/api/point/${receiverId}`, "PUT", JSON.stringify(json), setCSRFHeader)
         .then((obj) => {
             const res = JSON.parse(obj);
 
