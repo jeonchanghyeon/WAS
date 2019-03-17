@@ -103,9 +103,9 @@ const createNoticeList = (tbody, notices) => {
 
         const row = createRow([
             fillZero(id.toString(), 5),
-            createDate,
-            parseTypes(types),
             title,
+            parseTypes(types),
+            createDate
         ]);
         row.ondblclick = () => {
             getNotice(id);
