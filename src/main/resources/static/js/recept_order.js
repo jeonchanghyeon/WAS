@@ -1,9 +1,10 @@
 import {ajax, getJSON, setCSRFHeader} from './ajax.js';
 import {$, createRow, formSerialize, getClosureToSelectButton, jsonifyFormData} from './element.js';
 import {getDeliveryCostSum, getExtraChargeValue, modalOpen} from './popup_search_address.js';
-import {loadPoint} from './point.js';
 import {numberWithCommas} from './format.js';
 import {addCloseModalEvent} from './modal.js';
+import {loadPoint} from './point.js';
+
 
 loadPoint();
 

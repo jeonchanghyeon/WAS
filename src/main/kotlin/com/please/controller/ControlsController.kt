@@ -16,6 +16,7 @@ class ControlsController {
     fun showControl(model: Model): String {
         val authInfo = getAuthInfo()
         model.addAttribute("id", authInfo.id)
+        model.addAttribute("group", authInfo.group)
 
         return when (authInfo.group) {
             7 -> {

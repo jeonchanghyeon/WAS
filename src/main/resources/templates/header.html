@@ -5,17 +5,17 @@
     </div>
     <nav>
         <ul>
-            <li><a href="/statuses">현황</a></li>
-            <li><a href="/controls">관제</a></li>
-            <li><a href="#/managements">관리</a></li>
-            <li><a href="#/statistics">통계</a></li>
-            <li><a href="#/settings">설정</a></li>
-            <li><a href="/notices">공지</a></li>
+            <li><a id="status" href="/statuses">현황</a></li>
+            <li><a id="control" href="/controls">관제</a></li>
+            <li><a id="management" href="/managements">관리</a></li>
+            <li><a id="statistics" href="/statistics">통계</a></li>
+            <li><a id="setting" href="/settings">설정</a></li>
+            <li><a id="notice" href="/notices">공지</a></li>
         </ul>
     </nav>
 
     <input type="hidden" name="id" id="userId" th:value="${id}"/>
-    <input type="hidden" name="group" id="group" value="6"/>
+    <input type="hidden" name="group" id="group" th:value="${group}"/>
     <div class="header-right">
         <div class="point-area" id="point-area">
             <span id="point">-1</span>
@@ -24,6 +24,7 @@
             <button class="button">접수하기</button>
         </a>
     </div>
+    <script src="/js/header.js" type="module"></script>
 
     <div th:replace="statuses/mileage_modal:: mileage_modal"></div>
     <div th:replace="statuses/transfer_modal_distrib:: transfer_modal_distrib"></div>

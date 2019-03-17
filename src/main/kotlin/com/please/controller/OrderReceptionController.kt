@@ -14,6 +14,7 @@ class OrderReceptionController {
     fun showOrderReception(model: Model): String {
         val authInfo = getAuthInfo()
         model.addAttribute("id", authInfo.id)
+        model.addAttribute("group", authInfo.group)
 
         return when (authInfo.group) {
             in 5..7 -> {
