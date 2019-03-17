@@ -1,5 +1,5 @@
 import {ajax, getJSON, setCSRFHeader} from './ajax.js';
-import {$, createRow, formSerialize, jsonifyFormData} from './element.js';
+import {$, createRow, formSerialize, getClosureToSelectButton, jsonifyFormData} from './element.js';
 import {getDeliveryCostSum, getExtraChargeValue, modalOpen} from './popup_search_address.js';
 import {loadPoint} from './point.js';
 import {numberWithCommas} from './format.js';
@@ -12,7 +12,7 @@ class Item {
         this.id = id;
         this.label = label;
         this.price = price;
-        this.count = 0;
+        this.count = 1;
     }
 
     add() {
@@ -20,7 +20,7 @@ class Item {
     }
 
     sub() {
-        if (this.count > 0) {
+        if (this.count > 1) {
             this.count -= 1;
         }
     }
@@ -62,24 +62,10 @@ const getShopSettings = shopId => getJSON(`/api/users/${shopId}`).then((obj) => 
     $('shop-longitude').value = longitude;
     $('distance-factor').value = distanceFactor;
     $('delivery-cost-payment-type').value = deliveryCostPaymentType;
-    
-    const uncheckedStyle = 'button button--empty-white cost-type-container__button';
-    const checkedStyle = 'button button--empty-orange cost-type-container__button';
-    const ptTarget = $('pt');
-    const moneyTarget = $('money');
-    switch (parseInt(deliveryCostPaymentType, 10)) {
-        case 1:
-        case undefined:
-            ptTarget.className = checkedStyle + ' cost-type-container__button--margin';
-            moneyTarget.className = uncheckedStyle;
-            break;
-        case 2:
-            ptTarget.className = uncheckedStyle + ' cost-type-container__button--margin';
-            moneyTarget.className = checkedStyle;
-            break;
-        default:
-            break;
-    }
+
+    getClosureToSelectButton([$('pt'), $('money')],
+        'button button--empty-orange cost-type-container__button cost-type-container__button--margin',
+        'button button--empty-white cost-type-container__button cost-type-container__button--margin')(deliveryCostPaymentType - 1);
 
     switch (parseInt(deliveryCostBaseType, 10)) {
         case 1:
@@ -114,8 +100,30 @@ const submitReceptionForm = () => {
         setCSRFHeader);
 };
 
-$('wait').onclick = () => {
+$('btn-reception').onclick = () => {
+    $('is-suspend').value = '';
+
+    submitReceptionForm().then(() => {
+        alert('접수 되었습니다');
+        window.location.reload();
+    }).catch(() => {
+        alert('예기치 않은 오류 입니다');
+    });
+};
+
+$('btn-wait').onclick = () => {
     $('is-suspend').value = true;
+
+    submitReceptionForm().then(() => {
+        alert('접수 되었습니다');
+        window.location.reload();
+    }).catch(() => {
+        alert('예기치 않은 오류 입니다');
+    });
+};
+
+$('btn-cancel').onclick = () => {
+    window.location.reload();
 };
 
 receptionForm.onsubmit = function () {
@@ -130,14 +138,6 @@ receptionForm.onsubmit = function () {
         alert('상점을 선택해주세요.');
         return false;
     }
-
-    submitReceptionForm().then(() => {
-        $('is-suspend').value = false;
-        alert('접수 되었습니다');
-        window.location.reload();
-    }).catch(() => {
-        alert('예기치 않은 오류 입니다');
-    });
 
     return false;
 };
@@ -194,7 +194,6 @@ const getShop = (obj) => {
     const {shops} = obj;
 
     const resultSection = $('shop-result-section');
-    resultSection.innerHTML = '';
 
     shops.forEach((shop) => {
         const label = document.createElement('label');
@@ -212,6 +211,87 @@ const getShop = (obj) => {
     });
 
     $('shop_search_modal').style.display = 'initial';
+
+    return shops.length;
+};
+
+const getClosureSelectRow = () => {
+    let selectedRow = null;
+
+    return (row) => {
+        if (selectedRow != null) {
+            // 스타일 복구
+            const tds = selectedRow.getElementsByTagName('td');
+
+            for (let i = 0; i < tds.length; i++) {
+                const td = tds[i];
+
+                td.style.color = '#4a4a4a';
+                td.style.backgroundColor = '#FFFFFF';
+            }
+        }
+
+        // 스타일 저장
+        selectedRow = row;
+
+        // 스타일 지정
+        const tds = row.getElementsByTagName('td');
+
+        for (let i = 0; i < tds.length; i++) {
+            const td = tds[i];
+
+            td.style.color = '#ffffff';
+            td.style.backgroundColor = '#4a90e2';
+        }
+    };
+};
+
+const writeMenuList = () => {
+    const tbody = $('menu-list');
+
+    tbody.innerHTML = '';
+
+    const selectRow = getClosureSelectRow();
+
+    const rowOnclick = itemId => function () {
+        selectedMenu = itemId;
+        selectRow(this);
+    };
+
+    let sumOfPrice = 0;
+
+    menuList.forEach((item) => {
+        const itemsPrice = item.price * item.count;
+
+        const row = createRow([
+            item.id,
+            item.label,
+            numberWithCommas(item.price),
+            item.count,
+            numberWithCommas(itemsPrice),
+        ]);
+
+        sumOfPrice += itemsPrice;
+
+        row.onclick = rowOnclick(item.id);
+        row.ondblclick = () => {
+            for (let i = 0; i < menuList.length; i++) {
+                if (menuList[i].id === item.id) {
+                    menuList.splice(i, 1);
+                    break;
+                }
+            }
+            writeMenuList();
+        };
+
+        if (selectedMenu === item.id) {
+            selectRow(row);
+        }
+
+        tbody.appendChild(row);
+    });
+
+    $('menu-price').value = sumOfPrice;
 };
 
 $('btn_branch_name').onclick = () => {
@@ -247,7 +327,7 @@ $('form-shop-search').onsubmit = function () {
 
     formData.append('branch-id', branchId);
 
-    getJSON(`/api/shop?${formSerialize(formData)}`).then(getShop);
+    getJSON(`/api/shops?${formSerialize(formData)}`).then(getShop);
 
     return false;
 };
@@ -273,7 +353,58 @@ $('form-result-shop').onsubmit = function () {
 
     $('shop_search_modal').style.display = 'none';
 
+    menuList.length = 0;
+    writeMenuList();
+
     return false;
+};
+
+const createMenuPanel = (item) => {
+    const span = document.createElement('span');
+    span.innerHTML = item.count;
+
+    const minusBtn = document.createElement('button');
+    minusBtn.className = 'num-count__minus num-count__minus--disable';
+
+    minusBtn.onclick = () => {
+        item.sub();
+
+        if (item.count > 0) {
+            minusBtn.className = 'num-count__minus';
+        } else {
+            minusBtn.className = 'num-count__minus num-count__minus--disable';
+        }
+
+        span.innerHTML = item.count;
+    };
+
+    const plusBtn = document.createElement('button');
+    plusBtn.className = 'num-count__plus';
+
+    plusBtn.onclick = () => {
+        item.add();
+        if (item.count > 0) {
+            minusBtn.className = 'num-count__minus';
+        } else {
+            minusBtn.className = 'num-count__minus num-count__minus--disable';
+        }
+
+        span.innerHTML = item.count;
+    };
+
+    const div = document.createElement('div');
+    div.className = 'num-count';
+
+    div.appendChild(minusBtn);
+    div.appendChild(span);
+    div.appendChild(plusBtn);
+
+    return createRow([
+        item.id,
+        item.label,
+        div,
+        numberWithCommas(item.price),
+    ]);
 };
 
 $('btn-menu').onclick = () => {
@@ -304,7 +435,11 @@ $('btn-menu').onclick = () => {
 
         table.innerText = '';
         selected.innerText = '';
-        menuList.length = 0;
+
+        menuList.forEach((item) => {
+            const row = createMenuPanel(item);
+            selected.appendChild(row);
+        });
 
         const btnOnclick = m => () => {
             if (menuList.find(data => data.id === m.id) !== undefined) {
@@ -312,55 +447,9 @@ $('btn-menu').onclick = () => {
             }
 
             const item = new Item(m.id, m.label, m.price);
-
             menuList.push(item);
 
-            const span = document.createElement('span');
-            span.innerHTML = '0';
-
-            const minusBtn = document.createElement('button');
-            minusBtn.className = 'num-count__minus num-count__minus--disable';
-
-            minusBtn.onclick = () => {
-                item.sub();
-
-                if (item.count > 0) {
-                    minusBtn.className = 'num-count__minus';
-                } else {
-                    minusBtn.className = 'num-count__minus num-count__minus--disable';
-                }
-
-                span.innerHTML = item.count;
-            };
-
-            const plusBtn = document.createElement('button');
-            plusBtn.className = 'num-count__plus';
-
-            plusBtn.onclick = () => {
-                item.add();
-                if (item.count > 0) {
-                    minusBtn.className = 'num-count__minus';
-                } else {
-                    minusBtn.className = 'num-count__minus num-count__minus--disable';
-                }
-
-                span.innerHTML = item.count;
-            };
-
-            const div = document.createElement('div');
-            div.className = 'num-count';
-
-            div.appendChild(minusBtn);
-            div.appendChild(span);
-            div.appendChild(plusBtn);
-
-            const row = createRow([
-                item.id,
-                item.label,
-                div,
-                numberWithCommas(item.price),
-            ]);
-
+            const row = createMenuPanel(item);
             selected.appendChild(row);
         };
 
@@ -381,40 +470,6 @@ $('btn-menu').onclick = () => {
         });
 
         $('menu_modal').style.display = 'initial';
-    });
-};
-
-const writeMenuList = () => {
-    const tbody = $('menu-list');
-
-    tbody.innerHTML = '';
-
-    const rowOnclick = itemId => () => {
-        selectedMenu = itemId;
-    };
-
-    menuList.forEach((item) => {
-        const row = createRow([
-            item.id,
-            item.label,
-            0,
-            item.price,
-            item.count,
-            item.price * item.count,
-        ]);
-
-        row.onclick = rowOnclick(item.id);
-        row.ondblclick = () => {
-            for (let i = 0; i < menuList.length; i++) {
-                if (menuList[i].id === item.id) {
-                    menuList.splice(i, 1);
-                    break;
-                }
-            }
-            writeMenuList();
-        };
-
-        tbody.appendChild(row);
     });
 };
 
