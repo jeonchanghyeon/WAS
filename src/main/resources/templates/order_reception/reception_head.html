@@ -263,16 +263,16 @@
             <div class="result-button-container">
                 <input type="hidden" id="is-suspend" name="is-suspend" form="reception_form"/>
                 <div>
-                    <button class="button button--round result-button-container__button" type="submit"
-                            form="reception_form">배송요청
+                    <button class="button button--round result-button-container__button"
+                            id="btn-reception" type="submit" form="reception_form">배송요청
                     </button>
                     <button class="button button--round button--empty-orange result-button-container__button result-button-container__button--second"
-                            value="true" id="wait" type="submit" form="reception_form">
+                            id="btn-wait" type="submit" form="reception_form">
                         접수대기
                     </button>
                 </div>
                 <button class="button button--round button--empty-white result-button-container__button"
-                        type="submit">취소
+                        id="btn-cancel" type="submit">취소
                 </button>
             </div>
         </section>

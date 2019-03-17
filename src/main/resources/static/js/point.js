@@ -1,7 +1,7 @@
 import {$, jsonifyFormData} from "./element.js";
 import {filterNumber, isNumber, numberCommasRemove, numberWithCommas, YYYYmmdd} from "./format.js";
 import {ajax, getJSON, setCSRFHeader} from "./ajax.js";
-import {addCloseModalEvent, addCloseButtonEvent} from "./modal.js";
+import {addCloseButtonEvent, addCloseModalEvent} from "./modal.js";
 
 let point_ = null;
 
@@ -99,7 +99,7 @@ export function withdrawPoint(json) {
 export function depositPoint(receiverId, json) {
     let result = false;
 
-    ajax(`/api/point/${receiverId}`,'PUT', JSON.stringify(json), setCSRFHeader)
+    ajax(`/api/point/${receiverId}`, 'PUT', JSON.stringify(json), setCSRFHeader)
         .then((obj) => {
             const res = JSON.parse(obj);
 
@@ -502,7 +502,7 @@ const showDepositUserSearchModal = function (id, searchGroup) {
     };
 
     showInitModal();
-    addCloseButtonEvent('transfer_modal_'+ groupName, 'transfer-' + groupName + '-close-button');
+    addCloseButtonEvent('transfer_modal_' + groupName, 'transfer-' + groupName + '-close-button');
     // addCloseKeyEvent('transfer_modal_'+ groupName);
 
     $(groupName + '_ok_button').onclick = () => {
