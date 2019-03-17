@@ -66,7 +66,7 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
     @ExceptionHandler(SqlAbnormalResultException::class)
     fun abnormalResultError(e: SqlAbnormalResultException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
         log.error(getExceptionLog(e, req))
-        return ResponseEntity(e.errorInfo, HttpStatus.INTERNAL_SERVER_ERROR)
+        return ResponseEntity(e.errorInfo, HttpStatus.OK)
     }
 
     //유저 계좌정보가 확인되지 않을 경우

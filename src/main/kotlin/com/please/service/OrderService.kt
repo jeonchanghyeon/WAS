@@ -2,6 +2,7 @@ package com.please.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.please.dataAccess.OrderDAO
+import com.please.exception.SqlAbnormalResultException
 import com.please.value.AuthInfo
 import com.please.value.OrderCondition
 import com.please.value.OrderReceiptInfo
@@ -23,6 +24,7 @@ class OrderService {
         return orderDAO.getOrder(authKey, orderId)
     }
 
+    @Throws(SqlAbnormalResultException::class)
     fun setOrderStatus(authKey: String, orderStatus: OrderStatus): String {
         return orderDAO.setOrderStatus(authKey, ObjectMapper().writeValueAsString(orderStatus))
     }

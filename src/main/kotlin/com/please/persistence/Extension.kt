@@ -33,7 +33,7 @@ fun JdbcTemplate.queryForJSONObject(query: String, vararg args: Any?): String {
         for (i in 0 until args.size) {
             log.error("request param${i+1}: ${args[i]}")
         }
-        throw SqlAbnormalResultException("$query procedure failed", resultCode, "DB - $description")
+        throw SqlAbnormalResultException("$query procedure failed", resultCode, "$description")
     }
 
     return result
