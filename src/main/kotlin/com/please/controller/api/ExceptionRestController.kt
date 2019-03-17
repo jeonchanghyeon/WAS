@@ -4,6 +4,8 @@ import com.please.exception.*
 import com.please.persistence.getExceptionLog
 import com.please.value.ErrorInfo
 import org.apache.commons.logging.LogFactory
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.dao.IncorrectResultSizeDataAccessException
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RestControllerAdvice(basePackages = ["com.please.controller.api"])
+@Order(Ordered.HIGHEST_PRECEDENCE)
 class ExceptionRestController : ResponseEntityExceptionHandler() {
     private val log = LogFactory.getLog(ExceptionRestController::class.java)
 
@@ -55,7 +58,7 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
     //포인트 잔액이 부족할 경우
     @ExceptionHandler(MissingBalanceException::class)
     fun usePointError(e: MissingBalanceException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
-        log.error(getExceptionLog(e, req))
+        log.info(getExceptionLog(e, req))
         return ResponseEntity(e.errorInfo, HttpStatus.OK)
     }
 
@@ -68,8 +71,8 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
 
     //유저 계좌정보가 확인되지 않을 경우
     @ExceptionHandler(AccountNotFoundException::class)
-    fun abnormalResultError(e: AccountNotFoundException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
-        log.error(getExceptionLog(e, req))
+    fun accountNotFound(e: AccountNotFoundException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
+        log.info(getExceptionLog(e, req))
         return ResponseEntity(e.errorInfo, HttpStatus.OK)
     }
 
