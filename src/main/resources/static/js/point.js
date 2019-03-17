@@ -365,8 +365,8 @@ const showDepositUserSearchModal = function (id, searchGroup) {
     const initElement = function () {
         $('transfer_modal_' + groupName).style.display = 'initial';
         $('transfer_modal_' + groupName).focus();
-        $(groupName + '-name').value = '';
-        $(groupName + '-id').value = '';
+        $(groupName + '_name').value = '';
+        $(groupName + '_id').value = '';
         $(groupName + '_search_name').value = '';   //이름 검색
         $(groupName + '_search_id').value = '';    //검색 id
         $(groupName + '_result').innerHTML = '';    //결과 리스트
@@ -420,8 +420,8 @@ const showDepositUserSearchModal = function (id, searchGroup) {
                 '<span class="radio-item__shape"></span>' + name;
 
             label.onclick = () => {
-                $(groupName + "-name").value = name;
-                $(groupName + "-id").value = id;
+                $(groupName + "_name").value = name;
+                $(groupName + "_id").value = id;
                 $(groupName + '_search_name').value = name;
             };
 
@@ -479,16 +479,16 @@ const showDepositUserSearchModal = function (id, searchGroup) {
     };
 
     const searchResult = function (id, searchGroup, name) {
-        $(groupName + "-name").value = '';
-        $(groupName + "-id").value = '';
+        $(groupName + "_name").value = '';
+        $(groupName + "_id").value = '';
         getUserList(id, searchGroup, name)
             .then(showUserListToRadio);
     };
 
     const submitResultForm = function () {
 
-        const name = $(groupName + "-name").value;
-        const id = $(groupName + "-id").value;
+        const name = $(groupName + "_name").value;
+        const id = $(groupName + "_id").value;
 
         if (name === '' && id === '') {
             alert("송금 대상을 선택해 주세요.");
