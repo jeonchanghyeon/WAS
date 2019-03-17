@@ -492,6 +492,8 @@ formShopSearch.onsubmit = () => {
 $('btn-rider-control').onclick = getRiderControl;
 $('btn-shop-control').onclick = getShopControl;
 $('btn-close').onclick = getBranchControl;
+$('work-on').onclick = getRiderControl;
+$('work-off').onclick = getRiderControl;
 
 $('afe').onclick = function () {
     if (this.checked === true) {
