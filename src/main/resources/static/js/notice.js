@@ -87,6 +87,9 @@ const getNotice = noticeId => getJSON(`/api/notices/${noticeId}`)
         $('detail-content').innerHTML = content;
         $('detail-createDate').innerHTML = createDate;
 
+        // $('btn-modify').style.display = 'none';
+        // $('btn-remove').style.display = 'none';
+
         displayDiv(4);
     });
 
@@ -103,9 +106,9 @@ const createNoticeList = (tbody, notices) => {
 
         const row = createRow([
             fillZero(id.toString(), 5),
-            createDate,
-            parseTypes(types),
             title,
+            parseTypes(types),
+            createDate,
         ]);
         row.ondblclick = () => {
             getNotice(id);
