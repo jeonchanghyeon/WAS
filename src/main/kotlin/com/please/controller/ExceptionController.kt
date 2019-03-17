@@ -4,6 +4,8 @@ import com.please.exception.GroupNotFoundException
 import com.please.exception.SessionExpirationException
 import com.please.persistence.getExceptionLog
 import org.apache.commons.logging.LogFactory
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest
 
 @Controller
 @ControllerAdvice
+@Order(Ordered.LOWEST_PRECEDENCE)
 class ExceptionController : ResponseEntityExceptionHandler() {
     private val log = LogFactory.getLog(ExceptionController::class.java)
 
