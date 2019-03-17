@@ -12,11 +12,14 @@ const createButton = (text, className, onClick) => {
     return btn;
 };
 
-const setOrderStatus = (id, orderStatusId, riderId) => {
-    ajax(`/api/orders/${id}`,
-        'PATCH', JSON.stringify({id, orderStatusId, riderId}),
-        setCSRFHeader);
-};
+function setOrderStatus(id, orderStatusId, riderId) {
+    return ajax(`/api/orders/${id}`, 'PATCH', JSON.stringify({id, orderStatusId, riderId}), setCSRFHeader)
+        .then((obj) => {
+            const res = JSON.parse(obj);
+            alert(res["description"]);
+            return res;
+        });
+}
 
 export const loadDetail = (orderId, group) => {
     getJSON(`/api/orders/${orderId}`).then((obj) => {
