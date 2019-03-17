@@ -7,14 +7,11 @@ import com.please.value.UserInfo
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserService {
     @Autowired
     private lateinit var userDAO: UserDAO
-    @Autowired
-    private lateinit var pointService: PointService
 
     fun getUserInfo(authKey: String, id: Long): String {
         return userDAO.getInfo(authKey, id)

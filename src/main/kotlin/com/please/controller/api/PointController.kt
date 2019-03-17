@@ -38,7 +38,6 @@ class PointController {
         val authInfo = getAuthInfo()
         val restTemplate = RestTemplate()
 
-        println(ObjectMapper().writeValueAsString(withdrawInfo))
         val uriTemplate = "http://54.180.79.53:8080/firmBanking/withdraw"
         withdrawInfo.id = authInfo.id
         withdrawInfo.authKey = authInfo.authKey
