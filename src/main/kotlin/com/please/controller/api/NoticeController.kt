@@ -44,6 +44,7 @@ class NoticeController {
             {"resultCode":, "description":,
              "notice": {
                             "id",
+                            "userGroup",
                             "title",
                             "content",
                             "writerName",
