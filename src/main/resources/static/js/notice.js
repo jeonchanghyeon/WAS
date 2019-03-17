@@ -329,7 +329,7 @@ if (checkboxBranchDistrib !== null) {
     .map(ids => $(ids))
     .filter(checkbox => checkbox != null)
     .forEach((checkbox) => {
-        checkbox.onclick = submitHeadForm();
+        checkbox.onclick = submitHeadForm;
     });
 
 if (formNoticePost !== null) {
