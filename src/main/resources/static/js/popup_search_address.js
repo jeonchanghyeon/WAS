@@ -1,7 +1,7 @@
 import {getJSON} from './ajax.js';
 import {$, createCol, createRow, formSerialize, getClosureToSelectButton} from './element.js';
 import {addCloseModalEvent} from './modal.js';
-import {createMarker, getDistance, initMap, setMarkerCenter} from './naver.js';
+import {createMarker, getDistance, initMap, removeMarkers, setMarkerCenter} from './naver.js';
 
 const map = initMap();
 let deliveryCostSum = 0;
@@ -11,6 +11,7 @@ export const getDeliveryCostSum = () => deliveryCostSum;
 export const getExtraChargeValue = () => extraCharge;
 
 const ADDRESS_API_URL = 'http://54.180.125.205:1111';
+const markers = [];
 
 const getBookmark = () => {
     const formData = new FormData($('form-bookmark'));
@@ -19,7 +20,7 @@ const getBookmark = () => {
 
 const getCost = (shopId) => {
     const formData = new FormData($('form-cost'));
-    getJSON(`/api/shops/${shopId}/cost?${formSerialize(formData)}`).then((obj) => {
+    getJSON(`/api/shops/${shopId}/delivery-cost?${formSerialize(formData)}`).then((obj) => {
         ({deliveryCostSum, extraCharge} = obj);
         const {deliveryCost} = obj;
 
@@ -61,6 +62,8 @@ const modalClose = (jibun, road, latitude, longitude) => () => {
     const shopId = $('shopId').value;
     getCost(shopId);
 
+    removeMarkers(markers);
+
     const marker = createMarker({
         map,
         position: {
@@ -70,7 +73,9 @@ const modalClose = (jibun, road, latitude, longitude) => () => {
         icon: '/img/marker-shop.png',
     });
 
-    setMarkerCenter(map, [marker]);
+    markers.push(marker);
+
+    setMarkerCenter(map, markers);
 };
 
 const bookmarkCallback = (obj) => {
@@ -177,16 +182,8 @@ const bookmarkListCallback = bookmark => getAddress().then((obj) => {
             const col = createCol(cell);
             col.className = 'addr-contents-cell';
 
-            const button = document.createElement('button');
-
-            button.classList.add('star');
-            if (bookmark.has(jibun) === false) {
-                button.classList.add('star--empty');
-            }
             const row = createRow([]);
-
             row.appendChild(col);
-            row.appendChild(createCol(button));
 
             result.appendChild(row);
         }
