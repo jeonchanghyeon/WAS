@@ -170,8 +170,8 @@ const showWithdrawSection = function () {
     $('withdraw_password').value = '';
 
     getAccountInfo(id)
-        .then(showAccountInfo);
-    //.then(checkEnableWithdraw);
+        .then(showAccountInfo)
+        .then(checkEnableWithdraw);
 
     $('btn-withdraw').checked = true;
     $("withdraw-section").style.display = "flex";
