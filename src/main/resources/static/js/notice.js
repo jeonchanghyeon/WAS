@@ -87,6 +87,9 @@ const getNotice = noticeId => getJSON(`/api/notices/${noticeId}`)
         $('detail-content').innerHTML = content;
         $('detail-createDate').innerHTML = createDate;
 
+        // $('btn-modify').style.display = 'none';
+        // $('btn-remove').style.display = 'none';
+
         displayDiv(4);
     });
 
@@ -105,7 +108,7 @@ const createNoticeList = (tbody, notices) => {
             fillZero(id.toString(), 5),
             title,
             parseTypes(types),
-            createDate
+            createDate,
         ]);
         row.ondblclick = () => {
             getNotice(id);
@@ -326,7 +329,7 @@ if (checkboxBranchDistrib !== null) {
     .map(ids => $(ids))
     .filter(checkbox => checkbox != null)
     .forEach((checkbox) => {
-        checkbox.onclick = submitHeadForm();
+        checkbox.onclick = submitHeadForm;
     });
 
 if (formNoticePost !== null) {

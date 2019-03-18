@@ -270,14 +270,12 @@ const getBranchList = (element, distribId) => {
     });
 };
 
-const getBranch = (distribId) => {
-    getJSON(`/api/branches/list?id=${distribId}`).then((obj) => {
-        if (obj.length === 1) {
-            $('value_branch').value = obj[0]['id'];
-            $('text_branch').value = obj[0]['name'];
-        }
-    });
-};
+const getBranch = (distribId) => getJSON(`/api/branches/list?id=${distribId}`).then((obj) => {
+    if (obj.length === 1) {
+        $('value_branch').value = obj[0]['id'];
+        $('text_branch').value = obj[0]['name'];
+    }
+});
 
 const getDistribList = (element, headId) => {
     getJSON(`/api/distribs?id=${headId}`).then((obj) => {
@@ -339,7 +337,6 @@ const getBranchSettings = branchId => getJSON(`/api/branches/${branchId}/setting
     costWon.value = extraCharge;
     costPercent.value = extraChargePercent * 100;
 });
-
 
 const loadCounts = (counts) => {
     const arr = [
@@ -475,6 +472,11 @@ window.onscroll = function () {
         });
 };
 
+const getStaticBranchSetting = () => {
+    const branchId = parseInt($('value_branch').value, 10);
+    getBranchSettings(branchId);
+};
+
 document.body.onload = () => {
     const id = $('userId').value;
     const group = $('group').value;
@@ -482,20 +484,17 @@ document.body.onload = () => {
     switch (parseInt(group, 10)) {
         case Group.RIDER:
             getRider(id);
-            getBranch(id);
-
+            getBranch(id).then(getStaticBranchSetting);
             break;
 
         case Group.SHOP:
             getShop(id);
-            getBranch(id);
-
+            getBranch(id).then(getStaticBranchSetting);
             break;
 
         case Group.BRANCH:
             getDistrib(id);
-            getBranch(id);
-
+            getBranch(id).then(getStaticBranchSetting);
             break;
 
         case Group.DISTRIB:

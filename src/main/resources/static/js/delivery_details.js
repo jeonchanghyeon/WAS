@@ -1,25 +1,50 @@
-import {$, createRow, getClosureToSelectButton} from './element.js';
+import {$, appendOptions, createRow, getClosureToSelectButton} from './element.js';
 import {HHMM, numberWithCommas} from './format.js';
 import {ajax, getJSON, setCSRFHeader} from './ajax.js';
 import {addCloseModalEvent} from './modal.js';
 
-const createButton = (text, className, onClick) => {
-    const btn = document.createElement('button');
-    btn.innerHTML = text;
-    btn.className = className;
-    btn.onclick = onClick;
+const setOrderStatus = (id, orderStatusId) => {
+    console.log(id);
+    const select = $('select-modal-rider');
+    const riderId = select.options[select.selectedIndex].value;
 
-    return btn;
+    return ajax(`/api/orders/${id}`,
+        'PATCH',
+        JSON.stringify({id, orderStatusId, riderId}),
+        setCSRFHeader).then((obj) => {
+        const res = JSON.parse(obj);
+
+        const {description} = res;
+        alert(description);
+        return res;
+    });
 };
 
-function setOrderStatus(id, orderStatusId, riderId) {
-    return ajax(`/api/orders/${id}`, 'PATCH', JSON.stringify({id, orderStatusId, riderId}), setCSRFHeader)
-        .then((obj) => {
-            const res = JSON.parse(obj);
-            alert(res["description"]);
-            return res;
-        });
-}
+const getRiders = branchId => getJSON(`api/riders?branch-id=${branchId}`).then((obj) => {
+    const {riders} = obj;
+
+    const container = $('asdf');
+    const select = document.createElement('select');
+
+    select.id = 'select-modal-rider';
+
+    const options = riders.map((rider) => {
+        const {id, name} = rider;
+
+        return {text: name, value: id};
+    });
+
+    appendOptions(select, options);
+    container.appendChild(select);
+});
+
+const redirectToModifyOrder = (orderId) => {
+    window.location.href = '/order-reception';
+};
+
+const redirectToAddOrder = (shopId) => {
+    window.location.href = '/order-reception';
+};
 
 export const loadDetail = (orderId, group) => {
     getJSON(`/api/orders/${orderId}`).then((obj) => {
@@ -27,7 +52,7 @@ export const loadDetail = (orderId, group) => {
         const {
             id,
             orderStatusId,
-            distribName, branchName, shopName, riderName, riderTel,
+            distribName, branchId, branchName, shopId, shopName, riderName, riderTel,
             road, jibun, addressDetail, distance,
             menuPrice, additionalMenuPrice,
             paymentType, cookTime,
@@ -102,124 +127,75 @@ export const loadDetail = (orderId, group) => {
             const emptyButton = 'button button--round button--empty-white status-button-container__button';
             const orangeButton = 'button button--round status-button-container__button';
 
+            const buttons = new Map([
+                ['주문수정', {text: '주문수정', className: emptyOrangeButton, onclick: () => redirectToModifyOrder(orderId)}],
+                ['추가접수', {text: '추가접수', className: emptyOrangeButton, onclick: () => redirectToAddOrder(shopId)}],
+                ['배차취소', {text: '배차취소', className: emptyButton, onclick: () => setOrderStatus(id, 1)}],
+                ['픽업취소', {text: '픽업취소', className: emptyButton, onclick: () => setOrderStatus(id, 2)}],
+                ['배달기사배차', {text: '배달기사배차', className: orangeButton, onclick: () => setOrderStatus(id, 2)}],
+                ['배달기사재배차', {
+                    text: '배달기사재배차',
+                    className: orangeButton,
+                    onclick: () => {
+                        setOrderStatus(id, 1).then(setOrderStatus(id, 2));
+                    },
+                }],
+                ['완료취소', {text: '완료취소', className: emptyButton, onclick: () => setOrderStatus(id, 3)}],
+                ['픽업', {text: '픽업', className: orangeButton, onclick: () => setOrderStatus(id, 3)}],
+                ['완료', {text: '완료', className: orangeButton, onclick: () => setOrderStatus(id, 4)}],
+                ['주문취소', {text: '주문취소', className: emptyButton, onclick: () => setOrderStatus(id, 5)}],
+            ]);
+
             switch (orderStatusId) {
                 case 1:
                 case 6:
-                    // 접수, 대기
-                    buttonAttrib.push({
-                        text: '주문수정',
-                        className: emptyOrangeButton,
-                    });
-                    buttonAttrib.push({text: '추가접수', className: emptyOrangeButton});
+                    buttonAttrib.push(buttons.get('주문수정'));
+                    buttonAttrib.push(buttons.get('추가접수'));
                     if (group !== 3) {
-                        buttonAttrib.push({
-                            text: '배달기사배차',
-                            className: orangeButton,
-                            onclick: () => setOrderStatus(id, 4),
-                        });
-                    }
-                    buttonAttrib.push({
-                        text: '주문취소',
-                        className: emptyButton,
-                        onclick: () => setOrderStatus(id, 5),
-                    });
-                    break;
-                case 2:
-                    // 배차
-                    buttonAttrib.push({
-                        text: '주문수정',
-                        className: emptyOrangeButton,
-                    });
-                    buttonAttrib.push({
-                        text: '추가접수',
-                        className: emptyOrangeButton,
-                    });
-                    if (group !== 3) {
-                        buttonAttrib.push({
-                            text: '픽업',
-                            className: orangeButton,
-                            onclick: () => setOrderStatus(id, 3),
-                        });
-                        buttonAttrib.push({
-                            text: '배달기사배차',
-                            className: orangeButton,
-                            onclick: () => setOrderStatus(id, 2),
-                        });
-                    }
-                    buttonAttrib.push({
-                        text: '배차취소',
-                        className: emptyButton,
-                        onclick: () => setOrderStatus(id, 1),
-                    });
-                    buttonAttrib.push({
-                        text: '주문취소',
-                        className: emptyButton,
-                        onclick: () => setOrderStatus(id, 5),
-                    });
+                        buttonAttrib.push(buttons.get('배달기사배차'));
 
-                    break;
-                case 3:
-                    // 픽업
-                    buttonAttrib.push({
-                        text: '주문수정',
-                        className: emptyOrangeButton,
-                    });
-                    buttonAttrib.push({
-                        text: '추가접수',
-                        className: emptyOrangeButton,
-                    });
-                    if (group !== 3) {
-                        buttonAttrib.push({
-                            text: '완료',
-                            className: orangeButton,
-                            onclick: () => setOrderStatus(id, 4),
-                        });
-                        buttonAttrib.push({
-                            text: '배달기사재배차',
-                            className: orangeButton,
-                            onclick: () => setOrderStatus(id, 2),
-                        });
+                        getRiders(branchId);
                     }
-                    buttonAttrib.push({
-                        text: '주문취소',
-                        className: emptyButton,
-                        onclick: () => setOrderStatus(id, 5),
-                    });
-                    buttonAttrib.push({
-                        text: '배차취소',
-                        className: emptyButton,
-                        onclick: () => setOrderStatus(id, 1),
-                    });
-                    buttonAttrib.push({
-                        text: '픽업취소',
-                        className: emptyButton,
-                        onclick: () => setOrderStatus(id, 2),
-                    });
+                    buttonAttrib.push(buttons.get('주문취소'));
                     break;
+
+                case 2:
+                    buttonAttrib.push(buttons.get('주문수정'));
+                    buttonAttrib.push(buttons.get('추가접수'));
+                    if (group !== 3) {
+                        buttonAttrib.push(buttons.get('픽업'));
+                        buttonAttrib.push(buttons.get('배달기사재배차'));
+
+                        getRiders(branchId);
+                    }
+                    buttonAttrib.push(buttons.get('배차취소'));
+                    buttonAttrib.push(buttons.get('주문취소'));
+                    break;
+
+                case 3:
+                    buttonAttrib.push(buttons.get('주문수정'));
+                    buttonAttrib.push(buttons.get('추가접수'));
+                    if (group !== 3) {
+                        buttonAttrib.push(buttons.get('완료'));
+                        buttonAttrib.push(buttons.get('배달기사재배차'));
+
+                        getRiders(branchId);
+                    }
+                    buttonAttrib.push(buttons.get('주문취소'));
+                    buttonAttrib.push(buttons.get('배차취소'));
+                    buttonAttrib.push(buttons.get('픽업취소'));
+                    break;
+
                 case 4:
-                    // 완료
-                    buttonAttrib.push({
-                        text: '추가접수',
-                        className: emptyOrangeButton,
-                    });
-                    buttonAttrib.push({
-                        text: '주문취소',
-                        className: emptyButton,
-                        onclick: () => setOrderStatus(id, 5),
-                    });
-                    buttonAttrib.push({
-                        text: '완료취소',
-                        className: emptyButton,
-                        onclick: () => setOrderStatus(id, 3),
-                    });
+                    buttonAttrib.push(buttons.get('추가접수'));
+                    buttonAttrib.push(buttons.get('주문취소'));
+                    buttonAttrib.push(buttons.get('완료취소'));
                     break;
+
                 case 5:
-                    // 취소
-                    buttonAttrib.push({
-                        text: '추가접수',
-                        className: emptyOrangeButton,
-                    });
+                    buttonAttrib.push(buttons.get('추가접수'));
                     break;
+
                 default:
                     break;
             }
@@ -227,8 +203,13 @@ export const loadDetail = (orderId, group) => {
             const container = $('asdf');
             container.innerHTML = '';
 
-            buttonAttrib.forEach((ba) => {
-                const btn = createButton(ba.text, ba.className, ba.onclick);
+            console.log(buttonAttrib);
+            buttonAttrib.forEach(({text, className, onclick}) => {
+                const btn = document.createElement('button');
+                btn.innerHTML = text;
+                btn.className = className;
+                btn.onclick = onclick;
+
                 container.appendChild(btn);
             });
         }
@@ -242,12 +223,9 @@ export const loadDetail = (orderId, group) => {
 
         tableMenu.innerHTML = '';
 
-        const keys = ['label', 'count', 'price'];
-
         for (let i = 0; i < menu.length; i++) {
-            const texts = keys.map(key => menu[i][key]);
-            texts.unshift(i + 1);
-            const row = createRow(texts);
+            const {label, count, price} = menu[i];
+            const row = createRow([i + 1, label, count, price]);
 
             tableMenu.appendChild(row);
         }
@@ -261,23 +239,10 @@ export const loadDetail = (orderId, group) => {
 
         tableLog.innerHTML = '';
 
-        const keys = [
-            'id', 'name',
-            'logType',
-            'oldValue', 'newValue',
-            'createDate',
-        ];
-
         logs.forEach((log) => {
-            const texts = keys.map((key) => {
-                const value = log[key];
-                if (key === 'createDate') {
-                    return HHMM(value);
-                }
-                return value;
-            });
+            const {id, name, logType, oldValue, newValue, createDate} = log;
+            const row = createRow([id, name, logType, oldValue, newValue, HHMM(createDate)]);
 
-            const row = createRow(texts);
             tableLog.appendChild(row);
         });
     });

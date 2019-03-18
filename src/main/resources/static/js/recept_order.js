@@ -101,7 +101,27 @@ const submitReceptionForm = () => {
         setCSRFHeader);
 };
 
+const findEmptyField = () => {
+    const field = [
+        {name: 'branch-name', label: '지사명'},
+        {name: 'shop-id', label: '상점명'},
+        {name: 'customer-tel', label: '고객전화번호'},
+        {name: 'jibun', label: '고객 주소'},
+        {name: 'menu-price', label: '상품요금'},
+        {name: 'delivery-cost', label: '배송대행료'},
+        {name: 'payment-type', label: '결제방법'},
+    ];
+
+    return field.find(({name}) => receptionForm[name].value === '');
+};
+
 $('btn-reception').onclick = () => {
+    const emptyField = findEmptyField();
+    if (emptyField !== undefined) {
+        alert(`${emptyField.label}을 입력해주세요.`);
+        return;
+    }
+
     $('is-suspend').value = '';
 
     submitReceptionForm().then(() => {
@@ -113,6 +133,12 @@ $('btn-reception').onclick = () => {
 };
 
 $('btn-wait').onclick = () => {
+    const emptyField = findEmptyField();
+    if (emptyField !== undefined) {
+        alert(`${emptyField.label}을 입력해주세요.`);
+        return;
+    }
+
     $('is-suspend').value = true;
 
     submitReceptionForm().then(() => {
@@ -127,21 +153,7 @@ $('btn-cancel').onclick = () => {
     window.location.reload();
 };
 
-receptionForm.onsubmit = function () {
-    const selectedBranchId = $('branchId').value;
-    const shopId = $('shopId').value;
-
-    if (selectedBranchId === '') {
-        alert('지사를 선택해주세요.');
-        return false;
-    }
-    if (shopId === '') {
-        alert('상점을 선택해주세요.');
-        return false;
-    }
-
-    return false;
-};
+receptionForm.onsubmit = () => false;
 
 const sum = $('sum');
 const additionalMenuPrice = $('additional-menu-price');
@@ -404,7 +416,7 @@ const createMenuPanel = (item) => {
         item.id,
         item.label,
         div,
-        numberWithCommas(item.price),
+        numberWithCommas(item.price * item.count),
     ]);
 };
 
