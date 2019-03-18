@@ -155,10 +155,12 @@ const checkEnableWithdraw = function (accountInfo) {
         $('withdraw_amount_input').disabled = true;
         $('withdraw_password').disabled = true;
         $('withdraw_button').disabled = true;
+        $('btn-full-withdraw').disabled = true;
     } else {
         $('withdraw_amount_input').disabled = false;
         $('withdraw_password').disabled = false;
         $('withdraw_button').disabled = false;
+        $('btn-full-withdraw').disabled = false;
     }
     return accountInfo;
 };
