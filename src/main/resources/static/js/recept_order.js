@@ -217,7 +217,6 @@ const getShop = (obj) => {
 
         label.onclick = () => {
             $('result-shop-name').value = shop.name;
-            getShopSettings(shop.id);
         };
 
         resultSection.appendChild(label);
@@ -360,9 +359,12 @@ $('form-result-branch').onsubmit = function () {
 
 $('form-result-shop').onsubmit = function () {
     const formData = new FormData(this);
+    const shopId = formData.get('shopId');
+    const shopName = formData.get('shopName');
 
-    $('shopId').value = formData.get('shopId');
-    $('shopName').value = formData.get('shopName');
+    getShopSettings(shopId);
+    $('shopId').value = shopId;
+    $('shopName').value = shopName;
 
     $('shop_search_modal').style.display = 'none';
 
