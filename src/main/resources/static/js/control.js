@@ -383,13 +383,13 @@ const getShopControl = () => {
             const shop = shops[i];
             const {
                 name, tel,
-                allocateCount, completeCount, pickupCount,
+                acceptCount, allocateCount, completeCount, pickupCount,
                 latitude, longitude,
             } = shop;
 
             const text = [
                 name,
-                '',
+                fillZero(acceptCount, 2),
                 fillZero(allocateCount, 2),
                 fillZero(completeCount, 2),
                 fillZero(pickupCount, 2),
@@ -491,7 +491,7 @@ formShopSearch.onsubmit = () => {
 
 $('btn-rider-control').onclick = getRiderControl;
 $('btn-shop-control').onclick = getShopControl;
-$('btn-close').onclick = getBranchControl;
+if($('btn-close') !== null) $('btn-close').onclick = getBranchControl;
 $('work-on').onclick = getRiderControl;
 $('work-off').onclick = getRiderControl;
 
