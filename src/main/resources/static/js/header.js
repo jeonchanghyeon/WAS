@@ -13,34 +13,27 @@ export const Group = {
 };
 
 function addHeader(group) {
-    const status = $('status');
-    const control = $('control');
-    const management = $('management');
-    const statistics = $('statistics');
-    const settings = $('setting');
-    const notice = $('notice');
+    const pageTab = $('header_page_tab');
+    const status = '<li><a href="/statuses">현황</a></li>';
+    const control = '<li><a href="/controls">관제</a></li>';
+    const management = '<li><a href="#/managements">관리</a></li>';
+    const shopInfo = '<li><a href="#/managements/shop_info">상점정보</a></li>';
+    const riderInfo = '<li><a href="#/managements/rider_info">기사정보</a></li>';
+    const statistics = '<li><a href="#/statistics">통계</a></li>';
+    const settings = '<li><a href="#/settings">설정</a></li>';
+    const notice = '<li><a href="/notices">공지</a></li>';
 
-    switch(group) {
+    switch (group) {
         case Group.HEAD:
         case Group.DISTRIB:
         case Group.BRANCH:
-            management.setAttribute('href', '#/managements');
-            statistics.setAttribute('href', '#/statistics');
-            settings.setAttribute('href', '#/settings');
+            pageTab.innerHTML = status + control + management + statistics + settings + notice;
             break;
         case Group.SHOP:
-            management.setAttribute('href', '#/management/shop_info');
-            management.innerText = "상점정보";
-            statistics.setAttribute('href', '#/statistics');
-            settings.setAttribute('href', '#/settings');
+            pageTab.innerHTML = status + control + shopInfo + statistics + settings + notice;
             break;
         case Group.RIDER:
-            control.innerText= '';
-            control.setAttribute('href', '#');
-            management.setAttribute('href', '#/managements/rider');
-            management.innerText = "기사정보";
-            statistics.setAttribute('href', '#/statistics');
-            settings.setAttribute('href', '#/settings');
+            pageTab.innerHTML = status + riderInfo + statistics + settings + notice;
             break;
     }
 }
