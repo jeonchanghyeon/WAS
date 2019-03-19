@@ -76,46 +76,43 @@ export function getAccountInfo(id) {
 }
 
 export function withdrawPoint(json) {
-    let result = false;
-
-    ajax("/api/point", 'POST', JSON.stringify(json), setCSRFHeader)
+    return ajax("/api/point", 'POST', JSON.stringify(json), setCSRFHeader)
         .then((obj) => {
             const res = JSON.parse(obj);
 
             if (res["resultCode"] * 1 === 0) {
                 alert("출금 되었습니다");
-                result = true;
+                return true;
             }
             else {
                 alert(res["description"]);
+                return false;
             }
         }).catch((e) => {
-        console.log(e);
-        alert("서버 장애로 출금에 실패 했습니다.");
-    });
-    return result;
+            console.log(e);
+            alert("서버 장애로 출금에 실패 했습니다.");
+            return false;
+        });
 }
 
 export function depositPoint(receiverId, json) {
-    let result = false;
-
-    ajax(`/api/point/${receiverId}`, 'PUT', JSON.stringify(json), setCSRFHeader)
+    return ajax(`/api/point/${receiverId}`, 'PUT', JSON.stringify(json), setCSRFHeader)
         .then((obj) => {
             const res = JSON.parse(obj);
 
             if (res["resultCode"] * 1 === 0) {
                 alert("송금 되었습니다");
-                result = true;
+                return true;
             }
             else {
                 alert(res["description"]);
+                return false;
             }
         }).catch((e) => {
-        console.log(e);
-        alert("서버 장애로 송금에 실패 했습니다.");
-    });
-
-    return result;
+            console.log(e);
+            alert("서버 장애로 송금에 실패 했습니다.");
+            return false;
+        });
 }
 
 export function getUserList(userId, group, name) {
@@ -267,7 +264,16 @@ const submitWithdrawForm = function () {
     }
 
     const jsonObject = jsonifyFormData(formData);
-    return withdrawPoint(jsonObject);
+    withdrawPoint(jsonObject)
+        .then((isSuccess) => {
+            if(isSuccess) {
+                loadPoint();
+                getPoint().then(showMileageStatus);
+                showWithdrawSection();
+            }
+        });
+
+    return false;
 };
 
 const submitDepositForm = function () {
@@ -295,7 +301,16 @@ const submitDepositForm = function () {
     }
 
     const jsonObject = jsonifyFormData(formData);
-    return depositPoint(receiverId, jsonObject);
+    depositPoint(receiverId, jsonObject)
+        .then((isSuccess) => {
+            if (isSuccess) {
+                loadPoint();
+                getPoint().then(showMileageStatus);
+                showDepositSection()
+            }
+        });
+
+    return false;
 };
 
 $("point-area").onclick = showMileageModal;     //헤더 포인트 영역
