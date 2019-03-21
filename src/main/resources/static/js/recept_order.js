@@ -5,7 +5,6 @@ import {numberWithCommas} from './format.js';
 import {addCloseModalEvent} from './modal.js';
 import {loadPoint} from './point.js';
 
-
 loadPoint();
 
 class Item {
@@ -21,7 +20,7 @@ class Item {
     }
 
     sub() {
-        if (this.count > 1) {
+        if (this.count > 0) {
             this.count -= 1;
         }
     }
@@ -165,14 +164,16 @@ $('btn-cancel').onclick = () => {
 receptionForm.onsubmit = () => false;
 
 const sum = $('sum');
-const additionalMenuPrice = $('additional-menu-price');
-const menuPrice = $('menu-price');
+const textAdditionalMenuPrice = $('additional-menu-price');
+const textMenuPrice = $('menu-price');
 
-menuPrice.onchange = additionalMenuPrice.onchange = () => {
-    sum.value = `${numberWithCommas(toInt(menuPrice) + toInt(additionalMenuPrice))}원`;
+const calSumOfMenuPrice = () => {
+    sum.value = `${numberWithCommas(toInt(textMenuPrice) + toInt(textAdditionalMenuPrice))}원`;
 };
 
-const deliveryCost = $('delivery-cost');
+textMenuPrice.onchange = textAdditionalMenuPrice.onchange = calSumOfMenuPrice;
+
+const textDeliveryCost = $('delivery-cost');
 const additionalCost = $('additional-cost');
 const addCost = $('add-cost');
 
@@ -281,11 +282,11 @@ const writeMenuList = () => {
 
     let sumOfPrice = 0;
 
-    menuList.forEach((item) => {
+    menuList.forEach((item, index) => {
         const itemsPrice = item.price * item.count;
 
         const row = createRow([
-            item.id,
+            index + 1,
             item.label,
             numberWithCommas(item.price),
             item.count,
@@ -329,7 +330,7 @@ $('btn_shop_name').onclick = () => {
     }
 };
 
-addCost.onchange = deliveryCost.onchange = () => {
+addCost.onchange = textDeliveryCost.onchange = () => {
     const intAdditionalCost = toInt(addCost) + getDeliveryCostSum();
     additionalCost.value = `${numberWithCommas(intAdditionalCost)}원`;
 };
@@ -383,15 +384,15 @@ $('form-result-shop').onsubmit = function () {
     return false;
 };
 
-const createMenuPanel = (item) => {
-    const span = document.createElement('span');
-    span.innerHTML = item.count;
+const createMenuPanel = (list, selected) => {
+    selected.innerText = '';
 
-    const minusBtn = document.createElement('button');
-    minusBtn.className = 'num-count__minus num-count__minus--disable';
+    list.forEach((item, index) => {
+        const span = document.createElement('span');
+        span.innerHTML = item.count;
 
-    minusBtn.onclick = () => {
-        item.sub();
+        const minusBtn = document.createElement('button');
+        minusBtn.className = 'num-count__minus num-count__minus--disable';
 
         if (item.count > 0) {
             minusBtn.className = 'num-count__minus';
@@ -399,36 +400,42 @@ const createMenuPanel = (item) => {
             minusBtn.className = 'num-count__minus num-count__minus--disable';
         }
 
-        span.innerHTML = item.count;
-    };
+        minusBtn.onclick = () => {
+            item.sub();
 
-    const plusBtn = document.createElement('button');
-    plusBtn.className = 'num-count__plus';
+            if (item.count < 1) {
+                const idx = menuList.indexOf(item);
+                if (idx > -1) {
+                    menuList.splice(idx, 1);
+                }
+            }
+            createMenuPanel(list, selected);
+        };
 
-    plusBtn.onclick = () => {
-        item.add();
-        if (item.count > 0) {
-            minusBtn.className = 'num-count__minus';
-        } else {
-            minusBtn.className = 'num-count__minus num-count__minus--disable';
-        }
+        const plusBtn = document.createElement('button');
+        plusBtn.className = 'num-count__plus';
 
-        span.innerHTML = item.count;
-    };
+        plusBtn.onclick = () => {
+            item.add();
+            createMenuPanel(list, selected);
+        };
 
-    const div = document.createElement('div');
-    div.className = 'num-count';
+        const div = document.createElement('div');
+        div.className = 'num-count';
 
-    div.appendChild(minusBtn);
-    div.appendChild(span);
-    div.appendChild(plusBtn);
+        div.appendChild(minusBtn);
+        div.appendChild(span);
+        div.appendChild(plusBtn);
 
-    return createRow([
-        item.id,
-        item.label,
-        div,
-        numberWithCommas(item.price * item.count),
-    ]);
+        const row = createRow([
+            index + 1,
+            item.label,
+            div,
+            numberWithCommas(item.count * item.price),
+        ]);
+
+        selected.appendChild(row);
+    });
 };
 
 $('btn-menu').onclick = () => {
@@ -458,12 +465,8 @@ $('btn-menu').onclick = () => {
         const selected = $('selected-menu');
 
         table.innerText = '';
-        selected.innerText = '';
 
-        menuList.forEach((item) => {
-            const row = createMenuPanel(item);
-            selected.appendChild(row);
-        });
+        createMenuPanel(menuList, selected);
 
         const btnOnclick = m => () => {
             if (menuList.find(data => data.id === m.id) !== undefined) {
@@ -473,8 +476,7 @@ $('btn-menu').onclick = () => {
             const item = new Item(m.id, m.label, m.price);
             menuList.push(item);
 
-            const row = createMenuPanel(item);
-            selected.appendChild(row);
+            createMenuPanel(menuList, selected);
         };
 
         menu.forEach((m) => {
@@ -510,6 +512,7 @@ $('btn-add').onclick = () => {
 
 $('menu-modal-confirm').onclick = () => {
     writeMenuList();
+    calSumOfMenuPrice();
     $('menu_modal').style.display = 'none';
 };
 
