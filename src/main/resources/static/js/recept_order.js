@@ -122,6 +122,15 @@ $('btn-reception').onclick = () => {
         return;
     }
 
+    const paymentType = parseInt(receptionForm['payment-type'].value, 10);
+    if (paymentType !== 3) {
+        const menuPrice = parseInt(receptionForm['menu-price'].value, 10);
+        if (menuPrice === 0) {
+            alert('올바르지 않은 상품요금입니다.');
+            return;
+        }
+    }
+
     $('is-suspend').value = '';
 
     submitReceptionForm().then(() => {

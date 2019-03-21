@@ -57,7 +57,7 @@
             <div class="info-row reception-left-section__info-row">
                 <div class="subtitle subtitle--required info-row__subtitle">고객전화번호</div>
                 <input class="text text--disabled info-row__text" type="tel" required="required" name="customer-tel"
-                       placeholder="고객전화번호를 입력하세요." form="reception_form"/>
+                       placeholder="고객전화번호를 입력하세요." id="customer-tel" form="reception_form"/>
             </div>
             <div class="info-row reception-left-section__info-row">
                 <div class="subtitle subtitle--required info-row__subtitle">고객 주소</div>
@@ -68,7 +68,7 @@
             <div class="info-row reception-left-section__info-row">
                 <div class="info-row__subtitle"></div>
                 <input class="text text--disabled info-row__text" type="text" name="address-detail"
-                       placeholder="상세 주소를 검색해주세요." form="reception_form"/>
+                       placeholder="상세 주소를 검색해주세요." id="address-detail" form="reception_form"/>
             </div>
 
             <input type="hidden" id="jibun" name="jibun" form="reception_form"/>
@@ -243,13 +243,15 @@
             <div class="cost-type-container reception-right-section__cost-type-container">
                 <span class="subtitle">대행료 지불방법</span>
                 <div>
-                    <div class="button button--empty-white cost-type-container__button cost-type-container__button--margin" id="pt" >
+                    <div class="button button--empty-white cost-type-container__button cost-type-container__button--margin"
+                         id="pt">
                         포인트
                     </div>
                     <div class="button button--empty-white cost-type-container__button" id="money">
                         현금
                     </div>
-                    <input hidden="hidden" id="delivery-cost-payment-type" name="delivery-cost-payment-type" form="reception_form"/>
+                    <input hidden="hidden" id="delivery-cost-payment-type" name="delivery-cost-payment-type"
+                           form="reception_form"/>
 
                 </div>
             </div>
@@ -257,7 +259,8 @@
                 <div class="subtitle">요청사항</div>
                 <div>
                     <input class="text text--disabled request-memo-container__text request-memo-container__text"
-                           type="text" name="memo" placeholder="요청사항을 입력해주세요" form="reception_form"/>
+                           type="text" name="memo" placeholder="요청사항을 입력해주세요"
+                           id="memo" form="reception_form"/>
                     <button class="button button--empty-orange request-memo-container__button">상용문구</button>
                 </div>
             </div>
