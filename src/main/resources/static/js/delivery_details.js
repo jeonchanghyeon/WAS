@@ -3,8 +3,9 @@ import {HHMM, numberWithCommas} from './format.js';
 import {ajax, getJSON, setCSRFHeader} from './ajax.js';
 import {addCloseModalEvent} from './modal.js';
 
+let onclose;
+
 const setOrderStatus = (id, orderStatusId) => {
-    console.log(id);
     const select = $('select-modal-rider');
     const riderId = select.options[select.selectedIndex].value;
 
@@ -17,6 +18,11 @@ const setOrderStatus = (id, orderStatusId) => {
         const {description} = res;
         alert(description);
         return res;
+    }).then(() => {
+        if (orderStatusId === 2 || orderStatusId === 3 || orderStatusId === 4) {
+            $('delivery_detail_modal').style.display = 'none';
+            onclose();
+        }
     });
 };
 
@@ -46,7 +52,9 @@ const redirectToAddOrder = (shopId) => {
     window.location.href = '/order-reception';
 };
 
-export const loadDetail = (orderId, group) => {
+export const loadDetail = (orderId, group, func) => {
+    onclose = func;
+
     getJSON(`/api/orders/${orderId}`).then((obj) => {
         const {order} = obj;
         const {
@@ -130,15 +138,14 @@ export const loadDetail = (orderId, group) => {
             const buttons = new Map([
                 ['주문수정', {text: '주문수정', className: emptyOrangeButton, onclick: () => redirectToModifyOrder(orderId)}],
                 ['추가접수', {text: '추가접수', className: emptyOrangeButton, onclick: () => redirectToAddOrder(shopId)}],
+                ['접수', {text: '접수', className: orangeButton, onclick: () => setOrderStatus(id, 1)}],
                 ['배차취소', {text: '배차취소', className: emptyButton, onclick: () => setOrderStatus(id, 1)}],
                 ['픽업취소', {text: '픽업취소', className: emptyButton, onclick: () => setOrderStatus(id, 2)}],
                 ['배달기사배차', {text: '배달기사배차', className: orangeButton, onclick: () => setOrderStatus(id, 2)}],
                 ['배달기사재배차', {
                     text: '배달기사재배차',
                     className: orangeButton,
-                    onclick: () => {
-                        setOrderStatus(id, 1).then(setOrderStatus(id, 2));
-                    },
+                    onclick: () => setOrderStatus(id, 1).then(setOrderStatus(id, 2))
                 }],
                 ['완료취소', {text: '완료취소', className: emptyButton, onclick: () => setOrderStatus(id, 3)}],
                 ['픽업', {text: '픽업', className: orangeButton, onclick: () => setOrderStatus(id, 3)}],
@@ -148,13 +155,10 @@ export const loadDetail = (orderId, group) => {
 
             switch (orderStatusId) {
                 case 1:
-                case 6:
                     buttonAttrib.push(buttons.get('주문수정'));
                     buttonAttrib.push(buttons.get('추가접수'));
                     if (group !== 3) {
                         buttonAttrib.push(buttons.get('배달기사배차'));
-
-                        getRiders(branchId);
                     }
                     buttonAttrib.push(buttons.get('주문취소'));
                     break;
@@ -165,8 +169,6 @@ export const loadDetail = (orderId, group) => {
                     if (group !== 3) {
                         buttonAttrib.push(buttons.get('픽업'));
                         buttonAttrib.push(buttons.get('배달기사재배차'));
-
-                        getRiders(branchId);
                     }
                     buttonAttrib.push(buttons.get('배차취소'));
                     buttonAttrib.push(buttons.get('주문취소'));
@@ -178,8 +180,6 @@ export const loadDetail = (orderId, group) => {
                     if (group !== 3) {
                         buttonAttrib.push(buttons.get('완료'));
                         buttonAttrib.push(buttons.get('배달기사재배차'));
-
-                        getRiders(branchId);
                     }
                     buttonAttrib.push(buttons.get('주문취소'));
                     buttonAttrib.push(buttons.get('배차취소'));
@@ -196,9 +196,20 @@ export const loadDetail = (orderId, group) => {
                     buttonAttrib.push(buttons.get('추가접수'));
                     break;
 
+                case 6:
+                    buttonAttrib.push(buttons.get('주문수정'));
+                    buttonAttrib.push(buttons.get('추가접수'));
+                    buttonAttrib.push(buttons.get('접수'));
+                    if (group !== 3) {
+                        buttonAttrib.push(buttons.get('배달기사배차'));
+                    }
+                    buttonAttrib.push(buttons.get('주문취소'));
+                    break;
+
                 default:
                     break;
             }
+            getRiders(branchId);
 
             const container = $('asdf');
             container.innerHTML = '';
