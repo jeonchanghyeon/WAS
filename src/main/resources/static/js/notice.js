@@ -77,7 +77,7 @@ const getNotice = noticeId => getJSON(`/api/notices/${noticeId}`)
         const {notice} = obj;
 
         const {
-            id, title, content, writerName, createDate, types,
+            id, title, content, writerName, createDate, types, userGroup
         } = notice;
 
         $('detail-types').innerHTML = parseTypes(types);
@@ -87,8 +87,16 @@ const getNotice = noticeId => getJSON(`/api/notices/${noticeId}`)
         $('detail-content').innerHTML = content;
         $('detail-createDate').innerHTML = createDate;
 
-        // $('btn-modify').style.display = 'none';
-        // $('btn-remove').style.display = 'none';
+        const group = $('group').value;
+        console.log(group);
+        console.log(userGroup);
+        if (group < userGroup) {
+            $('btn-modify').style.display = 'none';
+            $('btn-remove').style.display = 'none';
+        } else {
+            $('btn-modify').style.display = 'initial';
+            $('btn-remove').style.display = 'initial';
+        }
 
         displayDiv(4);
     });
