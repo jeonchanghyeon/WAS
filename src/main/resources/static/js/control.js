@@ -1,15 +1,17 @@
 import {getJSON} from './ajax.js';
 import {loadPoint} from './point.js';
-import {$, createRow, formSerialize} from './element.js';
+import {$, createRow, formSerialize, getClosureToSelectButton} from './element.js';
 import {
+    addListener,
     createInfoWindow,
     createMarker,
-    drawPolyLine,
+    createPolyline,
+    getMarkersPosition,
+    getPolylinesCoords,
     hideInfo,
     initMap,
-    removeInfo,
-    removeMarkers,
-    setMarkerCenter,
+    removeViews,
+    setMapToCenterOfCoords,
     showInfo
 } from './naver.js';
 import {fillZero} from './format.js';
@@ -30,6 +32,8 @@ const Group = {
 
 const markers = [];
 const infos = [];
+const polylines = [];
+const pathMarker = [];
 
 const ridersArea = $('rider-control-area');
 const shopsArea = $('shop-control-area');
@@ -40,63 +44,43 @@ const formRiderSearch = $('form-rider-search');
 const formShopSearch = $('form-shop-search');
 const shopBranchId = $('shop-branch-id');
 const riderBranchId = $('rider-branch-id');
+const mapDown = $('map-down');
+const btnRiderControl = $('btn-rider-control');
+const btnShopControl = $('btn-shop-control');
 
-const displayRiderControl = () => {
-    if (branchesArea !== null) {
-        branchesArea.style.display = 'none';
+const getClosureToSelectArea = areas => (index) => {
+    for (let i = 0; i < areas.length; i++) {
+        const area = areas[i];
+
+        if (area !== null) {
+            if (index === i) {
+                area.style.display = 'initial';
+            } else {
+                area.style.display = 'none';
+            }
+        }
     }
-
-    if (shopsArea !== null) {
-        shopsArea.style.display = 'none';
-    }
-
-    if (downs !== null) {
-        downs.style.display = 'initial';
-    }
-
-    if (ridersArea !== null) {
-        ridersArea.style.display = 'initial';
-    }
-
-    $('map-down').style.display = 'none';
-    $('map').style.height = '100%';
-
-    $('btn-rider-control').className = 'btn-control-selected';
-    $('btn-shop-control').className = 'btn-control-unselected';
 };
 
-const displayShopControl = () => {
-    if (branchesArea !== null) {
-        branchesArea.style.display = 'none';
+const displayGroupControl = (group) => {
+    if (mapDown !== null) {
+        mapDown.style.display = 'none';
     }
-    if (ridersArea !== null) {
-        ridersArea.style.display = 'none';
-    }
-
-    if (downs !== null) {
-        downs.style.display = 'initial';
-    }
-    if (shopsArea !== null) {
-        shopsArea.style.display = 'initial';
-    }
-
-    $('map-down').style.display = 'none';
     $('map').style.height = '100%';
 
-    $('btn-shop-control').className = 'btn-control-selected';
-    $('btn-rider-control').className = 'btn-control-unselected';
-};
+    const isBranch = (group === Group.BRANCH) ? 1 : 0;
+    getClosureToSelectArea([downs, branchesArea])(isBranch);
 
-const displayBranchControl = () => {
-    if (downs !== null) {
-        downs.style.display = 'none';
-    }
-    if (branchesArea !== null) {
-        branchesArea.style.display = 'initial';
+    if (isBranch === 1) {
+        return;
     }
 
-    $('map-down').style.display = 'none';
-    $('map').style.height = '100%';
+    const isRider = (group === Group.RIDER) ? 1 : 0;
+
+    getClosureToSelectArea([shopsArea, ridersArea])(isRider);
+    getClosureToSelectButton([btnShopControl, btnRiderControl],
+        'btn-control-selected',
+        'btn-control-unselected')(isRider);
 };
 
 const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) => {
@@ -107,6 +91,9 @@ const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) =
 
     const table = $('rider-order-status');
     table.innerHTML = '';
+
+    removeViews(polylines);
+    removeViews(pathMarker);
 
     orders.forEach((order) => {
         const {
@@ -123,40 +110,48 @@ const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) =
         if (orderStatusId.toString() === '2') {
             sMarkerIconUrl = '/img/marker-start-allocated.png';
             dMarkerIconUrl = '/img/marker-arrival-allocated.png';
-            strokeColor = 'ff6d8b';
+            strokeColor = '#ff6d8b';
         } else if (orderStatusId.toString() === '3') {
             sMarkerIconUrl = '/img/marker-start.png';
             dMarkerIconUrl = '/img/marker-arrival-pickup.png';
-            strokeColor = 'c043ff';
+            strokeColor = '#c043ff';
         }
 
         const startPosition = {
             latitude: startingLatitude,
-            Longitude: startingLongitude,
+            longitude: startingLongitude,
         };
 
         const destinationPosition = {
             latitude: destinationLatitude,
-            Longitude: destinationLongitude,
+            longitude: destinationLongitude,
         };
 
-        drawPolyLine({
+        const polyline = createPolyline({
             map,
             path: [startPosition, destinationPosition],
             strokeColor,
         });
 
-        markers.push(createMarker({
+        polylines.push(polyline);
+
+        const smarker = createMarker({
             map,
             position: startPosition,
             icon: sMarkerIconUrl,
-        }));
+        });
 
-        markers.push(createMarker({
+        const dmarker = createMarker({
             map,
             position: destinationPosition,
             icon: dMarkerIconUrl,
-        }));
+        });
+
+        markers.push(smarker);
+        markers.push(dmarker);
+
+        pathMarker.push(smarker);
+        pathMarker.push(dmarker);
 
         const btnStatus = document.createElement('button');
 
@@ -185,17 +180,18 @@ const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) =
         table.appendChild(row);
     });
 
+    setMapToCenterOfCoords(map, getPolylinesCoords(polylines));
+
     $('rider-name').innerHTML = name;
     $('rider-tel').innerHTML = tel;
 
-    const mapDown = $('map-down');
     mapDown.style.display = 'initial';
     const mapDownHeight = mapDown.offsetHeight;
 
     $('map').style.height = `calc(100% - ${mapDownHeight}px)`;
 });
 
-const drawOverlay = (targetMap, latitude, longitude, name, userGroup) => {
+const drawOverlay = (targetMap, latitude, longitude, name, userGroup, id, riderWorkOn, riderTotal) => {
     let markerIcon = null;
     let infoIcon = null;
     let infoTextColor = null;
@@ -240,24 +236,54 @@ const drawOverlay = (targetMap, latitude, longitude, name, userGroup) => {
     });
 
     infos.push(info);
+
+    switch (userGroup) {
+        case Group.BRANCH:
+            addListener(info, 'click', () => {
+                selectBranch(id, name, riderWorkOn, riderTotal, latitude, longitude);
+            });
+            addListener(marker, 'click', () => {
+                selectBranch(id, name, riderWorkOn, riderTotal, latitude, longitude);
+            });
+            break;
+
+        case Group.RIDER:
+            addListener(info, 'click', () => {
+                getRiderStatus(id);
+            });
+            addListener(marker, 'click', () => {
+                getRiderStatus(id);
+            });
+            break;
+
+        default:
+            break;
+    }
 };
 
 const getRiderControl = () => {
-    const workOn = $('work-on').checked;
-    const workOff = $('work-off').checked;
+    const workOn = $('work-on');
+    const workOff = $('work-off');
+
+    workOn.onclick = getRiderControl;
+    workOff.onclick = getRiderControl;
+
+    const isWorkOn = workOn.checked;
+    const isWorkOff = workOff.checked;
 
     const riderStatusId = $('rider-status-id');
 
-    if (workOn === false || workOff === false) {
-        riderStatusId.value = workOn * 1 + workOff * 2;
+    if (isWorkOn === false || isWorkOff === false) {
+        riderStatusId.value = isWorkOn * 1 + isWorkOff * 2;
     } else {
         riderStatusId.value = 0;
     }
 
     const formData = new FormData(formRiderSearch);
 
-    removeMarkers(markers);
-    removeInfo(infos);
+    removeViews(markers);
+    removeViews(infos);
+    removeViews(polylines);
 
     const branchName = $('branch-name').innerText.toString();
     const branchLatitude = parseFloat($('branch-latitude').value);
@@ -275,13 +301,28 @@ const getRiderControl = () => {
             const rider = riders[i];
 
             const {
-                id, name, tel,
+                id, name, tel, riderStatusId,
                 allocateCount, completeCount, pickupCount,
                 latitude, longitude,
             } = rider;
 
+            const img = document.createElement('img');
+
+            switch (riderStatusId) {
+                case 1:
+                    img.src = '/img/dot.png';
+                    break;
+                case 2:
+                    img.src = '/img/dot-black.png';
+                    break;
+                default:
+                    break;
+            }
+            img.width = '10';
+            img.height = '10';
+
             const text = [
-                '',
+                img,
                 name,
                 fillZero(allocateCount, 2),
                 fillZero(pickupCount, 2),
@@ -289,7 +330,7 @@ const getRiderControl = () => {
                 tel,
             ];
 
-            drawOverlay(map, latitude, longitude, name, Group.RIDER);
+            drawOverlay(map, latitude, longitude, name, Group.RIDER, id);
 
             const row = createRow(text);
 
@@ -300,9 +341,21 @@ const getRiderControl = () => {
             tableRiders.appendChild(row);
         }
 
-        setMarkerCenter(map, markers);
-        displayRiderControl();
+        setMapToCenterOfCoords(map, getMarkersPosition(markers));
+        displayGroupControl(Group.RIDER);
     });
+};
+
+const selectBranch = (id, name, riderWorkOn, riderTotal, latitude, longitude) => {
+    $('branch-name').innerText = name;
+    riderBranchId.value = id;
+    shopBranchId.value = id;
+    $('count-worker').innerText = `${riderWorkOn}/${riderTotal}`;
+
+    $('branch-latitude').value = latitude;
+    $('branch-longitude').value = longitude;
+
+    getRiderControl();
 };
 
 const getBranchControl = () => {
@@ -315,20 +368,9 @@ const getBranchControl = () => {
             const tableBranches = $('branches');
             tableBranches.innerHTML = '';
 
-            removeMarkers(markers);
-            removeInfo(infos);
-
-            const btnOnclick = (id, name, riderWorkOn, riderTotal, latitude, longitude) => () => {
-                $('branch-name').innerText = name;
-                riderBranchId.value = id;
-                shopBranchId.value = id;
-                $('count-worker').innerText = `${riderWorkOn}/${riderTotal}`;
-
-                $('branch-latitude').value = latitude;
-                $('branch-longitude').value = longitude;
-
-                getRiderControl();
-            };
+            removeViews(markers);
+            removeViews(infos);
+            removeViews(polylines);
 
             branches.forEach((branch) => {
                 const {
@@ -344,7 +386,9 @@ const getBranchControl = () => {
                 const btn = document.createElement('button');
                 btn.className = 'btn-select';
                 btn.innerHTML = '선택';
-                btn.onclick = btnOnclick(id, name, riderWorkOn, riderTotal, latitude, longitude);
+                btn.onclick = () => {
+                    selectBranch(id, name, riderWorkOn, riderTotal, latitude, longitude);
+                };
 
                 text.push(btn);
 
@@ -352,11 +396,12 @@ const getBranchControl = () => {
 
                 tableBranches.appendChild(row);
 
-                drawOverlay(map, latitude, longitude, name, Group.BRANCH);
+                drawOverlay(map, latitude, longitude, name, Group.BRANCH,
+                    id, riderWorkOn, riderTotal);
             });
 
-            setMarkerCenter(map, markers);
-            displayBranchControl();
+            setMapToCenterOfCoords(map, getMarkersPosition(markers));
+            displayGroupControl(Group.BRANCH);
         });
     }
 };
@@ -364,8 +409,8 @@ const getBranchControl = () => {
 const getShopControl = () => {
     const formData = new FormData(formShopSearch);
 
-    removeMarkers(markers);
-    removeInfo(infos);
+    removeViews(markers);
+    removeViews(infos);
 
     const branchName = $('branch-name').innerText.toString();
     const branchLatitude = parseFloat($('branch-latitude').value);
@@ -429,8 +474,8 @@ const getShopControl = () => {
 
             $('count-all').innerHTML = sum;
 
-            setMarkerCenter(map, markers);
-            displayShopControl();
+            setMapToCenterOfCoords(map, getMarkersPosition(markers));
+            displayGroupControl(Group.SHOP);
         });
     });
 
@@ -439,9 +484,11 @@ const getShopControl = () => {
 
         for (let i = 0; i < riders.length; i++) {
             const rider = riders[i];
-            const {name, latitude, longitude} = rider;
+            const {id, name, riderStatusId, latitude, longitude} = rider;
 
-            drawOverlay(map, latitude, longitude, name, Group.RIDER);
+            if (riderStatusId === 1) {
+                drawOverlay(map, latitude, longitude, name, Group.RIDER, id);
+            }
         }
     });
 };
@@ -453,17 +500,22 @@ switch (parseInt(group, 10)) {
     case Group.HEAD:
     case Group.DISTRIB:
         getBranchControl();
+        $('btn-close').onclick = getBranchControl;
+        btnRiderControl.onclick = getRiderControl;
+        btnShopControl.onclick = getShopControl;
         break;
 
     case Group.BRANCH:
         riderBranchId.value = id;
         shopBranchId.value = id;
         getRiderControl();
+        btnRiderControl.onclick = getRiderControl;
+        btnShopControl.onclick = getShopControl;
         break;
 
     case Group.SHOP:
         shopBranchId.value = id;
-        getRiderControl();
+        getShopControl();
         break;
 
     default:
@@ -488,12 +540,6 @@ formShopSearch.onsubmit = () => {
     getShopControl();
     return false;
 };
-
-$('btn-rider-control').onclick = getRiderControl;
-$('btn-shop-control').onclick = getShopControl;
-if($('btn-close') !== null) $('btn-close').onclick = getBranchControl;
-$('work-on').onclick = getRiderControl;
-$('work-off').onclick = getRiderControl;
 
 $('afe').onclick = function () {
     if (this.checked === true) {

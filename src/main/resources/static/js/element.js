@@ -63,3 +63,51 @@ export const getClosureToSelectButton = (buttons, selected, unselected) => (inde
         }
     }
 };
+
+export class PageHandler {
+    constructor(target, callback, container) {
+        this.container = (container === undefined) ? target : container;
+        this.target = target;
+        this.init();
+        this.bind(callback);
+    }
+
+    bind(callback) {
+        this.callback = callback;
+        this.setOnScroll();
+    }
+
+    setOnScroll() {
+        const handler = this;
+
+        this.target.onscroll = function () {
+            if (handler.isFull === true) {
+                return;
+            }
+
+            if (this.scrollTop + this.offsetHeight < this.scrollHeight) {
+                return;
+            }
+
+            handler.getContent();
+        };
+    }
+
+    init() {
+        this.isFull = false;
+        this.pageIndex = 1;
+        this.container.innerHTML = '';
+    }
+
+    getContent() {
+        const handler = this;
+
+        this.callback(this.pageIndex).then((length) => {
+            handler.isFull = (length <= 0);
+
+            if (handler.isFull === false) {
+                handler.pageIndex += 1;
+            }
+        });
+    }
+}

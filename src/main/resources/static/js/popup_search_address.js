@@ -1,7 +1,7 @@
 import {getJSON} from './ajax.js';
 import {$, createCol, createRow, formSerialize, getClosureToSelectButton} from './element.js';
 import {addCloseModalEvent} from './modal.js';
-import {createMarker, getDistance, initMap, removeMarkers, setMarkerCenter} from './naver.js';
+import {createMarker, getDistance, getMarkersPosition, initMap, removeViews, setMapToCenterOfCoords} from './naver.js';
 
 const map = initMap();
 let deliveryCostSum = 0;
@@ -18,7 +18,7 @@ const getBookmark = () => {
     return getJSON(`${ADDRESS_API_URL}/address/getBookMark?${formSerialize(formData)}`);
 };
 
-const getCost = (shopId) => {
+export const getCost = (shopId) => {
     const formData = new FormData($('form-cost'));
     getJSON(`/api/shops/${shopId}/delivery-cost?${formSerialize(formData)}`).then((obj) => {
         ({deliveryCostSum, extraCharge} = obj);
@@ -29,7 +29,7 @@ const getCost = (shopId) => {
     });
 };
 
-const modalClose = (jibun, road, latitude, longitude) => () => {
+export const modalClose = (jibun, road, latitude, longitude) => () => {
     $('address-jibun').value = jibun;
     $('cost-jibun').value = jibun;
     $('jibun').value = jibun;
@@ -43,15 +43,15 @@ const modalClose = (jibun, road, latitude, longitude) => () => {
     const dstLatitude = parseFloat(latitude);
     const dstLongitude = parseFloat(longitude);
 
-    const distance = getDistance(map,
+    const distance = (getDistance(map,
         {
-            Latitude: shopLatitude,
-            Longitude: shopLongitude,
+            latitude: shopLatitude,
+            longitude: shopLongitude,
         },
         {
-            Latitude: dstLatitude,
-            Longitude: dstLongitude,
-        });
+            latitude: dstLatitude,
+            longitude: dstLongitude,
+        }) / 1000).toFixed(2);
 
     $('cost-distance').value = distance;
     $('distance').value = distance;
@@ -62,7 +62,7 @@ const modalClose = (jibun, road, latitude, longitude) => () => {
     const shopId = $('shopId').value;
     getCost(shopId);
 
-    removeMarkers(markers);
+    removeViews(markers);
 
     const marker = createMarker({
         map,
@@ -75,7 +75,7 @@ const modalClose = (jibun, road, latitude, longitude) => () => {
 
     markers.push(marker);
 
-    setMarkerCenter(map, markers);
+    setMapToCenterOfCoords(map, getMarkersPosition(markers));
 };
 
 const bookmarkCallback = (obj) => {
