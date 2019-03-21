@@ -29,6 +29,11 @@ class OrderDAO {
         return template.queryForJSONObject("CALL addOrder(?, ?)", authKey, orderInfo)
     }
 
+    @Throws(SqlAbnormalResultException::class)
+    fun setOrder(authKey: String, orderInfo: String): String {
+        return template.queryForJSONObject("CALL setOrder(?, ?)", authKey, orderInfo)
+    }
+
     //검색 조건에 맞는 주문 목록 쿼리
     @Throws(SqlAbnormalResultException::class)
     fun searchOrders(branchId: String, conditionParseString: String): String {

@@ -48,4 +48,11 @@ class OrderController {
     fun getStatusesCount(@RequestParam(value = "branch-id") branchId: Long): Any {
         return orderService.getStatuesCount(branchId.toString())
     }
+
+    @RequestMapping(value = ["{id}"], method = [RequestMethod.POST])
+    fun setOrder(@PathVariable(value = "id") orderId: Long, @RequestBody data: MutableMap<String, Any>): Any {
+        val authInfo = getAuthInfo()
+        data["id"] = orderId
+        return orderService.setOrder(authInfo.authKey, data)
+    }
 }

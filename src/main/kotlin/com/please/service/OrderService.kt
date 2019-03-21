@@ -37,6 +37,10 @@ class OrderService {
         return orderDAO.addOrder(authKey, ObjectMapper().writeValueAsString(orderReceiptInfo).toString().replace("suspend", "isSuspend"))
     }
 
+    fun setOrder(authKey: String, orderInfo: MutableMap<String, Any>): String {
+        return orderDAO.setOrder(authKey, ObjectMapper().writeValueAsString(orderInfo))
+    }
+
     fun searchOrdersInfo(authInfo: AuthInfo, condition: OrderCondition): String {
         val branchId = condition.branchId
         val startDate = Timestamp.valueOf(condition.startDate)
