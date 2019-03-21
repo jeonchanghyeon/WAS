@@ -4,12 +4,13 @@ import {$, createRow, formSerialize} from './element.js';
 import {
     createInfoWindow,
     createMarker,
-    drawPolyLine,
+    createPolyline,
+    getMarkersPosition,
+    getPolylinesCoords,
     hideInfo,
     initMap,
-    removeInfo,
-    removeMarkers,
-    setMarkerCenter,
+    removeViews,
+    setMapToCenterOfCoords,
     showInfo
 } from './naver.js';
 import {fillZero} from './format.js';
@@ -30,6 +31,8 @@ const Group = {
 
 const markers = [];
 const infos = [];
+const polylines = [];
+const pathMarker = [];
 
 const ridersArea = $('rider-control-area');
 const shopsArea = $('shop-control-area');
@@ -108,6 +111,9 @@ const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) =
     const table = $('rider-order-status');
     table.innerHTML = '';
 
+    removeViews(polylines);
+    removeViews(pathMarker);
+
     orders.forEach((order) => {
         const {
             id, shopName, orderStatusId,
@@ -123,40 +129,49 @@ const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) =
         if (orderStatusId.toString() === '2') {
             sMarkerIconUrl = '/img/marker-start-allocated.png';
             dMarkerIconUrl = '/img/marker-arrival-allocated.png';
-            strokeColor = 'ff6d8b';
+            strokeColor = '#ff6d8b';
         } else if (orderStatusId.toString() === '3') {
             sMarkerIconUrl = '/img/marker-start.png';
             dMarkerIconUrl = '/img/marker-arrival-pickup.png';
-            strokeColor = 'c043ff';
+            strokeColor = '#c043ff';
         }
 
         const startPosition = {
             latitude: startingLatitude,
-            Longitude: startingLongitude,
+            longitude: startingLongitude,
         };
 
         const destinationPosition = {
             latitude: destinationLatitude,
-            Longitude: destinationLongitude,
+            longitude: destinationLongitude,
         };
 
-        drawPolyLine({
+        const polyline = createPolyline({
             map,
             path: [startPosition, destinationPosition],
             strokeColor,
         });
 
-        markers.push(createMarker({
+        polylines.push(polyline);
+
+        const smarker = createMarker({
             map,
             position: startPosition,
             icon: sMarkerIconUrl,
-        }));
+        });
 
         markers.push(createMarker({
+        const dmarker = createMarker({
             map,
             position: destinationPosition,
             icon: dMarkerIconUrl,
-        }));
+        });
+
+        markers.push(smarker);
+        markers.push(dmarker);
+
+        pathMarker.push(smarker);
+        pathMarker.push(dmarker);
 
         const btnStatus = document.createElement('button');
 
@@ -184,6 +199,8 @@ const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) =
 
         table.appendChild(row);
     });
+
+    setMapToCenterOfCoords(map, getPolylinesCoords(polylines));
 
     $('rider-name').innerHTML = name;
     $('rider-tel').innerHTML = tel;
@@ -256,8 +273,9 @@ const getRiderControl = () => {
 
     const formData = new FormData(formRiderSearch);
 
-    removeMarkers(markers);
-    removeInfo(infos);
+    removeViews(markers);
+    removeViews(infos);
+    removeViews(polylines);
 
     const branchName = $('branch-name').innerText.toString();
     const branchLatitude = parseFloat($('branch-latitude').value);
@@ -300,8 +318,8 @@ const getRiderControl = () => {
             tableRiders.appendChild(row);
         }
 
-        setMarkerCenter(map, markers);
         displayRiderControl();
+        setMapToCenterOfCoords(map, getMarkersPosition(markers));
     });
 };
 
@@ -315,8 +333,6 @@ const getBranchControl = () => {
             const tableBranches = $('branches');
             tableBranches.innerHTML = '';
 
-            removeMarkers(markers);
-            removeInfo(infos);
 
             const btnOnclick = (id, name, riderWorkOn, riderTotal, latitude, longitude) => () => {
                 $('branch-name').innerText = name;
@@ -329,6 +345,9 @@ const getBranchControl = () => {
 
                 getRiderControl();
             };
+            removeViews(markers);
+            removeViews(infos);
+            removeViews(polylines);
 
             branches.forEach((branch) => {
                 const {
@@ -355,8 +374,8 @@ const getBranchControl = () => {
                 drawOverlay(map, latitude, longitude, name, Group.BRANCH);
             });
 
-            setMarkerCenter(map, markers);
             displayBranchControl();
+            setMapToCenterOfCoords(map, getMarkersPosition(markers));
         });
     }
 };
@@ -364,8 +383,8 @@ const getBranchControl = () => {
 const getShopControl = () => {
     const formData = new FormData(formShopSearch);
 
-    removeMarkers(markers);
-    removeInfo(infos);
+    removeViews(markers);
+    removeViews(infos);
 
     const branchName = $('branch-name').innerText.toString();
     const branchLatitude = parseFloat($('branch-latitude').value);
@@ -429,8 +448,8 @@ const getShopControl = () => {
 
             $('count-all').innerHTML = sum;
 
-            setMarkerCenter(map, markers);
             displayShopControl();
+            setMapToCenterOfCoords(map, getMarkersPosition(markers));
         });
     });
 
