@@ -2,7 +2,7 @@ import {ajax, getJSON, setCSRFHeader} from './ajax.js';
 import {loadDetail} from './delivery_details.js';
 import {calendarListener} from './calendar.js';
 import {loadPoint} from './point.js';
-import {$, appendOptions, createRow, formSerialize, jsonifyFormData} from './element.js';
+import {$, appendOptions, createRow, formSerialize, jsonifyFormData, PageHandler} from './element.js';
 import {fillZero, HHMM, mmdd, numberWithCommas} from './format.js';
 
 loadPoint();
@@ -12,9 +12,6 @@ let lastSubmittedFormData = null;
 
 let selectedRow = null;
 let selectedRowClassName = null;
-
-let pageIndex = 1;
-let isEmpty = false;
 
 const Group = {
     GUEST: 1,
@@ -137,19 +134,19 @@ const createTable = (list, orders) => {
         row.className = statusStyleName[orderStatusId - 1];
         row.onclick = rowOnclick(row, orderStatusId);
         row.ondblclick = () => {
-            loadDetail(id, $('group').value);
+            loadDetail(id, $('group').value, submitOrderStatus);
         };
 
         list.appendChild(row);
     });
 };
 
-const displayError = (error) => {
+const displayMessage = (message) => {
     const tr = document.createElement('tr');
     const td = document.createElement('td');
 
     td.colSpan = 14;
-    td.innerHTML = error.message;
+    td.innerHTML = message;
 
     resultList.appendChild(tr);
     tr.appendChild(td);
@@ -204,33 +201,49 @@ function copyFormData(src) {
 
 const getOrders = formData => getJSON(`/api/orders?${formSerialize(formData)}`);
 
-function emptyHandler() {
-    throw new Error('데이터가 존재하지 않습니다.');
-}
+const pageHandler = new PageHandler(document.getElementsByClassName('result-area')[0], (pageIndex) => {
+    const formData = copyFormData(lastSubmittedFormData);
+    formData.append('pageIndex', pageIndex);
+
+    return getOrders(formData).then((obj) => {
+        const {
+            orders, counts,
+        } = obj;
+
+        loadCounts(counts);
+
+        if (orders.length > 0) {
+            createTable(resultList, orders);
+        }
+
+        return orders.length;
+    });
+}, resultList);
 
 function submitOrderStatus() {
     const formData = copyFormData(baseForm);
 
     appendCheckboxValue(formData, statusCheckboxes);
     lastSubmittedFormData = formData;
-    pageIndex = 1;
+    pageHandler.init();
 
     getOrders(formData).then((obj) => {
-        const {orders} = obj;
+        const {
+            orders, counts,
+        } = obj;
 
-        resultList.innerHTML = '';
+        loadCounts(counts);
 
-        isEmpty = orders.length === 0;
-        if (isEmpty) {
-            emptyHandler();
+        if (orders.length > 0) {
+            createTable(resultList, orders);
         }
 
-        createTable(resultList, orders);
-        pageIndex += 1;
-    })
-        .catch((error) => {
-            displayError(error);
-        });
+        return orders.length;
+    }).then((length) => {
+        if (length <= 0) {
+            displayMessage('데이터가 존재하지 않습니다.');
+        }
+    });
 }
 
 
@@ -270,7 +283,7 @@ const getBranchList = (element, distribId) => {
     });
 };
 
-const getBranch = (distribId) => getJSON(`/api/branches/list?id=${distribId}`).then((obj) => {
+const getBranch = distribId => getJSON(`/api/branches/list?id=${distribId}`).then((obj) => {
     if (obj.length === 1) {
         $('value_branch').value = obj[0]['id'];
         $('text_branch').value = obj[0]['name'];
@@ -394,28 +407,25 @@ $('form_search').onsubmit = function () {
     lastSubmittedFormData = formData;
     baseForm = formData;
 
-    pageIndex = 1;
+    pageHandler.init();
 
     getOrders(formData).then((obj) => {
         const {
             orders, counts,
         } = obj;
 
-        resultList.innerHTML = '';
-
         loadCounts(counts);
 
-        isEmpty = orders.length === 0;
-        if (isEmpty) {
-            emptyHandler();
+        if (orders.length > 0) {
+            createTable(resultList, orders);
         }
 
-        createTable(resultList, orders);
-        pageIndex += 1;
-    })
-        .catch((error) => {
-            displayError(error);
-        });
+        return orders.length;
+    }).then((length) => {
+        if (length <= 0) {
+            displayMessage('데이터가 존재하지 않습니다.');
+        }
+    });
 
     return false;
 };
@@ -450,27 +460,6 @@ $('form_additional_cost').onsubmit = function () {
     return false;
 };
 
-window.onscroll = function () {
-    if ((window.innerHeight + window.scrollY) < $('window-parent').offsetHeight - 1
-        || lastSubmittedFormData === null || isEmpty === true) {
-        return;
-    }
-
-    const formData = copyFormData(lastSubmittedFormData);
-    formData.append('pageIndex', pageIndex);
-
-    getOrders(formData).then((obj) => {
-        const {orders} = obj;
-
-        isEmpty = orders.length === 0;
-
-        createTable(resultList, orders);
-        pageIndex += 1;
-    })
-        .catch((error) => {
-            displayError(error);
-        });
-};
 
 const getStaticBranchSetting = () => {
     const branchId = parseInt($('value_branch').value, 10);

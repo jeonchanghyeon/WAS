@@ -3,8 +3,13 @@
 @import "../header";
 @import "../delivery_details";
 
+html {
+  height: 100%;
+}
+
 /* Body */
 body {
+  height: 100%;
   font-family: 'Noto Sans CJK KR', sans-serif;
   background-color: #f0f0f0;
   margin: 0;
@@ -322,6 +327,8 @@ body {
   width: 100%;
   background-color: #f0f0f0;
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: calc(100% - 261px);
 
   table {
     border-collapse: collapse;
