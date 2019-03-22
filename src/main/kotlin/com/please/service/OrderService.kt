@@ -56,6 +56,16 @@ class OrderService {
         return result.toString()
     }
 
+    fun reRegOrder(authKey: String, orderId: Int): String {
+        val order = JSONObject(orderDAO.getOrder(authKey, orderId))["order"] as JSONObject
+        val pointObj = JSONObject(pointService.getPoint((order["shopId"] as Int).toLong()))
+        val point = (pointObj["point"] as JSONObject)["point"] as Int
+        order.put("point", point)
+        //result.put("isSuspend", true);
+
+        return orderDAO.addOrder(authKey, order.toString())
+    }
+
     fun searchOrderLogs(orderId: Long, pageIndex: Int?): String {
         val logCondition = JSONObject()
 

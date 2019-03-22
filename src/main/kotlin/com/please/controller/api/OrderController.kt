@@ -55,4 +55,14 @@ class OrderController {
         data["id"] = orderId
         return orderService.setOrder(authInfo.authKey, data)
     }
+
+
+    /*
+    * {"resultCode","description", "order"}
+    * */
+    @RequestMapping(value = ["re/{id}"], method = [RequestMethod.PUT])
+    fun reRegOrder(@PathVariable(value = "id") orderId: Int): Any {
+        val authInfo = getAuthInfo()
+        return orderService.reRegOrder(authInfo.authKey, orderId)
+    }
 }
