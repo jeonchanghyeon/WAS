@@ -48,4 +48,23 @@ class ShopController {
 
         return shopService.getDeliveryChargeSet(authInfo.authKey, id, distance, jibun)
     }
+
+    /*
+    {
+        "resultCode",
+        "description",
+        "riders":[
+            {
+                "orderId", "orderStatusId", "startingLatitude", "startingLongitude",
+                "destinationLatitude", "destinationLongitude", "riderId",
+                "riderName", "addressDetail"
+            }, ...
+         ]
+     }
+     */
+    @GetMapping(value = ["{id}/riders"])
+    fun getRidersInfo(@PathVariable id: Long): Any {
+        val authInfo = getAuthInfo()
+        return shopService.getRidersInfo(authInfo.authKey, id)
+    }
 }

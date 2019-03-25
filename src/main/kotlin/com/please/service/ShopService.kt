@@ -202,4 +202,8 @@ class ShopService {
         result.put("deliveryCostSum", sum)
         return result.toString()
     }
+
+    fun getRidersInfo(authKey: String, id: Long): String {
+        return shopDAO.getRidersInfo(authKey, id)
+    }
 }
