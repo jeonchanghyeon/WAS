@@ -55,9 +55,11 @@ class ShopController {
         "description",
         "riders":[
             {
-                "orderId", "orderStatusId", "startingLatitude", "startingLongitude",
-                "destinationLatitude", "destinationLongitude", "riderId",
-                "riderName", "addressDetail"
+                "orderId", "orderStatusId"
+                "startingLatitude", "startingLongitude"
+                "destinationLatitude", "destinationLongitude"
+                "riderId", "riderName", "riderLatitude", "riderLongitude"
+                "shopId", "shopName", "shopTel", "jibun"
             }, ...
          ]
      }

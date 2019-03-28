@@ -37,7 +37,7 @@ class RiderController {
                                     "id", "orderStatusId",
                                     "startingLatitude", "startingLongitude",
                                     "destinationLatitude", "destinationLongitude",
-                                    "shopName", "addressDetail"
+                                    "shopName", "addressDetail", "jibun"
                                   }
                        }
             }
