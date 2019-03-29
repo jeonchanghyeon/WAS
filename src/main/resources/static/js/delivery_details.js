@@ -19,10 +19,27 @@ const setOrderStatus = (id, orderStatusId) => {
         alert(description);
         return res;
     }).then(() => {
-        if (orderStatusId === 2 || orderStatusId === 3 || orderStatusId === 4) {
-            $('delivery_detail_modal').style.display = 'none';
-            onclose();
-        }
+        $('delivery_detail_modal').style.display = 'none';
+        onclose();
+    });
+};
+
+const reallocateOrderRider = (orderId) => {
+    const select = $('select-modal-rider');
+    const riderId = select.options[select.selectedIndex].value;
+
+    return ajax(`/api/orders/${orderId}`,
+        'POST',
+        JSON.stringify({riderId}),
+        setCSRFHeader).then((obj) => {
+        const res = JSON.parse(obj);
+
+        const {description} = res;
+        alert(description);
+        return res;
+    }).then(() => {
+        $('delivery_detail_modal').style.display = 'none';
+        onclose();
     });
 };
 
@@ -45,12 +62,21 @@ const getRiders = branchId => getJSON(`api/riders?branch-id=${branchId}`).then((
 });
 
 const redirectToModifyOrder = (orderId) => {
-    window.location.href = '/order-reception';
+    window.location.href = `/order-modification?orderId=${orderId}`;
 };
 
-const redirectToAddOrder = (shopId) => {
-    window.location.href = '/order-reception';
-};
+const addAnotherOrder = orderId => ajax(
+    `/api/orders/re/${orderId}`,
+    'PUT',
+    JSON.stringify({orderId}),
+    setCSRFHeader
+).then((obj) => {
+    const res = JSON.parse(obj);
+
+    const {description} = res;
+    alert(description);
+    return res;
+});
 
 export const loadDetail = (orderId, group, func) => {
     onclose = func;
@@ -60,7 +86,7 @@ export const loadDetail = (orderId, group, func) => {
         const {
             id,
             orderStatusId,
-            distribName, branchId, branchName, shopId, shopName, riderName, riderTel,
+            distribName, branchId, branchName, shopName, riderName, riderTel,
             road, jibun, addressDetail, distance,
             menuPrice, additionalMenuPrice,
             paymentType, cookTime,
@@ -137,16 +163,12 @@ export const loadDetail = (orderId, group, func) => {
 
             const buttons = new Map([
                 ['주문수정', {text: '주문수정', className: emptyOrangeButton, onclick: () => redirectToModifyOrder(orderId)}],
-                ['추가접수', {text: '추가접수', className: emptyOrangeButton, onclick: () => redirectToAddOrder(shopId)}],
+                ['추가접수', {text: '추가접수', className: emptyOrangeButton, onclick: () => addAnotherOrder(orderId)}],
                 ['접수', {text: '접수', className: orangeButton, onclick: () => setOrderStatus(id, 1)}],
                 ['배차취소', {text: '배차취소', className: emptyButton, onclick: () => setOrderStatus(id, 1)}],
                 ['픽업취소', {text: '픽업취소', className: emptyButton, onclick: () => setOrderStatus(id, 2)}],
                 ['배달기사배차', {text: '배달기사배차', className: orangeButton, onclick: () => setOrderStatus(id, 2)}],
-                ['배달기사재배차', {
-                    text: '배달기사재배차',
-                    className: orangeButton,
-                    onclick: () => setOrderStatus(id, 1).then(setOrderStatus(id, 2))
-                }],
+                ['배달기사재배차', {text: '배달기사재배차', className: orangeButton, onclick: () => reallocateOrderRider(orderId),}],
                 ['완료취소', {text: '완료취소', className: emptyButton, onclick: () => setOrderStatus(id, 3)}],
                 ['픽업', {text: '픽업', className: orangeButton, onclick: () => setOrderStatus(id, 3)}],
                 ['완료', {text: '완료', className: orangeButton, onclick: () => setOrderStatus(id, 4)}],
@@ -214,7 +236,6 @@ export const loadDetail = (orderId, group, func) => {
             const container = $('asdf');
             container.innerHTML = '';
 
-            console.log(buttonAttrib);
             buttonAttrib.forEach(({text, className, onclick}) => {
                 const btn = document.createElement('button');
                 btn.innerHTML = text;
@@ -252,7 +273,7 @@ export const loadDetail = (orderId, group, func) => {
 
         logs.forEach((log) => {
             const {id, name, logType, oldValue, newValue, createDate} = log;
-            const row = createRow([id, name, logType, oldValue, newValue, HHMM(createDate)]);
+            const row = createRow([id, HHMM(createDate), logType, name, oldValue, newValue]);
 
             tableLog.appendChild(row);
         });
