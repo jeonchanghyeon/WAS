@@ -1,8 +1,11 @@
 import {getJSON} from './ajax.js';
 import {loadPoint} from './point.js';
 import {$, createRow, formSerialize, getClosureToSelectButton} from './element.js';
+import {fillZero} from './format.js';
+import {loadDetail} from './delivery_details.js';
 import {
     addListener,
+    Coord,
     createInfoWindow,
     createMarker,
     createPolyline,
@@ -14,8 +17,6 @@ import {
     setMapToCenterOfCoords,
     showInfo
 } from './naver.js';
-import {fillZero} from './format.js';
-import {loadDetail} from './delivery_details.js';
 
 loadPoint();
 
@@ -83,115 +84,56 @@ const displayGroupControl = (group) => {
         'btn-control-unselected')(isRider);
 };
 
-const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) => {
-    const {rider} = obj;
-    const {
-        tel, name, orders,
-    } = rider;
+const drawOrder = (orderStatusId, start, destination) => {
+    let sMarkerIconUrl = null;
+    let dMarkerIconUrl = null;
+    let strokeColor = null;
 
-    const table = $('rider-order-status');
-    table.innerHTML = '';
-
-    removeViews(polylines);
-    removeViews(pathMarker);
-
-    orders.forEach((order) => {
-        const {
-            id, shopName, orderStatusId,
-            addressDetail,
-            startingLatitude, startingLongitude,
-            destinationLatitude, destinationLongitude,
-        } = order;
-
-        let sMarkerIconUrl = null;
-        let dMarkerIconUrl = null;
-        let strokeColor = null;
-
-        if (orderStatusId.toString() === '2') {
+    switch (parseInt(orderStatusId, 10)) {
+        case 2:
             sMarkerIconUrl = '/img/marker-start-allocated.png';
             dMarkerIconUrl = '/img/marker-arrival-allocated.png';
             strokeColor = '#ff6d8b';
-        } else if (orderStatusId.toString() === '3') {
+            break;
+
+        case 3:
             sMarkerIconUrl = '/img/marker-start.png';
             dMarkerIconUrl = '/img/marker-arrival-pickup.png';
             strokeColor = '#c043ff';
-        }
+            break;
 
-        const startPosition = {
-            latitude: startingLatitude,
-            longitude: startingLongitude,
-        };
+        default:
+            return;
+    }
 
-        const destinationPosition = {
-            latitude: destinationLatitude,
-            longitude: destinationLongitude,
-        };
-
-        const polyline = createPolyline({
-            map,
-            path: [startPosition, destinationPosition],
-            strokeColor,
-        });
-
-        polylines.push(polyline);
-
-        const smarker = createMarker({
-            map,
-            position: startPosition,
-            icon: sMarkerIconUrl,
-        });
-
-        const dmarker = createMarker({
-            map,
-            position: destinationPosition,
-            icon: dMarkerIconUrl,
-        });
-
-        markers.push(smarker);
-        markers.push(dmarker);
-
-        pathMarker.push(smarker);
-        pathMarker.push(dmarker);
-
-        const btnStatus = document.createElement('button');
-
-        if (orderStatusId.toString() === '2') {
-            btnStatus.className = 'btn_allow';
-            btnStatus.innerText = '배차';
-        } else if (orderStatusId.toString() === '3') {
-            btnStatus.className = 'btn_pickup';
-            btnStatus.innerText = '픽업';
-        }
-
-        const div = document.createElement('div');
-        div.innerHTML = `<span>${shopName}</span>\n`
-            + '<span> > </span>\n'
-            + `<span>${addressDetail}</span>`;
-
-        const btnDetail = document.createElement('button');
-        btnDetail.className = 'btn_detail';
-        btnDetail.innerText = '주문상세보기';
-        btnDetail.onclick = () => {
-            loadDetail(id, $('group').value);
-        };
-
-        const row = createRow([btnStatus, div, btnDetail]);
-
-        table.appendChild(row);
+    const polyline = createPolyline({
+        map,
+        path: [start, destination],
+        strokeColor,
     });
 
-    setMapToCenterOfCoords(map, getPolylinesCoords(polylines));
+    polylines.push(polyline);
 
-    $('rider-name').innerHTML = name;
-    $('rider-tel').innerHTML = tel;
+    const sMarker = createMarker({
+        map,
+        position: start,
+        icon: sMarkerIconUrl,
+    });
 
-    mapDown.style.display = 'initial';
-    const mapDownHeight = mapDown.offsetHeight;
+    const dMarker = createMarker({
+        map,
+        position: destination,
+        icon: dMarkerIconUrl,
+    });
 
-    $('map').style.height = `calc(100% - ${mapDownHeight}px)`;
-});
+    markers.push(sMarker);
+    markers.push(dMarker);
 
-const drawOverlay = (targetMap, latitude, longitude, name, userGroup, id, riderWorkOn, riderTotal) => {
+    pathMarker.push(sMarker);
+    pathMarker.push(dMarker);
+};
+
+const drawOverlay = (targetMap, coord, name, userGroup, id) => {
     let markerIcon = null;
     let infoIcon = null;
     let infoTextColor = null;
@@ -221,7 +163,7 @@ const drawOverlay = (targetMap, latitude, longitude, name, userGroup, id, riderW
 
     const marker = createMarker({
         map: targetMap,
-        position: {latitude, longitude},
+        position: coord,
         icon: markerIcon,
     });
 
@@ -229,8 +171,8 @@ const drawOverlay = (targetMap, latitude, longitude, name, userGroup, id, riderW
 
     const info = createInfoWindow({
         map: targetMap,
-        position: {latitude, longitude},
-        name,
+        position: coord,
+        infoName: name,
         icon: infoIcon,
         textColor: infoTextColor,
     });
@@ -240,10 +182,19 @@ const drawOverlay = (targetMap, latitude, longitude, name, userGroup, id, riderW
     switch (userGroup) {
         case Group.BRANCH:
             addListener(info, 'click', () => {
-                selectBranch(id, name, riderWorkOn, riderTotal, latitude, longitude);
+                getRiderControl(id);
             });
             addListener(marker, 'click', () => {
-                selectBranch(id, name, riderWorkOn, riderTotal, latitude, longitude);
+                getRiderControl(id);
+            });
+            break;
+
+        case Group.SHOP:
+            addListener(info, 'click', () => {
+                getShopStatus(id);
+            });
+            addListener(marker, 'click', () => {
+                getShopStatus(id);
             });
             break;
 
@@ -261,101 +212,317 @@ const drawOverlay = (targetMap, latitude, longitude, name, userGroup, id, riderW
     }
 };
 
-const getRiderControl = () => {
+const getRiderStatus = riderId => getJSON(`/api/riders/${riderId}`).then((obj) => {
+    const {rider} = obj;
+    const {
+        tel, name, orders,
+    } = rider;
+
+    const table = $('rider-order-status');
+    table.innerHTML = '';
+
+    removeViews(polylines);
+    removeViews(pathMarker);
+
+    orders.forEach((order) => {
+        const {
+            id, shopName, orderStatusId,
+            jibun,
+            startingLatitude, startingLongitude,
+            destinationLatitude, destinationLongitude,
+        } = order;
+
+        drawOrder(orderStatusId,
+            new Coord(startingLatitude, startingLongitude),
+            new Coord(destinationLatitude, destinationLongitude));
+
+        const btnStatus = document.createElement('button');
+
+        if (orderStatusId.toString() === '2') {
+            btnStatus.className = 'btn_allow';
+            btnStatus.innerText = '배차';
+        } else if (orderStatusId.toString() === '3') {
+            btnStatus.className = 'btn_pickup';
+            btnStatus.innerText = '픽업';
+        }
+
+        const div = document.createElement('div');
+        div.innerHTML = `<span>${shopName}</span>\n`
+            + '<span> > </span>\n'
+            + `<span>${jibun}</span>`;
+
+        const btnDetail = document.createElement('button');
+        btnDetail.className = 'btn_detail';
+        btnDetail.innerText = '주문상세보기';
+        btnDetail.onclick = () => {
+            loadDetail(id, $('group').value);
+        };
+
+        const row = createRow([btnStatus, div, btnDetail]);
+
+        table.appendChild(row);
+    });
+
+    setMapToCenterOfCoords(map, getPolylinesCoords(polylines));
+
+    $('rider-name').innerHTML = `기사명 : ${name}`;
+    $('rider-tel').innerHTML = `전화번호 : ${tel}`;
+
+    mapDown.style.display = 'initial';
+    const mapDownHeight = mapDown.offsetHeight;
+
+    $('map').style.height = `calc(100% - ${mapDownHeight}px)`;
+});
+
+const getShopStatus = shopId => getJSON(`/api/shops/${shopId}/riders`).then((obj) => {
+    const {riders} = obj;
+
+    const table = $('rider-order-status');
+    table.innerHTML = '';
+
+    $('rider-name').innerHTML = `상점명 : ${shopId}`;
+    $('rider-tel').innerHTML = `전화번호 : ${'shopTel'}`;
+
+    removeViews(polylines);
+    removeViews(pathMarker);
+
+    riders.forEach((rider) => {
+        const {
+            orderId,
+            orderStatusId,
+            startingLatitude,
+            startingLongitude,
+            destinationLatitude,
+            destinationLongitude,
+            riderId,
+            riderName,
+            riderLatitude,
+            riderLongitude,
+            shopName,
+            jibun,
+        } = rider;
+
+        drawOrder(orderStatusId,
+            new Coord(startingLatitude, startingLongitude),
+            new Coord(destinationLatitude, destinationLongitude));
+
+        drawOverlay(map, new Coord(riderLatitude, riderLongitude), riderName, Group.RIDER, riderId);
+
+        const btnStatus = document.createElement('button');
+
+        if (orderStatusId.toString() === '2') {
+            btnStatus.className = 'btn_allow';
+            btnStatus.innerText = '배차';
+        } else if (orderStatusId.toString() === '3') {
+            btnStatus.className = 'btn_pickup';
+            btnStatus.innerText = '픽업';
+        }
+
+        const div = document.createElement('div');
+        div.innerHTML = `<span>${shopName}</span>\n`
+            + '<span> > </span>\n'
+            + `<span>${jibun}</span>`;
+
+        const btnDetail = document.createElement('button');
+        btnDetail.className = 'btn_detail';
+        btnDetail.innerText = '주문상세보기';
+        btnDetail.onclick = () => {
+            loadDetail(orderId, $('group').value);
+        };
+
+        const row = createRow([btnStatus, div, btnDetail]);
+
+        table.appendChild(row);
+    });
+
+    mapDown.style.display = 'initial';
+    const mapDownHeight = mapDown.offsetHeight;
+
+    $('map').style.height = `calc(100% - ${mapDownHeight}px)`;
+});
+
+const selectBranch = branchId => getJSON(`/api/branches/${branchId}/status`).then((obj) => {
+    const {branchStatus} = obj;
+    const {
+        id, name,
+        latitude, longitude,
+        riderTotal, riderWorkOn,
+        acceptCount, allocateCount, pickupCount, completeCount, orderTotalCount,
+    } = branchStatus;
+
+    $('branch-name').innerHTML = name;
+
+    drawOverlay(map, new Coord(latitude, longitude), name, Group.BRANCH, id);
+
+    riderBranchId.value = id;
+    shopBranchId.value = id;
+
+    $('count-worker').innerText = `${riderWorkOn}/${riderTotal}`;
+
+    $('count-accept').innerHTML = acceptCount;
+    $('count-allocate').innerHTML = allocateCount;
+    $('count-pickup').innerHTML = pickupCount;
+    $('count-complete').innerHTML = completeCount;
+    $('count-all').innerHTML = orderTotalCount;
+});
+
+const getRiderControl = (branchId) => {
     const workOn = $('work-on');
     const workOff = $('work-off');
 
-    workOn.onclick = getRiderControl;
-    workOff.onclick = getRiderControl;
+    workOn.onclick = () => {
+        getRiderControl(branchId);
+    };
+    workOff.onclick = () => {
+        getRiderControl(branchId);
+    };
 
     const isWorkOn = workOn.checked;
     const isWorkOff = workOff.checked;
 
-    const riderStatusId = $('rider-status-id');
+    const riderStatusMask = $('rider-status-id');
 
     if (isWorkOn === false || isWorkOff === false) {
-        riderStatusId.value = isWorkOn * 1 + isWorkOff * 2;
+        riderStatusMask.value = isWorkOn * 1 + isWorkOff * 2;
     } else {
-        riderStatusId.value = 0;
+        riderStatusMask.value = 0;
     }
 
     const formData = new FormData(formRiderSearch);
+
+    formData.set('branch-id', branchId);
 
     removeViews(markers);
     removeViews(infos);
     removeViews(polylines);
 
-    const branchName = $('branch-name').innerText.toString();
-    const branchLatitude = parseFloat($('branch-latitude').value);
-    const branchLongitude = parseFloat($('branch-longitude').value);
+    Promise.all([
+        selectBranch(branchId),
+        getJSON(`/api/riders?${formSerialize(formData)}`).then((obj) => {
+            const {riders} = obj;
 
-    drawOverlay(map, branchLatitude, branchLongitude, branchName, Group.BRANCH);
+            const tableRiders = $('riders');
+            tableRiders.innerHTML = '';
 
-    getJSON(`/api/riders?${formSerialize(formData)}`).then((obj) => {
-        const {riders} = obj;
+            for (let i = 0; i < riders.length; i++) {
+                const rider = riders[i];
 
-        const tableRiders = $('riders');
-        tableRiders.innerHTML = '';
+                const {
+                    id, name, tel, riderStatusId,
+                    allocateCount, completeCount, pickupCount,
+                    latitude, longitude,
+                } = rider;
 
-        for (let i = 0; i < riders.length; i++) {
-            const rider = riders[i];
+                const img = document.createElement('img');
 
-            const {
-                id, name, tel, riderStatusId,
-                allocateCount, completeCount, pickupCount,
-                latitude, longitude,
-            } = rider;
+                switch (riderStatusId) {
+                    case 1:
+                        img.src = '/img/dot.png';
+                        break;
+                    case 2:
+                        img.src = '/img/dot-black.png';
+                        break;
+                    default:
+                        break;
+                }
+                img.width = '10';
+                img.height = '10';
 
-            const img = document.createElement('img');
+                const text = [
+                    img,
+                    name,
+                    fillZero(allocateCount, 2),
+                    fillZero(pickupCount, 2),
+                    fillZero(completeCount, 2),
+                    tel,
+                ];
 
-            switch (riderStatusId) {
-                case 1:
-                    img.src = '/img/dot.png';
-                    break;
-                case 2:
-                    img.src = '/img/dot-black.png';
-                    break;
-                default:
-                    break;
+                if (riderStatusId === 1) {
+                    drawOverlay(map, new Coord(latitude, longitude), name, Group.RIDER, id);
+                }
+
+                const row = createRow(text);
+
+                row.ondblclick = () => {
+                    getRiderStatus(id);
+                };
+
+                tableRiders.appendChild(row);
             }
-            img.width = '10';
-            img.height = '10';
-
-            const text = [
-                img,
-                name,
-                fillZero(allocateCount, 2),
-                fillZero(pickupCount, 2),
-                fillZero(completeCount, 2),
-                tel,
-            ];
-
-            drawOverlay(map, latitude, longitude, name, Group.RIDER, id);
-
-            const row = createRow(text);
-
-            row.ondblclick = () => {
-                getRiderStatus(id);
-            };
-
-            tableRiders.appendChild(row);
-        }
-
+        })]).then(() => {
         setMapToCenterOfCoords(map, getMarkersPosition(markers));
         displayGroupControl(Group.RIDER);
     });
 };
 
-const selectBranch = (id, name, riderWorkOn, riderTotal, latitude, longitude) => {
-    $('branch-name').innerText = name;
-    riderBranchId.value = id;
-    shopBranchId.value = id;
-    $('count-worker').innerText = `${riderWorkOn}/${riderTotal}`;
+const getShopControl = (branchId) => {
+    const formData = new FormData(formShopSearch);
 
-    $('branch-latitude').value = latitude;
-    $('branch-longitude').value = longitude;
+    removeViews(markers);
+    removeViews(infos);
+    removeViews(polylines);
 
-    getRiderControl();
+    Promise.all([
+        selectBranch(branchId),
+        getJSON(`/api/shops?${formSerialize(formData)}`).then((obj) => {
+            const {shops} = obj;
+
+            const tableShops = $('shops');
+            tableShops.innerHTML = '';
+
+            for (let i = 0; i < shops.length; i++) {
+                const shop = shops[i];
+                const {
+                    id, name, tel,
+                    acceptCount, allocateCount, completeCount, pickupCount,
+                    latitude, longitude,
+                } = shop;
+
+                const text = [
+                    name,
+                    fillZero(acceptCount, 2),
+                    fillZero(allocateCount, 2),
+                    fillZero(completeCount, 2),
+                    fillZero(pickupCount, 2),
+                    tel,
+                ];
+
+                drawOverlay(map, new Coord(latitude, longitude), name, Group.SHOP, id);
+
+                const row = createRow(text);
+
+                row.ondblclick = () => {
+                    getShopStatus(id);
+                };
+
+                tableShops.appendChild(row);
+            }
+        }),
+        getJSON(`/api/riders?branch-id=${shopBranchId.value}`).then((obj) => {
+            const {riders} = obj;
+
+            for (let i = 0; i < riders.length; i++) {
+                const rider = riders[i];
+                const {id, name, riderStatusId, latitude, longitude} = rider;
+
+                if (riderStatusId === 1) {
+                    drawOverlay(map, new Coord(latitude, longitude), name, Group.RIDER, id);
+                }
+            }
+        }),
+    ]).then(() => {
+        setMapToCenterOfCoords(map, getMarkersPosition(markers));
+        displayGroupControl(Group.SHOP);
+    });
+};
+
+const setOnclickOfGroupButton = (branchId) => {
+    btnRiderControl.onclick = () => {
+        getRiderControl(branchId);
+    };
+    btnShopControl.onclick = () => {
+        getShopControl(branchId);
+    };
 };
 
 const getBranchControl = () => {
@@ -387,7 +554,8 @@ const getBranchControl = () => {
                 btn.className = 'btn-select';
                 btn.innerHTML = '선택';
                 btn.onclick = () => {
-                    selectBranch(id, name, riderWorkOn, riderTotal, latitude, longitude);
+                    setOnclickOfGroupButton(id);
+                    getRiderControl(id);
                 };
 
                 text.push(btn);
@@ -396,101 +564,13 @@ const getBranchControl = () => {
 
                 tableBranches.appendChild(row);
 
-                drawOverlay(map, latitude, longitude, name, Group.BRANCH,
-                    id, riderWorkOn, riderTotal);
+                drawOverlay(map, new Coord(latitude, longitude), name, Group.BRANCH, id);
             });
-
+        }).then(() => {
             setMapToCenterOfCoords(map, getMarkersPosition(markers));
             displayGroupControl(Group.BRANCH);
         });
     }
-};
-
-const getShopControl = () => {
-    const formData = new FormData(formShopSearch);
-
-    removeViews(markers);
-    removeViews(infos);
-
-    const branchName = $('branch-name').innerText.toString();
-    const branchLatitude = parseFloat($('branch-latitude').value);
-    const branchLongitude = parseFloat($('branch-longitude').value);
-
-    drawOverlay(map, branchLatitude, branchLongitude, branchName, Group.BRANCH);
-
-    getJSON(`/api/shops?${formSerialize(formData)}`).then((obj) => {
-        const {shops} = obj;
-
-        const tableShops = $('shops');
-        tableShops.innerHTML = '';
-
-        for (let i = 0; i < shops.length; i++) {
-            const shop = shops[i];
-            const {
-                name, tel,
-                acceptCount, allocateCount, completeCount, pickupCount,
-                latitude, longitude,
-            } = shop;
-
-            const text = [
-                name,
-                fillZero(acceptCount, 2),
-                fillZero(allocateCount, 2),
-                fillZero(completeCount, 2),
-                fillZero(pickupCount, 2),
-                tel,
-            ];
-
-            drawOverlay(map, latitude, longitude, name, Group.SHOP);
-
-            const row = createRow(text);
-
-            tableShops.appendChild(row);
-        }
-
-        getJSON(`/api/orders/statuses?branch-id=${shopBranchId.value}`).then((object) => {
-            const {info} = object;
-
-            const infoKey = [
-                'acceptCount',
-                'allocateCount',
-                'pickupCount',
-                'completeCount',
-            ];
-
-            const countId = [
-                'count-accept',
-                'count-allocate',
-                'count-pickup',
-                'count-complete',
-            ];
-
-            let sum = 0;
-
-            for (let i = 0; i < infoKey.length; i++) {
-                sum += info[infoKey[i]];
-                $(countId[i]).innerHTML = info[infoKey[i]];
-            }
-
-            $('count-all').innerHTML = sum;
-
-            setMapToCenterOfCoords(map, getMarkersPosition(markers));
-            displayGroupControl(Group.SHOP);
-        });
-    });
-
-    getJSON(`/api/riders?branch-id=${shopBranchId.value}`).then((obj) => {
-        const {riders} = obj;
-
-        for (let i = 0; i < riders.length; i++) {
-            const rider = riders[i];
-            const {id, name, riderStatusId, latitude, longitude} = rider;
-
-            if (riderStatusId === 1) {
-                drawOverlay(map, latitude, longitude, name, Group.RIDER, id);
-            }
-        }
-    });
 };
 
 const group = $('group').value;
@@ -501,21 +581,18 @@ switch (parseInt(group, 10)) {
     case Group.DISTRIB:
         getBranchControl();
         $('btn-close').onclick = getBranchControl;
-        btnRiderControl.onclick = getRiderControl;
-        btnShopControl.onclick = getShopControl;
         break;
 
     case Group.BRANCH:
         riderBranchId.value = id;
         shopBranchId.value = id;
-        getRiderControl();
-        btnRiderControl.onclick = getRiderControl;
-        btnShopControl.onclick = getShopControl;
+        getRiderControl(id);
+        setOnclickOfGroupButton(id);
         break;
 
     case Group.SHOP:
         shopBranchId.value = id;
-        getShopControl();
+        getShopControl(id);
         break;
 
     default:
@@ -531,13 +608,13 @@ if (formBranchSearch !== null) {
 
 if (formBranchSearch !== null) {
     formRiderSearch.onsubmit = () => {
-        getRiderControl();
+        getRiderControl(id);
         return false;
     };
 }
 
 formShopSearch.onsubmit = () => {
-    getShopControl();
+    getShopControl(id);
     return false;
 };
 

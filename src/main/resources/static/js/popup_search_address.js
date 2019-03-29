@@ -1,7 +1,15 @@
 import {getJSON} from './ajax.js';
 import {$, createCol, createRow, formSerialize, getClosureToSelectButton} from './element.js';
 import {addCloseModalEvent} from './modal.js';
-import {createMarker, getDistance, getMarkersPosition, initMap, removeViews, setMapToCenterOfCoords} from './naver.js';
+import {
+    Coord,
+    createMarker,
+    getDistance,
+    getMarkersPosition,
+    initMap,
+    removeViews,
+    setMapToCenterOfCoords
+} from './naver.js';
 
 const map = initMap();
 let deliveryCostSum = 0;
@@ -44,14 +52,8 @@ export const modalClose = (jibun, road, latitude, longitude) => () => {
     const dstLongitude = parseFloat(longitude);
 
     const distance = (getDistance(map,
-        {
-            latitude: shopLatitude,
-            longitude: shopLongitude,
-        },
-        {
-            latitude: dstLatitude,
-            longitude: dstLongitude,
-        }) / 1000).toFixed(2);
+        new Coord(shopLatitude, shopLongitude),
+        new Coord(dstLatitude, dstLongitude)) / 1000).toFixed(2);
 
     $('cost-distance').value = distance;
     $('distance').value = distance;
@@ -66,10 +68,7 @@ export const modalClose = (jibun, road, latitude, longitude) => () => {
 
     const marker = createMarker({
         map,
-        position: {
-            latitude: dstLatitude,
-            longitude: dstLongitude,
-        },
+        position: new Coord(dstLatitude, dstLongitude),
         icon: '/img/marker-shop.png',
     });
 

@@ -1,14 +1,15 @@
 /* eslint-disable */
 
 class InfoOverlay extends naver.maps.OverlayView {
-    constructor(options) {
+    constructor({textColor, icon, infoName, position, map}) {
         super();
-        this.textColor = options.textColor;
-        this.icon = options.icon;
-        this.infoName = options.infoName;
+
+        this.textColor = textColor;
+        this.icon = icon;
+        this.infoName = infoName;
         this._prepareDOM();
-        this.setPosition(options.position);
-        this.setMap(options.map || null);
+        this.setPosition(position);
+        this.setMap(map || null);
     }
 
     setPosition(position) {
@@ -69,12 +70,23 @@ class InfoOverlay extends naver.maps.OverlayView {
     }
 }
 
-export const createMarker = (option) => {
+export class Coord {
+    constructor(latitude, longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    toLatLng() {
+        return new naver.maps.LatLng(this.latitude, this.longitude);
+    }
+}
+
+export const createMarker = ({map, position, icon}) => {
     try {
         return new naver.maps.Marker({
-            position: new naver.maps.LatLng(option.position.latitude, option.position.longitude),
-            map: option.map,
-            icon: option.icon,
+            map,
+            position: position.toLatLng(),
+            icon,
         });
     } catch (e) {
         console.log(e);
@@ -104,7 +116,7 @@ export const setMapToCenterOfCoords = (map, coords) => {
 export const initMap = () => {
     try {
         return new naver.maps.Map('map', {
-            center: new naver.maps.LatLng(35.768418, 128.6050579),
+            center: new Coord(35.768418, 128.6050579).toLatLng(),
             zoom: 3,
         });
     } catch (e) {
@@ -144,29 +156,26 @@ export const showInfo = (infos) => {
     }
 };
 
-export const createInfoWindow = option => {
+export const createInfoWindow = ({map, position, infoName, icon, textColor}) => {
     try {
         return new InfoOverlay({
-            map: option.map,
-            position: new naver.maps.LatLng(option.position.latitude, option.position.longitude),
-            infoName: option.name,
-            icon: option.icon,
-            textColor: option.textColor,
+            map,
+            position: position.toLatLng(),
+            infoName,
+            icon,
+            textColor,
         });
     } catch (e) {
         console.log(e);
     }
 };
 
-export const createPolyline = (option) => {
+export const createPolyline = ({map, strokeColor, path}) => {
     try {
-        const path = option.path.map(({latitude, longitude}) =>
-            new naver.maps.LatLng(latitude, longitude));
-
         return new naver.maps.Polyline({
-            map: option.map,
-            path,
-            strokeColor: option.strokeColor,
+            map,
+            path: path.map(position => position.toLatLng()),
+            strokeColor,
             strokeWeight: 2,
         });
     } catch (e) {
@@ -176,10 +185,7 @@ export const createPolyline = (option) => {
 
 export const getDistance = (map, src, dst) => {
     try {
-        console.log(new naver.maps.LatLng(src.latitude, src.longitude), new naver.maps.LatLng(dst.latitude, dst.longitude));
-        return map.getProjection()
-            .getDistance(new naver.maps.LatLng(src.latitude, src.longitude),
-                new naver.maps.LatLng(dst.latitude, dst.longitude));
+        return map.getProjection().getDistance(src.toLatLng(), dst.toLatLng());
     } catch (e) {
         console.log(e);
     }
@@ -196,21 +202,25 @@ export const addListener = (target, eventName, listener) => {
 
 export const getMarkersPosition = (markers) => {
     try {
-        return markers.map((marker) => marker.getPosition());
+        return markers.map(marker => marker.getPosition());
     } catch (e) {
         console.log(e);
     }
 };
 
 export const getPolylinesCoords = (polylines) => {
-    const coords = [];
-    polylines.forEach((polyline) => {
-        polyline.getPath().forEach((coord) => {
-            coords.push(coord);
+    try {
+        const coords = [];
+        polylines.forEach((polyline) => {
+            polyline.getPath().forEach((coord) => {
+                coords.push(coord);
+            });
         });
-    });
 
-    return coords;
+        return coords;
+    } catch (e) {
+        console.log(e);
+    }
 };
 
 /* eslint-enable */
