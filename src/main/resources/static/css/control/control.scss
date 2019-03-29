@@ -199,6 +199,7 @@ body {
 
 .branch-control-area {
   width: 100%;
+  height: 100%;
   float: left;
 
   > div {
@@ -215,6 +216,13 @@ body {
       font-weight: bold;
       color: #4a4a4a;
     }
+  }
+
+  .branh-table-area {
+    width: 100%;
+    height: calc(100% - 147px);
+    float: left;
+    overflow-y: auto;
   }
 
   .branch-search-area {
