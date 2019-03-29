@@ -28,7 +28,8 @@ const getBookmark = () => {
 
 export const getCost = (shopId) => {
     const formData = new FormData($('form-cost'));
-    getJSON(`/api/shops/${shopId}/delivery-cost?${formSerialize(formData)}`).then((obj) => {
+
+    return getJSON(`/api/shops/${shopId}/delivery-cost?${formSerialize(formData)}`).then((obj) => {
         ({deliveryCostSum, extraCharge} = obj);
         const {deliveryCost} = obj;
 
@@ -84,9 +85,7 @@ const bookmarkCallback = (obj) => {
     const bookmark = obj['bookMark'];
 
     bookmark.forEach((bm) => {
-        const {
-            title, road, jibun, x, y,
-        } = bm;
+        const {title, road, jibun} = bm;
 
         const cell = document.createElement('div');
 
@@ -95,7 +94,14 @@ const bookmarkCallback = (obj) => {
             + `<div class="addr-contents-cell__land-mark">지번</div>\n${
                 jibun}\n`
             + '</div>';
-        cell.ondblclick = modalClose(jibun, road, y, x);
+        cell.ondblclick = () => {
+            getJSON(`${ADDRESS_API_URL}/address/get?address=${jibun}&searchType=4`).then((address) => {
+                const {data} = address;
+                const {x: longitude, y: latitude} = data[0];
+
+                modalClose(jibun, road, latitude, longitude)();
+            });
+        };
 
         const col = createCol(cell);
         col.className = 'addr-contents-cell';
