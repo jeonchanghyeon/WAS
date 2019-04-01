@@ -369,6 +369,10 @@ $('transfer-users-search-button').onclick = function () { //송금 대상 모달
     showDepositUserSearchModal(id, getSelectedGroup());
 };
 
+$('user-name-result').onclick = function() {
+    showDepositUserSearchModal(id, getSelectedGroup());
+};
+
 $("withdraw-form").onsubmit = submitWithdrawForm; //출금 버튼
 $("deposit-form").onsubmit = submitDepositForm; //출금 버튼
 
