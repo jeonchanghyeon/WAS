@@ -3,6 +3,7 @@ package com.please.service
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.please.dataAccess.UserDAO
 import com.please.exception.AccountNotFoundException
+import com.please.exception.PasswordNotFoundException
 import com.please.value.UserInfo
 import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,6 +38,7 @@ class UserService {
         return userDAO.getTransactionInformation(authKey, jsonInfo.toString())
     }
 
+    @Throws(PasswordNotFoundException::class)
     fun checkDepositPassword(authKey: String, id: Long, password: String): Boolean {
         val user = JSONObject(getUserInfo(authKey, id))
         val userAdditional = (user["user"] as JSONObject)["additional"] as JSONObject
@@ -45,7 +47,7 @@ class UserService {
             val pointPassword = userAdditional["pointPassword"] as String
             (pointPassword === password)
         } else {
-            true
+            throw PasswordNotFoundException("password not found")
         }
     }
 }

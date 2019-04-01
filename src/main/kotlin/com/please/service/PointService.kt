@@ -5,6 +5,7 @@ import com.please.dataAccess.PointDAO
 import com.please.exception.InvalidValueException
 import com.please.exception.PasswordMismatchException
 import com.please.exception.MissingBalanceException
+import com.please.exception.PasswordNotFoundException
 import com.please.value.TransactionInfo
 import org.json.JSONArray
 import org.json.JSONObject
@@ -27,7 +28,7 @@ class PointService {
     }
 
     @Transactional
-    @Throws(PasswordMismatchException::class, MissingBalanceException::class)
+    @Throws(PasswordMismatchException::class, PasswordNotFoundException::class, MissingBalanceException::class)
     fun sendPoint(authKey: String, senderId: Long, receiverId: Long, point: Int, password: String): String {
         val userTxType = 5  //송금 타입
 
