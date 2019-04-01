@@ -87,7 +87,14 @@ class ExceptionRestController : ResponseEntityExceptionHandler() {
     @ExceptionHandler(PasswordMismatchException::class)
     fun passwordMismatch(e: PasswordMismatchException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
         log.error(getExceptionLog(e, req))
-        return ResponseEntity(e.errorInfo, HttpStatus.BAD_REQUEST)
+        return ResponseEntity(e.errorInfo, HttpStatus.OK)
+    }
+
+    //패스워드가 등록되지 않은 경우
+    @ExceptionHandler(PasswordNotFoundException::class)
+    fun passwordNotFound(e: PasswordNotFoundException, req: HttpServletRequest): ResponseEntity<ErrorInfo> {
+        log.error(getExceptionLog(e, req))
+        return ResponseEntity(e.errorInfo, HttpStatus.OK)
     }
 
     //기타 에러가 발생할 경우
