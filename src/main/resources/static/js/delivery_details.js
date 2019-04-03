@@ -220,11 +220,7 @@ export const loadDetail = (orderId, group, func) => {
 
                 case 6:
                     buttonAttrib.push(buttons.get('주문수정'));
-                    buttonAttrib.push(buttons.get('추가접수'));
                     buttonAttrib.push(buttons.get('접수'));
-                    if (group !== 3) {
-                        buttonAttrib.push(buttons.get('배달기사배차'));
-                    }
                     buttonAttrib.push(buttons.get('주문취소'));
                     break;
 
